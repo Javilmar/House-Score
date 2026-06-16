@@ -13,6 +13,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
+import streamlit.components.v1 as components
 from pathlib import Path
 from datetime import date, datetime
 
@@ -308,6 +309,87 @@ def zona(*textos):
     return "—"
 
 
+_OBRA_NUEVA_KW = [
+    "obra nueva", "a estrenar", "nueva construccion", "primera ocupacion",
+    "de obra nueva", "promocion de obra", "llave en mano", "recien construid",
+    "vivienda nueva", "promocion nueva",
+]
+
+
+def tipo_vivienda(*textos):
+    """'Obra nueva' si el anuncio lo indica; 'Segunda mano' en caso contrario."""
+    blob = _sin_acentos(" ".join(t for t in textos if t))
+    if any(kw in blob for kw in _OBRA_NUEVA_KW):
+        return "Obra nueva"
+    return "Segunda mano"
+
+
+# Plantilla de la tabla interactiva (HTML + JS de ordenación en cliente).
+# Marcadores __THEAD__ / __ROWS__ se sustituyen con .replace (no f-string,
+# para no escapar las llaves de CSS/JS).
+_TABLA_TEMPLATE = """<!DOCTYPE html><html><head><meta charset="utf-8"><style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+* { box-sizing: border-box; }
+body { margin: 0; background: #09090b; font-family: 'Inter', sans-serif; }
+.wrap { border: 1px solid #27272a; border-radius: 14px; overflow: hidden; background: #131316; }
+table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+thead th {
+  text-align: left; font-size: 0.7rem; font-weight: 600; color: #a1a1aa;
+  text-transform: uppercase; letter-spacing: 0.04em; padding: 0.7rem 0.85rem;
+  border-bottom: 1px solid #27272a; background: #18181b; white-space: nowrap;
+  position: sticky; top: 0; cursor: pointer; user-select: none; z-index: 1;
+}
+thead th.noord { cursor: default; width: 34px; }
+thead th:hover:not(.noord) { color: #fafafa; }
+.arr { color: #818cf8; font-size: 0.78rem; }
+tbody td { padding: 0.6rem 0.85rem; border-bottom: 1px solid #1f1f23; color: #d4d4d8; vertical-align: middle; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: #18181b; }
+.lt-pos { font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; white-space: nowrap; }
+.lt-title a { color: #818cf8; text-decoration: none; font-weight: 500; border-bottom: 1px solid rgba(129,140,248,0.25); }
+.lt-title a:hover { color: #a5b4fc; border-bottom-color: #a5b4fc; }
+.lt-title span { color: #a1a1aa; }
+.lt-num { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; white-space: nowrap; color: #a1a1aa; }
+.lt-price { font-family: 'JetBrains Mono', monospace; font-weight: 600; color: #fafafa; white-space: nowrap; }
+.lt-score-wrap { display: flex; align-items: center; gap: 0.55rem; min-width: 96px; }
+.lt-score-num { font-family: 'JetBrains Mono', monospace; font-weight: 600; width: 24px; color: #e4e4e7; font-size: 0.82rem; }
+.lt-score-track { display: block; flex: 1; height: 5px; background: #27272a; border-radius: 999px; overflow: hidden; min-width: 50px; }
+.lt-score-fill { display: block; height: 100%; border-radius: 999px; }
+.lt-tag { font-size: 0.72rem; padding: 0.12rem 0.5rem; border-radius: 5px; white-space: nowrap; font-weight: 500; }
+.lt-nuevo { background: rgba(34,197,94,0.12); color: #4ade80; border: 1px solid rgba(34,197,94,0.2); }
+.lt-usada { background: rgba(255,255,255,0.04); color: #a1a1aa; border: 1px solid #27272a; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
+</style></head><body>
+<div class="wrap"><table id="lt"><thead>__THEAD__</thead><tbody>__ROWS__</tbody></table></div>
+<script>
+function ord(idx, th) {
+  var t = document.getElementById('lt'), tb = t.tBodies[0];
+  var rows = Array.prototype.slice.call(tb.rows);
+  var asc = th.getAttribute('data-dir') !== 'asc';
+  var hs = t.tHead.rows[0].cells;
+  for (var k = 0; k < hs.length; k++) {
+    hs[k].removeAttribute('data-dir');
+    var s = hs[k].querySelector('.arr'); if (s) s.textContent = '';
+  }
+  rows.sort(function(a, b) {
+    var x = a.cells[idx].getAttribute('data-v'), y = b.cells[idx].getAttribute('data-v');
+    var nx = parseFloat(x), ny = parseFloat(y);
+    var xn = (x !== '' && x != null && !isNaN(nx)), yn = (y !== '' && y != null && !isNaN(ny));
+    var c;
+    if (xn && yn) c = nx - ny;
+    else if (xn) c = -1;
+    else if (yn) c = 1;
+    else c = ('' + x).localeCompare('' + y, 'es', { sensitivity: 'base' });
+    return asc ? c : -c;
+  });
+  for (var i = 0; i < rows.length; i++) tb.appendChild(rows[i]);
+  th.setAttribute('data-dir', asc ? 'asc' : 'desc');
+  var sp = th.querySelector('.arr'); if (sp) sp.textContent = asc ? ' ▲' : ' ▼';
+}
+</script></body></html>"""
+
+
 # ── Carga de datos ──────────────────────────────────────────────
 
 @st.cache_data(ttl=30)
@@ -485,10 +567,17 @@ with tab1:
         except (ValueError, TypeError):
             return "—"
 
+    def _num(v):
+        try:
+            f = float(v)
+            return f if math.isfinite(f) else ""
+        except (ValueError, TypeError):
+            return ""
+
     medallas = {0: "🥇", 1: "🥈", 2: "🥉"}
     filas = []
     for i, (_, row) in enumerate(df_tabla.iterrows()):
-        pos = medallas.get(i, str(i + 1))
+        pos = medallas.get(i, "")
         titulo = clean(row.get("title", "")) or "Sin título"
         url = row.get("url", "")
         if isinstance(url, str) and url.startswith("http"):
@@ -501,34 +590,47 @@ with tab1:
         m2_val = row.get("m2")
         m2_txt = f"{int(m2_val)}" if pd.notna(m2_val) and math.isfinite(m2_val) else "—"
         ubi = zona(row.get("location", ""), row.get("title", ""), row.get("description", ""))
+        feats = row.get("features", [])
+        feats_txt = " ".join(feats) if isinstance(feats, list) else ""
+        tipo = tipo_vivienda(row.get("title", ""), row.get("description", ""), feats_txt)
+        tipo_cls = "lt-nuevo" if tipo == "Obra nueva" else "lt-usada"
         col = score_color(sc)
 
         filas.append(
             "<tr>"
             f'<td class="lt-pos">{pos}</td>'
-            f'<td class="lt-title">{titulo_html}</td>'
-            f'<td class="lt-price">{_fmt_eur(row.get("price"))}</td>'
-            f'<td><div class="lt-score-wrap"><span class="lt-score-num">{sc:.0f}</span>'
+            f'<td class="lt-title" data-v="{titulo.lower()}">{titulo_html}</td>'
+            f'<td class="lt-price" data-v="{_num(row.get("price"))}">{_fmt_eur(row.get("price"))}</td>'
+            f'<td data-v="{sc:.0f}"><div class="lt-score-wrap"><span class="lt-score-num">{sc:.0f}</span>'
             f'<span class="lt-score-track"><span class="lt-score-fill" '
             f'style="width:{min(sc, 100)}%;background:{col};"></span></span></div></td>'
-            f'<td class="lt-num">{_fmt_eur(row.get("eur_m2"))}</td>'
-            f'<td class="lt-num">{m2_txt}</td>'
-            f'<td>{ubi}</td>'
+            f'<td class="lt-num" data-v="{_num(row.get("eur_m2"))}">{_fmt_eur(row.get("eur_m2"))}</td>'
+            f'<td class="lt-num" data-v="{_num(row.get("m2"))}">{m2_txt}</td>'
+            f'<td data-v="{tipo}"><span class="lt-tag {tipo_cls}">{tipo}</span></td>'
+            f'<td data-v="{ubi}">{ubi}</td>'
             "</tr>"
         )
 
     if filas:
-        tabla_html = (
-            '<div class="list-table-wrap"><table class="list-table"><thead><tr>'
-            "<th>#</th><th>Título</th><th>Precio</th><th>Score</th>"
-            "<th>€/m²</th><th>m²</th><th>Ubicación</th>"
-            "</tr></thead><tbody>" + "".join(filas) + "</tbody></table></div>"
+        thead = (
+            "<tr>"
+            '<th class="noord"></th>'
+            '<th onclick="ord(1,this)">Título<span class="arr"></span></th>'
+            '<th onclick="ord(2,this)">Precio<span class="arr"></span></th>'
+            '<th onclick="ord(3,this)">Score<span class="arr"></span></th>'
+            '<th onclick="ord(4,this)">€/m²<span class="arr"></span></th>'
+            '<th onclick="ord(5,this)">m²<span class="arr"></span></th>'
+            '<th onclick="ord(6,this)">Tipo<span class="arr"></span></th>'
+            '<th onclick="ord(7,this)">Ubicación<span class="arr"></span></th>'
+            "</tr>"
         )
-        st.markdown(tabla_html, unsafe_allow_html=True)
+        doc = _TABLA_TEMPLATE.replace("__THEAD__", thead).replace("__ROWS__", "".join(filas))
+        altura = min(660, 64 + len(filas) * 41)
+        components.html(doc, height=altura, scrolling=True)
     else:
         st.info("No hay listados con esos filtros.")
 
-    st.caption(f"{len(df_filtrado)} listings mostrados · clic en el título para abrir el anuncio")
+    st.caption(f"{len(df_filtrado)} listings · clic en una cabecera para ordenar · clic en el título para abrir el anuncio")
     csv_data = df_filtrado[columnas_csv].to_csv(index=False).encode("utf-8")
     st.download_button("Descargar CSV", csv_data, f"listings_{hoy}.csv", "text/csv")
 
