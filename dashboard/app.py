@@ -382,11 +382,12 @@ st.write("")
 
 # ── Pestañas ─────────────────────────────────────────────────────
 
-tab1, tab2, tab3, tab4 = st.tabs([
+tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "Listados completos",
     "Top scoring",
     "Evolución y análisis",
     "Bajadas de precio",
+    "Cómo funciona",
 ])
 
 # ── TAB 1: Listados completos ────────────────────────────────────
@@ -657,6 +658,120 @@ with tab4:
             )
     else:
         st.info("No se han detectado bajadas de precio todavía. Aparecerán aquí cuando un listing baje entre pasadas.")
+
+# ── TAB 5: Cómo funciona ─────────────────────────────────────────
+
+with tab5:
+    st.write("")
+    st.markdown(
+        """
+        Cada anuncio recibe una **puntuación de 0 a 100** que combina precio,
+        tamaño y características de la vivienda. Cuanto más alta, mejor encaja
+        con lo que buscamos. Así se reparten los puntos:
+        """
+    )
+
+    def _bloque(titulo, subtitulo, items):
+        filas = "".join(
+            f'<div style="display:flex; justify-content:space-between; gap:1rem; '
+            f'padding:0.4rem 0; border-bottom:1px solid #1f1f23;">'
+            f'<span style="color:#d4d4d8;">{concepto}</span>'
+            f'<span style="color:{color}; font-weight:600; white-space:nowrap; '
+            f'font-variant-numeric:tabular-nums;">{pts}</span></div>'
+            for concepto, pts, color in items
+        )
+        return (
+            f'<div class="prop-card" style="margin-bottom:0;">'
+            f'<div style="font-weight:600; color:#fafafa; margin-bottom:0.1rem;">{titulo}</div>'
+            f'<div style="font-size:0.8rem; color:#71717a; margin-bottom:0.6rem;">{subtitulo}</div>'
+            f"{filas}</div>"
+        )
+
+    POS = "#22c55e"   # suma
+    NEG = "#f87171"   # resta
+    NEU = "#818cf8"   # base
+
+    c1, c2 = st.columns(2)
+    with c1:
+        st.markdown(
+            _bloque("💰 Precio", "Hasta 250.000 € · más barato, más puntos", [
+                ("≤ 175.000 €", "+20", NEU),
+                ("≤ 200.000 €", "+15", NEU),
+                ("≤ 225.000 €", "+10", NEU),
+                ("≤ 250.000 €", "+5", NEU),
+            ]),
+            unsafe_allow_html=True,
+        )
+        st.write("")
+        st.markdown(
+            _bloque("📐 Superficie", "Cuanto más grande, mejor", [
+                ("≥ 140 m²", "+15", NEU),
+                ("≥ 120 m²", "+12", NEU),
+                ("≥ 100 m²", "+8", NEU),
+                ("≥ 80 m²", "+5", NEU),
+            ]),
+            unsafe_allow_html=True,
+        )
+        st.write("")
+        st.markdown(
+            _bloque("➕ Extras (suman)", "Bonus por antigüedad, ubicación y calidad", [
+                ("🏗️ Obra nueva / a estrenar", "+10", POS),
+                ("🚇 Cerca de transporte público", "+8", POS),
+                ("🔧 Reformado", "+5", POS),
+                ("📅 Construido desde 2000", "+1 a +5", POS),
+                ("🏢 Ático / última planta", "+3", POS),
+                ("⚡ Eficiencia energética A/B/C", "+2", POS),
+            ]),
+            unsafe_allow_html=True,
+        )
+    with c2:
+        st.markdown(
+            _bloque("✨ Características", "Se detectan en el anuncio y la ficha", [
+                ("🏊 Piscina", "+15", POS),
+                ("🚗 Garaje", "+12", POS),
+                ("📦 Trastero", "+10", POS),
+                ("🌿 Terraza", "+10", POS),
+                ("🏡 Patio", "+10", POS),
+                ("🛗 Ascensor", "+5", POS),
+                ("🌳 Jardín", "+5", POS),
+            ]),
+            unsafe_allow_html=True,
+        )
+        st.write("")
+        st.markdown(
+            _bloque("⚠️ Penalizaciones (restan)", "Avisan de posibles problemas", [
+                ("🚫 Ocupada / no admite visitas", "−30", NEG),
+                ("📍 Zona conflictiva", "−3 a −20", NEG),
+            ]),
+            unsafe_allow_html=True,
+        )
+
+    st.write("")
+    st.markdown("##### De dónde salen los datos")
+
+    with st.expander("¿Por qué solo aparecen anuncios de pisos.com?"):
+        st.markdown(
+            "Es el único portal del que podemos extraer datos de forma fiable. "
+            "**Idealista** y **Fotocasa** bloquean la recogida automática con "
+            "sistemas anti-robot (CAPTCHAs), así que quedan fuera por ahora."
+        )
+    with st.expander("¿Por qué la zona es Madrid Sur + Toledo Norte?"):
+        st.markdown(
+            "Nos centramos en municipios a **30–40 min de Madrid por autovía** "
+            "(corredores A-42, A-4 y A-5): Getafe, Leganés, Móstoles, Alcorcón, "
+            "Fuenlabrada, Parla, Pinto, Valdemoro y, ya en Toledo, Illescas, Seseña, "
+            "Esquivias, Yuncos, Yeles y alrededores. **Toledo capital queda fuera**: "
+            "está a ~55 min y es un mercado distinto."
+        )
+    with st.expander("¿Cómo se asegura que el precio es real?"):
+        st.markdown(
+            "El listado de búsqueda a veces muestra precios “desde”, que engañan. "
+            "Por eso el sistema puntúa primero todos los anuncios, **visita la ficha "
+            "completa de los 30 mejores** y vuelve a puntuarlos con los datos reales: "
+            "precio, metros, habitaciones, baños, año y estado de conservación."
+        )
+
+    st.caption("La puntuación es orientativa: ayuda a priorizar, no sustituye una visita.")
 
 # ── Footer ───────────────────────────────────────────────────────
 
