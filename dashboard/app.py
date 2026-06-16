@@ -8,6 +8,7 @@ Lanzar: streamlit run app.py
 import re
 import json
 import math
+import unicodedata
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -257,6 +258,42 @@ def clean(text):
     return _EMOJI_RE.sub("", text).strip(" ·")
 
 
+# ── Clasificación por zona (Madrid Sur / Toledo Norte) ───────────
+# Best-effort: el scraper no guarda el municipio de origen, así que se
+# infiere del texto del anuncio. Los pueblos toledanos son de la Sagra.
+
+_MADRID_SUR = [
+    "getafe", "leganes", "mostoles", "alcorcon", "fuenlabrada", "parla",
+    "pinto", "valdemoro", "ciempozuelos", "humanes", "grinon",
+    "navalcarnero", "torrejon de la calzada",
+]
+_TOLEDO_NORTE = [
+    "illescas", "yeles", "esquivias", "yuncos", "yuncler", "yunclillos",
+    "cedillo", "el viso de san juan", "viso de san juan", "carranque",
+    "ugena", "recas", "lominchar", "alameda de la sagra",
+    "cabanas de la sagra", "villaluenga", "anover de tajo", "sesena",
+    "casarrubios", "valmojado", "magan", "cobeja", "numancia", "pantoja",
+    "chozas de canales", "bargas", "mocejon", "burguillos", "cobisa",
+    "olias", "castilla la mancha", "la sagra", "sagra",
+    "provincia de toledo", "toledo",
+]
+
+
+def _sin_acentos(s):
+    s = unicodedata.normalize("NFKD", str(s))
+    return "".join(c for c in s if not unicodedata.combining(c)).lower()
+
+
+def zona(*textos):
+    """Devuelve 'Madrid Sur', 'Toledo Norte' o '—' según el texto del anuncio."""
+    blob = _sin_acentos(" ".join(t for t in textos if t))
+    if any(m in blob for m in _MADRID_SUR):
+        return "Madrid Sur"
+    if any(t in blob for t in _TOLEDO_NORTE):
+        return "Toledo Norte"
+    return "—"
+
+
 # ── Carga de datos ──────────────────────────────────────────────
 
 @st.cache_data(ttl=30)
@@ -449,7 +486,7 @@ with tab1:
         sc = sc if isinstance(sc, (int, float)) and math.isfinite(sc) else 0
         m2_val = row.get("m2")
         m2_txt = f"{int(m2_val)}" if pd.notna(m2_val) and math.isfinite(m2_val) else "—"
-        ubi = clean(str(row.get("location", "—"))).split(",")[0].strip() or "—"
+        ubi = zona(row.get("location", ""), row.get("title", ""), row.get("description", ""))
         col = score_color(sc)
 
         filas.append(
