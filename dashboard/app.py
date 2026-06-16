@@ -405,7 +405,11 @@ with tab1:
     with col_f3:
         if "price" in df.columns:
             pmin, pmax = int(df["price"].min()), int(df["price"].max())
-            filtro_precio = st.slider("Rango de precio (€)", pmin, pmax, (pmin, pmax), key="f1_precio")
+            filtro_precio = st.slider("Rango de precio (€)", pmin, pmax, (pmin, pmax),
+                                      step=1000, key="f1_precio")
+            lo = f"{filtro_precio[0]:,}".replace(",", ".")
+            hi = f"{filtro_precio[1]:,}".replace(",", ".")
+            st.caption(f"{lo} € — {hi} €")
         else:
             filtro_precio = None
 
