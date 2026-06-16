@@ -7,6 +7,7 @@ Lanzar: streamlit run app.py
 
 import re
 import json
+import math
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -424,7 +425,10 @@ with tab1:
 
     def _fmt_eur(v):
         try:
-            return f"{int(round(float(v))):,}".replace(",", ".") + " €"
+            f = float(v)
+            if not math.isfinite(f):
+                return "—"
+            return f"{int(round(f)):,}".replace(",", ".") + " €"
         except (ValueError, TypeError):
             return "—"
 
@@ -440,8 +444,9 @@ with tab1:
             titulo_html = f"<span>{titulo}</span>"
 
         sc = row.get("score", 0) or 0
+        sc = sc if isinstance(sc, (int, float)) and math.isfinite(sc) else 0
         m2_val = row.get("m2")
-        m2_txt = f"{int(m2_val)}" if pd.notna(m2_val) else "—"
+        m2_txt = f"{int(m2_val)}" if pd.notna(m2_val) and math.isfinite(m2_val) else "—"
         ubi = clean(str(row.get("location", "—"))) or "—"
         col = score_color(sc)
 
