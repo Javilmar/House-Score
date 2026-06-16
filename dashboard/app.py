@@ -83,17 +83,30 @@ def inject_styles():
     st.markdown(
         """
         <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --font-display: 'Fraunces', 'Times New Roman', serif;
+            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+        }
 
         html, body, [class*="css"], .stMarkdown, .stMetric {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: var(--font-sans);
         }
 
         .stApp { background: #09090b; }
         .block-container { padding-top: 3rem; padding-bottom: 4rem; max-width: 1320px; }
 
-        h1 { font-weight: 700; letter-spacing: -0.02em; color: #fafafa; }
-        h2, h3 { font-weight: 600; letter-spacing: -0.01em; color: #e4e4e7; }
+        /* Títulos en Fraunces (display serif) — estilo Skilio */
+        h1, h2, h3, h4 {
+            font-family: var(--font-display) !important;
+            font-weight: 400 !important;
+            letter-spacing: -0.02em !important;
+            line-height: 1.15 !important;
+            color: #fafafa !important;
+        }
+        h2, h3 { color: #e4e4e7 !important; }
 
         /* Tarjetas de métrica */
         [data-testid="stMetric"] {
@@ -164,7 +177,8 @@ def inject_styles():
             font-size: 0.72rem; font-weight: 500; color: #a1a1aa;
             text-transform: uppercase; letter-spacing: 0.05em;
         }
-        .kpi-value { font-size: 1.55rem; font-weight: 600; color: #fafafa; margin-top: 0.1rem; }
+        .kpi-value { font-family: var(--font-display); font-size: 1.7rem; font-weight: 600;
+                     color: #fafafa; margin-top: 0.1rem; letter-spacing: -0.01em; }
 
         .score-badge {
             display: inline-flex; align-items: center; justify-content: center;
@@ -215,8 +229,8 @@ def inject_styles():
         .list-table tbody tr { transition: background 140ms ease; }
         .list-table tbody tr:hover { background: #18181b; }
 
-        .lt-pos { font-weight: 600; color: #71717a; white-space: nowrap;
-                  font-variant-numeric: tabular-nums; font-size: 0.95rem; }
+        .lt-pos { font-family: var(--font-mono); font-weight: 600; color: #71717a;
+                  white-space: nowrap; font-size: 0.9rem; }
         /* El título ES el enlace — color de acento, subrayado al hover, cursor de mano */
         .lt-title a {
             color: #818cf8; text-decoration: none; font-weight: 500; cursor: pointer;
@@ -225,12 +239,12 @@ def inject_styles():
         }
         .lt-title a:hover { color: #a5b4fc; border-bottom-color: #a5b4fc; }
         .lt-title span { color: #a1a1aa; }
-        .lt-num { font-variant-numeric: tabular-nums; white-space: nowrap; color: #a1a1aa; }
-        .lt-price { font-weight: 600; color: #fafafa; white-space: nowrap;
-                    font-variant-numeric: tabular-nums; }
+        .lt-num { font-family: var(--font-mono); font-size: 0.8rem; white-space: nowrap; color: #a1a1aa; }
+        .lt-price { font-family: var(--font-mono); font-weight: 600; color: #fafafa;
+                    white-space: nowrap; }
         .lt-score-wrap { display: flex; align-items: center; gap: 0.55rem; min-width: 96px; }
-        .lt-score-num { font-weight: 600; font-variant-numeric: tabular-nums;
-                        width: 22px; color: #e4e4e7; }
+        .lt-score-num { font-family: var(--font-mono); font-weight: 600;
+                        width: 24px; color: #e4e4e7; font-size: 0.82rem; }
         .lt-score-track { display: block; flex: 1; height: 5px; background: #27272a;
                           border-radius: 999px; overflow: hidden; min-width: 50px; }
         .lt-score-fill { display: block; height: 100%; border-radius: 999px; }
@@ -343,7 +357,7 @@ def score_color(score):
 
 def style_fig(fig, title=None):
     fig.update_layout(
-        title=dict(text=title, font=dict(size=15, color=INK, family="Inter")) if title else None,
+        title=dict(text=title, font=dict(size=16, color=INK, family="Fraunces")) if title else None,
         font=dict(family="Inter", size=12, color=MUTED),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
