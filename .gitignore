@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Streamlit secrets (¡nunca subir contraseñas!)
+.streamlit/secrets.toml
+
+# Tooling de IA (no necesario para desplegar la app)
+dashboard/.agents/
+dashboard/.ai-engineering/
+dashboard/.claude/
+dashboard/.codex/
+dashboard/.cursor/
+dashboard/.github/
+dashboard/.opencode/
+dashboard/.gitleaks.toml
+dashboard/.semgrep.yml
+dashboard/AGENTS.md
+dashboard/CLAUDE.md
+dashboard/CONSTITUTION.md
+
+# OS
+.DS_Store
+Thumbs.db
+
+# NOTA: la carpeta datos/ SÍ se sube — es lo que lee el dashboard en la nube.
