@@ -230,9 +230,9 @@ def inject_styles():
         .lt-score-wrap { display: flex; align-items: center; gap: 0.55rem; min-width: 96px; }
         .lt-score-num { font-weight: 600; font-variant-numeric: tabular-nums;
                         width: 22px; color: #e4e4e7; }
-        .lt-score-track { flex: 1; height: 5px; background: #27272a;
+        .lt-score-track { display: block; flex: 1; height: 5px; background: #27272a;
                           border-radius: 999px; overflow: hidden; min-width: 50px; }
-        .lt-score-fill { height: 100%; border-radius: 999px; }
+        .lt-score-fill { display: block; height: 100%; border-radius: 999px; }
 
         #MainMenu, footer { visibility: hidden; }
         </style>
@@ -406,10 +406,7 @@ with tab1:
         if "price" in df.columns:
             pmin, pmax = int(df["price"].min()), int(df["price"].max())
             filtro_precio = st.slider("Rango de precio (€)", pmin, pmax, (pmin, pmax),
-                                      step=1000, key="f1_precio")
-            lo = f"{filtro_precio[0]:,}".replace(",", ".")
-            hi = f"{filtro_precio[1]:,}".replace(",", ".")
-            st.caption(f"{lo} € — {hi} €")
+                                      step=1000, format="%,d €", key="f1_precio")
         else:
             filtro_precio = None
 
