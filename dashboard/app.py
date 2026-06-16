@@ -193,6 +193,46 @@ def inject_styles():
         /* Divisores más sutiles */
         hr { border-color: #27272a !important; }
 
+        /* Tabla de listados (HTML propio, título clicable) */
+        .list-table-wrap {
+            border: 1px solid #27272a; border-radius: 14px; overflow: hidden;
+            background: #131316;
+        }
+        .list-table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+        .list-table thead th {
+            text-align: left; font-size: 0.7rem; font-weight: 600; color: #71717a;
+            text-transform: uppercase; letter-spacing: 0.04em;
+            padding: 0.7rem 0.85rem; border-bottom: 1px solid #27272a;
+            background: #18181b; white-space: nowrap;
+        }
+        .list-table tbody td {
+            padding: 0.65rem 0.85rem; border-bottom: 1px solid #1f1f23;
+            color: #d4d4d8; vertical-align: middle;
+        }
+        .list-table tbody tr:last-child td { border-bottom: none; }
+        .list-table tbody tr { transition: background 140ms ease; }
+        .list-table tbody tr:hover { background: #18181b; }
+
+        .lt-pos { font-weight: 600; color: #71717a; white-space: nowrap;
+                  font-variant-numeric: tabular-nums; font-size: 0.95rem; }
+        /* El título ES el enlace — color de acento, subrayado al hover, cursor de mano */
+        .lt-title a {
+            color: #818cf8; text-decoration: none; font-weight: 500; cursor: pointer;
+            border-bottom: 1px solid rgba(129,140,248,0.25);
+            transition: all 140ms ease;
+        }
+        .lt-title a:hover { color: #a5b4fc; border-bottom-color: #a5b4fc; }
+        .lt-title span { color: #a1a1aa; }
+        .lt-num { font-variant-numeric: tabular-nums; white-space: nowrap; color: #a1a1aa; }
+        .lt-price { font-weight: 600; color: #fafafa; white-space: nowrap;
+                    font-variant-numeric: tabular-nums; }
+        .lt-score-wrap { display: flex; align-items: center; gap: 0.55rem; min-width: 96px; }
+        .lt-score-num { font-weight: 600; font-variant-numeric: tabular-nums;
+                        width: 22px; color: #e4e4e7; }
+        .lt-score-track { flex: 1; height: 5px; background: #27272a;
+                          border-radius: 999px; overflow: hidden; min-width: 50px; }
+        .lt-score-fill { height: 100%; border-radius: 999px; }
+
         #MainMenu, footer { visibility: hidden; }
         </style>
         """,
@@ -377,36 +417,60 @@ with tab1:
         df_filtrado = df_filtrado[(df_filtrado["price"] >= filtro_precio[0]) & (df_filtrado["price"] <= filtro_precio[1])]
 
     columnas_csv = [c for c in ["title", "price", "score", "eur_m2", "location", "m2", "rooms", "bathrooms", "floor", "year_built", "energy_rating", "source", "first_seen", "url"] if c in df_filtrado.columns]
-    columnas_display = [c for c in ["title", "price", "score", "eur_m2", "m2", "location", "url"] if c in df_filtrado.columns]
 
-    col_rename = {
-        "title": "Título", "price": "Precio (€)", "score": "Score", "eur_m2": "€/m²",
-        "m2": "m²", "location": "Ubicación", "url": "Ver",
-    }
-
-    df_tabla = df_filtrado[columnas_display].copy()
+    df_tabla = df_filtrado.copy()
     if "score" in df_tabla.columns:
         df_tabla = df_tabla.sort_values("score", ascending=False)
 
-    # Columna de posición dedicada: medalla para el podio, número para el resto.
-    medallas = {0: "🥇  1º", 1: "🥈  2º", 2: "🥉  3º"}
-    df_tabla.insert(0, "_pos", [medallas.get(i, f"{i + 1}") for i in range(len(df_tabla))])
+    def _fmt_eur(v):
+        try:
+            return f"{int(round(float(v))):,}".replace(",", ".") + " €"
+        except (ValueError, TypeError):
+            return "—"
 
-    st.dataframe(
-        df_tabla.rename(columns=col_rename),
-        use_container_width=True,
-        hide_index=True,
-        column_config={
-            "_pos": st.column_config.TextColumn("#", width="small"),
-            "Ver": st.column_config.LinkColumn("Ver", display_text="Ver →"),
-            "Precio (€)": st.column_config.NumberColumn("Precio (€)", format="€%,d"),
-            "€/m²": st.column_config.NumberColumn("€/m²", format="€%,d"),
-            "Score": st.column_config.ProgressColumn("Score", format="%.0f", min_value=0, max_value=100),
-            "m²": st.column_config.NumberColumn("m²", format="%.0f"),
-        },
-    )
+    medallas = {0: "🥇", 1: "🥈", 2: "🥉"}
+    filas = []
+    for i, (_, row) in enumerate(df_tabla.iterrows()):
+        pos = medallas.get(i, str(i + 1))
+        titulo = clean(row.get("title", "")) or "Sin título"
+        url = row.get("url", "")
+        if isinstance(url, str) and url.startswith("http"):
+            titulo_html = f'<a href="{url}" target="_blank" rel="noopener">{titulo}</a>'
+        else:
+            titulo_html = f"<span>{titulo}</span>"
 
-    st.caption(f"{len(df_filtrado)} listings mostrados")
+        sc = row.get("score", 0) or 0
+        m2_val = row.get("m2")
+        m2_txt = f"{int(m2_val)}" if pd.notna(m2_val) else "—"
+        ubi = clean(str(row.get("location", "—"))) or "—"
+        col = score_color(sc)
+
+        filas.append(
+            "<tr>"
+            f'<td class="lt-pos">{pos}</td>'
+            f'<td class="lt-title">{titulo_html}</td>'
+            f'<td class="lt-price">{_fmt_eur(row.get("price"))}</td>'
+            f'<td><div class="lt-score-wrap"><span class="lt-score-num">{sc:.0f}</span>'
+            f'<span class="lt-score-track"><span class="lt-score-fill" '
+            f'style="width:{min(sc, 100)}%;background:{col};"></span></span></div></td>'
+            f'<td class="lt-num">{_fmt_eur(row.get("eur_m2"))}</td>'
+            f'<td class="lt-num">{m2_txt}</td>'
+            f'<td>{ubi}</td>'
+            "</tr>"
+        )
+
+    if filas:
+        tabla_html = (
+            '<div class="list-table-wrap"><table class="list-table"><thead><tr>'
+            "<th>#</th><th>Título</th><th>Precio</th><th>Score</th>"
+            "<th>€/m²</th><th>m²</th><th>Ubicación</th>"
+            "</tr></thead><tbody>" + "".join(filas) + "</tbody></table></div>"
+        )
+        st.markdown(tabla_html, unsafe_allow_html=True)
+    else:
+        st.info("No hay listados con esos filtros.")
+
+    st.caption(f"{len(df_filtrado)} listings mostrados · clic en el título para abrir el anuncio")
     csv_data = df_filtrado[columnas_csv].to_csv(index=False).encode("utf-8")
     st.download_button("Descargar CSV", csv_data, f"listings_{hoy}.csv", "text/csv")
 
