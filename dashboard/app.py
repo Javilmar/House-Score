@@ -447,7 +447,7 @@ with tab1:
         sc = sc if isinstance(sc, (int, float)) and math.isfinite(sc) else 0
         m2_val = row.get("m2")
         m2_txt = f"{int(m2_val)}" if pd.notna(m2_val) and math.isfinite(m2_val) else "—"
-        ubi = clean(str(row.get("location", "—"))) or "—"
+        ubi = clean(str(row.get("location", "—"))).split(",")[0].strip() or "—"
         col = score_color(sc)
 
         filas.append(
