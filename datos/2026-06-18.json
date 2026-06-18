@@ -1913,6 +1913,65 @@
     ]
   },
   {
+    "title": "Piso en calle del Río Alberche, 12",
+    "price": 180000,
+    "score": 55,
+    "location": "",
+    "m2": 93,
+    "rooms": 3,
+    "bathrooms": 1,
+    "url": "https://www.pisos.com/comprar/piso-navalcarnero_centro_urbano-61726723550_525846/",
+    "source": "pisos.com",
+    "floor": "1ª planta",
+    "year_built": 0,
+    "conservation": "en buen estado",
+    "energy_rating": "",
+    "description": "HOGARES NAVALCARNERO presenta\n\nEsta vivienda situada en una zona próxima al centro de Navalcarnero, bien comunicada y con acceso inmediato a todo tipo de servicios, comercios y transporte.\n\nLa vivienda destaca por sus estancias luminosas, con una distribución cómoda y funcional. Dispone de tres dormitorios de buen tamaño, un salón-comedor espacioso y muy luminoso, con acceso directo a la terraza cerrada, una cocina independiente con zona de lavandería, y un baño completo.\n\nEl inmueble se encuent",
+    "features": [
+      "Contacta con nosotros para más información y agenda tu visita.",
+      "Mostrar más",
+      "¿Tienes alguna duda? Chatea con HOGARES NAVALCARNERO. Estarán encantados de ayudarte. Contacta por WhatsApp.",
+      "Superficie construida: 93 m²",
+      "Superficie útil: 69 m²",
+      "Habitaciones: 3",
+      "Baños: 1",
+      "Planta: 1ª",
+      "Exterior",
+      "Antigüedad: Entre 30 y 50 años",
+      "Conservación: En buen estado",
+      "Gastos de comunidad: Entre 40 y 60 €",
+      "Referencia: RIOALBERCHE",
+      "Armarios empotrados: 2",
+      "Tipo suelo: Gres",
+      "Carpintería exterior: Aluminio",
+      "Teléfono",
+      "Calefacción: Eléctrica",
+      "Cocina equipada: Independiente",
+      "Comedor",
+      "Lavadero",
+      "Puerta blindada",
+      "Terraza",
+      "Orientación: Norte",
+      "Se aceptan mascotas"
+    ],
+    "detail_features": {
+      "terraza": true,
+      "calefacción": true,
+      "ascensor": true,
+      "piscina": true,
+      "jardín": true
+    },
+    "pisos_id": "61726723550_525846",
+    "score_details": [
+      "💰 Muy buen precio: 180,000€ (+15)",
+      "📐 Tamaño mínimo: 93m² (+5)",
+      "🏊 Piscina (+15)",
+      "🌿 Terraza (+10)",
+      "🛗 Ascensor (+5)",
+      "🌳 Jardín (+5)"
+    ]
+  },
+  {
     "title": "Casa en Castilla La Mancha",
     "price": 180000,
     "score": 54,
@@ -9413,6 +9472,51 @@
       "💰 Precio aceptable: 249,900€ (+5)",
       "📐 Muy amplio: 159m² (+15)",
       "🏢 Ático (+3)"
+    ]
+  },
+  {
+    "title": "Piso en Centro",
+    "price": 245000,
+    "score": 23,
+    "location": "Centro (Getafe)",
+    "m2": 85,
+    "rooms": 3,
+    "bathrooms": 1,
+    "url": "https://www.pisos.com/comprar/piso-getafe_distrito_centro28902-58363419455_515004/",
+    "source": "pisos.com",
+    "floor": "1ª planta",
+    "year_built": 0,
+    "conservation": "en buen estado",
+    "energy_rating": "",
+    "description": "Este luminoso piso en venta en getafe se encuentra ubicado en el centro, en una zona tranquila y bien comunicada. Con una superficie total de 85 m² y 2 habitaciones individuales más 1 habitación doble, en la primera planta .ofrece comodidad y amplitud. Cuenta con 1 baño, aire acondicionado (frío y calor en el salón ), calefacción de gas natural y carpintería exterior de aluminio y climalit . Su orientación norte proporciona una agradable luz natural. Además, el edificio está en buen estado de co",
+    "features": [
+      "Superficie construida: 85 m²",
+      "Superficie útil: 70 m²",
+      "Habitaciones: 3",
+      "Baños: 1",
+      "Planta: 1ª",
+      "Exterior",
+      "Conservación: En buen estado",
+      "Gastos de comunidad: Entre 40 y 60 €",
+      "Referencia: 000973",
+      "Carpintería exterior: Aluminio",
+      "Aire acondicionado: Frío y calor",
+      "Calefacción: Gas natural",
+      "Puerta blindada",
+      "Orientación: Norte"
+    ],
+    "detail_features": {
+      "aire acondicionado": true,
+      "calefacción": true,
+      "ascensor": true,
+      "calefaccion": true
+    },
+    "pisos_id": "58363419455_515004",
+    "score_details": [
+      "💰 Precio aceptable: 245,000€ (+5)",
+      "📐 Tamaño mínimo: 85m² (+5)",
+      "🛗 Ascensor (+5)",
+      "🚇 Cerca transporte público (+8)"
     ]
   },
   {
