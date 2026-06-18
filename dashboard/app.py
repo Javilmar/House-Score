@@ -538,29 +538,48 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 
 with tab1:
     st.write("")
-    col_f1, col_f2, col_f3 = st.columns(3)
+
+    # Columnas derivadas para filtros combinables (zona + municipio)
+    base = df.copy()
+    _recs = base.to_dict("records")
+    base["_zona"] = [zona(r.get("location", ""), r.get("title", ""), r.get("description", "")) for r in _recs]
+
+    def _muni(r):
+        m = r.get("municipio")
+        if isinstance(m, str) and m.strip():
+            return m.replace("_", " ").title()
+        mm = re.search(r"\(([^)]+)\)", str(r.get("location") or ""))
+        return mm.group(1).strip() if mm else "—"
+
+    base["_municipio"] = [_muni(r) for r in _recs]
+
+    col_f1, col_f2, col_f3, col_f4 = st.columns(4)
     with col_f1:
-        if "location" in df.columns:
-            ubicaciones = sorted(df["location"].dropna().unique())
-            filtro_ubi = st.multiselect("Ubicación", ubicaciones, default=[], key="f1_ubi")
-        else:
-            filtro_ubi = []
+        zonas_disp = [z for z in ("Madrid Sur", "Toledo Norte") if z in set(base["_zona"])]
+        filtro_zona = st.multiselect("Zona", zonas_disp, default=[], key="f1_zona")
     with col_f2:
-        score_range = st.slider("Rango de score", 0, 100, (0, 100), key="f1_score")
+        # El municipio se acota a la(s) zona(s) elegida(s) → filtros combinativos
+        muni_pool = base[base["_zona"].isin(filtro_zona)] if filtro_zona else base
+        municipios = sorted(m for m in muni_pool["_municipio"].dropna().unique() if m and m != "—")
+        filtro_muni = st.multiselect("Municipio", municipios, default=[], key="f1_muni")
     with col_f3:
-        if "price" in df.columns:
-            pmin, pmax = int(df["price"].min()), int(df["price"].max())
+        score_range = st.slider("Rango de score", 0, 100, (0, 100), key="f1_score")
+    with col_f4:
+        if "price" in base.columns and base["price"].notna().any():
+            pmin, pmax = int(base["price"].min()), int(base["price"].max())
             filtro_precio = st.slider("Rango de precio (€)", pmin, pmax, (pmin, pmax),
                                       step=1000, format="%,d €", key="f1_precio")
         else:
             filtro_precio = None
 
-    df_filtrado = df.copy()
-    if filtro_ubi and "location" in df.columns:
-        df_filtrado = df_filtrado[df_filtrado["location"].isin(filtro_ubi)]
-    if "score" in df.columns:
+    df_filtrado = base.copy()
+    if filtro_zona:
+        df_filtrado = df_filtrado[df_filtrado["_zona"].isin(filtro_zona)]
+    if filtro_muni:
+        df_filtrado = df_filtrado[df_filtrado["_municipio"].isin(filtro_muni)]
+    if "score" in df_filtrado.columns:
         df_filtrado = df_filtrado[(df_filtrado["score"] >= score_range[0]) & (df_filtrado["score"] <= score_range[1])]
-    if filtro_precio and "price" in df.columns:
+    if filtro_precio and "price" in df_filtrado.columns:
         df_filtrado = df_filtrado[(df_filtrado["price"] >= filtro_precio[0]) & (df_filtrado["price"] <= filtro_precio[1])]
 
     columnas_csv = [c for c in ["title", "price", "score", "eur_m2", "location", "m2", "rooms", "bathrooms", "floor", "year_built", "energy_rating", "source", "first_seen", "url"] if c in df_filtrado.columns]
@@ -833,9 +852,11 @@ with tab5:
     st.write("")
     st.markdown(
         """
-        Cada anuncio recibe una **puntuación de 0 a 100** que combina precio,
-        tamaño y características de la vivienda. Cuanto más alta, mejor encaja
-        con lo que buscamos. Así se reparten los puntos:
+        Cada anuncio recibe una **puntuación de 0 a 100**. Lo que más pesa es
+        si está **barato para su zona**: su precio por m² comparado con la
+        **media de su municipio**. A eso se suman tamaño, características (con
+        tope), señales de mercado y penalizaciones. Cuanto más alta la nota,
+        mejor oportunidad. Así se reparten los puntos:
         """
     )
 
@@ -862,11 +883,11 @@ with tab5:
     c1, c2 = st.columns(2)
     with c1:
         st.markdown(
-            _bloque("💰 Precio", "Hasta 250.000 € · más barato, más puntos", [
-                ("≤ 175.000 €", "+20", NEU),
-                ("≤ 200.000 €", "+15", NEU),
-                ("≤ 225.000 €", "+10", NEU),
-                ("≤ 250.000 €", "+5", NEU),
+            _bloque("💎 Valor vs zona", "Lo que MÁS pesa · €/m² frente a la media de su municipio", [
+                ("≈ 20% o más bajo la media (chollo)", "+40", POS),
+                ("En la media de su zona", "≈ +20", NEU),
+                ("≈ 20% o más por encima (caro)", "+0", NEG),
+                ("Sin m² fiable → no se puede valorar", "fuera del Top", NEG),
             ]),
             unsafe_allow_html=True,
         )
@@ -882,26 +903,34 @@ with tab5:
         )
         st.write("")
         st.markdown(
-            _bloque("➕ Extras (suman)", "Bonus por antigüedad, ubicación y calidad", [
+            _bloque("📈 Señales de mercado", "Cómo se comporta el anuncio en el tiempo", [
+                ("📉 Ha bajado de precio", "+1 a +5", POS),
+                ("🕸️ Lleva > 45 días anunciado", "−3", NEG),
+                ("🕸️ Lleva > 90 días anunciado", "−5", NEG),
+            ]),
+            unsafe_allow_html=True,
+        )
+    with c2:
+        st.markdown(
+            _bloque("✨ Características", "Detectadas en anuncio y ficha · el total se limita a +15", [
+                ("🏊 Piscina", "+15", POS),
+                ("🚗 Garaje", "+12", POS),
+                ("📦 Trastero", "+10", POS),
+                ("🌿 Terraza / 🏡 Patio", "+10", POS),
+                ("🛗 Ascensor / 🌳 Jardín", "+5", POS),
+                ("Tope del bloque (no se acumula sin fin)", "máx +15", NEU),
+            ]),
+            unsafe_allow_html=True,
+        )
+        st.write("")
+        st.markdown(
+            _bloque("➕ Extras (suman)", "Antigüedad, ubicación y calidad", [
                 ("🏗️ Obra nueva / a estrenar", "+10", POS),
                 ("🚇 Cerca de transporte público", "+8", POS),
                 ("🔧 Reformado", "+5", POS),
                 ("📅 Construido desde 2000", "+1 a +5", POS),
                 ("🏢 Ático / última planta", "+3", POS),
                 ("⚡ Eficiencia energética A/B/C", "+2", POS),
-            ]),
-            unsafe_allow_html=True,
-        )
-    with c2:
-        st.markdown(
-            _bloque("✨ Características", "Se detectan en el anuncio y la ficha", [
-                ("🏊 Piscina", "+15", POS),
-                ("🚗 Garaje", "+12", POS),
-                ("📦 Trastero", "+10", POS),
-                ("🌿 Terraza", "+10", POS),
-                ("🏡 Patio", "+10", POS),
-                ("🛗 Ascensor", "+5", POS),
-                ("🌳 Jardín", "+5", POS),
             ]),
             unsafe_allow_html=True,
         )
@@ -935,8 +964,28 @@ with tab5:
         st.markdown(
             "El listado de búsqueda a veces muestra precios “desde”, que engañan. "
             "Por eso el sistema puntúa primero todos los anuncios, **visita la ficha "
-            "completa de los 30 mejores** y vuelve a puntuarlos con los datos reales: "
-            "precio, metros, habitaciones, baños, año y estado de conservación."
+            "completa de los mejores** y vuelve a puntuarlos con los datos reales: "
+            "precio, metros, habitaciones, baños, año y estado de conservación. "
+            "Por eso algún anuncio puede aparecer algo por encima de 250.000 €: su "
+            "precio real (de la ficha) subió respecto al del listado, pero si su €/m² "
+            "es bueno se mantiene como oportunidad."
+        )
+    with st.expander("¿Qué significa “barato para su zona”?"):
+        st.markdown(
+            "Es el factor que más pesa. Cada pasada calcula la **mediana de €/m² "
+            "de cada municipio** a partir de todos los anuncios recogidos, y compara "
+            "el €/m² de cada vivienda con esa media: si está por debajo, es un chollo "
+            "y sube; si está por encima, baja. Si un municipio tiene pocos anuncios, "
+            "se usa la media de su **zona** (Madrid Sur / Toledo Norte). "
+            "**Matiz**: la media se calcula sobre anuncios de hasta 250.000 €, así que "
+            "es la referencia del *segmento asequible*, no del mercado completo."
+        )
+    with st.expander("¿Por qué algunos salen como “sin valorar”?"):
+        st.markdown(
+            "Si un anuncio no trae los **m² de forma fiable** (faltan o el dato es "
+            "absurdo), no se puede calcular su €/m² ni compararlo con su zona. Esos "
+            "anuncios se marcan **“s/valorar”**, quedan **fuera del Top** y no cuentan "
+            "en el “Score medio”, pero siguen guardados por si quieres revisarlos."
         )
 
     st.caption("La puntuación es orientativa: ayuda a priorizar, no sustituye una visita.")
