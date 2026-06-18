@@ -37,11 +37,11 @@
       "Urbanizado"
     ],
     "detail_features": {
-      "terraza": true,
-      "calefacción": true,
-      "garaje": true,
       "patio": true,
-      "jardín": true
+      "garaje": true,
+      "terraza": true,
+      "jardín": true,
+      "calefacción": true
     },
     "pisos_id": "60856690458_100500",
     "score_details": [
@@ -97,11 +97,11 @@
       "Piscina: Comunitaria"
     ],
     "detail_features": {
-      "calefacción": true,
+      "patio": true,
       "piscina": true,
-      "trastero": true,
       "garaje": true,
-      "patio": true
+      "trastero": true,
+      "calefacción": true
     },
     "pisos_id": "61755630527_100500",
     "score_details": [
@@ -138,11 +138,11 @@
       "Piscina: Privada"
     ],
     "detail_features": {
-      "terraza": true,
       "piscina": true,
-      "trastero": true,
       "garaje": true,
-      "jardín": true
+      "terraza": true,
+      "jardín": true,
+      "trastero": true
     },
     "pisos_id": "62581082655_108500",
     "score_details": [
@@ -201,14 +201,14 @@
       "Se aceptan mascotas"
     ],
     "detail_features": {
-      "terraza": true,
       "piscina": true,
-      "calefacción": true,
-      "trastero": true,
-      "garaje": true,
-      "aire acondicionado": true,
       "ascensor": true,
-      "jardín": true
+      "garaje": true,
+      "terraza": true,
+      "jardín": true,
+      "trastero": true,
+      "calefacción": true,
+      "aire acondicionado": true
     },
     "pisos_id": "61746963238_100500",
     "score_details": [
@@ -266,13 +266,13 @@
       "Se aceptan mascotas"
     ],
     "detail_features": {
-      "terraza": true,
-      "piscina": true,
-      "calefacción": true,
-      "trastero": true,
-      "garaje": true,
       "patio": true,
-      "jardín": true
+      "piscina": true,
+      "garaje": true,
+      "terraza": true,
+      "jardín": true,
+      "trastero": true,
+      "calefacción": true
     },
     "pisos_id": "64260943674_510790",
     "score_details": [
@@ -317,11 +317,11 @@
       "Terraza"
     ],
     "detail_features": {
-      "terraza": true,
+      "patio": true,
       "piscina": true,
-      "calefacción": true,
       "garaje": true,
-      "patio": true
+      "terraza": true,
+      "calefacción": true
     },
     "pisos_id": "65036422093_106000",
     "score_details": [
@@ -386,12 +386,12 @@
       "Calle alumbrada"
     ],
     "detail_features": {
-      "terraza": true,
-      "trastero": true,
-      "garaje": true,
-      "aire acondicionado": true,
       "patio": true,
-      "jardín": true
+      "garaje": true,
+      "terraza": true,
+      "jardín": true,
+      "trastero": true,
+      "aire acondicionado": true
     },
     "pisos_id": "61702998661_109800",
     "score_details": [
@@ -431,12 +431,12 @@
       "Piscina"
     ],
     "detail_features": {
-      "terraza": true,
       "piscina": true,
-      "calefacción": true,
-      "trastero": true,
       "garaje": true,
-      "jardín": true
+      "terraza": true,
+      "jardín": true,
+      "trastero": true,
+      "calefacción": true
     },
     "pisos_id": "65046655837_106500",
     "score_details": [
@@ -489,14 +489,14 @@
       "Urbanizado"
     ],
     "detail_features": {
-      "terraza": true,
-      "piscina": true,
-      "calefacción": true,
-      "trastero": true,
-      "garaje": true,
-      "aire acondicionado": true,
       "patio": true,
-      "jardín": true
+      "piscina": true,
+      "garaje": true,
+      "terraza": true,
+      "jardín": true,
+      "trastero": true,
+      "calefacción": true,
+      "aire acondicionado": true
     },
     "pisos_id": "61725944486_100500",
     "score_details": [
@@ -535,11 +535,11 @@
       "Aire acondicionado"
     ],
     "detail_features": {
+      "garaje": true,
       "terraza": true,
       "trastero": true,
-      "garaje": true,
-      "jardin": true,
-      "aire acondicionado": true
+      "aire acondicionado": true,
+      "jardin": true
     },
     "pisos_id": "62574435177_100200",
     "score_details": [
@@ -582,14 +582,14 @@
       "Piscina"
     ],
     "detail_features": {
-      "calefacción": true,
       "piscina": true,
-      "trastero": true,
-      "garaje": true,
-      "jardin": true,
-      "aire acondicionado": true,
       "ascensor": true,
-      "jardín": true
+      "garaje": true,
+      "jardín": true,
+      "trastero": true,
+      "calefacción": true,
+      "aire acondicionado": true,
+      "jardin": true
     },
     "pisos_id": "65092120958_109200",
     "score_details": [
@@ -630,12 +630,12 @@
       "Ascensor"
     ],
     "detail_features": {
-      "terraza": true,
       "piscina": true,
-      "calefacción": true,
-      "aire acondicionado": true,
+      "ascensor": true,
       "garaje": true,
-      "ascensor": true
+      "terraza": true,
+      "calefacción": true,
+      "aire acondicionado": true
     },
     "pisos_id": "65044777022_106700",
     "score_details": [
@@ -678,13 +678,13 @@
       "Trastero"
     ],
     "detail_features": {
-      "terraza": true,
-      "calefacción": true,
-      "armario empotrado": true,
-      "trastero": true,
+      "patio": true,
       "garaje": true,
+      "terraza": true,
+      "trastero": true,
+      "calefacción": true,
       "aire acondicionado": true,
-      "patio": true
+      "armario empotrado": true
     },
     "pisos_id": "62551907232_100200",
     "score_details": [
@@ -740,12 +740,12 @@
       "Se aceptan mascotas"
     ],
     "detail_features": {
-      "terraza": true,
       "piscina": true,
-      "trastero": true,
+      "ascensor": true,
       "garaje": true,
-      "aire acondicionado": true,
-      "ascensor": true
+      "terraza": true,
+      "trastero": true,
+      "aire acondicionado": true
     },
     "pisos_id": "64225952429_100500",
     "score_details": [
@@ -784,9 +784,9 @@
     ],
     "detail_features": {
       "terraza": true,
-      "garaje": true,
+      "patio": true,
       "calefacción": true,
-      "patio": true
+      "garaje": true
     },
     "pisos_id": "65074598502_109300",
     "score_details": [
@@ -850,10 +850,10 @@
     ],
     "detail_features": {
       "piscina": true,
-      "aire acondicionado": true,
       "garaje": true,
-      "jardin": true,
-      "jardín": true
+      "jardín": true,
+      "aire acondicionado": true,
+      "jardin": true
     },
     "pisos_id": "63369691969_100500",
     "score_details": [
@@ -902,11 +902,11 @@
       "Calle alumbrada"
     ],
     "detail_features": {
-      "terraza": true,
-      "trastero": true,
-      "garaje": true,
       "patio": true,
-      "jardín": true
+      "garaje": true,
+      "terraza": true,
+      "jardín": true,
+      "trastero": true
     },
     "pisos_id": "64175497470_514803",
     "score_details": [
@@ -944,11 +944,11 @@
       "Referencia: 184913090-MA021"
     ],
     "detail_features": {
-      "terraza": true,
+      "patio": true,
       "piscina": true,
-      "aire acondicionado": true,
       "garaje": true,
-      "patio": true
+      "terraza": true,
+      "aire acondicionado": true
     },
     "pisos_id": "63363544406_106400",
     "score_details": [
@@ -998,14 +998,14 @@
       "Orientación: Oeste"
     ],
     "detail_features": {
-      "calefacción": true,
       "piscina": true,
-      "trastero": true,
-      "garaje": true,
-      "jardin": true,
-      "aire acondicionado": true,
       "ascensor": true,
-      "jardín": true
+      "garaje": true,
+      "jardín": true,
+      "trastero": true,
+      "calefacción": true,
+      "aire acondicionado": true,
+      "jardin": true
     },
     "pisos_id": "64200803626_525822",
     "score_details": [
@@ -1044,12 +1044,12 @@
       "Referencia: 108237722-Z2220 - Cl Comunidad de Baleares"
     ],
     "detail_features": {
-      "calefacción": true,
-      "trastero": true,
-      "garaje": true,
-      "aire acondicionado": true,
+      "patio": true,
       "ascensor": true,
-      "patio": true
+      "garaje": true,
+      "trastero": true,
+      "calefacción": true,
+      "aire acondicionado": true
     },
     "pisos_id": "65066712671_106500",
     "score_details": [
@@ -1091,8 +1091,8 @@
       "Cocina equipada"
     ],
     "detail_features": {
-      "trastero": true,
       "piscina": true,
+      "trastero": true,
       "patio": true
     },
     "pisos_id": "64191474471_100600",
@@ -1134,11 +1134,11 @@
       "Puerta blindada"
     ],
     "detail_features": {
-      "calefacción": true,
+      "patio": true,
+      "garaje": true,
       "terraza": true,
       "trastero": true,
-      "garaje": true,
-      "patio": true
+      "calefacción": true
     },
     "pisos_id": "65071931612_101800",
     "score_details": [
@@ -1178,10 +1178,10 @@
       "Terraza"
     ],
     "detail_features": {
-      "trastero": true,
-      "garaje": true,
+      "terraza": true,
       "calefacción": true,
-      "terraza": true
+      "trastero": true,
+      "garaje": true
     },
     "pisos_id": "64213835997_109200",
     "score_details": [
@@ -1217,11 +1217,11 @@
       "Garaje: 1"
     ],
     "detail_features": {
-      "calefacción": true,
-      "armario empotrado": true,
-      "aire acondicionado": true,
+      "ascensor": true,
       "garaje": true,
-      "ascensor": true
+      "calefacción": true,
+      "aire acondicionado": true,
+      "armario empotrado": true
     },
     "pisos_id": "62593899223_106700",
     "score_details": [
@@ -1259,11 +1259,11 @@
       "Ascensor"
     ],
     "detail_features": {
-      "calefacción": true,
-      "terraza": true,
-      "trastero": true,
+      "ascensor": true,
       "garaje": true,
-      "ascensor": true
+      "terraza": true,
+      "calefacción": true,
+      "trastero": true
     },
     "pisos_id": "42599841937_106700",
     "score_details": [
@@ -1389,12 +1389,12 @@
       "Soleado"
     ],
     "detail_features": {
-      "calefacción": true,
-      "terraza": true,
-      "armario empotrado": true,
-      "trastero": true,
+      "ascensor": true,
       "garaje": true,
-      "ascensor": true
+      "terraza": true,
+      "calefacción": true,
+      "trastero": true,
+      "armario empotrado": true
     },
     "pisos_id": "60096283650_100500",
     "score_details": [
