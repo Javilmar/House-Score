@@ -37,11 +37,11 @@
       "Urbanizado"
     ],
     "detail_features": {
+      "calefacción": true,
       "patio": true,
-      "garaje": true,
-      "terraza": true,
       "jardín": true,
-      "calefacción": true
+      "garaje": true,
+      "terraza": true
     },
     "pisos_id": "60856690458_100500",
     "score_details": [
@@ -97,11 +97,11 @@
       "Piscina: Comunitaria"
     ],
     "detail_features": {
-      "patio": true,
-      "piscina": true,
-      "garaje": true,
       "trastero": true,
-      "calefacción": true
+      "calefacción": true,
+      "piscina": true,
+      "patio": true,
+      "garaje": true
     },
     "pisos_id": "61755630527_100500",
     "score_details": [
@@ -138,11 +138,11 @@
       "Piscina: Privada"
     ],
     "detail_features": {
+      "trastero": true,
       "piscina": true,
-      "garaje": true,
-      "terraza": true,
       "jardín": true,
-      "trastero": true
+      "garaje": true,
+      "terraza": true
     },
     "pisos_id": "62581082655_108500",
     "score_details": [
@@ -201,14 +201,14 @@
       "Se aceptan mascotas"
     ],
     "detail_features": {
-      "piscina": true,
-      "ascensor": true,
-      "garaje": true,
-      "terraza": true,
-      "jardín": true,
       "trastero": true,
       "calefacción": true,
-      "aire acondicionado": true
+      "piscina": true,
+      "garaje": true,
+      "jardín": true,
+      "aire acondicionado": true,
+      "ascensor": true,
+      "terraza": true
     },
     "pisos_id": "61746963238_100500",
     "score_details": [
@@ -266,13 +266,13 @@
       "Se aceptan mascotas"
     ],
     "detail_features": {
-      "patio": true,
-      "piscina": true,
-      "garaje": true,
-      "terraza": true,
-      "jardín": true,
       "trastero": true,
-      "calefacción": true
+      "calefacción": true,
+      "piscina": true,
+      "patio": true,
+      "garaje": true,
+      "jardín": true,
+      "terraza": true
     },
     "pisos_id": "64260943674_510790",
     "score_details": [
@@ -317,11 +317,11 @@
       "Terraza"
     ],
     "detail_features": {
-      "patio": true,
+      "calefacción": true,
       "piscina": true,
+      "patio": true,
       "garaje": true,
-      "terraza": true,
-      "calefacción": true
+      "terraza": true
     },
     "pisos_id": "65036422093_106000",
     "score_details": [
@@ -386,12 +386,12 @@
       "Calle alumbrada"
     ],
     "detail_features": {
-      "patio": true,
-      "garaje": true,
-      "terraza": true,
-      "jardín": true,
       "trastero": true,
-      "aire acondicionado": true
+      "patio": true,
+      "jardín": true,
+      "garaje": true,
+      "aire acondicionado": true,
+      "terraza": true
     },
     "pisos_id": "61702998661_109800",
     "score_details": [
@@ -431,12 +431,12 @@
       "Piscina"
     ],
     "detail_features": {
-      "piscina": true,
-      "garaje": true,
-      "terraza": true,
-      "jardín": true,
       "trastero": true,
-      "calefacción": true
+      "calefacción": true,
+      "piscina": true,
+      "jardín": true,
+      "garaje": true,
+      "terraza": true
     },
     "pisos_id": "65046655837_106500",
     "score_details": [
@@ -489,14 +489,14 @@
       "Urbanizado"
     ],
     "detail_features": {
-      "patio": true,
-      "piscina": true,
-      "garaje": true,
-      "terraza": true,
-      "jardín": true,
       "trastero": true,
       "calefacción": true,
-      "aire acondicionado": true
+      "piscina": true,
+      "patio": true,
+      "garaje": true,
+      "jardín": true,
+      "aire acondicionado": true,
+      "terraza": true
     },
     "pisos_id": "61725944486_100500",
     "score_details": [
@@ -535,11 +535,11 @@
       "Aire acondicionado"
     ],
     "detail_features": {
-      "garaje": true,
-      "terraza": true,
       "trastero": true,
+      "jardin": true,
+      "garaje": true,
       "aire acondicionado": true,
-      "jardin": true
+      "terraza": true
     },
     "pisos_id": "62574435177_100200",
     "score_details": [
@@ -582,14 +582,14 @@
       "Piscina"
     ],
     "detail_features": {
-      "piscina": true,
-      "ascensor": true,
-      "garaje": true,
-      "jardín": true,
       "trastero": true,
+      "jardin": true,
+      "piscina": true,
       "calefacción": true,
+      "jardín": true,
+      "garaje": true,
       "aire acondicionado": true,
-      "jardin": true
+      "ascensor": true
     },
     "pisos_id": "65092120958_109200",
     "score_details": [
@@ -630,12 +630,12 @@
       "Ascensor"
     ],
     "detail_features": {
-      "piscina": true,
-      "ascensor": true,
-      "garaje": true,
-      "terraza": true,
       "calefacción": true,
-      "aire acondicionado": true
+      "piscina": true,
+      "garaje": true,
+      "aire acondicionado": true,
+      "ascensor": true,
+      "terraza": true
     },
     "pisos_id": "65044777022_106700",
     "score_details": [
@@ -678,13 +678,13 @@
       "Trastero"
     ],
     "detail_features": {
-      "patio": true,
-      "garaje": true,
-      "terraza": true,
       "trastero": true,
       "calefacción": true,
+      "patio": true,
+      "garaje": true,
       "aire acondicionado": true,
-      "armario empotrado": true
+      "armario empotrado": true,
+      "terraza": true
     },
     "pisos_id": "62551907232_100200",
     "score_details": [
@@ -740,12 +740,12 @@
       "Se aceptan mascotas"
     ],
     "detail_features": {
-      "piscina": true,
-      "ascensor": true,
-      "garaje": true,
-      "terraza": true,
       "trastero": true,
-      "aire acondicionado": true
+      "piscina": true,
+      "garaje": true,
+      "aire acondicionado": true,
+      "ascensor": true,
+      "terraza": true
     },
     "pisos_id": "64225952429_100500",
     "score_details": [
@@ -784,8 +784,8 @@
     ],
     "detail_features": {
       "terraza": true,
-      "patio": true,
       "calefacción": true,
+      "patio": true,
       "garaje": true
     },
     "pisos_id": "65074598502_109300",
@@ -849,11 +849,11 @@
       "Piscina: Propia"
     ],
     "detail_features": {
+      "jardin": true,
       "piscina": true,
-      "garaje": true,
       "jardín": true,
-      "aire acondicionado": true,
-      "jardin": true
+      "garaje": true,
+      "aire acondicionado": true
     },
     "pisos_id": "63369691969_100500",
     "score_details": [
@@ -902,11 +902,11 @@
       "Calle alumbrada"
     ],
     "detail_features": {
+      "trastero": true,
       "patio": true,
-      "garaje": true,
-      "terraza": true,
       "jardín": true,
-      "trastero": true
+      "garaje": true,
+      "terraza": true
     },
     "pisos_id": "64175497470_514803",
     "score_details": [
@@ -944,11 +944,11 @@
       "Referencia: 184913090-MA021"
     ],
     "detail_features": {
-      "patio": true,
       "piscina": true,
+      "patio": true,
       "garaje": true,
-      "terraza": true,
-      "aire acondicionado": true
+      "aire acondicionado": true,
+      "terraza": true
     },
     "pisos_id": "63363544406_106400",
     "score_details": [
@@ -998,14 +998,14 @@
       "Orientación: Oeste"
     ],
     "detail_features": {
-      "piscina": true,
-      "ascensor": true,
-      "garaje": true,
-      "jardín": true,
       "trastero": true,
+      "jardin": true,
+      "piscina": true,
       "calefacción": true,
+      "jardín": true,
+      "garaje": true,
       "aire acondicionado": true,
-      "jardin": true
+      "ascensor": true
     },
     "pisos_id": "64200803626_525822",
     "score_details": [
@@ -1044,12 +1044,12 @@
       "Referencia: 108237722-Z2220 - Cl Comunidad de Baleares"
     ],
     "detail_features": {
-      "patio": true,
-      "ascensor": true,
-      "garaje": true,
       "trastero": true,
       "calefacción": true,
-      "aire acondicionado": true
+      "patio": true,
+      "garaje": true,
+      "aire acondicionado": true,
+      "ascensor": true
     },
     "pisos_id": "65066712671_106500",
     "score_details": [
@@ -1091,8 +1091,8 @@
       "Cocina equipada"
     ],
     "detail_features": {
-      "piscina": true,
       "trastero": true,
+      "piscina": true,
       "patio": true
     },
     "pisos_id": "64191474471_100600",
@@ -1134,11 +1134,11 @@
       "Puerta blindada"
     ],
     "detail_features": {
+      "trastero": true,
+      "calefacción": true,
       "patio": true,
       "garaje": true,
-      "terraza": true,
-      "trastero": true,
-      "calefacción": true
+      "terraza": true
     },
     "pisos_id": "65071931612_101800",
     "score_details": [
@@ -1148,67 +1148,6 @@
       "📦 Trastero (+10)",
       "🌿 Terraza (+10)",
       "🏡 Patio (+10)"
-    ]
-  },
-  {
-    "title": "Piso en calle de Juan Rivera",
-    "price": 199900,
-    "score": 68,
-    "location": "",
-    "m2": 50,
-    "rooms": 1,
-    "bathrooms": 1,
-    "url": "https://www.pisos.com/comprar/piso-navalcarnero_centro_urbano-60926109595_525846/",
-    "source": "pisos.com",
-    "floor": "bajo",
-    "year_built": 0,
-    "conservation": "en buen estado",
-    "energy_rating": "D",
-    "description": "HOGARES NAVALCARNERO VENDE excelente piso en planta en pleno corazón de Navalcarnero\n\nDescubra esta magnífica vivienda, situada en una de las zonas más demandadas y prestigiosas del centro de Navalcarnero, a escasos pasos de la emblemática Plaza de Segovia, un entorno lleno de vida, historia y todos los servicios al alcance de la mano.\n\nLa vivienda se ubica en una cómoda planta, ideal para quienes buscan accesibilidad y confort sin renunciar a una ubicación privilegiada. Nada más acceder al inmu",
-    "features": [
-      "Superficie construida: 50 m²",
-      "Superficie útil: 40 m²",
-      "Habitaciones: 1",
-      "Baños: 1",
-      "Planta: Bajo",
-      "Exterior",
-      "Conservación: En buen estado",
-      "Referencia: 000077",
-      "Amueblado",
-      "Armarios empotrados: 1",
-      "Carpintería interior",
-      "Tipo suelo: Parquet",
-      "Vidrios dobles",
-      "Carpintería exterior: Aluminio",
-      "Teléfono",
-      "Aire acondicionado: Frío y calor",
-      "Calefacción: Eléctrica",
-      "Cocina equipada: Americana",
-      "Comedor",
-      "Puerta blindada",
-      "Adaptado a personas con movilidad reducida",
-      "Jardín: Privado",
-      "Orientación: Este",
-      "Se aceptan mascotas"
-    ],
-    "detail_features": {
-      "patio": true,
-      "aire acondicionado": true,
-      "trastero": true,
-      "piscina": true,
-      "jardín": true,
-      "calefacción": true
-    },
-    "pisos_id": "60926109595_525846",
-    "score_details": [
-      "💰 Muy buen precio: 199,900€ (+15)",
-      "📐 Pequeño: 50m² (0)",
-      "🏊 Piscina (+15)",
-      "📦 Trastero (+10)",
-      "🏡 Patio (+10)",
-      "🌳 Jardín (+5)",
-      "🔧 Reformado (+5)",
-      "🚇 Cerca transporte público (+8)"
     ]
   },
   {
@@ -1240,8 +1179,8 @@
     ],
     "detail_features": {
       "terraza": true,
-      "calefacción": true,
       "trastero": true,
+      "calefacción": true,
       "garaje": true
     },
     "pisos_id": "64213835997_109200",
@@ -1278,10 +1217,10 @@
       "Garaje: 1"
     ],
     "detail_features": {
-      "ascensor": true,
-      "garaje": true,
       "calefacción": true,
+      "garaje": true,
       "aire acondicionado": true,
+      "ascensor": true,
       "armario empotrado": true
     },
     "pisos_id": "62593899223_106700",
@@ -1320,11 +1259,11 @@
       "Ascensor"
     ],
     "detail_features": {
-      "ascensor": true,
-      "garaje": true,
-      "terraza": true,
+      "trastero": true,
       "calefacción": true,
-      "trastero": true
+      "garaje": true,
+      "ascensor": true,
+      "terraza": true
     },
     "pisos_id": "42599841937_106700",
     "score_details": [
@@ -1360,10 +1299,10 @@
       "Referencia: 109097843-109097843"
     ],
     "detail_features": {
-      "terraza": true,
       "piscina": true,
-      "aire acondicionado": true,
-      "patio": true
+      "patio": true,
+      "terraza": true,
+      "aire acondicionado": true
     },
     "pisos_id": "56698980413_106500",
     "score_details": [
@@ -1450,12 +1389,12 @@
       "Soleado"
     ],
     "detail_features": {
-      "ascensor": true,
-      "garaje": true,
-      "terraza": true,
-      "calefacción": true,
       "trastero": true,
-      "armario empotrado": true
+      "calefacción": true,
+      "garaje": true,
+      "ascensor": true,
+      "armario empotrado": true,
+      "terraza": true
     },
     "pisos_id": "60096283650_100500",
     "score_details": [
@@ -1621,33 +1560,6 @@
       "📐 Muy amplio: 155m² (+15)",
       "🏡 Patio (+10)",
       "🔧 Reformado (+5)",
-      "🚇 Cerca transporte público (+8)"
-    ]
-  },
-  {
-    "title": "Casa en calle del Prado",
-    "price": 215000,
-    "score": 58,
-    "location": "¡Oportunidad única en el corazón del pueblo! Presentamos esta encantadora casa de pueblo a REFORMAR, con una excelente ubicación cercana al centro de la localidad. Con una parcela de 145 m² y una construcción de 111 m² en una sola planta, esta propiedad ofrece un sinfín de posibilidades. Actualmente, la vivienda se distribuye en un amplio salón-comedor, cuatro dormitorios, un baño, cocina, patio interior y garaje. Además, cuenta con un trastero para mayor comodidad. La casa, construida en 1960, es ideal para aquellos que buscan un proyecto de reforma a su gusto. La orientación sur garantiza luminosidad y calidez durante todo el día. Una de las grandes ventajas es la posibilidad de edificar una segunda planta o incluso realizar un bloque de viviendas (dispone de proyecto \"consultar condiciones\"), lo que la convierte en una inversión atractiva. La vivienda es apta para personas con movilidad reducida. No pierdas la oportunidad de transformar esta joya en tu hogar ideal o en una excelente inversión inmobiliaria. El precio es de 215.000 Euros. ¡Ven a visitarla y descubre todo su potencial!",
-    "m2": 111,
-    "rooms": 4,
-    "bathrooms": 1,
-    "url": "https://www.pisos.com/comprar/casa_adosada-valdepelayo_montepinos_arroyo_culebro28914-64229731151_100200/",
-    "source": "pisos.com",
-    "floor": "",
-    "year_built": 0,
-    "conservation": "",
-    "energy_rating": "",
-    "description": "",
-    "features": [],
-    "detail_features": {},
-    "pisos_id": "64229731151_100200",
-    "score_details": [
-      "💰 Buen precio: 215,000€ (+10)",
-      "📐 Buen tamaño: 111m² (+8)",
-      "🚗 Garaje (+12)",
-      "📦 Trastero (+10)",
-      "🏡 Patio (+10)",
       "🚇 Cerca transporte público (+8)"
     ]
   },
@@ -1913,65 +1825,6 @@
     ]
   },
   {
-    "title": "Piso en calle del Río Alberche, 12",
-    "price": 180000,
-    "score": 55,
-    "location": "",
-    "m2": 93,
-    "rooms": 3,
-    "bathrooms": 1,
-    "url": "https://www.pisos.com/comprar/piso-navalcarnero_centro_urbano-61726723550_525846/",
-    "source": "pisos.com",
-    "floor": "1ª planta",
-    "year_built": 0,
-    "conservation": "en buen estado",
-    "energy_rating": "",
-    "description": "HOGARES NAVALCARNERO presenta\n\nEsta vivienda situada en una zona próxima al centro de Navalcarnero, bien comunicada y con acceso inmediato a todo tipo de servicios, comercios y transporte.\n\nLa vivienda destaca por sus estancias luminosas, con una distribución cómoda y funcional. Dispone de tres dormitorios de buen tamaño, un salón-comedor espacioso y muy luminoso, con acceso directo a la terraza cerrada, una cocina independiente con zona de lavandería, y un baño completo.\n\nEl inmueble se encuent",
-    "features": [
-      "Contacta con nosotros para más información y agenda tu visita.",
-      "Mostrar más",
-      "¿Tienes alguna duda? Chatea con HOGARES NAVALCARNERO. Estarán encantados de ayudarte. Contacta por WhatsApp.",
-      "Superficie construida: 93 m²",
-      "Superficie útil: 69 m²",
-      "Habitaciones: 3",
-      "Baños: 1",
-      "Planta: 1ª",
-      "Exterior",
-      "Antigüedad: Entre 30 y 50 años",
-      "Conservación: En buen estado",
-      "Gastos de comunidad: Entre 40 y 60 €",
-      "Referencia: RIOALBERCHE",
-      "Armarios empotrados: 2",
-      "Tipo suelo: Gres",
-      "Carpintería exterior: Aluminio",
-      "Teléfono",
-      "Calefacción: Eléctrica",
-      "Cocina equipada: Independiente",
-      "Comedor",
-      "Lavadero",
-      "Puerta blindada",
-      "Terraza",
-      "Orientación: Norte",
-      "Se aceptan mascotas"
-    ],
-    "detail_features": {
-      "terraza": true,
-      "calefacción": true,
-      "ascensor": true,
-      "piscina": true,
-      "jardín": true
-    },
-    "pisos_id": "61726723550_525846",
-    "score_details": [
-      "💰 Muy buen precio: 180,000€ (+15)",
-      "📐 Tamaño mínimo: 93m² (+5)",
-      "🏊 Piscina (+15)",
-      "🌿 Terraza (+10)",
-      "🛗 Ascensor (+5)",
-      "🌳 Jardín (+5)"
-    ]
-  },
-  {
     "title": "Casa en Castilla La Mancha",
     "price": 180000,
     "score": 54,
@@ -2073,31 +1926,6 @@
       "🚗 Garaje (+12)",
       "📦 Trastero (+10)",
       "⚠️ Zona 'el quiñón' (-3 pts)"
-    ]
-  },
-  {
-    "title": "Casa adosada en calle de la Pantoja",
-    "price": 165000,
-    "score": 53,
-    "location": "",
-    "m2": 178,
-    "rooms": 3,
-    "bathrooms": 3,
-    "url": "https://www.pisos.com/comprar/casa_adosada-ugena_centro_urbano-57549398764_100500/",
-    "source": "pisos.com",
-    "floor": "",
-    "year_built": 0,
-    "conservation": "",
-    "energy_rating": "",
-    "description": "Se vende esta casa adosada construida en 2001. Aunque actualmente está ocupada ilegalmente, ya está iniciado el proceso de denuncia y solicitud de desahucio. Esta vivienda ofrece un potencial increíble para quienes desean personalizarla a su gusto. Las fotos no son actuales. Perfecta para quienes buscan comodidad y luminosidad en un entorno privilegiado. Con una superficie de 178 metros cuadrados, tiene tres plantas incluyendo la buhardilla, esta vivienda cuenta con tres amplios dormitorios y tr",
-    "features": [],
-    "detail_features": {},
-    "pisos_id": "57549398764_100500",
-    "score_details": [
-      "💰 Precio excelente: 165,000€ (+20)",
-      "📐 Muy amplio: 178m² (+15)",
-      "🌿 Terraza (+10)",
-      "🚇 Cerca transporte público (+8)"
     ]
   },
   {
@@ -2437,33 +2265,6 @@
     ]
   },
   {
-    "title": "Casa pareada en El Viso de San Juan",
-    "price": 235000,
-    "score": 51,
-    "location": "PADILLA SERVICIOS INMOBILIARIOS VENDE Chalet pareado a estrenar en El Viso de San Juan – ¡676 m² de parcela y obra nueva! ¡Estrena la casa de tus sueños en El Viso de San Juan! Presentamos este magnífico chalet pareado a estrenar, diseñado para quienes buscan la comodidad absoluta de vivir en una sola planta y disfrutar de un espacio exterior inigualable. La vivienda cuenta con 108 m² construidos sobre una impresionante parcela de 676 m², ofreciendo un sinfín de posibilidades. Distribución de la vivienda: La casa destaca por su funcionalidad y luminosidad: Entrada: Gran porche delantero techado, ideal para crear una zona de estar exterior.Salón-Comedor: Espacioso y muy luminoso, el corazón de la casa.Cocina: Independiente y con gran capacidad de distribución.Dormitorios: 3 habitaciones amplias y bien ventiladas.Baño: 1 cuarto de baño completo con acabados modernos. Exterior y Calidades: La parcela es, sin duda, el punto fuerte de esta propiedad: Espacio Exterior: 676 m² divididos en una zona solada (ideal para cenadores o barbacoa) y una zona de tierra perfecta para jardín, huerto o incluso una piscina privada.Accesos: Dispone de entrada independiente para carruajes en una zona lateral de la parcela.Seguridad: Puerta exterior de seguridad y parcela perimetrada con iluminación ya instalada. Ubicación: situado en una zona tranquila de El Viso de San Juan, ideal para desconectar pero cerca de todos los servicios necesarios.&nbsp; Contamos con departamento financiero, tramitando hasta el 100% de la hipoteca. La compra de este inmueble conlleva un servicio de formalización y gestión de la compraventa para el comprador, cuyo coste no está incluido en el precio publicado. Se le informará de todos los gastos asociados a la compraventa antes de la reserva para que usted compre con la máxima seguridad, tranquilidad y transparencia. No lo pienses más y reserva tu cita para venir a verlo, ¡TE VA A ENCANTAR! .",
-    "m2": 108,
-    "rooms": 3,
-    "bathrooms": 1,
-    "url": "https://www.pisos.com/comprar/casa_pareada-el_viso_de_san_juan_centro_urbano-64225547627_100600/",
-    "source": "pisos.com",
-    "floor": "",
-    "year_built": 0,
-    "conservation": "",
-    "energy_rating": "",
-    "description": "",
-    "features": [],
-    "detail_features": {},
-    "pisos_id": "64225547627_100600",
-    "score_details": [
-      "💰 Precio aceptable: 235,000€ (+5)",
-      "📐 Buen tamaño: 108m² (+8)",
-      "🏊 Piscina (+15)",
-      "🌳 Jardín (+5)",
-      "🏗️ Obra nueva (+10)",
-      "🚇 Cerca transporte público (+8)"
-    ]
-  },
-  {
     "title": "Piso en Yuncler",
     "price": 160000,
     "score": 50,
@@ -2771,97 +2572,6 @@
       "📦 Trastero (+10)",
       "🌿 Terraza (+10)",
       "🛗 Ascensor (+5)",
-      "🚇 Cerca transporte público (+8)"
-    ]
-  },
-  {
-    "title": "Piso en Parque Inlasa",
-    "price": 175000,
-    "score": 48,
-    "location": "Parque Inlasa (Parla)",
-    "m2": 75,
-    "rooms": 3,
-    "bathrooms": 1,
-    "url": "https://www.pisos.com/comprar/piso-parque_inlasa28981-64235535957_100200/",
-    "source": "pisos.com",
-    "floor": "bajo",
-    "year_built": 0,
-    "conservation": "en buen estado",
-    "energy_rating": "",
-    "description": "Agencia inmobiliaria de PARLA - Oficina Tecnocasa. vende Piso en Parla, situado en la zona de Sur.\nPiso a la venta situado en la zona sur de Parla.\nVivienda parcialmente reformada ubicada en planta baja.\nConsta de 3 dormitorios\nBaño con plato de ducha y ventana\nCocina con acceso a patio comunitario\nSalón\nSuelos de gres\nZona tranquila, bien comunicada con el transporte público, colegios, supermercados, carreteras de largo recorrido, zonas infantiles y del hospital Infanta Cristina de Parla.",
-    "features": [
-      "Superficie construida: 75 m²",
-      "Habitaciones: 3",
-      "Baños: 1",
-      "Planta: Bajo",
-      "Antigüedad: Entre 30 y 50 años",
-      "Conservación: En buen estado",
-      "Referencia: 659938",
-      "Tipo suelo: Gres",
-      "Calefacción",
-      "Cocina equipada",
-      "Ascensor"
-    ],
-    "detail_features": {
-      "ascensor": true,
-      "patio": true,
-      "calefacción": true
-    },
-    "pisos_id": "64235535957_100200",
-    "score_details": [
-      "💰 Precio excelente: 175,000€ (+20)",
-      "📐 Pequeño: 75m² (0)",
-      "🏡 Patio (+10)",
-      "🛗 Ascensor (+5)",
-      "🔧 Reformado (+5)",
-      "🚇 Cerca transporte público (+8)"
-    ]
-  },
-  {
-    "title": "Piso en calle de Alfonso X 'El Sabio'",
-    "price": 180000,
-    "score": 48,
-    "location": "Reyes (Parla)",
-    "m2": 88,
-    "rooms": 3,
-    "bathrooms": 1,
-    "url": "https://www.pisos.com/comprar/piso-reyes28982-65028590683_100500/",
-    "source": "pisos.com",
-    "floor": "4ª planta",
-    "year_built": 0,
-    "conservation": "en buen estado",
-    "energy_rating": "D",
-    "description": "¡¡¡EMPIRE REAL ESTATE PROPERTIES VENDE FANTÁSTICA VIVIENDA EN UNA DE LAS ZONAS MÁS CONSOLIDADAS Y DEMANDADAS DE PARLA!!! 🏡✨\n\nLes presentamos esta magnífica vivienda situada en una excelente zona de Parla, rodeada de todos los servicios necesarios para el día a día: supermercados, comercios, colegios, zonas verdes, transporte público y excelentes conexiones. Una ubicación ideal para quienes buscan comodidad, amplitud y calidad de vida en un entorno familiar y perfectamente comunicado.\n\nLa viviend",
-    "features": [
-      "Superficie construida: 88 m²",
-      "Superficie útil: 82 m²",
-      "Habitaciones: 3",
-      "Baños: 1",
-      "Planta: 4ª",
-      "Exterior",
-      "Antigüedad: Entre 30 y 50 años",
-      "Conservación: En buen estado",
-      "Gastos de comunidad: Entre 40 y 60 €",
-      "Referencia: LG-2135470",
-      "Armarios empotrados: 1",
-      "Tipo suelo: Gres",
-      "Calefacción: Gas natural",
-      "Cocina equipada: Cocina equipada",
-      "Trastero",
-      "Terraza",
-      "Orientación: Este"
-    ],
-    "detail_features": {
-      "trastero": true,
-      "calefacción": true,
-      "terraza": true
-    },
-    "pisos_id": "65028590683_100500",
-    "score_details": [
-      "💰 Muy buen precio: 180,000€ (+15)",
-      "📐 Tamaño mínimo: 88m² (+5)",
-      "📦 Trastero (+10)",
-      "🌿 Terraza (+10)",
       "🚇 Cerca transporte público (+8)"
     ]
   },
@@ -3191,60 +2901,6 @@
       "🏊 Piscina (+15)",
       "🌿 Terraza (+10)",
       "🌳 Jardín (+5)"
-    ]
-  },
-  {
-    "title": "Piso en Centro",
-    "price": 229900,
-    "score": 46,
-    "location": "Centro (Parla)",
-    "m2": 114,
-    "rooms": 4,
-    "bathrooms": 2,
-    "url": "https://www.pisos.com/comprar/piso-parla_centro28981-63430056760_997672/",
-    "source": "pisos.com",
-    "floor": "1ª planta",
-    "year_built": 0,
-    "conservation": "en buen estado",
-    "energy_rating": "",
-    "description": "Vivienda de 114 m2, con salón independiente es luminoso y acogedor, con salida directa a una gran terraza, ideal para disfrutar de momentos al aire libre. La cocina, espaciosa y funcional, también tiene acceso a la terraza, un detalle muy práctico en el día a día.\n\nAmplia vivienda de 4 dormitorios, perfecta para familias o para quienes buscan espacio y posibilidades. Destaca su dormitorio principal, con armario empotrado, muy amplio y cómodo, además de contar con 1 baño completo con bañera y 1 a",
-    "features": [
-      "Superficie construida: 114 m²",
-      "Superficie útil: 85 m²",
-      "Habitaciones: 4",
-      "Baños: 2",
-      "Planta: 1ª",
-      "Exterior",
-      "Antigüedad: Entre 20 y 30 años",
-      "Conservación: En buen estado",
-      "Gastos de comunidad: Entre 60 y 80 €",
-      "Referencia: 13448659",
-      "Tipo suelo: Parquet",
-      "Carpintería exterior: Aluminio",
-      "Aire acondicionado: Frío y calor",
-      "Calefacción: Gas natural",
-      "Cocina equipada: Independiente",
-      "Comedor",
-      "Trastero",
-      "Terraza",
-      "Jardín: Comunitario"
-    ],
-    "detail_features": {
-      "armario empotrado": true,
-      "aire acondicionado": true,
-      "trastero": true,
-      "jardín": true,
-      "calefacción": true,
-      "terraza": true
-    },
-    "pisos_id": "63430056760_997672",
-    "score_details": [
-      "💰 Precio aceptable: 229,900€ (+5)",
-      "📐 Buen tamaño: 114m² (+8)",
-      "📦 Trastero (+10)",
-      "🌿 Terraza (+10)",
-      "🌳 Jardín (+5)",
-      "🚇 Cerca transporte público (+8)"
     ]
   },
   {
@@ -3907,6 +3563,32 @@
     ]
   },
   {
+    "title": "Piso en calle del Labrador, 10",
+    "price": 240000,
+    "score": 43,
+    "location": "",
+    "m2": 113,
+    "rooms": 2,
+    "bathrooms": 1,
+    "url": "https://www.pisos.com/comprar/piso-navalcarnero_centro_urbano-65088201651_525846/",
+    "source": "pisos.com",
+    "floor": "2ª planta",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "Si buscas una vivienda que combine ubicación, comodidad y calidad de vida, esta es tu oportunidad. HOGARES NAVALCARNERO presenta este fantástico piso en planta situado en una de las zonas más demandadas del municipio, El Pinar, un entorno tranquilo y familiar con todos los servicios a tu alcance: supermercados, comercios, cafeterías, guardería y mucho más. Además, disfrutarás de una excelente comunicación gracias a su salida directa a la A-5 y su cercanía al centro comercial Xanadú, a tan solo 1",
+    "features": [],
+    "detail_features": {},
+    "pisos_id": "65088201651_525846",
+    "score_details": [
+      "💰 Precio aceptable: 240,000€ (+5)",
+      "📐 Buen tamaño: 113m² (+8)",
+      "🚗 Garaje (+12)",
+      "📦 Trastero (+10)",
+      "🚇 Cerca transporte público (+8)"
+    ]
+  },
+  {
     "title": "Chalet en calle de Guadamur",
     "price": 245000,
     "score": 43,
@@ -4377,118 +4059,6 @@
       "🌿 Terraza (+10)",
       "🛗 Ascensor (+5)",
       "🚇 Cerca transporte público (+8)"
-    ]
-  },
-  {
-    "title": "Piso en calle de Ciudad Real",
-    "price": 220000,
-    "score": 38,
-    "location": "Villayuventus-Renfe (Parla)",
-    "m2": 80,
-    "rooms": 3,
-    "bathrooms": 2,
-    "url": "https://www.pisos.com/comprar/piso-villayuventus_renfe28982-64264965091_100500/",
-    "source": "pisos.com",
-    "floor": "3ª planta",
-    "year_built": 1976,
-    "conservation": "en buen estado",
-    "energy_rating": "D",
-    "description": "JACQUELINE ÁLVAREZ, SERVICIOS INMOBILIARIOS, presenta esta excelente oportunidad de inversión en una de las zonas más demandadas de Parla por su conexión y servicios.\n\nVivienda actualmente alquilada, con inquilino de larga duración y buena estabilidad, lo que la convierte en una opción muy interesante tanto para inversores que buscan rentabilidad desde el primer día como para quienes quieran adquirir una vivienda con posibilidad de uso futuro.\n\nEl contrato de arrendamiento vigente finaliza en no",
-    "features": [
-      "La vivienda cuenta con 80 m2 construidos (64 m2 útiles) y una distribución muy funcional:",
-      "3 dormitorios amplios",
-      "Salón independiente y luminoso con salida a terraza acristalada de aproximadamente 4 m2",
-      "Cocina independiente equipada con muebles altos y bajos, incluyendo algunos electrodomésticos",
-      "1 baño completo + 1 aseo, aportando mayor comodidad para familias o alquiler",
-      "La vivienda se encuentra en buen estado de conservación y situada en una tercera planta con ascensor.",
-      "📍 Ubicación estratégica – Zona Renfe",
-      "Uno de los grandes atractivos de esta propiedad es su ubicación:",
-      "Renfe Cercanías y tranvía a solo 5 minutos caminando",
-      "Comercios, supermercados y servicios cercanos",
-      "Excelente conexión con Madrid",
-      "Zona con alta demanda de alquiler",
-      "Una ubicación muy valorada tanto por residentes habituales como por inquilinos, lo que aporta estabilidad y atractivo como inversión.",
-      "💡 Una oportunidad ideal para inversores que buscan una vivienda ya alquilada, en una zona con demanda constante y con posibilidad de continuidad del arrendamiento o futura ocupación propia.",
-      "En Jacqueline Álvarez – Servicios Inmobiliarios contamos con nuestro Departamento Financiero para ayudarte a conseguir la financiación que necesites, incluso hasta el 100 % del valor de la vivienda, según tu perfil. Nuestro objetivo es hacer realidad tu sueño de tener hogar propio, con las mejores condiciones y sin complicaciones. En el precio de venta no se encuentran incluidos los gastos derivados de la compraventa, tales como notaría, Registro de la Propiedad, gestoría, Impuesto sobre Transmisiones Patrimoniales (I. T. P. ) u otros tributos que resulten de aplicación, así como los gastos financieros en caso de financiación hipotecaria, que serán asumidos por la parte compradora, salvo pacto en contrario.",
-      "Tampoco se incluyen los honorarios de la agencia por la intermediación inmobiliaria, los cuales serán satisfechos conforme a las condiciones previamente pactadas entre las partes.",
-      "Mostrar más",
-      "¿Tienes alguna duda? Chatea con Jacqueline Alvarez Servicios Inm.... Estarán encantados de ayudarte. Contacta por WhatsApp.",
-      "Superficie construida: 80 m²",
-      "Superficie útil: 64 m²",
-      "Habitaciones: 3",
-      "Baños: 2",
-      "Planta: 3ª",
-      "Antigüedad: Más de 50 años",
-      "Conservación: En buen estado",
-      "Gastos de comunidad: Entre 60 y 80 €",
-      "Referencia: S1147/8991",
-      "Carpintería interior",
-      "Tipo suelo: Gres",
-      "Carpintería exterior: Madera",
-      "Agua",
-      "Luz: Otra compañía",
-      "Calefacción: Gas natural",
-      "Cocina equipada",
-      "Puerta blindada",
-      "Ascensor",
-      "Terraza",
-      "Soleado"
-    ],
-    "detail_features": {
-      "ascensor": true,
-      "calefacción": true,
-      "terraza": true
-    },
-    "pisos_id": "64264965091_100500",
-    "score_details": [
-      "💰 Buen precio: 220,000€ (+10)",
-      "📐 Tamaño mínimo: 80m² (+5)",
-      "🌿 Terraza (+10)",
-      "🛗 Ascensor (+5)",
-      "🚇 Cerca transporte público (+8)"
-    ]
-  },
-  {
-    "title": "Piso en Reyes",
-    "price": 250000,
-    "score": 38,
-    "location": "Reyes (Parla)",
-    "m2": 106,
-    "rooms": 3,
-    "bathrooms": 2,
-    "url": "https://www.pisos.com/comprar/piso-reyes28982-62549857413_100200/",
-    "source": "pisos.com",
-    "floor": "",
-    "year_built": 0,
-    "conservation": "en buen estado",
-    "energy_rating": "",
-    "description": "Agencia inmobiliaria de PARLA, zona REYES - LAS AMÉRICAS, Oficina Tecnocasa vende PISO SEMINUEVO CON ASCENSOR, situado en zona de Reyes, cercano al centro de salud 'Isabel II', biblioteca municipal 'Gloria Fuertes', colegios e institutos y centro comercial 'El Ferial'.\n+ Amplio piso en muy buen estado, situado en 1a planta con ascensor\n+ 3 habitaciones dobles\n+ Salón comedor de paso con salida a terraza\n+ 2 baños completos con bañera\n+ Cocina amueblada, con salida a patio interior\n+ Suelos de gr",
-    "features": [
-      "Superficie construida: 106 m²",
-      "Habitaciones: 3",
-      "Baños: 2",
-      "Antigüedad: Entre 30 y 50 años",
-      "Conservación: En buen estado",
-      "Referencia: 652385",
-      "Tipo suelo: Gres",
-      "Calefacción",
-      "Cocina equipada",
-      "Ascensor",
-      "Terraza"
-    ],
-    "detail_features": {
-      "ascensor": true,
-      "patio": true,
-      "calefacción": true,
-      "terraza": true
-    },
-    "pisos_id": "62549857413_100200",
-    "score_details": [
-      "💰 Precio aceptable: 250,000€ (+5)",
-      "📐 Buen tamaño: 106m² (+8)",
-      "🌿 Terraza (+10)",
-      "🏡 Patio (+10)",
-      "🛗 Ascensor (+5)"
     ]
   },
   {
@@ -5432,6 +5002,29 @@
     ]
   },
   {
+    "title": "Terraced house in calle de la Pantoja",
+    "price": 165000,
+    "score": 35,
+    "location": "",
+    "m2": 178,
+    "rooms": 3,
+    "bathrooms": 3,
+    "url": "https://www.pisos.com/en/comprar/casa_adosada-ugena_centro_urbano-57549398764_100500/",
+    "source": "pisos.com",
+    "floor": "",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "Terraced house of 178 m² found in the La Sagra area. Consists of 3 rooms and 3 bathrooms.",
+    "features": [],
+    "detail_features": {},
+    "pisos_id": "57549398764_100500",
+    "score_details": [
+      "💰 Precio excelente: 165,000€ (+20)",
+      "📐 Muy amplio: 178m² (+15)"
+    ]
+  },
+  {
     "title": "Chalet en El Viso de San Juan",
     "price": 175000,
     "score": 35,
@@ -5778,30 +5371,6 @@
     ]
   },
   {
-    "title": "Piso en calle de Pedro Rubín de Celis",
-    "price": 155000,
-    "score": 33,
-    "location": "Centro-Egido (Pinto)",
-    "m2": 97,
-    "rooms": 4,
-    "bathrooms": 2,
-    "url": "https://www.pisos.com/comprar/piso-centro_egido-65001303938_101800/",
-    "source": "pisos.com",
-    "floor": "2ª planta",
-    "year_built": 0,
-    "conservation": "",
-    "energy_rating": "",
-    "description": "Agenda tu llamada aquí y recibe toda la información que necesitas: Calendly. Com/inversores-kalma ¿Busca una oportunidad única d...",
-    "features": [],
-    "detail_features": {},
-    "pisos_id": "65001303938_101800",
-    "score_details": [
-      "💰 Precio excelente: 155,000€ (+20)",
-      "📐 Tamaño mínimo: 97m² (+5)",
-      "🚇 Cerca transporte público (+8)"
-    ]
-  },
-  {
     "title": "Piso en Yuncos",
     "price": 169900,
     "score": 33,
@@ -5850,31 +5419,6 @@
     ]
   },
   {
-    "title": "Piso en Cerro-El Molino",
-    "price": 187865,
-    "score": 33,
-    "location": "Cerro-El Molino (Fuenlabrada)",
-    "m2": 79,
-    "rooms": 3,
-    "bathrooms": 1,
-    "url": "https://www.pisos.com/comprar/piso-cerro_el_molino28941-62583254307_500185/",
-    "source": "pisos.com",
-    "floor": "3ª planta",
-    "year_built": 0,
-    "conservation": "",
-    "energy_rating": "",
-    "description": "Gestion 3 vende esta estupenda vivienda con una superficie de 79m² construidos, una opción ideal para familias que buscan comodidad, buena ubicación y excelentes comunicaciones. La vivienda se distribuye en tres dormitorios, un baño, cocina independiente y un luminoso salón con acceso a una agradable terraza abierta, perfecta para disfrutar del aire libre. Ubicada en una zona tranquila y bien comunicada, cuenta con paradas de autobús a pocos minutos a pie, como Av. Regiones y P.º Roma – Est. Fue",
-    "features": [],
-    "detail_features": {},
-    "pisos_id": "62583254307_500185",
-    "score_details": [
-      "💰 Muy buen precio: 187,865€ (+15)",
-      "📐 Pequeño: 79m² (0)",
-      "🌿 Terraza (+10)",
-      "🚇 Cerca transporte público (+8)"
-    ]
-  },
-  {
     "title": "Obra nueva",
     "price": 192064,
     "score": 33,
@@ -5896,6 +5440,31 @@
       "💰 Muy buen precio: 192,064€ (+15)",
       "📐 Buen tamaño: 110m² (+8)",
       "🏗️ Obra nueva (+10)"
+    ]
+  },
+  {
+    "title": "Piso en Paseo de Granados",
+    "price": 192260,
+    "score": 33,
+    "location": "Centro-Arroyo-La Fuente (Fuenlabrada)",
+    "m2": 76,
+    "rooms": 3,
+    "bathrooms": 1,
+    "url": "https://www.pisos.com/comprar/piso-centro_arroyo_la_fuente28944-60010538396_510357/",
+    "source": "pisos.com",
+    "floor": "4ª planta",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "Se vende piso de 76 m² en muy buen estado, actualmente alquilado, lo que lo convierte en una excelente oportunidad para inversores. Ubicado en una zona tranquila y bien comunicada. La vivienda se distribuye en: 3 dormitorios de buen tamaño con armarios empotrados, salón-comedor luminoso, cocina equipada, 1 baño con plato de ducha. Ventanas de climalit, con gran aislamiento térmico y acústico. Suelos de tarima, en salón y dormitorios aportando calidez y confort. Suelo de gres en baño y cocina, pr",
+    "features": [],
+    "detail_features": {},
+    "pisos_id": "60010538396_510357",
+    "score_details": [
+      "💰 Muy buen precio: 192,260€ (+15)",
+      "📐 Pequeño: 76m² (0)",
+      "📦 Trastero (+10)",
+      "🚇 Cerca transporte público (+8)"
     ]
   },
   {
@@ -6018,144 +5587,6 @@
       "💰 Precio aceptable: 240,000€ (+5)",
       "📐 Muy amplio: 150m² (+15)",
       "🌳 Jardín (+5)",
-      "🚇 Cerca transporte público (+8)"
-    ]
-  },
-  {
-    "title": "Piso en calle Pinto-San Roque",
-    "price": 175000,
-    "score": 33,
-    "location": "Calle Pinto-San Roque (Parla)",
-    "m2": 65,
-    "rooms": 0,
-    "bathrooms": 1,
-    "url": "https://www.pisos.com/comprar/piso-calle_pinto_san_roque-65019087137_100200/",
-    "source": "pisos.com",
-    "floor": "1ª planta",
-    "year_built": 1976,
-    "conservation": "en buen estado",
-    "energy_rating": "",
-    "description": "Agencia inmobiliaria de PARLA - Oficina Tecnocasa VENDE PISO REFORMADO en zona Centro.\n\nVIVIENDA EN VENTA EN PARLA CENTRO.\n\nPiso en venta en Parla, situado en el centro de Parla, con excelente ubicación, muy cercano a la estación de RENFE y a una de las calles principales del municipio, la calle pinto.\nEl barrio contiene una amplia variedad de comercios, centro comercial, colegios, centros médicos, parking público, galerías de alimentación, farmacias, restauración y cuenta con Tranvía cercano a ",
-    "features": [
-      "Superficie construida: 65 m²",
-      "Baños: 1",
-      "Planta: 1ª",
-      "Antigüedad: Más de 50 años",
-      "Conservación: En buen estado",
-      "Referencia: 660290",
-      "Tipo suelo: Gres",
-      "Calefacción: Central",
-      "Cocina equipada"
-    ],
-    "detail_features": {
-      "calefacción": true
-    },
-    "pisos_id": "65019087137_100200",
-    "score_details": [
-      "💰 Precio excelente: 175,000€ (+20)",
-      "📐 Pequeño: 65m² (0)",
-      "🔧 Reformado (+5)",
-      "🚇 Cerca transporte público (+8)"
-    ]
-  },
-  {
-    "title": "Piso en calle de San Félix",
-    "price": 232000,
-    "score": 33,
-    "location": "Calle Pinto-San Roque (Parla)",
-    "m2": 85,
-    "rooms": 3,
-    "bathrooms": 2,
-    "url": "https://www.pisos.com/comprar/piso-calle_pinto_san_roque-61679756827_100500/",
-    "source": "pisos.com",
-    "floor": "2ª planta",
-    "year_built": 1976,
-    "conservation": "en buen estado",
-    "energy_rating": "D",
-    "description": "EMPIRE REAL ESTATE PROPERTIES VENDE ESPECTACULAR VIVIENDA REFORMADA EN ZONA CENTRO DE PARLA.\n\nUbicada en pleno corazón de Parla Centro, en una zona consolidada y con todos los servicios a escasos minutos, encontramos esta magnífica vivienda situada en la segunda planta de un edificio compuesto por tan solo seis propiedades, lo que garantiza una comunidad tranquila, privada y con un ambiente residencial muy cuidado. Un valor añadido para quienes buscan confort y calidad de vida lejos de grandes c",
-    "features": [
-      "Superficie construida: 85 m²",
-      "Superficie útil: 80 m²",
-      "Habitaciones: 3",
-      "Baños: 2",
-      "Planta: 2ª",
-      "Exterior",
-      "Antigüedad: Más de 50 años",
-      "Conservación: En buen estado",
-      "Gastos de comunidad: Entre 40 y 60 €",
-      "Referencia: MT-5624",
-      "Armarios empotrados: 1",
-      "Tipo suelo: Tarima flotante",
-      "Vidrios dobles",
-      "Aire acondicionado: Frío",
-      "Calefacción: Gas natural",
-      "Cocina equipada: Cocina amueblada",
-      "Puerta blindada",
-      "Terraza",
-      "Orientación: Este",
-      "Soleado"
-    ],
-    "detail_features": {
-      "calefacción": true,
-      "aire acondicionado": true,
-      "terraza": true
-    },
-    "pisos_id": "61679756827_100500",
-    "score_details": [
-      "💰 Precio aceptable: 232,000€ (+5)",
-      "📐 Tamaño mínimo: 85m² (+5)",
-      "🌿 Terraza (+10)",
-      "🔧 Reformado (+5)",
-      "🚇 Cerca transporte público (+8)"
-    ]
-  },
-  {
-    "title": "Piso en calle de los Reyes Católicos",
-    "price": 234900,
-    "score": 33,
-    "location": "Reyes (Parla)",
-    "m2": 79,
-    "rooms": 3,
-    "bathrooms": 1,
-    "url": "https://www.pisos.com/comprar/piso-reyes28982-65077117239_100500/",
-    "source": "pisos.com",
-    "floor": "3ª planta",
-    "year_built": 1976,
-    "conservation": "reformado",
-    "energy_rating": "D",
-    "description": "¡¡¡EMPIRE REAL ESTATE PROPERTIES PRESENTA ESTA MAGNÍFICA VIVIENDA REFORMADA EN LA ZONA REYES DE PARLA!!!\n\nSi buscas una vivienda donde no tengas que preocuparte por reformas durante muchos años, con espacios amplios, excelentes calidades y lista para entrar a vivir desde el primer día, esta propiedad te sorprenderá.\n\nUbicada en una de las zonas más consolidadas y demandadas de Parla, rodeada de todos los servicios necesarios para el día a día, encontramos esta fantástica vivienda de 78 m² que de",
-    "features": [
-      "Superficie construida: 79 m²",
-      "Superficie útil: 74 m²",
-      "Habitaciones: 3",
-      "Baños: 1",
-      "Planta: 3ª",
-      "Antigüedad: Más de 50 años",
-      "Conservación: Reformado",
-      "Gastos de comunidad: Entre 60 y 80 €",
-      "Referencia: LG-1829",
-      "Armarios empotrados: 1",
-      "Tipo suelo: Tarima flotante",
-      "Vidrios dobles",
-      "Aire acondicionado: Frío",
-      "Calefacción: Eléctrica",
-      "Cocina equipada: Cocina equipada",
-      "Ascensor",
-      "Terraza"
-    ],
-    "detail_features": {
-      "ascensor": true,
-      "calefacción": true,
-      "aire acondicionado": true,
-      "terraza": true
-    },
-    "pisos_id": "65077117239_100500",
-    "score_details": [
-      "💰 Precio aceptable: 234,900€ (+5)",
-      "📐 Pequeño: 79m² (0)",
-      "🌿 Terraza (+10)",
-      "🛗 Ascensor (+5)",
-      "🔧 Reformado (+5)",
       "🚇 Cerca transporte público (+8)"
     ]
   },
@@ -8758,7 +8189,7 @@
     ]
   },
   {
-    "title": "Piso en calle de Enrique Granados",
+    "title": "Piso en Parla",
     "price": 146000,
     "score": 25,
     "location": "Fuentebella (Parla)",
@@ -8882,36 +8313,13 @@
     "m2": 85,
     "rooms": 3,
     "bathrooms": 1,
-    "url": "https://www.pisos.com/comprar/casa_adosada-getafe_sector_iii28905-64260030300_100500/",
-    "source": "pisos.com",
-    "floor": "",
-    "year_built": 0,
-    "conservation": "",
-    "energy_rating": "",
-    "description": "Mb gestion inmobiliaria te ofrece terreno venta ideal para inversores en zona centro de humanes de madrid!! Parcela de 100m² distribuidos en esquina. Ideal para construir en zona centro del municipio la casa que siempre has soñado. Dispone de todos los servicios necesarios a sus alrededores como supermercados, colegios, instituto, comercios, farmacia, zonas de ocio y restauración, parques... El municipio cuenta con buen enlace a carreteras de acceso y salida del municipio m-410, m-405, m-407, a-",
-    "features": [],
-    "detail_features": {},
-    "pisos_id": "64260030300_100500",
-    "score_details": [
-      "💰 Precio excelente: 156,500€ (+20)",
-      "📐 Tamaño mínimo: 85m² (+5)"
-    ]
-  },
-  {
-    "title": "Chalet en calle de Estanislao Zazo",
-    "price": 156500,
-    "score": 25,
-    "location": "",
-    "m2": 85,
-    "rooms": 3,
-    "bathrooms": 1,
     "url": "https://www.pisos.com/comprar/chalet-humanes_de_madrid_centro_urbano-54174848245_100500/",
     "source": "pisos.com",
     "floor": "",
     "year_built": 0,
     "conservation": "",
     "energy_rating": "",
-    "description": "Mb gestion inmobiliaria te ofrece terreno venta ideal para inversores en zona centro de humanes de madrid!! Parcela de 100m² dist...",
+    "description": "Mb gestion inmobiliaria te ofrece terreno venta ideal para inversores en zona centro de humanes de madrid!! Parcela de 100m² distribuidos en esquina. Ideal para construir en zona centro del municipio la casa que siempre has soñado. Dispone de todos los servicios necesarios a sus alrededores como supermercados, colegios, instituto, comercios, farmacia, zonas de ocio y restauración, parques... El municipio cuenta con buen enlace a carreteras de acceso y salida del municipio m-410, m-405, m-407, a-",
     "features": [],
     "detail_features": {},
     "pisos_id": "54174848245_100500",
@@ -9377,31 +8785,6 @@
     ]
   },
   {
-    "title": "Piso en Centro",
-    "price": 205000,
-    "score": 23,
-    "location": "Centro (Leganés)",
-    "m2": 60,
-    "rooms": 3,
-    "bathrooms": 1,
-    "url": "https://www.pisos.com/comprar/piso-leganes_centro28911-62548851934_525822/",
-    "source": "pisos.com",
-    "floor": "Bajo",
-    "year_built": 0,
-    "conservation": "",
-    "energy_rating": "",
-    "description": "Hogares leganés pone a la venta acogedor piso en leganés, ideal tanto para familias como para inversión. La vivienda, situada en planta baja, cuenta con una superficie de 60 m² muy bien distribuidos. Dispone de 3 dormitorios, un baño completo, salón luminoso y cocina funcional. Se encuentra en buen estado de conservación, listo para entrar a vivir. El inmueble es exterior, lo que garantiza buena ventilación y entrada de luz natural. Además, forma parte de un edificio con ascensor, aportando como",
-    "features": [],
-    "detail_features": {},
-    "pisos_id": "62548851934_525822",
-    "score_details": [
-      "💰 Buen precio: 205,000€ (+10)",
-      "📐 Pequeño: 60m² (0)",
-      "🛗 Ascensor (+5)",
-      "🚇 Cerca transporte público (+8)"
-    ]
-  },
-  {
     "title": "Piso en Cerro-El Molino",
     "price": 209900,
     "score": 23,
@@ -9451,6 +8834,31 @@
     ]
   },
   {
+    "title": "Piso en Centro",
+    "price": 245000,
+    "score": 23,
+    "location": "Centro (Getafe)",
+    "m2": 85,
+    "rooms": 3,
+    "bathrooms": 1,
+    "url": "https://www.pisos.com/comprar/piso-getafe_distrito_centro28902-58363419455_515004/",
+    "source": "pisos.com",
+    "floor": "1ª planta",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "Este luminoso piso en venta en getafe se encuentra ubicado en el centro, en una zona tranquila y bien comunicada. Con una superficie total de 85 m² y 2 habitaciones individuales más 1 habitación doble, en la primera planta .ofrece comodidad y amplitud. Cuenta con 1 baño, aire acondicionado (frío y calor en el salón ), calefacción de gas natural y carpintería exterior de aluminio y climalit . Su orientación norte proporciona una agradable luz natural. Además, el edificio está en buen estado de co",
+    "features": [],
+    "detail_features": {},
+    "pisos_id": "58363419455_515004",
+    "score_details": [
+      "💰 Precio aceptable: 245,000€ (+5)",
+      "📐 Tamaño mínimo: 85m² (+5)",
+      "🛗 Ascensor (+5)",
+      "🚇 Cerca transporte público (+8)"
+    ]
+  },
+  {
     "title": "Piso en Illescas",
     "price": 249900,
     "score": 23,
@@ -9472,51 +8880,6 @@
       "💰 Precio aceptable: 249,900€ (+5)",
       "📐 Muy amplio: 159m² (+15)",
       "🏢 Ático (+3)"
-    ]
-  },
-  {
-    "title": "Piso en Centro",
-    "price": 245000,
-    "score": 23,
-    "location": "Centro (Getafe)",
-    "m2": 85,
-    "rooms": 3,
-    "bathrooms": 1,
-    "url": "https://www.pisos.com/comprar/piso-getafe_distrito_centro28902-58363419455_515004/",
-    "source": "pisos.com",
-    "floor": "1ª planta",
-    "year_built": 0,
-    "conservation": "en buen estado",
-    "energy_rating": "",
-    "description": "Este luminoso piso en venta en getafe se encuentra ubicado en el centro, en una zona tranquila y bien comunicada. Con una superficie total de 85 m² y 2 habitaciones individuales más 1 habitación doble, en la primera planta .ofrece comodidad y amplitud. Cuenta con 1 baño, aire acondicionado (frío y calor en el salón ), calefacción de gas natural y carpintería exterior de aluminio y climalit . Su orientación norte proporciona una agradable luz natural. Además, el edificio está en buen estado de co",
-    "features": [
-      "Superficie construida: 85 m²",
-      "Superficie útil: 70 m²",
-      "Habitaciones: 3",
-      "Baños: 1",
-      "Planta: 1ª",
-      "Exterior",
-      "Conservación: En buen estado",
-      "Gastos de comunidad: Entre 40 y 60 €",
-      "Referencia: 000973",
-      "Carpintería exterior: Aluminio",
-      "Aire acondicionado: Frío y calor",
-      "Calefacción: Gas natural",
-      "Puerta blindada",
-      "Orientación: Norte"
-    ],
-    "detail_features": {
-      "aire acondicionado": true,
-      "calefacción": true,
-      "ascensor": true,
-      "calefaccion": true
-    },
-    "pisos_id": "58363419455_515004",
-    "score_details": [
-      "💰 Precio aceptable: 245,000€ (+5)",
-      "📐 Tamaño mínimo: 85m² (+5)",
-      "🛗 Ascensor (+5)",
-      "🚇 Cerca transporte público (+8)"
     ]
   },
   {
@@ -9689,30 +9052,6 @@
     "score_details": [
       "💰 Precio aceptable: 229,900€ (+5)",
       "📐 Buen tamaño: 100m² (+8)",
-      "🚇 Cerca transporte público (+8)"
-    ]
-  },
-  {
-    "title": "Piso en calle del Labrador, 10",
-    "price": 240000,
-    "score": 21,
-    "location": "",
-    "m2": 113,
-    "rooms": 2,
-    "bathrooms": 1,
-    "url": "https://www.pisos.com/comprar/piso-navalcarnero_centro_urbano-63392370303_525846/",
-    "source": "pisos.com",
-    "floor": "2ª planta",
-    "year_built": 0,
-    "conservation": "",
-    "energy_rating": "",
-    "description": "Si buscas una vivienda que combine ubicación, comodidad y calidad de vida, esta es tu oportunidad. Hogares navalcarnero presenta ...",
-    "features": [],
-    "detail_features": {},
-    "pisos_id": "63392370303_525846",
-    "score_details": [
-      "💰 Precio aceptable: 240,000€ (+5)",
-      "📐 Buen tamaño: 113m² (+8)",
       "🚇 Cerca transporte público (+8)"
     ]
   },
@@ -10294,6 +9633,29 @@
     ]
   },
   {
+    "title": "Piso en calle Pinto-San Roque",
+    "price": 165000,
+    "score": 20,
+    "location": "Calle Pinto-San Roque (Parla)",
+    "m2": 60,
+    "rooms": 0,
+    "bathrooms": 1,
+    "url": "https://www.pisos.com/comprar/piso-pintores_ferial28982-48381467164_100700/",
+    "source": "pisos.com",
+    "floor": "4ª planta",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "Agencia inmobiliaria de parla - oficina tecnocasa vende en zona de centro. Vivienda en venta en parla. Piso en venta en parla, s...",
+    "features": [],
+    "detail_features": {},
+    "pisos_id": "48381467164_100700",
+    "score_details": [
+      "💰 Precio excelente: 165,000€ (+20)",
+      "📐 Pequeño: 60m² (0)"
+    ]
+  },
+  {
     "title": "Piso en calle N-A, nº 9",
     "price": 165000,
     "score": 20,
@@ -10360,29 +9722,6 @@
     "score_details": [
       "💰 Precio excelente: 169,900€ (+20)",
       "📐 Pequeño: 69m² (0)"
-    ]
-  },
-  {
-    "title": "Piso en calle Pinto-San Roque",
-    "price": 169900,
-    "score": 20,
-    "location": "Calle Pinto-San Roque (Parla)",
-    "m2": 60,
-    "rooms": 0,
-    "bathrooms": 1,
-    "url": "https://www.pisos.com/comprar/piso-pintores_ferial28982-48381467164_100700/",
-    "source": "pisos.com",
-    "floor": "4ª planta",
-    "year_built": 0,
-    "conservation": "",
-    "energy_rating": "",
-    "description": "Agencia inmobiliaria de parla - oficina tecnocasa vende en zona de centro. Vivienda en venta en parla. Piso en venta en parla, s...",
-    "features": [],
-    "detail_features": {},
-    "pisos_id": "48381467164_100700",
-    "score_details": [
-      "💰 Precio excelente: 169,900€ (+20)",
-      "📐 Pequeño: 60m² (0)"
     ]
   },
   {
@@ -10693,7 +10032,7 @@
     "m2": 93,
     "rooms": 3,
     "bathrooms": 1,
-    "url": "https://www.pisos.com/comprar/piso-navalcarnero_centro_urbano-63344166790_525846/",
+    "url": "https://www.pisos.com/comprar/piso-navalcarnero_centro_urbano-65039382499_525846/",
     "source": "pisos.com",
     "floor": "1ª planta",
     "year_built": 0,
@@ -10702,7 +10041,7 @@
     "description": "Hogares navalcarnero presenta Esta vivienda situada en una zona próxima al centro de navalcarnero, bien comunicada y con acceso ...",
     "features": [],
     "detail_features": {},
-    "pisos_id": "63344166790_525846",
+    "pisos_id": "65039382499_525846",
     "score_details": [
       "💰 Muy buen precio: 180,000€ (+15)",
       "📐 Tamaño mínimo: 93m² (+5)"
@@ -11350,31 +10689,6 @@
     ]
   },
   {
-    "title": "Piso en Valdepelayo-Montepinos-Arroyo Culebro",
-    "price": 239990,
-    "score": 18,
-    "location": "Valdepelayo-Montepinos-Arroyo Culebro (Leganés)",
-    "m2": 73,
-    "rooms": 3,
-    "bathrooms": 1,
-    "url": "https://www.pisos.com/comprar/piso-valdepelayo_montepinos_arroyo_culebro28911-64246490708_525822/",
-    "source": "pisos.com",
-    "floor": "Bajo",
-    "year_built": 0,
-    "conservation": "",
-    "energy_rating": "",
-    "description": "Hogares leganes pone a la venta una excelente oportunidad para quienes buscan comodidad, amplitud y una ubicación práctica en una de las zonas más consolidadas del sur de madrid. Esta vivienda exterior en planta baja se encuentra en un edificio con ascensor y destaca por su buena distribución y luminosidad natural. Cuenta con 73 m² muy bien aprovechados, distribuidos en 3 habitaciones, 1 baño completo, un acogedor salón y cocina independiente. La vivienda se encuentra en buen estado de conservac",
-    "features": [],
-    "detail_features": {},
-    "pisos_id": "64246490708_525822",
-    "score_details": [
-      "💰 Precio aceptable: 239,990€ (+5)",
-      "📐 Pequeño: 73m² (0)",
-      "🛗 Ascensor (+5)",
-      "🚇 Cerca transporte público (+8)"
-    ]
-  },
-  {
     "title": "Casa en Centro",
     "price": 250000,
     "score": 18,
@@ -11967,7 +11281,7 @@
     "m2": 50,
     "rooms": 1,
     "bathrooms": 1,
-    "url": "https://www.pisos.com/comprar/piso-navalcarnero_centro_urbano-64239273756_525846/",
+    "url": "https://www.pisos.com/comprar/piso-navalcarnero_centro_urbano-64235504328_525846/",
     "source": "pisos.com",
     "floor": "Bajo",
     "year_built": 0,
@@ -11976,7 +11290,7 @@
     "description": "Hogares navalcarnero vende excelente piso en planta en pleno corazón de navalcarnero Descubra esta magnífica vivienda, situada en...",
     "features": [],
     "detail_features": {},
-    "pisos_id": "64239273756_525846",
+    "pisos_id": "64235504328_525846",
     "score_details": [
       "💰 Muy buen precio: 199,900€ (+15)",
       "📐 Pequeño: 50m² (0)"
@@ -12149,6 +11463,30 @@
     ]
   },
   {
+    "title": "Piso en calle Pino Carrasco, 8",
+    "price": 249900,
+    "score": 15,
+    "location": "",
+    "m2": 96,
+    "rooms": 2,
+    "bathrooms": 1,
+    "url": "https://www.pisos.com/comprar/piso-navalcarnero_centro_urbano-63392370303_525846/",
+    "source": "pisos.com",
+    "floor": "2ª planta",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "Hogares navalcarnero vende estupendo piso en urbanización privada Se vende magnífico piso reformado en urbanización privada, ubic...",
+    "features": [],
+    "detail_features": {},
+    "pisos_id": "63392370303_525846",
+    "score_details": [
+      "💰 Precio aceptable: 249,900€ (+5)",
+      "📐 Tamaño mínimo: 96m² (+5)",
+      "🔧 Reformado (+5)"
+    ]
+  },
+  {
     "title": "Chalet en Castilla La Mancha",
     "price": 104000,
     "score": 13,
@@ -12271,6 +11609,52 @@
       "💰 Precio aceptable: 229,000€ (+5)",
       "📐 Pequeño: 63m² (0)",
       "🚇 Cerca transporte público (+8)"
+    ]
+  },
+  {
+    "title": "Paired house in El Viso de San Juan",
+    "price": 235000,
+    "score": 13,
+    "location": "",
+    "m2": 108,
+    "rooms": 3,
+    "bathrooms": 1,
+    "url": "https://www.pisos.com/en/comprar/casa_pareada-el_viso_de_san_juan_centro_urbano-64225547627_100600/",
+    "source": "pisos.com",
+    "floor": "",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "Paired house of 108 m² found in the La Sagra area. Consists of 3 rooms and 1 bathroom.",
+    "features": [],
+    "detail_features": {},
+    "pisos_id": "64225547627_100600",
+    "score_details": [
+      "💰 Precio aceptable: 235,000€ (+5)",
+      "📐 Buen tamaño: 108m² (+8)"
+    ]
+  },
+  {
+    "title": "Piso en Paseo de la Estación, 7",
+    "price": 239900,
+    "score": 13,
+    "location": "",
+    "m2": 114,
+    "rooms": 3,
+    "bathrooms": 2,
+    "url": "https://www.pisos.com/comprar/piso-navalcarnero_centro_urbano-63344166790_525846/",
+    "source": "pisos.com",
+    "floor": "3ª planta",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "Hogares navalcarnero presenta esta fantástica vivienda próxima al centro de navalcarnero, con grandes posibilidades de reforma. U...",
+    "features": [],
+    "detail_features": {},
+    "pisos_id": "63344166790_525846",
+    "score_details": [
+      "💰 Precio aceptable: 239,900€ (+5)",
+      "📐 Buen tamaño: 114m² (+8)"
     ]
   },
   {
