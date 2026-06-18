@@ -460,11 +460,11 @@ def parse_score_details(prop):
     details = prop.get("score_details", [])
     features, penalties, bonuses = [], [], []
     for d in details:
-        if "⚠️" in d:
+        if "⚠️" in d or "🕸️" in d or "❓" in d:
             penalties.append(clean(d))
         elif any(e in d for e in ["🏊", "🚗", "📦", "🌿", "🏡", "🛗", "🌳", "🏗️", "🔧", "🚇", "🏢", "⚡", "📅"]):
             features.append(clean(d))
-        elif "💰" in d or "📐" in d:
+        elif "💰" in d or "📐" in d or "💎" in d or "📉" in d:
             bonuses.append(clean(d))
     return features, penalties, bonuses
 
@@ -492,13 +492,24 @@ nuevos_hoy = df[df["first_seen"] == pd.Timestamp(hoy)] if "first_seen" in df.col
 bajadas = df[df["price_drop"].notna() & (df["price_drop"] > 0)] if "price_drop" in df.columns else pd.DataFrame()
 con_piscina = len([p for p in df.to_dict("records") if "piscina" in str(p.get("detail_features", {})).lower() or "piscina" in str(p.get("features", [])).lower()])
 
+# Listings sin €/m² fiable (datos insuficientes): no entran en el score medio
+if "datos_insuficientes" in df.columns:
+    di_mask = df["datos_insuficientes"].fillna(False).astype(bool)
+    sin_valorar = df[di_mask]
+    fiables = df[~di_mask]
+else:
+    sin_valorar = pd.DataFrame()
+    fiables = df
+score_src = fiables if ("score" in fiables.columns and not fiables.empty) else df
+
 kpis = [
     ("layers", "Total listings", f"{len(df)}"),
     ("sparkles", "Nuevos hoy", f"{len(nuevos_hoy)}"),
-    ("star", "Score medio", f"{df['score'].mean():.1f}" if "score" in df.columns else "—"),
+    ("star", "Score medio", f"{score_src['score'].mean():.1f}" if "score" in score_src.columns else "—"),
     ("wallet", "Precio medio", f"{df['price'].mean():,.0f} €" if "price" in df.columns else "—"),
     ("trending-down", "Bajadas", f"{len(bajadas)}"),
     ("waves", "Con piscina", f"{con_piscina}"),
+    ("ruler", "Sin valorar", f"{len(sin_valorar)}"),
 ]
 
 kpi_cards = "".join(
@@ -584,6 +595,10 @@ with tab1:
             titulo_html = f'<a href="{url}" target="_blank" rel="noopener">{titulo}</a>'
         else:
             titulo_html = f"<span>{titulo}</span>"
+        di = row.get("datos_insuficientes")
+        if pd.notna(di) and bool(di):
+            titulo_html = ('<span class="lt-tag lt-usada" '
+                           'title="Sin m² fiable: no valorado">s/valorar</span> ') + titulo_html
 
         sc = row.get("score", 0) or 0
         sc = sc if isinstance(sc, (int, float)) and math.isfinite(sc) else 0
