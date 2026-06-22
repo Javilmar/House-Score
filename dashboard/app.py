@@ -199,6 +199,24 @@ def inject_styles():
         }
         .chip-warn { background: #2a1215; border-color: #5b1d22; color: #fca5a5; }
 
+        /* Desglose de puntuación */
+        .score-breakdown {
+            margin-top: 0.85rem; border-top: 1px solid #27272a; padding-top: 0.65rem;
+        }
+        .score-breakdown > summary {
+            cursor: pointer; font-size: 0.78rem; color: #71717a; font-weight: 500;
+            list-style: revert; user-select: none;
+        }
+        .score-breakdown > summary:hover { color: #a1a1aa; }
+        .sb-table { width: 100%; border-collapse: collapse; margin-top: 0.55rem; }
+        .sb-row td { padding: 0.18rem 0.3rem; font-size: 0.78rem; color: #d4d4d8; vertical-align: top; }
+        .sb-row td:last-child { text-align: right; white-space: nowrap; font-family: 'JetBrains Mono', monospace; min-width: 3.5rem; }
+        .sb-pts-pos { color: #4ade80; font-weight: 600; }
+        .sb-pts-neg { color: #f87171; font-weight: 600; }
+        .sb-pts-zero { color: #52525b; font-weight: 500; }
+        .sb-total td { padding-top: 0.4rem; border-top: 1px solid #3f3f46; font-weight: 700; color: #fafafa; font-size: 0.82rem; }
+        .sb-total td:last-child { font-family: 'JetBrains Mono', monospace; }
+
         /* Botones */
         .stButton button, .stDownloadButton button {
             border-radius: 10px; border: 1px solid #27272a; font-weight: 500;
@@ -469,6 +487,117 @@ def parse_score_details(prop):
     return features, penalties, bonuses
 
 
+# Nombres legibles para emojis de características (líneas del scorer que son solo "🏊 (+15)")
+FEATURE_NAMES = {
+    "🏊": "Piscina",
+    "🚗": "Garaje",
+    "📦": "Trastero",
+    "🌿": "Terraza",
+    "🏡": "Patio",
+    "🛗": "Ascensor",
+    "🌳": "Jardín",
+}
+
+_PTS_RE = re.compile(r'\s*\(([+-]?\d+)\s*(?:pts)?\)\s*$')
+_CAP_RE = re.compile(r'características capadas:\s*(\d+)[→>](\d+)', re.IGNORECASE)
+
+
+def breakdown_score_details(prop):
+    """Parsea score_details en ítems {label, points, categoria} y reconcilia con el score final."""
+    details = prop.get("score_details", [])
+    score_final = int(prop.get("score", 0) or 0)
+    items = []
+
+    for d in details:
+        if not isinstance(d, str):
+            continue
+
+        # Línea de tope de características: "(características capadas: 25→15)"
+        cap_m = _CAP_RE.search(d)
+        if cap_m:
+            raw = int(cap_m.group(1))
+            capped = int(cap_m.group(2))
+            items.append({
+                "label": f"Características (tope: {raw}→{capped})",
+                "points": capped - raw,
+                "categoria": "características",
+            })
+            continue
+
+        # Extraer puntos del último paréntesis anclado al final
+        m = _PTS_RE.search(d)
+        if m:
+            pts = int(m.group(1))
+            label_raw = _PTS_RE.sub("", d).strip()
+        else:
+            pts = 0
+            label_raw = d.strip()
+
+        # Expandir etiquetas de características que son solo emoji ("🏊" → "🏊 Piscina")
+        for emoji, name in FEATURE_NAMES.items():
+            if label_raw.rstrip() == emoji:
+                label_raw = f"{emoji} {name}"
+                break
+
+        # Clasificar categoría
+        if "💎" in d or "❓" in d:
+            cat = "valor"
+        elif "📐" in d:
+            cat = "tamaño"
+        elif any(e in d for e in ["🏊", "🚗", "📦", "🌿", "🏡", "🛗", "🌳"]):
+            cat = "características"
+        elif any(e in d for e in ["🏗️", "🔧", "📅"]):
+            cat = "estado"
+        elif any(e in d for e in ["🚇", "🏢", "⚡"]):
+            cat = "ubicación"
+        elif "📉" in d or "💰" in d:
+            cat = "mercado"
+        elif "⚠️" in d or "🕸️" in d:
+            cat = "penalización"
+        else:
+            cat = "otro"
+
+        items.append({"label": label_raw, "points": pts, "categoria": cat})
+
+    # Reconciliar con el score final acotado (clamped 0-100 por el scorer)
+    suma = sum(it["points"] for it in items)
+    if suma != score_final:
+        ajuste = score_final - suma
+        items.append({
+            "label": "Ajuste (límite 0-100)",
+            "points": ajuste,
+            "categoria": "penalización" if ajuste < 0 else "otro",
+        })
+
+    return items, score_final
+
+
+def _render_breakdown_html(items, score_final):
+    """Construye el bloque HTML <details> con el desglose de puntuación."""
+    filas = []
+    for it in items:
+        pts = it["points"]
+        label = it["label"]
+        if pts > 0:
+            pts_html = f'<span class="sb-pts-pos">+{pts}</span>'
+        elif pts < 0:
+            pts_html = f'<span class="sb-pts-neg">{pts}</span>'
+        else:
+            pts_html = f'<span class="sb-pts-zero">0</span>'
+        filas.append(f'<tr class="sb-row"><td>{label}</td><td>{pts_html}</td></tr>')
+
+    filas_html = "".join(filas)
+    return (
+        '<details class="score-breakdown">'
+        "<summary>Ver desglose de puntuación</summary>"
+        '<table class="sb-table">'
+        f"{filas_html}"
+        f'<tr class="sb-total"><td>Total</td><td>{score_final}</td></tr>'
+        "</table>"
+        "</details>"
+    )
+
+
 # ── UI ───────────────────────────────────────────────────────────
 
 inject_styles()
@@ -677,6 +806,7 @@ with tab2:
     for i, (_, row) in enumerate(df.head(top_n).iterrows()):
         score = row.get("score", 0) or 0
         features, penalties, _ = parse_score_details(row)
+        breakdown_items, _ = breakdown_score_details(row)
         color = score_color(score)
 
         titulo = clean(row.get("title", "Sin título")) or "Sin título"
@@ -725,6 +855,7 @@ with tab2:
                 </div>
               </div>
               <div style="margin-top:0.75rem;">{chips}{warns}</div>
+              {_render_breakdown_html(breakdown_items, int(score))}
             </div>
             """,
             unsafe_allow_html=True,
