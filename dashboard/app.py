@@ -235,6 +235,13 @@ def inject_styles():
             font-size: 0.78rem; color: #d4d4d8; font-weight: 500;
         }
         .chip-warn { background: #2a1215; border-color: #5b1d22; color: #fca5a5; }
+        .prop-action-btn {
+            background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.2);
+            color: #818cf8; border-radius: 6px; padding: 0.28rem 0.75rem;
+            cursor: pointer; font-size: 0.82rem; font-weight: 500;
+            transition: all 140ms ease; margin-top: 0.75rem; display: inline-block;
+        }
+        .prop-action-btn:hover { background: rgba(99,102,241,0.22); border-color: #818cf8; color: #a5b4fc; }
 
         /* Desglose de puntuación */
         .score-breakdown {
@@ -943,6 +950,39 @@ components.html(f"""<script>
 }})();
 </script>""", height=0)
 
+# ── Wire-up botones € dentro de cards (hip-btn) ─────────────────
+# Los botones en st.markdown no pueden tener onclick, pero si data-*.
+# Este script los inyecta en el padre via event listeners.
+components.html("""<script>
+(function(){
+  var p = window.parent;
+  var tipos = ["Segunda mano","Obra nueva"];
+  var ccaas = ["Comunidad de Madrid","Castilla-La Mancha"];
+  function wire() {
+    p.document.querySelectorAll('.hip-btn:not([data-wired])').forEach(function(btn){
+      btn.setAttribute('data-wired','1');
+      btn.addEventListener('click', function(){
+        var precio = btn.getAttribute('data-precio');
+        var tipo  = parseInt(btn.getAttribute('data-tipo'),10);
+        var ccaa  = parseInt(btn.getAttribute('data-ccaa'),10);
+        var url = p.location.pathname
+          + '?hip_precio=' + precio
+          + '&hip_tipo='  + encodeURIComponent(tipos[tipo])
+          + '&hip_ccaa='  + encodeURIComponent(ccaas[ccaa])
+          + '&hip_nav_id=' + Date.now();
+        p.sessionStorage.setItem('_sw_tab','4');
+        var s = p.document.createElement('script');
+        s.textContent = 'window.location.href=' + JSON.stringify(url) + ';';
+        p.document.body.appendChild(s);
+      });
+    });
+  }
+  wire();
+  var obs = new MutationObserver(wire);
+  obs.observe(p.document.body, {childList:true, subtree:true});
+})();
+</script>""", height=0)
+
 # ── Pestañas ─────────────────────────────────────────────────────
 
 tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
@@ -1181,6 +1221,11 @@ with tab2:
         chips = "".join(f'<span class="chip">{c}</span>' for c in features) if features else ""
         warns = "".join(f'<span class="chip chip-warn">{p}</span>' for p in penalties) if penalties else ""
 
+        _t2_ubi = zona(row.get("location", ""), row.get("title", ""), row.get("description", ""))
+        _t2_tipo = tipo_vivienda(row.get("title", ""), row.get("description", ""), "")
+        _t2_tipo_idx = 1 if _t2_tipo == "Obra nueva" else 0
+        _t2_ccaa_idx = 1 if zona_a_ccaa(_t2_ubi) == "Castilla-La Mancha" else 0
+
         _desc_raw = row.get("description", "")
         _desc_clean = clean(_desc_raw[:1500]) if _desc_raw and len(_desc_raw) > 20 else ""
         _desc_safe = (_desc_clean.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
@@ -1215,23 +1260,14 @@ with tab2:
               <div style="margin-top:0.75rem;">{chips}{warns}</div>
               {_render_breakdown_html(breakdown_items, int(score))}
               {_desc_html}
+              <button class="prop-action-btn hip-btn"
+                      data-precio="{int(precio)}"
+                      data-tipo="{_t2_tipo_idx}"
+                      data-ccaa="{_t2_ccaa_idx}">€ Hipoteca</button>
             </div>
             """,
             unsafe_allow_html=True,
         )
-
-        _t2_ubi = zona(row.get("location", ""), row.get("title", ""), row.get("description", ""))
-        _t2_tipo = tipo_vivienda(row.get("title", ""), row.get("description", ""), "")
-        _t2_ccaa_idx = 1 if zona_a_ccaa(_t2_ubi) == "Castilla-La Mancha" else 0
-        _t2_tipo_idx = 1 if _t2_tipo == "Obra nueva" else 0
-        _t2_col = st.columns([8, 1])[1]
-        with _t2_col:
-            if st.button("€", key=f"hip2_{i}", help="Calcular hipoteca"):
-                st.session_state["hip_precio"] = int(precio)
-                st.session_state["hip_tipo"] = _t2_tipo
-                st.session_state["hip_ccaa"] = zona_a_ccaa(_t2_ubi)
-                st.session_state["_hip_py_nav"] = True
-                st.rerun()
 
 # ── TAB 3: Evolución + Análisis ─────────────────────────────────
 
@@ -1323,6 +1359,10 @@ with tab4:
 
             _b_sc = row.get("score", 0) or 0
             _b_col = score_color(_b_sc)
+            _b_ubi = zona(row.get("location", ""), row.get("title", ""), row.get("description", ""))
+            _b_tipo = tipo_vivienda(row.get("title", ""), row.get("description", ""), "")
+            _b_tipo_idx = 1 if _b_tipo == "Obra nueva" else 0
+            _b_ccaa_idx = 1 if zona_a_ccaa(_b_ubi) == "Castilla-La Mancha" else 0
 
             _b_fs = row.get("first_seen")
             try:
@@ -1348,21 +1388,14 @@ with tab4:
                       −{pct:.0f}%
                     </div>
                   </div>
+                  <button class="prop-action-btn hip-btn"
+                          data-precio="{int(cur)}"
+                          data-tipo="{_b_tipo_idx}"
+                          data-ccaa="{_b_ccaa_idx}">€ Hipoteca</button>
                 </div>
                 """,
                 unsafe_allow_html=True,
             )
-
-            _b_ubi = zona(row.get("location", ""), row.get("title", ""), row.get("description", ""))
-            _b_tipo = tipo_vivienda(row.get("title", ""), row.get("description", ""), "")
-            _b_col2 = st.columns([8, 1])[1]
-            with _b_col2:
-                if st.button("€", key=f"hip4_{_b_i}", help="Calcular hipoteca"):
-                    st.session_state["hip_precio"] = int(cur)
-                    st.session_state["hip_tipo"] = _b_tipo
-                    st.session_state["hip_ccaa"] = zona_a_ccaa(_b_ubi)
-                    st.session_state["_hip_py_nav"] = True
-                    st.rerun()
     else:
         st.info("No se han detectado bajadas de precio todavía. Aparecerán aquí cuando un listing baje entre pasadas.")
 
