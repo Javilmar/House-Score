@@ -167,6 +167,19 @@ def inject_styles():
             transition: all 200ms ease-in-out;
         }
         .prop-card:hover { border-color: rgba(255,255,255,0.13); box-shadow: 0 6px 18px rgba(0,0,0,0.45); }
+        .prop-card-row { display: flex; gap: 1.25rem; align-items: flex-start; }
+        .prop-card-body { flex: 1; min-width: 0; }
+        .prop-price { text-align: right; white-space: nowrap; }
+        @media (max-width: 640px) {
+          .prop-card-row { flex-wrap: wrap; gap: 0.75rem; }
+          .prop-price {
+            flex: 1 1 100%; display: flex; flex-wrap: wrap;
+            align-items: center; gap: 0.4rem 1rem;
+            text-align: left; white-space: normal;
+            padding-top: 0.6rem; border-top: 1px solid rgba(255,255,255,0.06);
+          }
+          .prop-price > div { white-space: nowrap; }
+        }
 
         .prop-rank { color: #71717a; font-weight: 600; font-size: 0.9rem; }
         .prop-title { font-weight: 600; font-size: 1.02rem; color: #fafafa; text-decoration: none; }
@@ -1171,17 +1184,17 @@ with tab2:
         st.markdown(
             f"""
             <div class="prop-card" id="card-{i}" style="scroll-margin-top:80px;">
-              <div style="display:flex; gap:1.25rem; align-items:flex-start;">
+              <div class="prop-card-row">
                 <div class="score-badge" style="background:{color};">{score:.0f}</div>
-                <div style="flex:1; min-width:0;">
+                <div class="prop-card-body">
                   <div><span class="prop-rank">{i+1}.</span> {link_open}{titulo}{link_close}</div>
                   <div class="prop-meta">{meta}</div>
                   <div class="score-bar-track"><div class="score-bar-fill" style="width:{min(score,100)}%; background:{color};"></div></div>
                 </div>
-                <div style="text-align:right; white-space:nowrap;">
+                <div class="prop-price">
                   <div style="font-size:1.15rem; font-weight:600; color:#18181b;">{precio:,.0f} €</div>
                   <div style="font-size:0.8rem; color:#71717a;">{eur_m2:,.0f} €/m²</div>
-                  <div style="font-size:0.8rem; color:#a1a1aa; margin-top:0.3rem; display:flex; gap:0.7rem; justify-content:flex-end;">
+                  <div style="font-size:0.8rem; color:#a1a1aa; display:flex; gap:0.7rem; justify-content:flex-end; margin-top:0.3rem;">
                     <span class="meta-item">{icon("ruler", size=14)}{m2:.0f} m²</span>
                     <span class="meta-item">{icon("bed", size=14)}{rooms:.0f}</span>
                     <span class="meta-item">{icon("bath", size=14)}{baths:.0f}</span>
@@ -1698,17 +1711,21 @@ with tab7:
         fig_mapa.update_layout(
             paper_bgcolor="rgba(0,0,0,0)",
             plot_bgcolor="rgba(0,0,0,0)",
-            margin=dict(l=0, r=0, t=0, b=0),
+            margin=dict(l=0, r=0, t=0, b=48),
             height=540,
             font=dict(family="Inter", size=12, color=MUTED),
             coloraxis_colorbar=dict(
-                title="Tasa<br>/ 100k",
-                tickfont=dict(color=MUTED, size=11),
-                title_font=dict(color=MUTED, size=12),
-                bgcolor=SURFACE,
+                orientation="h",
+                x=0.5, xanchor="center",
+                y=-0.04, yanchor="top",
+                thickness=10,
+                len=0.72,
+                title="Tasa / 100 000 hab",
+                title_side="top",
+                tickfont=dict(color=MUTED, size=10),
+                title_font=dict(color=MUTED, size=11),
+                bgcolor="rgba(0,0,0,0)",
                 bordercolor=BORDER,
-                thickness=14,
-                len=0.65,
             ),
             hoverlabel=dict(
                 bgcolor=SURFACE, bordercolor=BORDER,
