@@ -894,25 +894,28 @@ if _hip_nav_id and st.session_state.get("_last_hip_nav_id") != _hip_nav_id:
         st.session_state["hip_ccaa"] = _hip_qp["hip_ccaa"]
 
 # ── Watcher de navegacion rapida (MutationObserver) ─────────────
-# Dispara en cuanto los tabs aparecen en el DOM, sin polling.
-# Lee sessionStorage._sw_tab que goToHipoteca grabo antes del reload.
-components.html("""<script>
-(function(){
+# Dos origenes posibles:
+#   1. sessionStorage._sw_tab → goToHipoteca (location.href reload)
+#   2. _hip_py_nav en session_state → boton € en Tab 2 / Tab 4 (sin reload)
+_py_nav_tab = 4 if st.session_state.pop("_hip_py_nav", False) else "null"
+components.html(f"""<script>
+(function(){{
   var p = window.parent;
-  var idx = parseInt(p.sessionStorage.getItem('_sw_tab') || '', 10);
-  if (isNaN(idx)) return;
-  p.sessionStorage.removeItem('_sw_tab');
-  function tryClick() {
+  var ss = p.sessionStorage.getItem('_sw_tab');
+  var idx = ss !== null ? parseInt(ss, 10) : {_py_nav_tab};
+  if (ss !== null) p.sessionStorage.removeItem('_sw_tab');
+  if (idx === null || idx !== idx) return;
+  function tryClick() {{
     var t = p.document.querySelectorAll('[data-baseweb="tab"]');
-    if (t && t.length > idx) { t[idx].click(); return true; }
+    if (t && t.length > idx) {{ t[idx].click(); return true; }}
     return false;
-  }
-  if (!tryClick()) {
-    var obs = new MutationObserver(function(_, o) { if (tryClick()) o.disconnect(); });
-    obs.observe(p.document.body, {childList: true, subtree: true});
-    setTimeout(function() { obs.disconnect(); }, 4000);
-  }
-})();
+  }}
+  if (!tryClick()) {{
+    var obs = new MutationObserver(function(_, o) {{ if (tryClick()) o.disconnect(); }});
+    obs.observe(p.document.body, {{childList: true, subtree: true}});
+    setTimeout(function() {{ obs.disconnect(); }}, 4000);
+  }}
+}})();
 </script>""", height=0)
 
 # ── Pestañas ─────────────────────────────────────────────────────
@@ -965,6 +968,15 @@ with tab1:
         else:
             filtro_precio = None
 
+    col_f5, col_f6 = st.columns([1, 3])
+    with col_f5:
+        if "rooms" in base.columns and base["rooms"].notna().any():
+            rmin = int(base["rooms"].dropna().min())
+            rmax = int(base["rooms"].dropna().max())
+            filtro_rooms = st.slider("Habitaciones", rmin, rmax, (rmin, rmax), key="f1_rooms") if rmin < rmax else None
+        else:
+            filtro_rooms = None
+
     df_filtrado = base.copy()
     if filtro_zona:
         df_filtrado = df_filtrado[df_filtrado["_zona"].isin(filtro_zona)]
@@ -974,6 +986,8 @@ with tab1:
         df_filtrado = df_filtrado[(df_filtrado["score"] >= score_range[0]) & (df_filtrado["score"] <= score_range[1])]
     if filtro_precio and "price" in df_filtrado.columns:
         df_filtrado = df_filtrado[(df_filtrado["price"] >= filtro_precio[0]) & (df_filtrado["price"] <= filtro_precio[1])]
+    if filtro_rooms and "rooms" in df_filtrado.columns:
+        df_filtrado = df_filtrado[(df_filtrado["rooms"] >= filtro_rooms[0]) & (df_filtrado["rooms"] <= filtro_rooms[1])]
 
     columnas_csv = [c for c in ["title", "price", "score", "eur_m2", "location", "m2", "rooms", "bathrooms", "floor", "year_built", "energy_rating", "source", "first_seen", "url"] if c in df_filtrado.columns]
 
@@ -1028,6 +1042,16 @@ with tab1:
         bd_items, bd_total = breakdown_score_details(row)
         bd_html = _render_breakdown_html(bd_items, bd_total) if bd_items else ""
 
+        fs = row.get("first_seen")
+        try:
+            _dias_val = (hoy - pd.Timestamp(fs).date()).days if pd.notna(fs) else None
+        except Exception:
+            _dias_val = None
+        _dias_txt = f"{_dias_val}d" if _dias_val is not None else "—"
+        _dias_num = _dias_val if _dias_val is not None else 9999
+        _dias_col = "#f87171" if (_dias_val is not None and _dias_val > 45) else (
+                    "#fbbf24" if (_dias_val is not None and _dias_val > 20) else "#a1a1aa")
+
         ccaa_fila = zona_a_ccaa(ubi)
         es_obra_nueva_fila = (tipo == "Obra nueva")
 
@@ -1065,6 +1089,7 @@ with tab1:
             f'<td class="lt-num" data-v="{_num(row.get("m2"))}">{m2_txt}</td>'
             f'<td data-v="{tipo}"><span class="lt-tag {tipo_cls}">{tipo}</span></td>'
             f'<td data-v="{ubi}">{ubi}</td>'
+            f'<td class="lt-num" data-v="{_dias_num}" style="color:{_dias_col};white-space:nowrap;">{_dias_txt}</td>'
             f'{goto_cell}'
             "</tr>"
         )
@@ -1080,6 +1105,7 @@ with tab1:
             '<th onclick="ord(5,this)">m²<span class="arr"></span></th>'
             '<th onclick="ord(6,this)">Tipo<span class="arr"></span></th>'
             '<th onclick="ord(7,this)">Ubicación<span class="arr"></span></th>'
+            '<th onclick="ord(8,this)" title="Días en mercado">Días<span class="arr"></span></th>'
             '<th class="noord" style="width:38px;" title="Ver en Top scoring"></th>'
             "</tr>"
         )
@@ -1162,6 +1188,19 @@ with tab2:
             with st.expander("Descripción"):
                 st.write(clean(desc[:1500]))
 
+        _t2_ubi = zona(row.get("location", ""), row.get("title", ""), row.get("description", ""))
+        _t2_tipo = tipo_vivienda(row.get("title", ""), row.get("description", ""), "")
+        _t2_ccaa_idx = 1 if zona_a_ccaa(_t2_ubi) == "Castilla-La Mancha" else 0
+        _t2_tipo_idx = 1 if _t2_tipo == "Obra nueva" else 0
+        _t2_col = st.columns([8, 1])[1]
+        with _t2_col:
+            if st.button("€", key=f"hip2_{i}", help="Calcular hipoteca"):
+                st.session_state["hip_precio"] = int(precio)
+                st.session_state["hip_tipo"] = _t2_tipo
+                st.session_state["hip_ccaa"] = zona_a_ccaa(_t2_ubi)
+                st.session_state["_hip_py_nav"] = True
+                st.rerun()
+
 # ── TAB 3: Evolución + Análisis ─────────────────────────────────
 
 with tab3:
@@ -1238,7 +1277,7 @@ with tab4:
 
     if not bajadas.empty:
         bajadas_show = bajadas.sort_values("price_drop", ascending=False)
-        for _, row in bajadas_show.iterrows():
+        for _b_i, (_, row) in enumerate(bajadas_show.iterrows()):
             titulo = clean(row.get("title", "Sin título")) or "Sin título"
             url = row.get("url", "")
             link_open = f'<a class="prop-title" href="{url}" target="_blank">' if (isinstance(url, str) and url.startswith("http")) else '<span class="prop-title">'
@@ -1250,13 +1289,24 @@ with tab4:
             drop = row.get("price_drop", 0) or 0
             pct = (drop / prev * 100) if prev else 0
 
+            _b_sc = row.get("score", 0) or 0
+            _b_col = score_color(_b_sc)
+
+            _b_fs = row.get("first_seen")
+            try:
+                _b_dias = (hoy - pd.Timestamp(_b_fs).date()).days if pd.notna(_b_fs) else None
+            except Exception:
+                _b_dias = None
+            _b_dias_txt = f"{_b_dias}d en mercado" if _b_dias is not None else ""
+
             st.markdown(
                 f"""
                 <div class="prop-card">
                   <div style="display:flex; gap:1.25rem; align-items:center;">
+                    <div class="score-badge" style="background:{_b_col};">{_b_sc:.0f}</div>
                     <div style="flex:1; min-width:0;">
                       <div>{link_open}{titulo}{link_close}</div>
-                      <div class="prop-meta">{meta}</div>
+                      <div class="prop-meta">{meta}{(" · " + _b_dias_txt) if _b_dias_txt else ""}</div>
                     </div>
                     <div style="text-align:right; white-space:nowrap;">
                       <div style="font-size:0.8rem; color:#a1a1aa; text-decoration:line-through;">{prev:,.0f} €</div>
@@ -1270,6 +1320,17 @@ with tab4:
                 """,
                 unsafe_allow_html=True,
             )
+
+            _b_ubi = zona(row.get("location", ""), row.get("title", ""), row.get("description", ""))
+            _b_tipo = tipo_vivienda(row.get("title", ""), row.get("description", ""), "")
+            _b_col2 = st.columns([8, 1])[1]
+            with _b_col2:
+                if st.button("€", key=f"hip4_{_b_i}", help="Calcular hipoteca"):
+                    st.session_state["hip_precio"] = int(cur)
+                    st.session_state["hip_tipo"] = _b_tipo
+                    st.session_state["hip_ccaa"] = zona_a_ccaa(_b_ubi)
+                    st.session_state["_hip_py_nav"] = True
+                    st.rerun()
     else:
         st.info("No se han detectado bajadas de precio todavía. Aparecerán aquí cuando un listing baje entre pasadas.")
 
