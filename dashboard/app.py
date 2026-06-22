@@ -18,13 +18,14 @@ from pathlib import Path
 from datetime import date, datetime
 
 st.set_page_config(
-    page_title="Búsqueda de Vivienda",
+    page_title="House Score",
     page_icon=None,
     layout="wide",
     initial_sidebar_state="collapsed",
 )
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "datos"
+ASSETS_DIR = Path(__file__).resolve().parent / "assets"
 
 # ── Paleta semántica ─────────────────────────────────────────────
 
@@ -47,6 +48,17 @@ SCORE_SCALE = [
 
 # Secuencia neutra para series de datos
 SERIES = ["#6366f1", "#94a3b8", "#22d3ee", "#a78bfa", "#2dd4bf", "#94a3b8"]
+
+# ── Fiscalidad hipotecaria (tipos orientativos 2024-2026, editables) ──
+# Segunda mano → ITP autonómico; Obra nueva → IVA 10% + AJD autonómico.
+# Existen bonificaciones por edad, familia numerosa, VPO, etc. no reflejadas.
+IVA_OBRA_NUEVA = 0.10
+ITP = {"Comunidad de Madrid": 0.06, "Castilla-La Mancha": 0.09}
+AJD = {"Comunidad de Madrid": 0.0075, "Castilla-La Mancha": 0.015}
+OTROS_GASTOS_PCT = 0.015          # notaría + registro + gestoría (~1,5%)
+TASACION_EUR = 400                 # tasación bancaria orientativa (€ fijos)
+CCAA_DEFAULT = "Comunidad de Madrid"
+HIP_DEFAULTS = {"entrada_pct": 0.20, "plazo": 30, "tin": 0.03}
 
 
 # ── Iconos vectoriales (Lucide, inline SVG, stroke 1.75) ─────────
@@ -299,6 +311,8 @@ _MADRID_SUR = [
     "getafe", "leganes", "mostoles", "alcorcon", "fuenlabrada", "parla",
     "pinto", "valdemoro", "ciempozuelos", "humanes", "grinon",
     "navalcarnero", "torrejon de la calzada",
+    "cubas de la sagra", "batres", "serranillos del valle",
+    "moraleja de enmedio", "arroyomolinos",
 ]
 _TOLEDO_NORTE = [
     "illescas", "yeles", "esquivias", "yuncos", "yuncler", "yunclillos",
@@ -325,6 +339,15 @@ def zona(*textos):
     if any(t in blob for t in _TOLEDO_NORTE):
         return "Toledo Norte"
     return "—"
+
+
+def zona_a_ccaa(z):
+    """Traduce la zona de la app a nombre de CCAA (para tipos fiscales)."""
+    if z == "Madrid Sur":
+        return "Comunidad de Madrid"
+    if z == "Toledo Norte":
+        return "Castilla-La Mancha"
+    return CCAA_DEFAULT
 
 
 _OBRA_NUEVA_KW = [
@@ -378,9 +401,52 @@ tbody tr:hover { background: #18181b; }
 .lt-usada { background: rgba(255,255,255,0.04); color: #a1a1aa; border: 1px solid #27272a; }
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
+.lt-goto-btn {
+  background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.2);
+  color: #818cf8; border-radius: 6px; padding: 0.22rem 0.45rem;
+  cursor: pointer; font-size: 0.8rem; line-height: 1;
+  transition: all 140ms ease;
+}
+.lt-goto-btn:hover { background: rgba(99,102,241,0.22); border-color: #818cf8; color: #a5b4fc; }
+tbody td { vertical-align: top; }
+.score-breakdown { margin-top: 0.45rem; }
+.score-breakdown > summary { cursor: pointer; font-size: 0.7rem; color: #52525b; font-weight: 500; list-style: revert; user-select: none; }
+.score-breakdown > summary:hover { color: #a1a1aa; }
+.sb-table { width: 100%; border-collapse: collapse; margin-top: 0.35rem; min-width: 170px; }
+.sb-row td { padding: 0.1rem 0.2rem; font-size: 0.7rem; color: #a1a1aa; }
+.sb-total td { padding: 0.18rem 0.2rem; font-size: 0.72rem; font-weight: 600; color: #e4e4e7; border-top: 1px solid #27272a; }
+.sb-pts-pos { color: #4ade80; font-family: 'JetBrains Mono', monospace; }
+.sb-pts-neg { color: #f87171; font-family: 'JetBrains Mono', monospace; }
+.sb-pts-zero { color: #52525b; font-family: 'JetBrains Mono', monospace; }
+.sb-pts-neu { color: #a1a1aa; font-family: 'JetBrains Mono', monospace; }
 </style></head><body>
 <div class="wrap"><table id="lt"><thead>__THEAD__</thead><tbody>__ROWS__</tbody></table></div>
 <script>
+function goToHipoteca(precio, tipo_idx, ccaa_idx) {
+  var tipos = ["Segunda mano", "Obra nueva"];
+  var ccaas = ["Comunidad de Madrid", "Castilla-La Mancha"];
+  var url = window.parent.location.pathname
+    + '?hip_precio=' + precio
+    + '&hip_tipo=' + encodeURIComponent(tipos[tipo_idx])
+    + '&hip_ccaa=' + encodeURIComponent(ccaas[ccaa_idx]);
+  window.parent.location.href = url;
+}
+function goToCard(rank) {
+  var p = window.parent;
+  var tabs = p.document.querySelectorAll('[data-baseweb="tab"]');
+  if (tabs && tabs[1]) tabs[1].click();
+  var tries = 0;
+  function tryScroll() {
+    var el = p.document.getElementById('card-' + rank);
+    if (el) {
+      el.scrollIntoView({behavior: 'smooth', block: 'start'});
+      el.style.transition = 'box-shadow 300ms ease';
+      el.style.boxShadow = '0 0 0 2px #818cf8';
+      setTimeout(function() { el.style.boxShadow = ''; }, 1800);
+    } else if (tries < 12) { tries++; setTimeout(tryScroll, 150); }
+  }
+  setTimeout(tryScroll, 280);
+}
 function ord(idx, th) {
   var t = document.getElementById('lt'), tb = t.tBodies[0];
   var rows = Array.prototype.slice.call(tb.rows);
@@ -444,6 +510,27 @@ def cargar_datos():
         df["eur_m2"] = (df["price"] / df["m2"]).round(0)
 
     return df.sort_values("score", ascending=False, na_position="last")
+
+
+@st.cache_data
+def cargar_geojson_municipios(mtime: float = 0.0):
+    """Carga el GeoJSON de límites municipales. mtime invalida el caché cuando cambia el fichero."""
+    path = ASSETS_DIR / "municipios_zona.geojson"
+    if not path.exists():
+        return None
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+@st.cache_data
+def cargar_criminalidad(mtime: float = 0.0):
+    """Carga la tasa de criminalidad por municipio. mtime invalida el caché cuando cambia el fichero."""
+    path = ASSETS_DIR / "criminalidad.csv"
+    if not path.exists():
+        return pd.DataFrame()
+    # Saltar líneas de comentario (#)
+    df_c = pd.read_csv(path, comment="#")
+    df_c["tasa_criminalidad"] = pd.to_numeric(df_c["tasa_criminalidad"], errors="coerce")
+    return df_c
 
 
 def score_color(score):
@@ -598,12 +685,144 @@ def _render_breakdown_html(items, score_final):
     )
 
 
+# ── Cálculo hipotecario ──────────────────────────────────────────
+
+def calc_impuestos(precio, es_obra_nueva, ccaa):
+    """Devuelve los ítems de impuestos y el total para una compraventa.
+
+    Obra nueva → IVA 10% + AJD autonómico.
+    Segunda mano → ITP autonómico.
+    Tipos orientativos 2024-2026; pueden existir bonificaciones no reflejadas.
+    """
+    items = []
+    try:
+        p = float(precio)
+        if not (p > 0 and math.isfinite(p)):
+            return {"items": [], "total": 0}
+    except (TypeError, ValueError):
+        return {"items": [], "total": 0}
+
+    if es_obra_nueva:
+        iva = round(p * IVA_OBRA_NUEVA)
+        ajd_tipo = AJD.get(ccaa, AJD[CCAA_DEFAULT])
+        ajd = round(p * ajd_tipo)
+        items = [
+            (f"IVA (10%)", iva),
+            (f"AJD ({ajd_tipo*100:.2f}% — {ccaa})", ajd),
+        ]
+        total = iva + ajd
+    else:
+        itp_tipo = ITP.get(ccaa, ITP[CCAA_DEFAULT])
+        itp = round(p * itp_tipo)
+        items = [(f"ITP ({itp_tipo*100:.0f}% — {ccaa})", itp)]
+        total = itp
+
+    return {"items": items, "total": total}
+
+
+def calc_hipoteca(precio, entrada_pct, plazo_anios, tin, es_obra_nueva, ccaa):
+    """Calcula cuota mensual (sistema francés) y desglose de costes.
+
+    Devuelve un dict con:
+      principal, entrada, cuota_mensual, impuestos (dict), otros_gastos,
+      ahorro_necesario, total_intereses, total_pagado.
+    """
+    try:
+        p = float(precio)
+        if not (p > 0 and math.isfinite(p)):
+            raise ValueError
+    except (TypeError, ValueError):
+        return {
+            "principal": 0, "entrada": 0, "cuota_mensual": 0,
+            "impuestos": {"items": [], "total": 0},
+            "otros_gastos": 0, "ahorro_necesario": 0,
+            "total_intereses": 0, "total_pagado": 0,
+        }
+
+    entrada = round(p * entrada_pct)
+    principal = round(p - entrada)
+    n = int(plazo_anios) * 12
+    r = tin / 12
+
+    if r > 0 and n > 0:
+        cuota = principal * r / (1 - (1 + r) ** (-n))
+    elif n > 0:
+        cuota = principal / n
+    else:
+        cuota = 0
+
+    total_pagado_prestamo = cuota * n
+    total_intereses = max(0, total_pagado_prestamo - principal)
+
+    impuestos = calc_impuestos(p, es_obra_nueva, ccaa)
+    otros_gastos = round(p * OTROS_GASTOS_PCT) + TASACION_EUR
+    ahorro_necesario = entrada + impuestos["total"] + otros_gastos
+
+    return {
+        "principal": principal,
+        "entrada": entrada,
+        "cuota_mensual": round(cuota),
+        "impuestos": impuestos,
+        "otros_gastos": otros_gastos,
+        "ahorro_necesario": ahorro_necesario,
+        "total_intereses": round(total_intereses),
+        "total_pagado": round(total_pagado_prestamo + entrada + impuestos["total"] + otros_gastos),
+    }
+
+
+def _render_hipoteca_inline_html(precio, es_obra_nueva, ccaa):
+    """Bloque <details> con estimación hipotecaria usando supuestos por defecto."""
+    h = calc_hipoteca(
+        precio,
+        HIP_DEFAULTS["entrada_pct"],
+        HIP_DEFAULTS["plazo"],
+        HIP_DEFAULTS["tin"],
+        es_obra_nueva,
+        ccaa,
+    )
+    if h["cuota_mensual"] == 0:
+        return ""
+
+    def _e(v):
+        return f"{int(round(v)):,}".replace(",", ".") + " €"
+
+    tipo_str = "Obra nueva" if es_obra_nueva else "2ª mano"
+    summary = (
+        f"hipoteca ~{_e(h['cuota_mensual'])}/mes "
+        f"<span style='color:#52525b;font-size:0.68rem;'>"
+        f"(80%, {HIP_DEFAULTS['plazo']} a., {HIP_DEFAULTS['tin']*100:.1f}%)</span>"
+    )
+
+    filas = [
+        f'<tr class="sb-row"><td>Entrada (20%)</td><td class="sb-pts-neu">{_e(h["entrada"])}</td></tr>',
+    ]
+    for etiqueta, importe in h["impuestos"]["items"]:
+        filas.append(
+            f'<tr class="sb-row"><td>{etiqueta}</td><td class="sb-pts-neu">{_e(importe)}</td></tr>'
+        )
+    filas += [
+        f'<tr class="sb-row"><td>Otros gastos (gestoría, notaría, tasación…)</td><td class="sb-pts-neu">{_e(h["otros_gastos"])}</td></tr>',
+        f'<tr class="sb-total"><td>Ahorro necesario</td><td>{_e(h["ahorro_necesario"])}</td></tr>',
+        f'<tr class="sb-row"><td style="color:#52525b;">Total pagado (préstamo + entrada + gastos)</td>'
+        f'<td class="sb-pts-neu" style="color:#52525b;">{_e(h["total_pagado"])}</td></tr>',
+    ]
+
+    return (
+        f'<details class="score-breakdown">'
+        f"<summary>{summary}</summary>"
+        f'<table class="sb-table">'
+        f"{''.join(filas)}"
+        f"</table>"
+        f"</details>"
+    )
+
+
 # ── UI ───────────────────────────────────────────────────────────
 
 inject_styles()
 
-st.title("Búsqueda de Vivienda")
-st.caption("Madrid Sur · Toledo Norte — pisos.com · idealista · Scoring a medida · Hasta 250.000 €")
+st.title("House Score")
+st.caption("Madrid Sur · Toledo Norte — pisos.com · idealista · Scoring a medida · Hasta 300.000 €")
 
 df = cargar_datos()
 
@@ -653,14 +872,38 @@ st.write("")
 st.markdown(f'<div class="kpi-grid">{kpi_cards}</div>', unsafe_allow_html=True)
 st.write("")
 
+# ── Precarga hipoteca desde query params (navegación desde la tabla) ──
+_hip_qp = st.query_params
+if "hip_precio" in _hip_qp and "hip_precio" not in st.session_state:
+    try:
+        st.session_state["hip_precio"] = int(_hip_qp["hip_precio"])
+        st.session_state["_hip_nav"] = True
+    except (TypeError, ValueError):
+        pass
+if "hip_tipo" in _hip_qp and "hip_tipo" not in st.session_state:
+    st.session_state["hip_tipo"] = _hip_qp["hip_tipo"]
+if "hip_ccaa" in _hip_qp and "hip_ccaa" not in st.session_state:
+    st.session_state["hip_ccaa"] = _hip_qp["hip_ccaa"]
+
+if st.session_state.get("_hip_nav", False):
+    st.session_state.pop("_hip_nav")
+    components.html(
+        '<script>setTimeout(function(){'
+        'var t=window.parent.document.querySelectorAll(\'[data-baseweb="tab"]\');'
+        'if(t&&t[4])t[4].click();},500);</script>',
+        height=0,
+    )
+
 # ── Pestañas ─────────────────────────────────────────────────────
 
-tab1, tab2, tab3, tab4, tab5 = st.tabs([
+tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
     "Listados completos",
     "Top scoring",
     "Evolución y análisis",
     "Bajadas de precio",
+    "Hipoteca",
     "Cómo funciona",
+    "Mapa de seguridad",
 ])
 
 # ── TAB 1: Listados completos ────────────────────────────────────
@@ -733,6 +976,8 @@ with tab1:
         except (ValueError, TypeError):
             return ""
 
+    url_to_rank = {str(r.get("url", "")): i for i, (_, r) in enumerate(df.iterrows())}
+
     medallas = {0: "🥇", 1: "🥈", 2: "🥉"}
     filas = []
     for i, (_, row) in enumerate(df_tabla.iterrows()):
@@ -759,6 +1004,34 @@ with tab1:
         tipo_cls = "lt-nuevo" if tipo == "Obra nueva" else "lt-usada"
         col = score_color(sc)
 
+        bd_items, bd_total = breakdown_score_details(row)
+        bd_html = _render_breakdown_html(bd_items, bd_total) if bd_items else ""
+
+        ccaa_fila = zona_a_ccaa(ubi)
+        es_obra_nueva_fila = (tipo == "Obra nueva")
+
+        _precio_int = int(row.get("price") or 0)
+        _tipo_idx = 1 if es_obra_nueva_fila else 0
+        _ccaa_idx = 1 if ccaa_fila == "Castilla-La Mancha" else 0
+        hip_btn = (
+            f'<button class="lt-goto-btn" '
+            f'onclick="goToHipoteca({_precio_int},{_tipo_idx},{_ccaa_idx})" '
+            f'title="Calcular hipoteca" style="margin-top:0.3rem;">€</button>'
+        )
+
+        url_str = str(row.get("url", ""))
+        global_rank = url_to_rank.get(url_str, -1)
+        if global_rank >= 0 and global_rank < 30:
+            goto_cell = (
+                f'<td style="padding:0.4rem 0.5rem;">'
+                f'<div style="display:flex;flex-direction:column;align-items:center;gap:0.2rem;">'
+                f'<button class="lt-goto-btn" onclick="goToCard({global_rank})" title="Ver en Top scoring">↗</button>'
+                f'{hip_btn}'
+                f'</div></td>'
+            )
+        else:
+            goto_cell = f'<td style="padding:0.4rem 0.5rem;text-align:center;">{hip_btn}</td>'
+
         filas.append(
             "<tr>"
             f'<td class="lt-pos">{pos}</td>'
@@ -766,11 +1039,12 @@ with tab1:
             f'<td class="lt-price" data-v="{_num(row.get("price"))}">{_fmt_eur(row.get("price"))}</td>'
             f'<td data-v="{sc:.0f}"><div class="lt-score-wrap"><span class="lt-score-num">{sc:.0f}</span>'
             f'<span class="lt-score-track"><span class="lt-score-fill" '
-            f'style="width:{min(sc, 100)}%;background:{col};"></span></span></div></td>'
+            f'style="width:{min(sc, 100)}%;background:{col};"></span></span></div>{bd_html}</td>'
             f'<td class="lt-num" data-v="{_num(row.get("eur_m2"))}">{_fmt_eur(row.get("eur_m2"))}</td>'
             f'<td class="lt-num" data-v="{_num(row.get("m2"))}">{m2_txt}</td>'
             f'<td data-v="{tipo}"><span class="lt-tag {tipo_cls}">{tipo}</span></td>'
             f'<td data-v="{ubi}">{ubi}</td>'
+            f'{goto_cell}'
             "</tr>"
         )
 
@@ -785,6 +1059,7 @@ with tab1:
             '<th onclick="ord(5,this)">m²<span class="arr"></span></th>'
             '<th onclick="ord(6,this)">Tipo<span class="arr"></span></th>'
             '<th onclick="ord(7,this)">Ubicación<span class="arr"></span></th>'
+            '<th class="noord" style="width:38px;" title="Ver en Top scoring"></th>'
             "</tr>"
         )
         doc = _TABLA_TEMPLATE.replace("__THEAD__", thead).replace("__ROWS__", "".join(filas))
@@ -836,7 +1111,7 @@ with tab2:
 
         st.markdown(
             f"""
-            <div class="prop-card">
+            <div class="prop-card" id="card-{i}" style="scroll-margin-top:80px;">
               <div style="display:flex; gap:1.25rem; align-items:flex-start;">
                 <div class="score-badge" style="background:{color};">{score:.0f}</div>
                 <div style="flex:1; min-width:0;">
@@ -977,9 +1252,129 @@ with tab4:
     else:
         st.info("No se han detectado bajadas de precio todavía. Aparecerán aquí cuando un listing baje entre pasadas.")
 
-# ── TAB 5: Cómo funciona ─────────────────────────────────────────
+# ── TAB 5: Hipoteca ──────────────────────────────────────────────
 
 with tab5:
+    st.write("")
+    st.subheader("Calculadora de hipoteca")
+
+    precio_medio = int(df["price"].median()) if "price" in df.columns and df["price"].notna().any() else 200000
+
+    col_h1, col_h2, col_h3 = st.columns(3)
+    with col_h1:
+        hip_precio = st.number_input(
+            "Precio de compra (€)", min_value=10_000, max_value=5_000_000,
+            value=precio_medio, step=5_000, format="%d", key="hip_precio",
+        )
+        _precio_fmt = f"{int(hip_precio):,}".replace(",", ".")
+        st.markdown(
+            f'<div style="font-family:\'Fraunces\',serif;font-size:2.4rem;'
+            f'font-weight:400;letter-spacing:-0.03em;color:#fafafa;'
+            f'line-height:1;margin:-0.25rem 0 1rem 0;">'
+            f'{_precio_fmt}'
+            f'<span style="font-size:1.1rem;color:#a1a1aa;margin-left:0.3rem;">€</span>'
+            f'</div>',
+            unsafe_allow_html=True,
+        )
+        hip_tipo = st.radio(
+            "Tipo de vivienda", ["Segunda mano", "Obra nueva"],
+            index=0, key="hip_tipo", horizontal=True,
+        )
+        hip_ccaa = st.radio(
+            "Comunidad autónoma", ["Comunidad de Madrid", "Castilla-La Mancha"],
+            index=0, key="hip_ccaa", horizontal=True,
+        )
+    with col_h2:
+        hip_entrada_pct = st.slider(
+            "Entrada (%)", min_value=5, max_value=50, value=20, step=1,
+            format="%d%%", key="hip_entrada",
+        )
+        hip_plazo = st.slider(
+            "Plazo (años)", min_value=5, max_value=40, value=30, step=1,
+            key="hip_plazo",
+        )
+    with col_h3:
+        hip_tin = st.slider(
+            "Tipo de interés fijo (%)", min_value=0.5, max_value=8.0,
+            value=3.0, step=0.05, format="%.2f%%", key="hip_tin",
+        )
+
+    hip_es_obra_nueva = (hip_tipo == "Obra nueva")
+    hip_result = calc_hipoteca(
+        hip_precio, hip_entrada_pct / 100, hip_plazo,
+        hip_tin / 100, hip_es_obra_nueva, hip_ccaa,
+    )
+
+    def _hip_eur(v):
+        return f"{int(round(v)):,}".replace(",", ".") + " €"
+
+    hip_kpis = [
+        ("wallet",        "Cuota mensual",        _hip_eur(hip_result["cuota_mensual"])),
+        ("zap",           "Ahorro necesario",      _hip_eur(hip_result["ahorro_necesario"])),
+        ("trending-down", "Total intereses",       _hip_eur(hip_result["total_intereses"])),
+        ("building",      "Total desembolso",      _hip_eur(hip_result["total_pagado"])),
+    ]
+    hip_cards = "".join(
+        f'<div class="kpi-card">'
+        f'<div class="kpi-icon">{icon(n, size=18)}</div>'
+        f'<div class="kpi-label">{lbl}</div>'
+        f'<div class="kpi-value">{val}</div>'
+        f'</div>'
+        for n, lbl, val in hip_kpis
+    )
+    st.markdown(f'<div class="kpi-grid">{hip_cards}</div>', unsafe_allow_html=True)
+
+    st.write("")
+    st.markdown("**Desglose de ahorro necesario:**")
+
+    imp = hip_result["impuestos"]
+    tipo_txt = "Obra nueva (IVA + AJD)" if hip_es_obra_nueva else "Segunda mano (ITP)"
+    imp_filas = "".join(
+        f'<tr class="sb-row"><td>{et}</td>'
+        f'<td style="font-family:\'JetBrains Mono\',monospace;color:#a1a1aa;">{_hip_eur(im)}</td></tr>'
+        for et, im in imp["items"]
+    )
+    otros_filas = (
+        f'<tr class="sb-row"><td>Otros gastos (gestoría, notaría, tasación…)</td>'
+        f'<td style="font-family:\'JetBrains Mono\',monospace;color:#a1a1aa;">{_hip_eur(hip_result["otros_gastos"])}</td></tr>'
+    )
+    entrada_fila = (
+        f'<tr class="sb-row"><td>Entrada ({hip_entrada_pct}%)</td>'
+        f'<td style="font-family:\'JetBrains Mono\',monospace;color:#a1a1aa;">{_hip_eur(hip_result["entrada"])}</td></tr>'
+    )
+    total_fila = (
+        f'<tr class="sb-total"><td>Ahorro necesario total</td>'
+        f'<td>{_hip_eur(hip_result["ahorro_necesario"])}</td></tr>'
+    )
+
+    desglose_html = f"""
+    <div style="max-width:520px;">
+      <table class="sb-table" style="background:#131316;border:1px solid #27272a;
+             border-radius:10px;overflow:hidden;margin-top:0.5rem;">
+        <thead><tr style="background:#18181b;">
+          <th style="padding:0.5rem 0.6rem;font-size:0.72rem;font-weight:600;
+                     color:#a1a1aa;text-transform:uppercase;letter-spacing:0.04em;
+                     text-align:left;">Concepto ({tipo_txt})</th>
+          <th style="padding:0.5rem 0.6rem;font-size:0.72rem;font-weight:600;
+                     color:#a1a1aa;text-transform:uppercase;letter-spacing:0.04em;
+                     text-align:left;">Importe</th>
+        </tr></thead>
+        <tbody>{entrada_fila}{imp_filas}{otros_filas}{total_fila}</tbody>
+      </table>
+    </div>
+    """
+    st.markdown(desglose_html, unsafe_allow_html=True)
+
+    st.caption(
+        "Tipos impositivos orientativos 2024-2026. ITP: C. Madrid 6% / CLM 9%. "
+        "AJD (obra nueva): C. Madrid 0,75% / CLM 1,5%. IVA obra nueva: 10%. "
+        "Otros gastos (~1,5% + tasación 400€) son estimaciones. "
+        "Pueden existir bonificaciones por edad, familia numerosa, VPO, etc."
+    )
+
+# ── TAB 6: Cómo funciona ─────────────────────────────────────────
+
+with tab6:
     st.write("")
     st.markdown(
         """
@@ -1085,43 +1480,179 @@ with tab5:
             "el campo **Source** indicando su origen. **Fotocasa** queda fuera "
             "por ahora (bloqueo consistente)."
         )
-    with st.expander("¿Por qué la zona es Madrid Sur + Toledo Norte?"):
+    with st.expander("¿Qué municipios se rastrean?"):
         st.markdown(
             "Nos centramos en municipios a **30–40 min de Madrid por autovía** "
-            "(corredores A-42, A-4 y A-5): Getafe, Leganés, Móstoles, Alcorcón, "
-            "Fuenlabrada, Parla, Pinto, Valdemoro y, ya en Toledo, Illescas, Seseña, "
-            "Esquivias, Yuncos, Yeles y alrededores. **Toledo capital queda fuera**: "
+            "(corredores A-42, A-4 y A-5). **Toledo capital queda fuera**: "
             "está a ~55 min y es un mercado distinto."
         )
+        c_ms, c_tn = st.columns(2)
+        with c_ms:
+            st.markdown(
+                "**Madrid Sur (18)**\n\n"
+                "Alcorcón · Arroyomolinos · Batres · Ciempozuelos · "
+                "Cubas de la Sagra · Fuenlabrada · Getafe · Griñón · "
+                "Humanes de Madrid · Leganés · Móstoles · Moraleja de Enmedio · "
+                "Navalcarnero · Parla · Pinto · Serranillos del Valle · "
+                "Torrejón de la Calzada · Valdemoro"
+            )
+        with c_tn:
+            st.markdown(
+                "**Toledo Norte (29)**\n\n"
+                "Alameda de la Sagra · Añover de Tajo · Bargas · "
+                "Burguillos de Toledo · Cabañas de la Sagra · Carranque · "
+                "Casarrubios del Monte · Cedillo del Condado · Cobeja · Cobisa · "
+                "Chozas de Canales · El Viso de San Juan · Esquivias · "
+                "Illescas · Lominchar · Magán · Mocejón · Numancia de la Sagra · "
+                "Olías del Rey · Pantoja · Recas · Seseña · Ugena · Valmojado · "
+                "Villaluenga de la Sagra · Yeles · Yuncler · Yunclillos · Yuncos"
+            )
     with st.expander("¿Cómo se asegura que el precio es real?"):
         st.markdown(
-            "El listado de búsqueda a veces muestra precios “desde”, que engañan. "
+            'El listado de búsqueda a veces muestra precios "desde", que engañan. '
             "Por eso el sistema puntúa primero todos los anuncios, **visita la ficha "
             "completa de los mejores** y vuelve a puntuarlos con los datos reales: "
             "precio, metros, habitaciones, baños, año y estado de conservación. "
-            "Por eso algún anuncio puede aparecer algo por encima de 250.000 €: su "
+            "Por eso algún anuncio puede aparecer algo por encima de 300.000 €: su "
             "precio real (de la ficha) subió respecto al del listado, pero si su €/m² "
             "es bueno se mantiene como oportunidad."
         )
-    with st.expander("¿Qué significa “barato para su zona”?"):
+    with st.expander('¿Qué significa "barato para su zona"?'):
         st.markdown(
             "Es el factor que más pesa. Cada pasada calcula la **mediana de €/m² "
             "de cada municipio** a partir de todos los anuncios recogidos, y compara "
             "el €/m² de cada vivienda con esa media: si está por debajo, es un chollo "
             "y sube; si está por encima, baja. Si un municipio tiene pocos anuncios, "
             "se usa la media de su **zona** (Madrid Sur / Toledo Norte). "
-            "**Matiz**: la media se calcula sobre anuncios de hasta 250.000 €, así que "
+            "**Matiz**: la media se calcula sobre anuncios de hasta 300.000 €, así que "
             "es la referencia del *segmento asequible*, no del mercado completo."
         )
-    with st.expander("¿Por qué algunos salen como “sin valorar”?"):
+    with st.expander('¿Por qué algunos salen como "sin valorar"?'):
         st.markdown(
-            "Si un anuncio no trae los **m² de forma fiable** (faltan o el dato es "
-            "absurdo), no se puede calcular su €/m² ni compararlo con su zona. Esos "
-            "anuncios se marcan **“s/valorar”**, quedan **fuera del Top** y no cuentan "
-            "en el “Score medio”, pero siguen guardados por si quieres revisarlos."
+            'Si un anuncio no trae los **m² de forma fiable** (faltan o el dato es '
+            'absurdo), no se puede calcular su €/m² ni compararlo con su zona. Esos '
+            'anuncios se marcan **"s/valorar"**, quedan **fuera del Top** y no cuentan '
+            'en el "Score medio", pero siguen guardados por si quieres revisarlos.'
+        )
+    with st.expander("¿De dónde vienen los datos de peligrosidad del mapa?"):
+        st.markdown(
+            "El mapa de seguridad usa la **tasa de criminalidad oficial** (infracciones "
+            "penales × 100 000 hab) publicada por el **Portal Estadístico de Criminalidad** "
+            "del Ministerio del Interior. Solo tienen publicación oficial los municipios "
+            "con más de **20 000 habitantes**, por lo que los pueblos pequeños de la Sagra "
+            "toledana aparecen en gris. La tasa se calcula anualizado datos de Q1 2026. "
+            "Fuente: estadisticasdecriminalidad.ses.mir.es"
         )
 
     st.caption("La puntuación es orientativa: ayuda a priorizar, no sustituye una visita.")
+
+# ── TAB 7: Mapa de seguridad ──────────────────────────────────────
+
+with tab7:
+    st.write("")
+
+    _gj_path = ASSETS_DIR / "municipios_zona.geojson"
+    _csv_path = ASSETS_DIR / "criminalidad.csv"
+    geojson_mun = cargar_geojson_municipios(_gj_path.stat().st_mtime if _gj_path.exists() else 0.0)
+    df_crim = cargar_criminalidad(_csv_path.stat().st_mtime if _csv_path.exists() else 0.0)
+
+    if geojson_mun is None or df_crim.empty:
+        st.warning(
+            "Activos del mapa no encontrados. Ejecuta primero el script de build:\n\n"
+            "```\ncd house-dashboard/dashboard\npython scripts/build_mapa_assets.py\n```"
+        )
+    else:
+        import plotly.express as px
+
+        periodo = df_crim["periodo"].iloc[0] if "periodo" in df_crim.columns else "Q1 2026"
+        tasa_max = df_crim["tasa_criminalidad"].max()
+        tasa_min = df_crim["tasa_criminalidad"].min()
+
+        # Escala de color: verde (seguro) → rojo (peligroso)
+        COLOR_SCALE = [
+            [0.0,  "#22c55e"],   # verde
+            [0.35, "#84cc16"],
+            [0.55, "#eab308"],   # amarillo
+            [0.75, "#f97316"],   # naranja
+            [1.0,  "#ef4444"],   # rojo
+        ]
+
+        fig_mapa = px.choropleth_map(
+            df_crim,
+            geojson=geojson_mun,
+            locations="cod_ine",
+            featureidkey="properties.cod_ine",
+            color="tasa_criminalidad",
+            color_continuous_scale=COLOR_SCALE,
+            range_color=(tasa_min * 0.85, tasa_max * 1.05),
+            hover_name="municipio",
+            hover_data={
+                "cod_ine": False,
+                "tasa_criminalidad": ":.0f",
+                "periodo": True,
+            },
+            labels={
+                "tasa_criminalidad": "Tasa / 100 000 hab",
+                "periodo": "Período",
+            },
+            center={"lat": 40.18, "lon": -3.78},
+            zoom=9,
+            map_style="carto-darkmatter",
+            opacity=0.75,
+        )
+
+        fig_mapa.update_layout(
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            margin=dict(l=0, r=0, t=0, b=0),
+            height=540,
+            font=dict(family="Inter", size=12, color=MUTED),
+            coloraxis_colorbar=dict(
+                title="Tasa<br>/ 100k",
+                tickfont=dict(color=MUTED, size=11),
+                title_font=dict(color=MUTED, size=12),
+                bgcolor=SURFACE,
+                bordercolor=BORDER,
+                thickness=14,
+                len=0.65,
+            ),
+            hoverlabel=dict(
+                bgcolor=SURFACE, bordercolor=BORDER,
+                font=dict(family="Inter", color=INK),
+            ),
+        )
+
+        st.plotly_chart(fig_mapa, use_container_width=True)
+
+        # Municipios sin dato: los del GeoJSON que no están en df_crim
+        crim_codes = set(df_crim["cod_ine"].astype(str))
+        geo_codes = {f["properties"]["cod_ine"] for f in geojson_mun["features"]}
+        sin_dato = sorted(
+            f["properties"]["nombre"]
+            for f in geojson_mun["features"]
+            if f["properties"]["cod_ine"] not in crim_codes
+        )
+
+        st.caption(
+            f"**Fuente**: Portal Estadístico de Criminalidad · Ministerio del Interior · "
+            f"**Período**: {periodo} · "
+            f"**Métrica**: infracciones penales / 100 000 hab · "
+            f"**Rojo** = más peligroso · **Verde** = más seguro · "
+            f"**Gris** = sin publicación oficial (<20 000 hab)"
+        )
+
+        with st.expander(f"Municipios sin datos oficiales ({len(sin_dato)} en gris)"):
+            st.write(", ".join(sin_dato) if sin_dato else "Todos tienen datos.")
+
+        st.write("")
+        st.subheader("Ranking de peligrosidad")
+        df_rank = df_crim[["municipio", "tasa_criminalidad"]].sort_values(
+            "tasa_criminalidad", ascending=False
+        ).reset_index(drop=True)
+        df_rank.index += 1
+        df_rank.columns = ["Municipio", "Tasa / 100 000 hab"]
+        df_rank["Tasa / 100 000 hab"] = df_rank["Tasa / 100 000 hab"].map("{:.0f}".format)
+        st.dataframe(df_rank, use_container_width=True, hide_index=False)
 
 # ── Footer ───────────────────────────────────────────────────────
 
@@ -1130,5 +1661,5 @@ st.divider()
 st.caption(
     f"Última actualización: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} · "
     f"Datos en `{DATA_DIR}` · [Forzar recarga](?rerun) · "
-    f"Scraper: property_scorer.py (pisos.com + idealista · Madrid Sur + Toledo Norte · ≤ 250.000 €)"
+    f"Scraper: property_scorer.py (pisos.com + idealista · Madrid Sur + Toledo Norte · ≤ 300.000 €)"
 )
