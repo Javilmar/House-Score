@@ -423,26 +423,20 @@ tbody td { vertical-align: top; }
 <div class="wrap"><table id="lt"><thead>__THEAD__</thead><tbody>__ROWS__</tbody></table></div>
 <script>
 function goToHipoteca(precio, tipo_idx, ccaa_idx) {
-  // Rellenar widgets puente ocultos del padre + click en pestana.
-  // Todo en un script inyectado en el contexto del padre (sin sandbox).
-  var script = window.parent.document.createElement('script');
-  script.textContent =
-    '(function(){' +
-    'function setVal(label,val){' +
-    'var el=document.querySelector(\\'input[aria-label="\\'+label+\\'"]\\');' +
-    'if(!el)return;' +
-    'var nv=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,\\"value\\");' +
-    'nv.set.call(el,val);' +
-    'el.dispatchEvent(new Event(\\"input\\",{bubbles:!0}));' +
-    '}' +
-    'setVal(\\"__hb_precio\\",' + precio + ');' +
-    'setVal(\\"__hb_tipo\\",' + tipo_idx + ');' +
-    'setVal(\\"__hb_ccaa\\",' + ccaa_idx + ');' +
-    'setVal(\\"__hb_id\\",Date.now());' +
-    'var t=document.querySelectorAll(\\'[data-baseweb=\\"tab\\"]\\');' +
-    'if(t&&t.length>4)t[4].click();' +
-    '})()';
-  window.parent.document.body.appendChild(script);
+  var p = window.parent;
+  var tipos = ["Segunda mano", "Obra nueva"];
+  var ccaas = ["Comunidad de Madrid", "Castilla-La Mancha"];
+  var url = p.location.pathname
+    + '?hip_precio=' + precio
+    + '&hip_tipo=' + encodeURIComponent(tipos[tipo_idx])
+    + '&hip_ccaa=' + encodeURIComponent(ccaas[ccaa_idx])
+    + '&hip_nav_id=' + Date.now();
+  // Marcar en sessionStorage el tab destino (indice 4 = Hipoteca).
+  // Sobrevive el reload y es sincrono → el watcher lo lee en cuanto carga.
+  p.sessionStorage.setItem('_sw_tab', '4');
+  var s = p.document.createElement('script');
+  s.textContent = 'window.location.href=' + JSON.stringify(url) + ';';
+  p.document.body.appendChild(s);
 }
 function goToCard(rank) {
   var p = window.parent;
@@ -882,34 +876,44 @@ st.write("")
 st.markdown(f'<div class="kpi-grid">{kpi_cards}</div>', unsafe_allow_html=True)
 st.write("")
 
+# ── Precarga hipoteca desde query params (navegación desde la tabla) ──
+# Usamos hip_nav_id (timestamp del cliente) para aplicar los params solo
+# una vez por navegación: si el mismo id ya fue procesado, el usuario está
+# interactuando con la pestaña y no sobreescribimos sus cambios.
+_hip_qp = st.query_params
+_hip_nav_id = _hip_qp.get("hip_nav_id", "")
+if _hip_nav_id and st.session_state.get("_last_hip_nav_id") != _hip_nav_id:
+    st.session_state["_last_hip_nav_id"] = _hip_nav_id
+    try:
+        st.session_state["hip_precio"] = int(_hip_qp["hip_precio"])
+    except (KeyError, TypeError, ValueError):
+        pass
+    if "hip_tipo" in _hip_qp:
+        st.session_state["hip_tipo"] = _hip_qp["hip_tipo"]
+    if "hip_ccaa" in _hip_qp:
+        st.session_state["hip_ccaa"] = _hip_qp["hip_ccaa"]
 
-# ── Puente inter-pestañas (widgets ocultos, sin recarga) ──────────
-# El JS de la tabla rellena estos inputs numericos ocultos y hace
-# click en la pestana Hipoteca. Streamlit detecta los cambios y
-# ejecuta un rerun ligero (sin location.href ni recarga de pagina).
-_bridge_precio = st.number_input("__hb_precio", value=0, key="_hb_precio",
-                                  min_value=0, label_visibility="hidden")
-_bridge_tipo = st.number_input("__hb_tipo", value=0, key="_hb_tipo",
-                                min_value=0, max_value=1, label_visibility="hidden")
-_bridge_ccaa = st.number_input("__hb_ccaa", value=0, key="_hb_ccaa",
-                                min_value=0, max_value=1, label_visibility="hidden")
-_bridge_id = st.number_input("__hb_id", value=0, key="_hb_id",
-                              min_value=0, label_visibility="hidden")
-
-if (st.session_state.get("_hb_precio", 0) > 0
-        and st.session_state.get("_hb_id", 0) != st.session_state.get("_last_hb_id", 0)):
-    st.session_state["_last_hb_id"] = st.session_state["_hb_id"]
-    st.session_state["hip_precio"] = st.session_state["_hb_precio"]
-    st.session_state["hip_tipo"] = (
-        "Obra nueva" if st.session_state.get("_hb_tipo", 0) == 1 else "Segunda mano"
-    )
-    st.session_state["hip_ccaa"] = (
-        "Castilla-La Mancha" if st.session_state.get("_hb_ccaa", 0) == 1
-        else "Comunidad de Madrid"
-    )
-    st.session_state["_hb_precio"] = 0
-    st.session_state["_hb_tipo"] = 0
-    st.session_state["_hb_ccaa"] = 0
+# ── Watcher de navegacion rapida (MutationObserver) ─────────────
+# Dispara en cuanto los tabs aparecen en el DOM, sin polling.
+# Lee sessionStorage._sw_tab que goToHipoteca grabo antes del reload.
+components.html("""<script>
+(function(){
+  var p = window.parent;
+  var idx = parseInt(p.sessionStorage.getItem('_sw_tab') || '', 10);
+  if (isNaN(idx)) return;
+  p.sessionStorage.removeItem('_sw_tab');
+  function tryClick() {
+    var t = p.document.querySelectorAll('[data-baseweb="tab"]');
+    if (t && t.length > idx) { t[idx].click(); return true; }
+    return false;
+  }
+  if (!tryClick()) {
+    var obs = new MutationObserver(function(_, o) { if (tryClick()) o.disconnect(); });
+    obs.observe(p.document.body, {childList: true, subtree: true});
+    setTimeout(function() { obs.disconnect(); }, 4000);
+  }
+})();
+</script>""", height=0)
 
 # ── Pestañas ─────────────────────────────────────────────────────
 
@@ -1672,7 +1676,6 @@ with tab7:
         st.dataframe(df_rank, use_container_width=True, hide_index=False)
 
 # ── Footer ───────────────────────────────────────────────────────
-
 
 st.write("")
 st.divider()
