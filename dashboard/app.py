@@ -372,8 +372,8 @@ _TABLA_TEMPLATE = """<!DOCTYPE html><html><head><meta charset="utf-8"><style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
 * { box-sizing: border-box; }
 body { margin: 0; background: #09090b; font-family: 'Inter', sans-serif; }
-.wrap { border: 1px solid #27272a; border-radius: 14px; overflow: hidden; background: #131316; }
-table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+.wrap { border: 1px solid #27272a; border-radius: 14px; overflow-x: auto; overflow-y: hidden; background: #131316; -webkit-overflow-scrolling: touch; }
+table { min-width: 100%; border-collapse: collapse; font-size: 0.86rem; }
 thead th {
   text-align: left; font-size: 0.7rem; font-weight: 600; color: #a1a1aa;
   text-transform: uppercase; letter-spacing: 0.04em; padding: 0.7rem 0.85rem;
