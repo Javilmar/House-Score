@@ -108,7 +108,11 @@ def inject_styles():
             font-family: var(--font-sans);
         }
 
-        .stApp { background: #09090b; }
+        .stApp {
+          background-color: #09090b;
+          background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px);
+          background-size: 22px 22px;
+        }
         .block-container { padding-top: 3rem; padding-bottom: 4rem; max-width: 1320px; }
 
         /* Títulos en Fraunces (display serif) — estilo Skilio */
@@ -123,15 +127,17 @@ def inject_styles():
 
         /* Tarjetas de métrica */
         [data-testid="stMetric"] {
-            background: #18181b;
-            border: 1px solid #27272a;
+            background: rgba(18,18,20,0.55);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.07);
             border-radius: 16px;
             padding: 1.1rem 1.25rem;
             box-shadow: 0 1px 2px rgba(0,0,0,0.3);
             transition: all 200ms ease-in-out;
         }
         [data-testid="stMetric"]:hover {
-            border-color: #3f3f46;
+            border-color: rgba(255,255,255,0.13);
             box-shadow: 0 4px 14px rgba(0,0,0,0.4);
         }
         [data-testid="stMetricLabel"] {
@@ -152,12 +158,15 @@ def inject_styles():
 
         /* Tarjeta de listado */
         .prop-card {
-            background: #18181b; border: 1px solid #27272a; border-radius: 16px;
+            background: rgba(18,18,20,0.55);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.07); border-radius: 16px;
             padding: 1.25rem 1.5rem; margin-bottom: 0.9rem;
             box-shadow: 0 1px 2px rgba(0,0,0,0.3);
             transition: all 200ms ease-in-out;
         }
-        .prop-card:hover { border-color: #3f3f46; box-shadow: 0 6px 18px rgba(0,0,0,0.45); }
+        .prop-card:hover { border-color: rgba(255,255,255,0.13); box-shadow: 0 6px 18px rgba(0,0,0,0.45); }
 
         .prop-rank { color: #71717a; font-weight: 600; font-size: 0.9rem; }
         .prop-title { font-weight: 600; font-size: 1.02rem; color: #fafafa; text-decoration: none; }
@@ -177,10 +186,13 @@ def inject_styles():
         @media (max-width: 1100px) { .kpi-grid { grid-template-columns: repeat(3, 1fr); } }
         @media (max-width: 640px)  { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
         .kpi-card {
-            background: #18181b; border: 1px solid #27272a; border-radius: 16px;
+            background: rgba(18,18,20,0.55);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.07); border-radius: 16px;
             padding: 1.1rem 1.2rem; transition: all 200ms ease-in-out;
         }
-        .kpi-card:hover { border-color: #3f3f46; box-shadow: 0 4px 14px rgba(0,0,0,0.4); }
+        .kpi-card:hover { border-color: rgba(255,255,255,0.13); box-shadow: 0 4px 14px rgba(0,0,0,0.4); }
         .kpi-icon {
             display: inline-flex; align-items: center; justify-content: center;
             width: 34px; height: 34px; border-radius: 10px;
