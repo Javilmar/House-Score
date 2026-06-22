@@ -423,22 +423,26 @@ tbody td { vertical-align: top; }
 <div class="wrap"><table id="lt"><thead>__THEAD__</thead><tbody>__ROWS__</tbody></table></div>
 <script>
 function goToHipoteca(precio, tipo_idx, ccaa_idx) {
-  var p = window.parent;
-  var tipos = ["Segunda mano", "Obra nueva"];
-  var ccaas = ["Comunidad de Madrid", "Castilla-La Mancha"];
-  var url = p.location.pathname
-    + '?hip_precio=' + precio
-    + '&hip_tipo=' + encodeURIComponent(tipos[tipo_idx])
-    + '&hip_ccaa=' + encodeURIComponent(ccaas[ccaa_idx])
-    + '&hip_nav_id=' + Date.now();
-  // Cambio de pestana instantaneo (como goToCard).
-  var tabs = p.document.querySelectorAll('[data-baseweb="tab"]');
-  if (tabs && tabs.length > 4) tabs[4].click();
-  // Navegar pasando params por URL. Inyectamos script en el padre
-  // (sin restricciones de sandbox) para que location.href funcione.
-  var s = p.document.createElement('script');
-  s.textContent = 'window.location.href=' + JSON.stringify(url) + ';';
-  p.document.body.appendChild(s);
+  // Rellenar widgets puente ocultos del padre + click en pestana.
+  // Todo en un script inyectado en el contexto del padre (sin sandbox).
+  var script = window.parent.document.createElement('script');
+  script.textContent =
+    '(function(){' +
+    'function setVal(label,val){' +
+    'var el=document.querySelector(\\'input[aria-label="\\'+label+\\'"]\\');' +
+    'if(!el)return;' +
+    'var nv=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,\\"value\\");' +
+    'nv.set.call(el,val);' +
+    'el.dispatchEvent(new Event(\\"input\\",{bubbles:!0}));' +
+    '}' +
+    'setVal(\\"__hb_precio\\",' + precio + ');' +
+    'setVal(\\"__hb_tipo\\",' + tipo_idx + ');' +
+    'setVal(\\"__hb_ccaa\\",' + ccaa_idx + ');' +
+    'setVal(\\"__hb_id\\",Date.now());' +
+    'var t=document.querySelectorAll(\\'[data-baseweb=\\"tab\\"]\\');' +
+    'if(t&&t.length>4)t[4].click();' +
+    '})()';
+  window.parent.document.body.appendChild(script);
 }
 function goToCard(rank) {
   var p = window.parent;
@@ -878,23 +882,34 @@ st.write("")
 st.markdown(f'<div class="kpi-grid">{kpi_cards}</div>', unsafe_allow_html=True)
 st.write("")
 
-# ── Precarga hipoteca desde query params (navegación desde la tabla) ──
-# Usamos hip_nav_id (timestamp del cliente) para aplicar los params solo
-# una vez por navegación: si el mismo id ya fue procesado, el usuario está
-# interactuando con la pestaña y no sobreescribimos sus cambios.
-_hip_qp = st.query_params
-_hip_nav_id = _hip_qp.get("hip_nav_id", "")
-if _hip_nav_id and st.session_state.get("_last_hip_nav_id") != _hip_nav_id:
-    st.session_state["_last_hip_nav_id"] = _hip_nav_id
-    try:
-        st.session_state["hip_precio"] = int(_hip_qp["hip_precio"])
-    except (KeyError, TypeError, ValueError):
-        pass
-    if "hip_tipo" in _hip_qp:
-        st.session_state["hip_tipo"] = _hip_qp["hip_tipo"]
-    if "hip_ccaa" in _hip_qp:
-        st.session_state["hip_ccaa"] = _hip_qp["hip_ccaa"]
-    st.session_state["_hip_nav"] = True
+
+# ── Puente inter-pestañas (widgets ocultos, sin recarga) ──────────
+# El JS de la tabla rellena estos inputs numericos ocultos y hace
+# click en la pestana Hipoteca. Streamlit detecta los cambios y
+# ejecuta un rerun ligero (sin location.href ni recarga de pagina).
+_bridge_precio = st.number_input("__hb_precio", value=0, key="_hb_precio",
+                                  min_value=0, label_visibility="hidden")
+_bridge_tipo = st.number_input("__hb_tipo", value=0, key="_hb_tipo",
+                                min_value=0, max_value=1, label_visibility="hidden")
+_bridge_ccaa = st.number_input("__hb_ccaa", value=0, key="_hb_ccaa",
+                                min_value=0, max_value=1, label_visibility="hidden")
+_bridge_id = st.number_input("__hb_id", value=0, key="_hb_id",
+                              min_value=0, label_visibility="hidden")
+
+if (st.session_state.get("_hb_precio", 0) > 0
+        and st.session_state.get("_hb_id", 0) != st.session_state.get("_last_hb_id", 0)):
+    st.session_state["_last_hb_id"] = st.session_state["_hb_id"]
+    st.session_state["hip_precio"] = st.session_state["_hb_precio"]
+    st.session_state["hip_tipo"] = (
+        "Obra nueva" if st.session_state.get("_hb_tipo", 0) == 1 else "Segunda mano"
+    )
+    st.session_state["hip_ccaa"] = (
+        "Castilla-La Mancha" if st.session_state.get("_hb_ccaa", 0) == 1
+        else "Comunidad de Madrid"
+    )
+    st.session_state["_hb_precio"] = 0
+    st.session_state["_hb_tipo"] = 0
+    st.session_state["_hb_ccaa"] = 0
 
 # ── Pestañas ─────────────────────────────────────────────────────
 
@@ -1658,16 +1673,6 @@ with tab7:
 
 # ── Footer ───────────────────────────────────────────────────────
 
-# Auto-cambio a pestana Hipoteca al recargar con query params
-if st.session_state.get("_hip_nav", False):
-    del st.session_state["_hip_nav"]
-    components.html("<script>"
-        "(function x(n,d){"
-        "var t=window.parent.document.querySelectorAll('[data-baseweb=\"tab\"]');"
-        "if(t&&t.length>4){t[4].click();return;}"
-        "if(n>0)setTimeout(function(){x(n-1,d);},d);"
-        "})(25,200);"
-        "</script>", height=1)
 
 st.write("")
 st.divider()
