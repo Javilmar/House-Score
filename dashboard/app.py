@@ -860,6 +860,34 @@ def _render_hipoteca_inline_html(precio, es_obra_nueva, ccaa):
 
 inject_styles()
 
+# ── Botón "volver arriba" flotante ───────────────────────────────
+components.html("""<script>
+(function(){
+  var p = window.parent, doc = p.document;
+  if (doc.getElementById('_back-top')) return;
+  var btn = doc.createElement('button');
+  btn.id = '_back-top';
+  btn.textContent = '↑';
+  btn.title = 'Volver arriba';
+  btn.style.cssText = [
+    'position:fixed','bottom:1.5rem','right:1.5rem','z-index:9999',
+    'width:40px','height:40px','border-radius:50%',
+    'background:rgba(99,102,241,0.15)','border:1px solid rgba(99,102,241,0.35)',
+    'color:#818cf8','font-size:1.1rem','cursor:pointer',
+    'display:none','align-items:center','justify-content:center',
+    'transition:opacity 200ms ease,background 140ms ease',
+    'backdrop-filter:blur(8px)','-webkit-backdrop-filter:blur(8px)',
+  ].join(';');
+  btn.addEventListener('click', function(){ p.scrollTo({top:0,behavior:'smooth'}); });
+  btn.addEventListener('mouseenter', function(){ btn.style.background='rgba(99,102,241,0.3)'; });
+  btn.addEventListener('mouseleave', function(){ btn.style.background='rgba(99,102,241,0.15)'; });
+  doc.body.appendChild(btn);
+  p.addEventListener('scroll', function(){
+    btn.style.display = p.scrollY > 300 ? 'flex' : 'none';
+  }, {passive:true});
+})();
+</script>""", height=0)
+
 st.title("House Score")
 st.caption("Madrid Sur · Toledo Norte — pisos.com · idealista · Scoring a medida · Hasta 300.000 €")
 
