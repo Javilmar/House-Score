@@ -423,25 +423,22 @@ tbody td { vertical-align: top; }
 <div class="wrap"><table id="lt"><thead>__THEAD__</thead><tbody>__ROWS__</tbody></table></div>
 <script>
 function goToHipoteca(precio, tipo_idx, ccaa_idx) {
+  var p = window.parent;
   var tipos = ["Segunda mano", "Obra nueva"];
   var ccaas = ["Comunidad de Madrid", "Castilla-La Mancha"];
-  var url = window.parent.location.pathname
+  var url = p.location.pathname
     + '?hip_precio=' + precio
     + '&hip_tipo=' + encodeURIComponent(tipos[tipo_idx])
     + '&hip_ccaa=' + encodeURIComponent(ccaas[ccaa_idx])
     + '&hip_nav_id=' + Date.now();
-  // Inyectamos en el padre: 1) cambiar a pestana Hipoteca, 2) actualizar
-  // URL sin recargar, 3) emitir popstate para que Streamlit relea query
-  // params y ejecute rerun ligero (sin recarga de pagina completa).
-  var script = window.parent.document.createElement('script');
-  script.textContent =
-    '(function(){' +
-    'var t=document.querySelectorAll(\\'[data-baseweb=\\"tab\\"]\\');' +
-    'if(t&&t.length>4) t[4].click();' +
-    'window.history.replaceState({},\"\",' + JSON.stringify(url) + ');' +
-    'window.dispatchEvent(new PopStateEvent(\"popstate\"));' +
-    '})()';
-  window.parent.document.body.appendChild(script);
+  // Cambio de pestana instantaneo (como goToCard).
+  var tabs = p.document.querySelectorAll('[data-baseweb="tab"]');
+  if (tabs && tabs.length > 4) tabs[4].click();
+  // Navegar pasando params por URL. Inyectamos script en el padre
+  // (sin restricciones de sandbox) para que location.href funcione.
+  var s = p.document.createElement('script');
+  s.textContent = 'window.location.href=' + JSON.stringify(url) + ';';
+  p.document.body.appendChild(s);
 }
 function goToCard(rank) {
   var p = window.parent;
@@ -900,6 +897,7 @@ if _hip_nav_id and st.session_state.get("_last_hip_nav_id") != _hip_nav_id:
         st.session_state["hip_tipo"] = _hip_qp["hip_tipo"]
     if "hip_ccaa" in _hip_qp:
         st.session_state["hip_ccaa"] = _hip_qp["hip_ccaa"]
+    st.session_state["_hip_nav"] = True
 
 # ── Pestañas ─────────────────────────────────────────────────────
 
@@ -1663,6 +1661,16 @@ with tab7:
 
 # ── Footer ───────────────────────────────────────────────────────
 
+# Auto-cambio a pestana Hipoteca al recargar con query params
+if st.session_state.get("_hip_nav", False):
+    del st.session_state["_hip_nav"]
+    components.html("<script>"
+        "(function x(n,d){"
+        "var t=window.parent.document.querySelectorAll('[data-baseweb=\"tab\"]');"
+        "if(t&&t.length>4){t[4].click();return;}"
+        "if(n>0)setTimeout(function(){x(n-1,d);},d);"
+        "})(25,200);"
+        "</script>", height=1)
 
 st.write("")
 st.divider()
