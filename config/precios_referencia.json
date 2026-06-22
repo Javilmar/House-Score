@@ -3,7 +3,7 @@
   "source": "median_own",
   "municipios": {
     "getafe": {
-      "eur_m2": 2962,
+      "eur_m2": 3002,
       "n": 18
     },
     "leganes": {
@@ -31,8 +31,8 @@
       "n": 12
     },
     "valdemoro": {
-      "eur_m2": 2288,
-      "n": 8
+      "eur_m2": 2561,
+      "n": 9
     },
     "ciempozuelos": {
       "eur_m2": 2038,
@@ -77,8 +77,8 @@
   },
   "zonas": {
     "madrid_sur": {
-      "eur_m2": 2632,
-      "n": 213
+      "eur_m2": 2650,
+      "n": 214
     },
     "toledo_norte": {
       "eur_m2": 1402,
