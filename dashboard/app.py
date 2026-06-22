@@ -847,8 +847,6 @@ hoy = date.today()
 df_hoy = df[df["_archivo"] == pd.Timestamp(hoy)] if "_archivo" in df.columns else pd.DataFrame()
 nuevos_hoy = df[df["first_seen"] == pd.Timestamp(hoy)] if "first_seen" in df.columns else pd.DataFrame()
 bajadas = df[df["price_drop"].notna() & (df["price_drop"] > 0)] if "price_drop" in df.columns else pd.DataFrame()
-con_piscina = len([p for p in df.to_dict("records") if "piscina" in str(p.get("detail_features", {})).lower() or "piscina" in str(p.get("features", [])).lower()])
-
 # Listings sin €/m² fiable (datos insuficientes): no entran en el score medio
 if "datos_insuficientes" in df.columns:
     di_mask = df["datos_insuficientes"].fillna(False).astype(bool)
@@ -865,7 +863,6 @@ kpis = [
     ("star", "Score medio", f"{score_src['score'].mean():.1f}" if "score" in score_src.columns else "—"),
     ("wallet", "Precio medio", f"{df['price'].mean():,.0f} €" if "price" in df.columns else "—"),
     ("trending-down", "Bajadas", f"{len(bajadas)}"),
-    ("waves", "Con piscina", f"{con_piscina}"),
     ("ruler", "Sin valorar", f"{len(sin_valorar)}"),
 ]
 
