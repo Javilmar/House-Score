@@ -1181,6 +1181,17 @@ with tab2:
         chips = "".join(f'<span class="chip">{c}</span>' for c in features) if features else ""
         warns = "".join(f'<span class="chip chip-warn">{p}</span>' for p in penalties) if penalties else ""
 
+        _desc_raw = row.get("description", "")
+        _desc_clean = clean(_desc_raw[:1500]) if _desc_raw and len(_desc_raw) > 20 else ""
+        _desc_safe = (_desc_clean.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+                                 .replace("\n", "<br>")) if _desc_clean else ""
+        _desc_html = (
+            f'<details class="score-breakdown" style="margin-top:0.65rem;">'
+            f'<summary>Descripción</summary>'
+            f'<p style="margin-top:0.5rem;font-size:0.83rem;color:#a1a1aa;line-height:1.55;margin-bottom:0;">{_desc_safe}</p>'
+            f'</details>'
+        ) if _desc_safe else ""
+
         st.markdown(
             f"""
             <div class="prop-card" id="card-{i}" style="scroll-margin-top:80px;">
@@ -1192,7 +1203,7 @@ with tab2:
                   <div class="score-bar-track"><div class="score-bar-fill" style="width:{min(score,100)}%; background:{color};"></div></div>
                 </div>
                 <div class="prop-price">
-                  <div style="font-size:1.15rem; font-weight:600; color:#18181b;">{precio:,.0f} €</div>
+                  <div style="font-size:1.15rem; font-weight:600; color:#fafafa;">{precio:,.0f} €</div>
                   <div style="font-size:0.8rem; color:#71717a;">{eur_m2:,.0f} €/m²</div>
                   <div style="font-size:0.8rem; color:#a1a1aa; display:flex; gap:0.7rem; justify-content:flex-end; margin-top:0.3rem;">
                     <span class="meta-item">{icon("ruler", size=14)}{m2:.0f} m²</span>
@@ -1203,15 +1214,11 @@ with tab2:
               </div>
               <div style="margin-top:0.75rem;">{chips}{warns}</div>
               {_render_breakdown_html(breakdown_items, int(score))}
+              {_desc_html}
             </div>
             """,
             unsafe_allow_html=True,
         )
-
-        desc = row.get("description", "")
-        if desc and len(desc) > 20:
-            with st.expander("Descripción"):
-                st.write(clean(desc[:1500]))
 
         _t2_ubi = zona(row.get("location", ""), row.get("title", ""), row.get("description", ""))
         _t2_tipo = tipo_vivienda(row.get("title", ""), row.get("description", ""), "")
