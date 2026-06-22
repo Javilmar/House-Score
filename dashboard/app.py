@@ -108,7 +108,12 @@ def inject_styles():
             font-family: var(--font-sans);
         }
 
-        .stApp { background: #09090b; }
+        .stApp {
+          background-color: #0e0907;
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='50'%3E%3Crect width='120' height='50' fill='%230a0604'/%3E%3Crect x='2' y='2' width='56' height='21' fill='%231b0e0a'/%3E%3Crect x='62' y='2' width='56' height='21' fill='%23180c08'/%3E%3Crect x='2' y='27' width='26' height='21' fill='%231d1009'/%3E%3Crect x='32' y='27' width='56' height='21' fill='%231b0e0a'/%3E%3Crect x='92' y='27' width='26' height='21' fill='%23190d09'/%3E%3C%2Fsvg%3E");
+          background-repeat: repeat;
+          background-attachment: fixed;
+        }
         .block-container { padding-top: 3rem; padding-bottom: 4rem; max-width: 1320px; }
 
         /* Títulos en Fraunces (display serif) — estilo Skilio */
