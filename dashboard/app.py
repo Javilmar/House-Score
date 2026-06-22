@@ -603,7 +603,7 @@ def _render_breakdown_html(items, score_final):
 inject_styles()
 
 st.title("Búsqueda de Vivienda")
-st.caption("Madrid Sur · Toledo Norte — pisos.com · Scoring a medida · Hasta 250.000 €")
+st.caption("Madrid Sur · Toledo Norte — pisos.com · idealista · Scoring a medida · Hasta 250.000 €")
 
 df = cargar_datos()
 
@@ -1077,11 +1077,13 @@ with tab5:
     st.write("")
     st.markdown("##### De dónde salen los datos")
 
-    with st.expander("¿Por qué solo aparecen anuncios de pisos.com?"):
+    with st.expander("¿De qué portales vienen los anuncios?"):
         st.markdown(
-            "Es el único portal del que podemos extraer datos de forma fiable. "
-            "**Idealista** y **Fotocasa** bloquean la recogida automática con "
-            "sistemas anti-robot (CAPTCHAs), así que quedan fuera por ahora."
+            "Los datos proceden de **pisos.com** (scraping fiable) e **idealista** "
+            "(best-effort: si su sistema anti-robot DataDome bloquea la pasada, "
+            "esa búsqueda se omite sin interrumpir pisos.com). Cada anuncio lleva "
+            "el campo **Source** indicando su origen. **Fotocasa** queda fuera "
+            "por ahora (bloqueo consistente)."
         )
     with st.expander("¿Por qué la zona es Madrid Sur + Toledo Norte?"):
         st.markdown(
@@ -1128,5 +1130,5 @@ st.divider()
 st.caption(
     f"Última actualización: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} · "
     f"Datos en `{DATA_DIR}` · [Forzar recarga](?rerun) · "
-    f"Scraper: property_scorer.py (pisos.com · Madrid Sur + Toledo Norte · ≤ 250.000 €)"
+    f"Scraper: property_scorer.py (pisos.com + idealista · Madrid Sur + Toledo Norte · ≤ 250.000 €)"
 )
