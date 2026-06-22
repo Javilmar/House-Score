@@ -430,7 +430,12 @@ function goToHipoteca(precio, tipo_idx, ccaa_idx) {
     + '&hip_tipo=' + encodeURIComponent(tipos[tipo_idx])
     + '&hip_ccaa=' + encodeURIComponent(ccaas[ccaa_idx])
     + '&hip_nav_id=' + Date.now();
-  window.parent.location.href = url;
+  // El iframe no puede navegar al padre (sandbox sin allow-top-navigation),
+  // pero sí puede modificar el DOM del padre. Inyectamos un script que se
+  // ejecuta en el contexto del padre (sin sandbox) y hace la navegación.
+  var s = window.parent.document.createElement('script');
+  s.textContent = 'window.location.href=' + JSON.stringify(url) + ';';
+  window.parent.document.body.appendChild(s);
 }
 function goToCard(rank) {
   var p = window.parent;
@@ -1252,23 +1257,6 @@ with tab4:
 # ── TAB 5: Hipoteca ──────────────────────────────────────────────
 
 with tab5:
-    # Auto-click a esta pestaña cuando se llega desde el botón € de la tabla.
-    # El components.html está dentro del tab (se renderiza aunque no esté activo)
-    # y tiene acceso a window.parent para hacer el click.
-    if st.session_state.get("_hip_nav", False):
-        del st.session_state["_hip_nav"]
-        components.html(
-            "<script>"
-            "(function tryClick(n){"
-            "  try{"
-            "    var t=window.parent.document.querySelectorAll('[data-baseweb=\"tab\"]');"
-            "    if(t&&t.length>4){t[4].click();return;}"
-            "  }catch(e){}"
-            "  if(n>0)setTimeout(function(){tryClick(n-1);},250);"
-            "})(20);"
-            "</script>",
-            height=1,
-        )
     st.write("")
     st.subheader("Calculadora de hipoteca")
 
@@ -1669,6 +1657,23 @@ with tab7:
         st.dataframe(df_rank, use_container_width=True, hide_index=False)
 
 # ── Footer ───────────────────────────────────────────────────────
+
+
+# Auto-cambio a pestaña Hipoteca (al final, con las pestañas ya en el DOM).
+# components.html crea un iframe que SÍ tiene allow-same-origin y puede
+# acceder a window.parent.document para hacer click en la pestaña.
+if st.session_state.get("_hip_nav", False):
+    del st.session_state["_hip_nav"]
+    components.html(
+        "<script>"
+        "(function tryClick(n,delay){"
+        "  var t=window.parent.document.querySelectorAll('[data-baseweb=\"tab\"]');"
+        "  if(t&&t.length>4){t[4].click();return;}"
+        "  if(n>0)setTimeout(function(){tryClick(n-1,delay);},delay);"
+        "})(30,200);"
+        "</script>",
+        height=1,
+    )
 
 st.write("")
 st.divider()
