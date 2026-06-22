@@ -428,7 +428,8 @@ function goToHipoteca(precio, tipo_idx, ccaa_idx) {
   var url = window.parent.location.pathname
     + '?hip_precio=' + precio
     + '&hip_tipo=' + encodeURIComponent(tipos[tipo_idx])
-    + '&hip_ccaa=' + encodeURIComponent(ccaas[ccaa_idx]);
+    + '&hip_ccaa=' + encodeURIComponent(ccaas[ccaa_idx])
+    + '&hip_nav_id=' + Date.now();
   window.parent.location.href = url;
 }
 function goToCard(rank) {
@@ -873,26 +874,22 @@ st.markdown(f'<div class="kpi-grid">{kpi_cards}</div>', unsafe_allow_html=True)
 st.write("")
 
 # ── Precarga hipoteca desde query params (navegación desde la tabla) ──
+# Usamos hip_nav_id (timestamp del cliente) para aplicar los params solo
+# una vez por navegación: si el mismo id ya fue procesado, el usuario está
+# interactuando con la pestaña y no sobreescribimos sus cambios.
 _hip_qp = st.query_params
-if "hip_precio" in _hip_qp and "hip_precio" not in st.session_state:
+_hip_nav_id = _hip_qp.get("hip_nav_id", "")
+if _hip_nav_id and st.session_state.get("_last_hip_nav_id") != _hip_nav_id:
+    st.session_state["_last_hip_nav_id"] = _hip_nav_id
     try:
         st.session_state["hip_precio"] = int(_hip_qp["hip_precio"])
-        st.session_state["_hip_nav"] = True
-    except (TypeError, ValueError):
+    except (KeyError, TypeError, ValueError):
         pass
-if "hip_tipo" in _hip_qp and "hip_tipo" not in st.session_state:
-    st.session_state["hip_tipo"] = _hip_qp["hip_tipo"]
-if "hip_ccaa" in _hip_qp and "hip_ccaa" not in st.session_state:
-    st.session_state["hip_ccaa"] = _hip_qp["hip_ccaa"]
-
-if st.session_state.get("_hip_nav", False):
-    st.session_state.pop("_hip_nav")
-    components.html(
-        '<script>setTimeout(function(){'
-        'var t=window.parent.document.querySelectorAll(\'[data-baseweb="tab"]\');'
-        'if(t&&t[4])t[4].click();},500);</script>',
-        height=0,
-    )
+    if "hip_tipo" in _hip_qp:
+        st.session_state["hip_tipo"] = _hip_qp["hip_tipo"]
+    if "hip_ccaa" in _hip_qp:
+        st.session_state["hip_ccaa"] = _hip_qp["hip_ccaa"]
+    st.session_state["_hip_nav"] = True
 
 # ── Pestañas ─────────────────────────────────────────────────────
 
@@ -1255,6 +1252,23 @@ with tab4:
 # ── TAB 5: Hipoteca ──────────────────────────────────────────────
 
 with tab5:
+    # Auto-click a esta pestaña cuando se llega desde el botón € de la tabla.
+    # El components.html está dentro del tab (se renderiza aunque no esté activo)
+    # y tiene acceso a window.parent para hacer el click.
+    if st.session_state.get("_hip_nav", False):
+        del st.session_state["_hip_nav"]
+        components.html(
+            "<script>"
+            "(function tryClick(n){"
+            "  try{"
+            "    var t=window.parent.document.querySelectorAll('[data-baseweb=\"tab\"]');"
+            "    if(t&&t.length>4){t[4].click();return;}"
+            "  }catch(e){}"
+            "  if(n>0)setTimeout(function(){tryClick(n-1);},250);"
+            "})(20);"
+            "</script>",
+            height=1,
+        )
     st.write("")
     st.subheader("Calculadora de hipoteca")
 
