@@ -1,0 +1,17 @@
+# Tasa de criminalidad por municipio
+# Fuente: Portal Estadístico de Criminalidad - Ministerio del Interior
+# Periodo: Q1 2026 (ene-mar), anualizado
+# Municipios sin publicacion oficial (<20 000 hab) no aparecen en este fichero
+cod_ine,municipio,tasa_criminalidad,periodo,fuente
+28007,Alcorcón,3295.6,"Q1 2026 (ene-mar), anualizado","Portal Estadístico de Criminalidad - Ministerio del Interior"
+28040,Ciempozuelos,4197.5,"Q1 2026 (ene-mar), anualizado","Portal Estadístico de Criminalidad - Ministerio del Interior"
+28058,Fuenlabrada,2164.3,"Q1 2026 (ene-mar), anualizado","Portal Estadístico de Criminalidad - Ministerio del Interior"
+28065,Getafe,3825.3,"Q1 2026 (ene-mar), anualizado","Portal Estadístico de Criminalidad - Ministerio del Interior"
+28074,Leganés,3841.1,"Q1 2026 (ene-mar), anualizado","Portal Estadístico de Criminalidad - Ministerio del Interior"
+28092,Móstoles,2824.9,"Q1 2026 (ene-mar), anualizado","Portal Estadístico de Criminalidad - Ministerio del Interior"
+28096,Navalcarnero,3824.8,"Q1 2026 (ene-mar), anualizado","Portal Estadístico de Criminalidad - Ministerio del Interior"
+28106,Parla,4796.9,"Q1 2026 (ene-mar), anualizado","Portal Estadístico de Criminalidad - Ministerio del Interior"
+28113,Pinto,4162.2,"Q1 2026 (ene-mar), anualizado","Portal Estadístico de Criminalidad - Ministerio del Interior"
+28161,Valdemoro,7884.8,"Q1 2026 (ene-mar), anualizado","Portal Estadístico de Criminalidad - Ministerio del Interior"
+45081,Illescas,4913.2,"Q1 2026 (ene-mar), anualizado","Portal Estadístico de Criminalidad - Ministerio del Interior"
+45161,Seseña,5480.9,"Q1 2026 (ene-mar), anualizado","Portal Estadístico de Criminalidad - Ministerio del Interior"

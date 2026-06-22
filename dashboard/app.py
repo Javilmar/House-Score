@@ -436,10 +436,10 @@ function goToHipoteca(precio, tipo_idx, ccaa_idx) {
   var script = window.parent.document.createElement('script');
   script.textContent =
     '(function(){' +
-    'var t=document.querySelectorAll(\'[data-baseweb="tab"]\');' +
+    'var t=document.querySelectorAll(\\'[data-baseweb=\\"tab\\"]\\');' +
     'if(t&&t.length>4) t[4].click();' +
-    'window.history.replaceState({},"",' + JSON.stringify(url) + ');' +
-    'window.dispatchEvent(new PopStateEvent("popstate"));' +
+    'window.history.replaceState({},\"\",' + JSON.stringify(url) + ');' +
+    'window.dispatchEvent(new PopStateEvent(\"popstate\"));' +
     '})()';
   window.parent.document.body.appendChild(script);
 }
