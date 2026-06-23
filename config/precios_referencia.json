@@ -7,8 +7,8 @@
       "n": 24
     },
     "leganes": {
-      "eur_m2": 3048,
-      "n": 19
+      "eur_m2": 3073,
+      "n": 18
     },
     "mostoles": {
       "eur_m2": 2827,
@@ -19,12 +19,12 @@
       "n": 12
     },
     "fuenlabrada": {
-      "eur_m2": 2819,
-      "n": 17
+      "eur_m2": 2791,
+      "n": 19
     },
     "parla": {
-      "eur_m2": 2601,
-      "n": 21
+      "eur_m2": 2550,
+      "n": 22
     },
     "pinto": {
       "eur_m2": 2680,
@@ -98,7 +98,7 @@
   "zonas": {
     "madrid_sur": {
       "eur_m2": 2518,
-      "n": 269
+      "n": 271
     },
     "toledo_norte": {
       "eur_m2": 1427,
