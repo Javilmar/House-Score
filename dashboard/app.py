@@ -570,6 +570,26 @@ def cargar_criminalidad(mtime: float = 0.0):
     return df_c
 
 
+@st.cache_data
+def cargar_secciones_renta(mtime: float = 0.0):
+    """Carga secciones censales con renta media por persona (ADRH 2023 - INE).
+
+    Devuelve (geojson_dict, df_renta) donde df_renta tiene columnas:
+      cusec, cod_ine, municipio, renta_persona, anio
+    mtime invalida el caché cuando cambia el fichero.
+    """
+    path = ASSETS_DIR / "secciones_renta.geojson"
+    if not path.exists():
+        return None, pd.DataFrame()
+    gj = json.loads(path.read_text(encoding="utf-8"))
+    rows = [feat["properties"] for feat in gj.get("features", [])]
+    if not rows:
+        return gj, pd.DataFrame()
+    df_r = pd.DataFrame(rows)
+    df_r["renta_persona"] = pd.to_numeric(df_r["renta_persona"], errors="coerce")
+    return gj, df_r
+
+
 def score_color(score):
     for threshold, color in SCORE_SCALE:
         if score >= threshold:
@@ -1701,14 +1721,23 @@ with tab6:
             'anuncios se marcan **"s/valorar"**, quedan **fuera del Top** y no cuentan '
             'en el "Score medio", pero siguen guardados por si quieres revisarlos.'
         )
-    with st.expander("¿De dónde vienen los datos de peligrosidad del mapa?"):
+    with st.expander("¿De dónde vienen los datos del mapa de seguridad?"):
         st.markdown(
-            "El mapa de seguridad usa la **tasa de criminalidad oficial** (infracciones "
-            "penales × 100 000 hab) publicada por el **Portal Estadístico de Criminalidad** "
-            "del Ministerio del Interior. Solo tienen publicación oficial los municipios "
-            "con más de **20 000 habitantes**, por lo que los pueblos pequeños de la Sagra "
-            "toledana aparecen en gris. La tasa se calcula anualizado datos de Q1 2026. "
-            "Fuente: estadisticasdecriminalidad.ses.mir.es"
+            "**Vista criminalidad (por municipio):** usa la **tasa de criminalidad oficial** "
+            "(infracciones penales × 100 000 hab) publicada por el **Portal Estadístico de "
+            "Criminalidad** del Ministerio del Interior. Solo tienen publicación oficial los "
+            "municipios con más de **20 000 habitantes**, por lo que los pueblos pequeños "
+            "de la Sagra toledana aparecen en gris. La tasa se calcula anualizado datos de "
+            "Q1 2026. Fuente: estadisticasdecriminalidad.ses.mir.es\n\n"
+            "**Vista renta (por sección censal / barrio):** usa la **renta neta media por "
+            "persona** del **Atlas de Distribución de Renta de los Hogares (ADRH 2023)** "
+            "publicado por el INE en octubre de 2025. La sección censal es la unidad "
+            "geográfica más fina de España (~1 000–2 500 hab), lo que permite ver "
+            "diferencias **dentro** de cada municipio. Verde = renta alta (barrio "
+            "acomodado), rojo = renta baja. "
+            "⚠️ Renta no equivale directamente a criminalidad — es un **proxy "
+            "socioeconómico del barrio**, no un dato policial. "
+            "Fuente: ine.es/experimental/atlas"
         )
 
     st.caption("La puntuación es orientativa: ayuda a priorizar, no sustituye una visita.")
@@ -1718,112 +1747,217 @@ with tab6:
 with tab7:
     st.write("")
 
-    _gj_path = ASSETS_DIR / "municipios_zona.geojson"
+    # ── Carga de assets ───────────────────────────────────────────
+    _gj_path  = ASSETS_DIR / "municipios_zona.geojson"
     _csv_path = ASSETS_DIR / "criminalidad.csv"
-    geojson_mun = cargar_geojson_municipios(_gj_path.stat().st_mtime if _gj_path.exists() else 0.0)
-    df_crim = cargar_criminalidad(_csv_path.stat().st_mtime if _csv_path.exists() else 0.0)
+    _sec_path = ASSETS_DIR / "secciones_renta.geojson"
 
-    if geojson_mun is None or df_crim.empty:
+    geojson_mun = cargar_geojson_municipios(_gj_path.stat().st_mtime if _gj_path.exists() else 0.0)
+    df_crim     = cargar_criminalidad(_csv_path.stat().st_mtime if _csv_path.exists() else 0.0)
+    geojson_sec, df_renta = cargar_secciones_renta(_sec_path.stat().st_mtime if _sec_path.exists() else 0.0)
+
+    _tiene_criminalidad = geojson_mun is not None and not df_crim.empty
+    _tiene_renta        = geojson_sec is not None and not df_renta.empty
+
+    if not _tiene_criminalidad and not _tiene_renta:
         st.warning(
             "Activos del mapa no encontrados. Ejecuta primero el script de build:\n\n"
             "```\ncd house-dashboard/dashboard\npython scripts/build_mapa_assets.py\n```"
         )
     else:
-        import plotly.express as px
+        # ── Selector de capa ─────────────────────────────────────
+        _opciones = []
+        if _tiene_criminalidad:
+            _opciones.append("🔴  Criminalidad · por municipio")
+        if _tiene_renta:
+            _opciones.append("🟢  Renta · por barrio (sección censal)")
 
-        periodo = df_crim["periodo"].iloc[0] if "periodo" in df_crim.columns else "Q1 2026"
-        tasa_max = df_crim["tasa_criminalidad"].max()
-        tasa_min = df_crim["tasa_criminalidad"].min()
+        _capa = st.radio(
+            "Capa",
+            _opciones,
+            horizontal=True,
+            label_visibility="collapsed",
+        )
+        _modo_renta = _capa.startswith("🟢")
 
-        # Escala de color: verde (seguro) → rojo (peligroso)
-        COLOR_SCALE = [
-            [0.0,  "#22c55e"],   # verde
+        # ── Escala criminalidad: verde (seguro) → rojo (peligroso) ─
+        _CRIM_COLOR_SCALE = [
+            [0.0,  "#22c55e"],
             [0.35, "#84cc16"],
-            [0.55, "#eab308"],   # amarillo
-            [0.75, "#f97316"],   # naranja
-            [1.0,  "#ef4444"],   # rojo
+            [0.55, "#eab308"],
+            [0.75, "#f97316"],
+            [1.0,  "#ef4444"],
         ]
 
-        fig_mapa = px.choropleth_map(
-            df_crim,
-            geojson=geojson_mun,
-            locations="cod_ine",
-            featureidkey="properties.cod_ine",
-            color="tasa_criminalidad",
-            color_continuous_scale=COLOR_SCALE,
-            range_color=(tasa_min * 0.85, tasa_max * 1.05),
-            hover_name="municipio",
-            hover_data={
-                "cod_ine": False,
-                "tasa_criminalidad": ":.0f",
-                "periodo": True,
-            },
-            labels={
-                "tasa_criminalidad": "Tasa / 100 000 hab",
-                "periodo": "Período",
-            },
-            center={"lat": 40.18, "lon": -3.78},
-            zoom=9,
-            map_style="carto-darkmatter",
-            opacity=0.75,
-        )
+        # ── Escala renta: rojo (renta baja) → verde (renta alta) ──
+        # Semánticamente invertida: renta alta = mejor barrio = verde
+        _RENTA_COLOR_SCALE = [
+            [0.0,  "#ef4444"],   # rojo  — renta muy baja
+            [0.25, "#f97316"],   # naranja
+            [0.5,  "#eab308"],   # amarillo
+            [0.75, "#84cc16"],
+            [1.0,  "#22c55e"],   # verde — renta muy alta
+        ]
 
-        fig_mapa.update_layout(
+        _MAP_LAYOUT = dict(
             paper_bgcolor="rgba(0,0,0,0)",
             plot_bgcolor="rgba(0,0,0,0)",
             margin=dict(l=0, r=0, t=0, b=48),
             height=540,
             font=dict(family="Inter", size=12, color=MUTED),
-            coloraxis_colorbar=dict(
-                orientation="h",
-                x=0.5, xanchor="center",
-                y=-0.04, yanchor="top",
-                thickness=10,
-                len=0.72,
-                title="Tasa / 100 000 hab",
-                title_side="top",
-                tickfont=dict(color=MUTED, size=10),
-                title_font=dict(color=MUTED, size=11),
-                bgcolor="rgba(0,0,0,0)",
-                bordercolor=BORDER,
-            ),
             hoverlabel=dict(
                 bgcolor=SURFACE, bordercolor=BORDER,
                 font=dict(family="Inter", color=INK),
             ),
         )
 
-        st.plotly_chart(fig_mapa, use_container_width=True)
+        def _colorbar(title_text):
+            return dict(
+                orientation="h",
+                x=0.5, xanchor="center",
+                y=-0.04, yanchor="top",
+                thickness=10,
+                len=0.72,
+                title=title_text,
+                title_side="top",
+                tickfont=dict(color=MUTED, size=10),
+                title_font=dict(color=MUTED, size=11),
+                bgcolor="rgba(0,0,0,0)",
+                bordercolor=BORDER,
+            )
 
-        # Municipios sin dato: los del GeoJSON que no están en df_crim
-        crim_codes = set(df_crim["cod_ine"].astype(str))
-        geo_codes = {f["properties"]["cod_ine"] for f in geojson_mun["features"]}
-        sin_dato = sorted(
-            f["properties"]["nombre"]
-            for f in geojson_mun["features"]
-            if f["properties"]["cod_ine"] not in crim_codes
-        )
+        # ════════════════════════════════════════════════════════════
+        # VISTA A: CRIMINALIDAD (por municipio)
+        # ════════════════════════════════════════════════════════════
+        if not _modo_renta and _tiene_criminalidad:
+            periodo  = df_crim["periodo"].iloc[0] if "periodo" in df_crim.columns else "Q1 2026"
+            tasa_max = df_crim["tasa_criminalidad"].max()
+            tasa_min = df_crim["tasa_criminalidad"].min()
 
-        st.caption(
-            f"**Fuente**: Portal Estadístico de Criminalidad · Ministerio del Interior · "
-            f"**Período**: {periodo} · "
-            f"**Métrica**: infracciones penales / 100 000 hab · "
-            f"**Rojo** = más peligroso · **Verde** = más seguro · "
-            f"**Gris** = sin publicación oficial (<20 000 hab)"
-        )
+            fig_mapa = px.choropleth_map(
+                df_crim,
+                geojson=geojson_mun,
+                locations="cod_ine",
+                featureidkey="properties.cod_ine",
+                color="tasa_criminalidad",
+                color_continuous_scale=_CRIM_COLOR_SCALE,
+                range_color=(tasa_min * 0.85, tasa_max * 1.05),
+                hover_name="municipio",
+                hover_data={
+                    "cod_ine": False,
+                    "tasa_criminalidad": ":.0f",
+                    "periodo": True,
+                },
+                labels={
+                    "tasa_criminalidad": "Tasa / 100 000 hab",
+                    "periodo": "Período",
+                },
+                center={"lat": 40.18, "lon": -3.78},
+                zoom=9,
+                map_style="carto-darkmatter",
+                opacity=0.75,
+            )
+            fig_mapa.update_layout(
+                **_MAP_LAYOUT,
+                coloraxis_colorbar=_colorbar("Tasa / 100 000 hab"),
+            )
+            st.plotly_chart(fig_mapa, use_container_width=True)
 
-        with st.expander(f"Municipios sin datos oficiales ({len(sin_dato)} en gris)"):
-            st.write(", ".join(sin_dato) if sin_dato else "Todos tienen datos.")
+            crim_codes = set(df_crim["cod_ine"].astype(str))
+            sin_dato = sorted(
+                f["properties"]["nombre"]
+                for f in geojson_mun["features"]
+                if f["properties"]["cod_ine"] not in crim_codes
+            )
+            st.caption(
+                f"**Fuente**: Portal Estadístico de Criminalidad · Ministerio del Interior · "
+                f"**Período**: {periodo} · "
+                f"**Métrica**: infracciones penales / 100 000 hab · "
+                f"**Rojo** = más peligroso · **Verde** = más seguro · "
+                f"**Gris** = sin publicación oficial (<20 000 hab)"
+            )
+            with st.expander(f"Municipios sin datos oficiales ({len(sin_dato)} en gris)"):
+                st.write(", ".join(sin_dato) if sin_dato else "Todos tienen datos.")
 
-        st.write("")
-        st.subheader("Ranking de peligrosidad")
-        df_rank = df_crim[["municipio", "tasa_criminalidad"]].sort_values(
-            "tasa_criminalidad", ascending=False
-        ).reset_index(drop=True)
-        df_rank.index += 1
-        df_rank.columns = ["Municipio", "Tasa / 100 000 hab"]
-        df_rank["Tasa / 100 000 hab"] = df_rank["Tasa / 100 000 hab"].map("{:.0f}".format)
-        st.dataframe(df_rank, use_container_width=True, hide_index=False)
+            st.write("")
+            st.subheader("Ranking de peligrosidad")
+            df_rank = df_crim[["municipio", "tasa_criminalidad"]].sort_values(
+                "tasa_criminalidad", ascending=False
+            ).reset_index(drop=True)
+            df_rank.index += 1
+            df_rank.columns = ["Municipio", "Tasa / 100 000 hab"]
+            df_rank["Tasa / 100 000 hab"] = df_rank["Tasa / 100 000 hab"].map("{:.0f}".format)
+            st.dataframe(df_rank, use_container_width=True, hide_index=False)
+
+        # ════════════════════════════════════════════════════════════
+        # VISTA B: RENTA (por sección censal / barrio)
+        # ════════════════════════════════════════════════════════════
+        elif _modo_renta and _tiene_renta:
+            df_r = df_renta.dropna(subset=["renta_persona"])
+            renta_min = df_r["renta_persona"].min()
+            renta_max = df_r["renta_persona"].max()
+
+            fig_sec = px.choropleth_map(
+                df_r,
+                geojson=geojson_sec,
+                locations="cusec",
+                featureidkey="properties.cusec",
+                color="renta_persona",
+                color_continuous_scale=_RENTA_COLOR_SCALE,
+                range_color=(renta_min * 0.9, renta_max * 1.05),
+                hover_name="municipio",
+                hover_data={
+                    "cusec": True,
+                    "renta_persona": ":,.0f",
+                    "anio": True,
+                },
+                labels={
+                    "renta_persona": "Renta neta media (€/pers)",
+                    "cusec":         "Sección censal",
+                    "anio":          "Año",
+                },
+                center={"lat": 40.18, "lon": -3.78},
+                zoom=10,
+                map_style="carto-darkmatter",
+                opacity=0.75,
+            )
+            fig_sec.update_layout(
+                **_MAP_LAYOUT,
+                coloraxis_colorbar=_colorbar("Renta neta media (€/pers)"),
+            )
+            st.plotly_chart(fig_sec, use_container_width=True)
+
+            # Secciones sin dato de renta
+            total_sec   = len(df_renta)
+            sin_renta   = total_sec - len(df_r)
+            _anio_renta = df_renta["anio"].iloc[0] if "anio" in df_renta.columns else "2023"
+            st.caption(
+                f"**Fuente**: Atlas de Distribución de Renta de los Hogares (ADRH {_anio_renta}) · INE · "
+                f"**Métrica**: renta neta media por persona (€/año) · "
+                f"**Verde** = renta alta · **Rojo** = renta baja · "
+                f"**Gris** = sin publicación oficial ({sin_renta} secciones) · "
+                f"⚠️ Renta ≠ criminalidad — proxy socioeconómico del barrio"
+            )
+            if sin_renta:
+                with st.expander(f"Secciones sin dato de renta ({sin_renta} en gris)"):
+                    sin_df = df_renta[df_renta["renta_persona"].isna()][["municipio", "cusec"]].sort_values("municipio")
+                    st.dataframe(sin_df.reset_index(drop=True), use_container_width=True, hide_index=True)
+
+            st.write("")
+            st.subheader("Ranking de barrios por renta")
+            df_rank_r = df_r[["municipio", "cusec", "renta_persona"]].sort_values(
+                "renta_persona", ascending=False
+            ).reset_index(drop=True)
+            df_rank_r.index += 1
+            df_rank_r.columns = ["Municipio", "Sección censal", "Renta neta media (€/pers)"]
+            df_rank_r["Renta neta media (€/pers)"] = df_rank_r["Renta neta media (€/pers)"].map("{:,.0f}".format)
+            st.dataframe(df_rank_r, use_container_width=True, hide_index=False)
+
+        elif _modo_renta and not _tiene_renta:
+            st.warning(
+                "Asset de renta por sección no encontrado. Ejecuta el script de build:\n\n"
+                "```\ncd house-dashboard/dashboard\npython scripts/build_mapa_assets.py\n```"
+            )
 
 # ── Footer ───────────────────────────────────────────────────────
 

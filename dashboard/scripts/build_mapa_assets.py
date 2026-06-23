@@ -1,7 +1,7 @@
 """
 build_mapa_assets.py
 ====================
-Descarga y prepara los dos activos que necesita la pestaña "Mapa de seguridad":
+Descarga y prepara los activos que necesita la pestaña "Mapa de seguridad":
 
   dashboard/assets/municipios_zona.geojson
       Límites municipales (polígonos) de los municipios considerados en
@@ -16,6 +16,16 @@ Descarga y prepara los dos activos que necesita la pestaña "Mapa de seguridad":
       Nota: municipios con menos de 20 000 habitantes no tienen publicación
             oficial y aparecen como NaN en el CSV → gris en el mapa.
 
+  dashboard/assets/secciones_renta.geojson
+      Polígonos de secciones censales con renta neta media por persona (€/año)
+      del Atlas de Distribución de Renta de los Hogares (ADRH 2023), INE.
+      Fuente: ArcGIS Feature Service público de INE España
+        (services7.arcgis.com/SEjlCWTAIsMEEXNx — ADRH_2023_Renta_media_por_persona,
+        capa 3 = sección censal). CC BY 4.0.
+      Clave geográfica: CUSEC (10 dígitos). CUMUN (5 dígitos) = cod_ine.
+      Nota: el INE no publica renta para secciones con muy poca población
+            → aparecen con renta=null (gris en el mapa).
+
 Uso:
     cd house-dashboard/dashboard
     python scripts/build_mapa_assets.py
@@ -24,6 +34,11 @@ Para actualizar la tasa de criminalidad con datos más recientes:
   1. Consultar https://estadisticasdecriminalidad.ses.mir.es
   2. Editar el dict CRIME_Q1 con los nuevos "hechos conocidos"
   3. Ajustar PERIODO y ejecutar de nuevo.
+
+Para actualizar la renta (publicación anual INE, normalmente octubre):
+  1. Confirmar que el servicio ArcGIS sigue en la misma URL.
+  2. Ajustar ANIO_ADRH y el nombre del FeatureServer si el INE lo rota.
+  3. Ejecutar de nuevo.
 """
 
 import json
@@ -132,6 +147,19 @@ def tasa_100k(hechos_q1: int, poblacion: int) -> float:
     return round(hechos_q1 * 4 / poblacion * 100_000, 1)
 
 
+# ── Constantes para la capa de renta por sección censal ─────────────────────
+# ArcGIS Feature Service público del INE — Atlas de Distribución de Renta de
+# los Hogares (ADRH 2023), capa 3 = sección censal.
+# Campos clave: CUSEC (10 díg.), CUMUN (5 díg. = cod_ine), dato1 = renta media
+# neta por persona (€/año), indicador1 = "Renta neta media por persona".
+ARCGIS_ADRH_URL = (
+    "https://services7.arcgis.com/SEjlCWTAIsMEEXNx/arcgis/rest/services"
+    "/ADRH_2023_Renta_media_por_persona/FeatureServer/3/query"
+)
+ANIO_ADRH = "2023"
+FUENTE_ADRH = "Atlas de Distribución de Renta de los Hogares - INE"
+
+
 # ── 1. Descarga del GeoJSON ──────────────────────────────────────────────────
 
 def _sin_acentos(s: str) -> str:
@@ -226,9 +254,97 @@ def generar_csv() -> None:
         print(f"    {nombre:30s} {tasa:7.1f} / 100 000 hab")
 
 
+# ── 3. Descarga de secciones censales con renta (ADRH 2023) ─────────────────
+
+def descargar_secciones_renta() -> None:
+    """Descarga secciones censales + renta media por persona del ADRH 2023 (INE).
+
+    Fuente: ArcGIS Feature Service público services7.arcgis.com/SEjlCWTAIsMEEXNx
+    Capa 3 = secciones censales.  GeoJSON resultante incluye geometría + renta
+    en properties → un único fichero para el choropleth de app.py.
+    """
+    print("→ Descargando secciones censales con renta media (ADRH 2023)…")
+    target_codes = set(MUNICIPIOS_INE.keys())
+
+    # Filtro WHERE por código municipal — evita descargar toda España
+    codes_sql = ", ".join(f"'{c}'" for c in sorted(target_codes))
+    where = f"CUMUN IN ({codes_sql})"
+    out_fields = "CUSEC,CUMUN,NMUN,dato1"
+
+    features = []
+    offset = 0
+    limit = 1000   # máximo que admite el servicio por petición
+
+    while True:
+        params = {
+            "where": where,
+            "outFields": out_fields,
+            "f": "geojson",
+            "resultOffset": offset,
+            "resultRecordCount": limit,
+        }
+        resp = requests.get(ARCGIS_ADRH_URL, params=params, timeout=60)
+        resp.raise_for_status()
+        data = resp.json()
+        batch = data.get("features", [])
+        if not batch:
+            break
+
+        for feat in batch:
+            props = feat.get("properties") or {}
+            cusec = props.get("CUSEC") or props.get("cusec", "")
+            cumun = props.get("CUMUN") or props.get("cumun", "")
+            if cumun not in target_codes:
+                continue
+            renta = props.get("dato1")   # None si el INE no lo publica
+
+            features.append({
+                "type": "Feature",
+                "properties": {
+                    "cusec":         cusec,
+                    "cod_ine":       cumun,
+                    "municipio":     MUNICIPIOS_INE.get(cumun, cumun),
+                    "renta_persona": renta,
+                    "anio":          ANIO_ADRH,
+                },
+                "geometry": feat.get("geometry"),
+            })
+
+        # El servicio señala si hay más páginas
+        if not data.get("exceededTransferLimit", False):
+            break
+        offset += limit
+        time.sleep(0.3)   # cortesía al servidor público
+
+    found_codes = {f["properties"]["cod_ine"] for f in features}
+    missing = target_codes - found_codes
+    if missing:
+        print(f"  ⚠ Sin secciones para: {', '.join(sorted(missing))}")
+
+    n_con_dato = sum(1 for f in features if f["properties"]["renta_persona"] is not None)
+    geojson = {"type": "FeatureCollection", "features": features}
+    out = ASSETS / "secciones_renta.geojson"
+    out.write_text(json.dumps(geojson, ensure_ascii=False), encoding="utf-8")
+    print(
+        f"  ✓ {len(features)} secciones · {len(found_codes)} municipios · "
+        f"{n_con_dato} con dato de renta → {out.relative_to(ROOT.parent)}"
+    )
+    # Preview
+    from collections import defaultdict
+    per_mun = defaultdict(list)
+    for f in features:
+        p = f["properties"]
+        if p["renta_persona"] is not None:
+            per_mun[p["municipio"]].append(p["renta_persona"])
+    for mun, vals in sorted(per_mun.items()):
+        media = sum(vals) / len(vals)
+        print(f"    {mun:30s}  {len(vals):3d} sec  media {media:7.0f} €/pers")
+
+
 # ── Entrypoint ───────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
     descargar_geojson()
     generar_csv()
+    descargar_secciones_renta()
     print("\n✓ Assets listos en dashboard/assets/")
