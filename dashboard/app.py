@@ -1421,10 +1421,13 @@ with tab4:
             link_close = "</a>" if (isinstance(url, str) and url.startswith("http")) else "</span>"
             meta = " · ".join(str(clean(p) or "—") for p in [row.get("location", "—"), row.get("source", "—")])
 
-            prev = row.get("previous_price", 0) or 0
-            cur = row.get("price", 0) or 0
-            drop = row.get("price_drop", 0) or 0
-            pct = (drop / prev * 100) if prev else 0
+            cur  = row.get("price")
+            drop = row.get("price_drop")
+            prev = row.get("previous_price")
+            cur  = cur  if pd.notna(cur)  else 0
+            drop = drop if pd.notna(drop) else 0
+            prev = prev if pd.notna(prev) else (cur + drop)   # reconstruir si falta
+            pct  = (drop / prev * 100) if prev else 0
 
             _b_sc = row.get("score", 0) or 0
             _b_col = score_color(_b_sc)
