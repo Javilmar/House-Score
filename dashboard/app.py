@@ -1048,7 +1048,7 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
     "Bajadas de precio",
     "Hipoteca",
     "Cómo funciona",
-    "Mapa de seguridad",
+    "Mapas",
 ])
 
 # ── TAB 1: Listados completos ────────────────────────────────────
