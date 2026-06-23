@@ -436,7 +436,7 @@ tbody tr:hover { background: #18181b; }
 .lt-nuevo { background: rgba(34,197,94,0.12); color: #4ade80; border: 1px solid rgba(34,197,94,0.2); }
 .lt-usada { background: rgba(255,255,255,0.04); color: #a1a1aa; border: 1px solid #27272a; }
 .lt-src { font-size: 0.72rem; padding: 0.12rem 0.5rem; border-radius: 5px; white-space: nowrap; font-weight: 500; background: rgba(255,255,255,0.04); color: #94a3b8; border: 1px solid #27272a; }
-.lt-src-pisos { background: rgba(239,68,68,0.1); color: #fca5a5; border: 1px solid rgba(239,68,68,0.25); }
+.lt-src-pisos { background: rgba(234,179,8,0.1); color: #fbbf24; border: 1px solid rgba(234,179,8,0.2); }
 .lt-src-fotocasa { background: rgba(56,189,248,0.1); color: #7dd3fc; border: 1px solid rgba(56,189,248,0.25); }
 .lt-src-idealista { background: rgba(99,102,241,0.1); color: #818cf8; border: 1px solid rgba(99,102,241,0.2); }
 ::-webkit-scrollbar { width: 8px; height: 8px; }
