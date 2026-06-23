@@ -1454,7 +1454,7 @@ with tab4:
                     </div>
                     <div style="text-align:right; white-space:nowrap;">
                       <div style="font-size:0.8rem; color:#a1a1aa; text-decoration:line-through;">{prev:,.0f} €</div>
-                      <div style="font-size:1.15rem; font-weight:600; color:#18181b;">{cur:,.0f} €</div>
+                      <div style="font-size:1.15rem; font-weight:600; color:#fafafa;">{cur:,.0f} €</div>
                     </div>
                     <div class="score-badge" style="background:#15803d; min-width:auto; padding:0 0.85rem; font-size:0.95rem;">
                       −{pct:.0f}%
