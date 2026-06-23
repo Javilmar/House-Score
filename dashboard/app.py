@@ -1588,6 +1588,56 @@ with tab5:
         "Pueden existir bonificaciones por edad, familia numerosa, VPO, etc."
     )
 
+    st.write("")
+    with st.expander("Gastos mensuales estimados"):
+        col_g1, col_g2 = st.columns(2)
+        with col_g1:
+            g_comunidad = st.slider("Comunidad (€/mes)", 0, 300, 80, 5, key="g_com")
+            g_ibi       = st.slider("IBI mensual (€/mes)", 0, 200, 50, 5, key="g_ibi")
+            g_seguro    = st.slider("Seguro hogar (€/mes)", 0, 150, 30, 5, key="g_seg")
+        with col_g2:
+            g_luz      = st.slider("Luz + gas (€/mes)", 0, 250, 80, 5, key="g_luz")
+            g_internet = st.slider("Internet (€/mes)", 0, 80, 35, 5, key="g_net")
+            g_ingresos = st.number_input(
+                "Ingresos netos mensuales (€)",
+                min_value=500, max_value=20_000, value=2_500, step=100, key="g_ing",
+            )
+
+        g_gastos = g_comunidad + g_ibi + g_seguro + g_luz + g_internet
+        g_total  = hip_result["cuota_mensual"] + g_gastos
+        g_ratio  = (g_total / g_ingresos * 100) if g_ingresos > 0 else 0
+        g_color  = "#4ade80" if g_ratio < 30 else ("#fb923c" if g_ratio < 40 else "#f87171")
+        g_bg     = (
+            "rgba(74,222,128,0.1)"  if g_ratio < 30 else
+            ("rgba(251,146,60,0.1)" if g_ratio < 40 else "rgba(248,113,113,0.1)")
+        )
+        g_border = (
+            "rgba(74,222,128,0.25)"  if g_ratio < 30 else
+            ("rgba(251,146,60,0.25)" if g_ratio < 40 else "rgba(248,113,113,0.25)")
+        )
+
+        st.write("")
+        g_kpi_html = f"""
+        <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:0.25rem;">
+          <div class="kpi-card" style="flex:1;min-width:180px;">
+            <div class="kpi-label">Coste mensual total</div>
+            <div class="kpi-value" style="font-size:1.4rem;">{_hip_eur(g_total)}</div>
+            <div style="font-size:0.78rem;color:#71717a;margin-top:0.3rem;">
+              cuota {_hip_eur(hip_result["cuota_mensual"])} + gastos {_hip_eur(g_gastos)}
+            </div>
+          </div>
+          <div class="kpi-card" style="flex:1;min-width:180px;
+               background:{g_bg};border-color:{g_border};">
+            <div class="kpi-label">Esfuerzo sobre ingresos</div>
+            <div class="kpi-value" style="font-size:1.4rem;color:{g_color};">{g_ratio:.1f}%</div>
+            <div style="font-size:0.78rem;color:#71717a;margin-top:0.3rem;">
+              recomendado &lt; 30 %
+            </div>
+          </div>
+        </div>
+        """
+        st.markdown(g_kpi_html, unsafe_allow_html=True)
+
 # ── TAB 6: Cómo funciona ─────────────────────────────────────────
 
 with tab6:
