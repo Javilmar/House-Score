@@ -1582,9 +1582,9 @@ with tab6:
     c1, c2 = st.columns(2)
     with c1:
         st.markdown(
-            _bloque("💎 Valor vs zona", "Lo que MÁS pesa · €/m² frente a la media de su municipio", [
-                ("≈ 20% o más bajo la media (chollo)", "+40", POS),
-                ("En la media de su zona", "≈ +20", NEU),
+            _bloque("💎 Valor vs zona", "€/m² frente a la media de su municipio", [
+                ("≈ 20% o más bajo la media (chollo)", "+25", POS),
+                ("En la media de su zona", "≈ +12", NEU),
                 ("≈ 20% o más por encima (caro)", "+0", NEG),
                 ("Sin m² fiable → no se puede valorar", "fuera del Top", NEG),
             ]),
@@ -1671,14 +1671,8 @@ with tab6:
             )
         with c_tn:
             st.markdown(
-                "**Toledo Norte (29)**\n\n"
-                "Alameda de la Sagra · Añover de Tajo · Bargas · "
-                "Burguillos de Toledo · Cabañas de la Sagra · Carranque · "
-                "Casarrubios del Monte · Cedillo del Condado · Cobeja · Cobisa · "
-                "Chozas de Canales · El Viso de San Juan · Esquivias · "
-                "Illescas · Lominchar · Magán · Mocejón · Numancia de la Sagra · "
-                "Olías del Rey · Pantoja · Recas · Seseña · Ugena · Valmojado · "
-                "Villaluenga de la Sagra · Yeles · Yuncler · Yunclillos · Yuncos"
+                "**Toledo Norte (5)**\n\n"
+                "Esquivias · Illescas · Seseña · Ugena · Yeles"
             )
     with st.expander("¿Cómo se asegura que el precio es real?"):
         st.markdown(
