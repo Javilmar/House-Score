@@ -347,14 +347,12 @@ _MADRID_SUR = [
     "moraleja de enmedio", "arroyomolinos",
 ]
 _TOLEDO_NORTE = [
-    "illescas", "yeles", "esquivias", "yuncos", "yuncler", "yunclillos",
-    "cedillo", "el viso de san juan", "viso de san juan", "carranque",
-    "ugena", "recas", "lominchar", "alameda de la sagra",
-    "cabanas de la sagra", "villaluenga", "anover de tajo", "sesena",
-    "casarrubios", "valmojado", "magan", "cobeja", "numancia", "pantoja",
-    "chozas de canales", "bargas", "mocejon", "burguillos", "cobisa",
-    "olias", "castilla la mancha", "la sagra", "sagra",
-    "provincia de toledo", "toledo",
+    # Solo los 5 municipios de interés: Illescas, Seseña, Yeles, Ugena, Esquivias
+    "illescas", "senorio",          # Illescas / El Señorío
+    "sesena", "quinon",             # Seseña / El Quiñón
+    "yeles",
+    "ugena",
+    "esquivias",
 ]
 
 

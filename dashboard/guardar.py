@@ -25,12 +25,35 @@ import json
 import sys
 import os
 import subprocess
+import unicodedata
 from datetime import date, datetime
 from pathlib import Path
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "datos"
 REPO_DIR = DATA_DIR.parent
 TODAY = date.today().isoformat()
+
+# Municipios de Toledo Norte que ya no son de interés.
+# Los pisos scrapeados de estas localidades se descartan antes de guardar.
+_TOLEDO_NORTE_BLOQUEADOS = {
+    "yuncos", "yuncler", "yunclillos", "cedillo",
+    "el viso de san juan", "viso de san juan", "carranque",
+    "recas", "lominchar", "alameda de la sagra", "cabanas de la sagra",
+    "villaluenga", "anover de tajo", "casarrubios", "valmojado",
+    "magan", "cobeja", "numancia", "pantoja", "chozas de canales",
+    "bargas", "mocejon", "burguillos", "cobisa", "olias",
+}
+
+
+def _sin_acentos(s):
+    s = unicodedata.normalize("NFKD", str(s))
+    return "".join(c for c in s if not unicodedata.combining(c)).lower()
+
+
+def _bloqueado(item):
+    """Devuelve True si el listing pertenece a un municipio de Toledo Norte descartado."""
+    muni = _sin_acentos(item.get("municipio") or "")
+    return muni in _TOLEDO_NORTE_BLOQUEADOS
 
 
 def git_sync():
@@ -123,6 +146,13 @@ def main():
     if not isinstance(new_listings, list):
         print("Error: el JSON debe ser un array de listings")
         sys.exit(1)
+
+    # Descartar pisos de municipios Toledo Norte no permitidos
+    antes = len(new_listings)
+    new_listings = [item for item in new_listings if not _bloqueado(item)]
+    descartados = antes - len(new_listings)
+    if descartados:
+        print(f"   🚫 Descartados {descartados} pisos de municipios Toledo Norte no permitidos")
 
     existing = load_existing()
     merged = merge(new_listings, existing)
