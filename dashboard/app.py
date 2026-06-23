@@ -1413,7 +1413,24 @@ with tab4:
     st.subheader("Listings con bajada de precio detectada")
 
     if not bajadas.empty:
-        bajadas_show = bajadas.sort_values("price_drop", ascending=False)
+        _ORDEN_OPTS = {
+            "Mayor bajada (€)":  ("price_drop",  False),
+            "Mayor bajada (%)":  ("_pct_drop",   False),
+            "Mejor score":       ("score",        False),
+            "Precio más bajo":   ("price",        True),
+            "Más reciente":      ("first_seen",   False),
+        }
+        _orden_sel = st.selectbox("Ordenar por", list(_ORDEN_OPTS.keys()), key="b_orden")
+        _sort_col, _sort_asc = _ORDEN_OPTS[_orden_sel]
+
+        bajadas_show = bajadas.copy()
+        if _sort_col == "_pct_drop":
+            bajadas_show["_pct_drop"] = (
+                bajadas_show["price_drop"] /
+                (bajadas_show["price"] + bajadas_show["price_drop"]) * 100
+            )
+        bajadas_show = bajadas_show.sort_values(_sort_col, ascending=_sort_asc, na_position="last")
+
         for _b_i, (_, row) in enumerate(bajadas_show.iterrows()):
             titulo = clean(row.get("title", "Sin título")) or "Sin título"
             url = row.get("url", "")
