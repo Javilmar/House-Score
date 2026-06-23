@@ -108,10 +108,16 @@ def inject_styles():
             font-family: var(--font-sans);
         }
 
+        @keyframes dots-drift {
+          from { background-position: 0 0; }
+          to   { background-position: -28px -28px; }
+        }
+
         .stApp {
           background-color: #09090b;
-          background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px);
-          background-size: 22px 22px;
+          background-image: radial-gradient(circle, rgba(255,255,255,0.18) 1.5px, transparent 1.5px);
+          background-size: 28px 28px;
+          animation: dots-drift 4s linear infinite;
         }
         .block-container { padding-top: 3rem; padding-bottom: 4rem; max-width: 1320px; }
 
@@ -402,7 +408,7 @@ _TABLA_TEMPLATE = """<!DOCTYPE html><html><head><meta charset="utf-8"><style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
 * { box-sizing: border-box; }
 body { margin: 0; background: #09090b; font-family: 'Inter', sans-serif; }
-.wrap { border: 1px solid #27272a; border-radius: 14px; overflow-x: auto; overflow-y: hidden; background: #131316; -webkit-overflow-scrolling: touch; }
+.wrap { border: 1px solid #27272a; border-radius: 14px; overflow: auto; max-height: calc(100vh - 4px); background: #131316; -webkit-overflow-scrolling: touch; }
 table { min-width: 100%; border-collapse: collapse; font-size: 0.86rem; }
 thead th {
   text-align: left; font-size: 0.7rem; font-weight: 600; color: #a1a1aa;
@@ -429,6 +435,9 @@ tbody tr:hover { background: #18181b; }
 .lt-tag { font-size: 0.72rem; padding: 0.12rem 0.5rem; border-radius: 5px; white-space: nowrap; font-weight: 500; }
 .lt-nuevo { background: rgba(34,197,94,0.12); color: #4ade80; border: 1px solid rgba(34,197,94,0.2); }
 .lt-usada { background: rgba(255,255,255,0.04); color: #a1a1aa; border: 1px solid #27272a; }
+.lt-src { font-size: 0.72rem; padding: 0.12rem 0.5rem; border-radius: 5px; white-space: nowrap; font-weight: 500; background: rgba(255,255,255,0.04); color: #94a3b8; border: 1px solid #27272a; }
+.lt-src-pisos { background: rgba(234,179,8,0.1); color: #fbbf24; border: 1px solid rgba(234,179,8,0.2); }
+.lt-src-idealista { background: rgba(99,102,241,0.1); color: #818cf8; border: 1px solid rgba(99,102,241,0.2); }
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
 .lt-goto-btn {
@@ -1188,6 +1197,15 @@ with tab1:
         else:
             goto_cell = f'<td style="padding:0.4rem 0.5rem;text-align:center;">{hip_btn}</td>'
 
+        src_raw = str(row.get("source", "") or "").strip().lower()
+        src_label = src_raw if src_raw else "—"
+        if "pisos" in src_raw:
+            src_cls = "lt-src lt-src-pisos"
+        elif "idealista" in src_raw:
+            src_cls = "lt-src lt-src-idealista"
+        else:
+            src_cls = "lt-src"
+
         filas.append(
             "<tr>"
             f'<td class="lt-pos">{pos}</td>'
@@ -1199,6 +1217,7 @@ with tab1:
             f'<td class="lt-num" data-v="{_num(row.get("eur_m2"))}">{_fmt_eur(row.get("eur_m2"))}</td>'
             f'<td class="lt-num" data-v="{_num(row.get("m2"))}">{m2_txt}</td>'
             f'<td data-v="{tipo}"><span class="lt-tag {tipo_cls}">{tipo}</span></td>'
+            f'<td data-v="{src_raw}"><span class="{src_cls}">{src_label}</span></td>'
             f'<td data-v="{ubi}">{ubi}</td>'
             f'<td class="lt-num" data-v="{_dias_num}" style="color:{_dias_col};white-space:nowrap;">{_dias_txt}</td>'
             f'{goto_cell}'
@@ -1215,14 +1234,15 @@ with tab1:
             '<th onclick="ord(4,this)">€/m²<span class="arr"></span></th>'
             '<th onclick="ord(5,this)">m²<span class="arr"></span></th>'
             '<th onclick="ord(6,this)">Tipo<span class="arr"></span></th>'
-            '<th onclick="ord(7,this)">Ubicación<span class="arr"></span></th>'
-            '<th onclick="ord(8,this)" title="Días en mercado">Días<span class="arr"></span></th>'
+            '<th onclick="ord(7,this)">Fuente<span class="arr"></span></th>'
+            '<th onclick="ord(8,this)">Ubicación<span class="arr"></span></th>'
+            '<th onclick="ord(9,this)" title="Días en mercado">Días<span class="arr"></span></th>'
             '<th class="noord" style="width:38px;" title="Ver en Top scoring"></th>'
             "</tr>"
         )
         doc = _TABLA_TEMPLATE.replace("__THEAD__", thead).replace("__ROWS__", "".join(filas))
         altura = min(660, 64 + len(filas) * 41)
-        components.html(doc, height=altura, scrolling=True)
+        components.html(doc, height=altura, scrolling=False)
     else:
         st.info("No hay listados con esos filtros.")
 
