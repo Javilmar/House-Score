@@ -1,5 +1,71 @@
 [
   {
+    "title": "Casa en calle del Prado",
+    "price": 449500,
+    "score": 88,
+    "location": "¡Oportunidad única en el corazón del pueblo! Presentamos esta encantadora casa de pueblo a REFORMAR, con una excelente ubicación cercana al centro de la localidad. Con una parcela de 145 m² y una construcción de 111 m² en una sola planta, esta propiedad ofrece un sinfín de posibilidades. Actualmente, la vivienda se distribuye en un amplio salón-comedor, cuatro dormitorios, un baño, cocina, patio interior y garaje. Además, cuenta con un trastero para mayor comodidad. La casa, construida en 1960, es ideal para aquellos que buscan un proyecto de reforma a su gusto. La orientación sur garantiza luminosidad y calidez durante todo el día. Una de las grandes ventajas es la posibilidad de edificar una segunda planta o incluso realizar un bloque de viviendas (dispone de proyecto \"consultar condiciones\"), lo que la convierte en una inversión atractiva. La vivienda es apta para personas con movilidad reducida. No pierdas la oportunidad de transformar esta joya en tu hogar ideal o en una excelente inversión inmobiliaria. El precio es de 215.000 Euros. ¡Ven a visitarla y descubre todo su potencial!",
+    "m2": 201,
+    "rooms": 3,
+    "bathrooms": 3,
+    "url": "https://www.pisos.com/comprar/chalet_adosado-laguna_park28981-62543994939_527256/",
+    "source": "pisos.com",
+    "floor": "bajo",
+    "year_built": 0,
+    "conservation": "en buen estado",
+    "energy_rating": "",
+    "description": "BLACK HOUSE servicios inmobiliarios sl VENDE exclusivo chalet unifamiliar en una de las zonas más demandadas de\nLaguna Park, un entorno residencial consolidado que ofrece tranquilidad, calidad de vida y todos los servicios al alcance: supermercados, centros educativos, instalaciones deportivas, zonas verdes y una excelente conexión con el centro urbano mediante transporte público y rápidos accesos a las principales vías.\n\nLa vivienda se asienta sobre una parcela muy cuidada, destacando por su ma",
+    "features": [
+      "Superficie construida: 201 m²",
+      "Superficie útil: 176 m²",
+      "Habitaciones: 3",
+      "Baños: 3",
+      "Antigüedad: Entre 20 y 30 años",
+      "Conservación: En buen estado",
+      "Referencia: 103254696",
+      "Armarios empotrados: Más de 2",
+      "Aire acondicionado: Frío",
+      "Calefacción: Gas natural",
+      "Cocina equipada: Independiente",
+      "Garaje: 1",
+      "Jardín: Privado",
+      "Piscina: Propia",
+      "Orientación: Sureste"
+    ],
+    "detail_features": {
+      "calefacción": true,
+      "aire acondicionado": true,
+      "trastero": true,
+      "piscina": true,
+      "jardín": true,
+      "terraza": true,
+      "balcón": true,
+      "patio": true,
+      "garaje": true
+    },
+    "pisos_id": "62543994939_527256",
+    "score_details": [
+      "💎 -21% vs media fuenlabrada (2,236€/m² · ref 2,844) (+25)",
+      "📐 Muy amplio: 201m² (+15)",
+      "🛏️ 3 habitaciones (+5)",
+      "🌿 Espacio exterior (+12)",
+      "🏊 Piscina (+8)",
+      "🚗 Garaje (+10)",
+      "📦 Trastero (+6)",
+      "   (características capadas: 24→18)",
+      "🔧 Reformado (+5)",
+      "🚇 Cerca transporte público (+8)"
+    ],
+    "eur_m2": 2236,
+    "municipio": "fuenlabrada",
+    "first_seen": "2026-06-29",
+    "last_seen": "2026-06-29",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
+    "exterior": true,
+    "cumple_requisitos": true
+  },
+  {
     "title": "Casa adosada en calle de las Alcantarillas",
     "price": 790000,
     "score": 83,
@@ -96,13 +162,13 @@
       "Jardín: Privado"
     ],
     "detail_features": {
-      "jardín": true,
-      "terraza": true,
-      "garaje": true,
+      "calefacción": true,
       "aire acondicionado": true,
       "trastero": true,
+      "jardín": true,
+      "terraza": true,
       "patio": true,
-      "calefacción": true
+      "garaje": true
     },
     "pisos_id": "65069734315_101800",
     "score_details": [
@@ -148,12 +214,12 @@
       "Referencia: 108237722-Z2220 - Cl Comunidad de Baleares"
     ],
     "detail_features": {
-      "garaje": true,
+      "calefacción": true,
       "aire acondicionado": true,
       "trastero": true,
-      "patio": true,
       "ascensor": true,
-      "calefacción": true
+      "patio": true,
+      "garaje": true
     },
     "pisos_id": "65066712671_106500",
     "score_details": [
@@ -247,10 +313,10 @@
       "Terraza"
     ],
     "detail_features": {
-      "ascensor": true,
       "trastero": true,
-      "terraza": true,
-      "calefacción": true
+      "calefacción": true,
+      "ascensor": true,
+      "terraza": true
     },
     "pisos_id": "65026067507_106500",
     "score_details": [
@@ -299,8 +365,8 @@
     ],
     "detail_features": {
       "calefacción": true,
-      "garaje": true,
-      "patio": true
+      "patio": true,
+      "garaje": true
     },
     "pisos_id": "50882967482_103800",
     "score_details": [
@@ -360,15 +426,15 @@
       "Calle asfaltada"
     ],
     "detail_features": {
-      "jardín": true,
-      "garaje": true,
+      "calefacción": true,
       "trastero": true,
+      "jardín": true,
       "patio": true,
-      "calefacción": true
+      "garaje": true
     },
     "pisos_id": "45008255714_996012",
     "score_details": [
-      "💎 -33% vs media fuenlabrada (1,937€/m² · ref 2,874) (+25)",
+      "💎 -26% vs media humanes_de_madrid (1,937€/m² · ref 2,606) (+25)",
       "📐 Buen tamaño: 111m² (+8)",
       "🛏️ 4 habitaciones (+5)",
       "🌿 Espacio exterior (+12)",
@@ -377,7 +443,7 @@
       "🚇 Cerca transporte público (+8)"
     ],
     "eur_m2": 1937,
-    "municipio": "fuenlabrada",
+    "municipio": "humanes_de_madrid",
     "first_seen": "2026-06-29",
     "last_seen": "2026-06-29",
     "previous_price": null,
@@ -412,9 +478,9 @@
       "Terraza"
     ],
     "detail_features": {
-      "calefacción": true,
       "piscina": true,
       "terraza": true,
+      "calefacción": true,
       "patio": true
     },
     "pisos_id": "65096578046_106500",
@@ -491,6 +557,71 @@
     "cumple_requisitos": true
   },
   {
+    "title": "Piso en Cerro-El Molino",
+    "price": 187865,
+    "score": 69,
+    "location": "Cerro-El Molino (Fuenlabrada)",
+    "m2": 79,
+    "rooms": 3,
+    "bathrooms": 1,
+    "url": "https://www.pisos.com/comprar/piso-cerro_el_molino28941-62583254307_500185/",
+    "source": "pisos.com",
+    "floor": "3ª planta",
+    "year_built": 1976,
+    "conservation": "en buen estado",
+    "energy_rating": "",
+    "description": "Gestion 3 vende esta estupenda vivienda con una superficie de 79m² construidos, una opción ideal para familias que buscan comodidad, buena ubicación y excelentes comunicaciones.\n\nLa vivienda se distribuye en tres dormitorios, un baño, cocina independiente y un luminoso salón con acceso a una agradable terraza abierta, perfecta para disfrutar del aire libre.\n\nUbicada en una zona tranquila y bien comunicada, cuenta con paradas de autobús a pocos minutos a pie, como Av. Regiones y P.º Roma – Est. F",
+    "features": [
+      "Superficie construida: 79 m²",
+      "Superficie útil: 79 m²",
+      "Habitaciones: 3",
+      "Baños: 1",
+      "Planta: 3ª",
+      "Exterior",
+      "Antigüedad: Más de 50 años",
+      "Conservación: En buen estado",
+      "Gastos de comunidad: 74",
+      "Referencia: 008656",
+      "Carpintería interior: Sapelly",
+      "Tipo suelo: Terrazo",
+      "Carpintería exterior: Aluminio",
+      "Cocina equipada: Independiente",
+      "Comedor: De paso",
+      "Portero automático",
+      "Puerta blindada",
+      "Ascensor",
+      "Adaptado a personas con movilidad reducida",
+      "Terraza: Abierta",
+      "Orientación: Este",
+      "Soleado"
+    ],
+    "detail_features": {
+      "terraza": true,
+      "ascensor": true,
+      "garaje": true
+    },
+    "pisos_id": "62583254307_500185",
+    "score_details": [
+      "💎 -16% vs media fuenlabrada (2,378€/m² · ref 2,844) (+23)",
+      "📐 Justo: 79m² (+3)",
+      "🛏️ 3 habitaciones (+5)",
+      "🌿 Espacio exterior (+12)",
+      "🚗 Garaje (+10)",
+      "🛗 Ascensor (+5)",
+      "🚇 Cerca transporte público (+8)",
+      "🏢 Ático (+3)"
+    ],
+    "eur_m2": 2378,
+    "municipio": "fuenlabrada",
+    "first_seen": "2026-06-29",
+    "last_seen": "2026-06-29",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
+    "exterior": true,
+    "cumple_requisitos": true
+  },
+  {
     "title": "Piso en Illescas",
     "price": 249900,
     "score": 67,
@@ -528,12 +659,12 @@
       "Orientación: Sur"
     ],
     "detail_features": {
+      "calefacción": true,
+      "trastero": true,
       "armario empotrado": true,
       "terraza": true,
-      "garaje": true,
-      "trastero": true,
       "ascensor": true,
-      "calefacción": true
+      "garaje": true
     },
     "pisos_id": "64214431053_100500",
     "score_details": [
@@ -585,8 +716,8 @@
     ],
     "detail_features": {
       "trastero": true,
-      "terraza": true,
-      "patio": true
+      "patio": true,
+      "terraza": true
     },
     "pisos_id": "62525706201_109300",
     "score_details": [
@@ -630,9 +761,9 @@
       "Tipo suelo: Gres"
     ],
     "detail_features": {
-      "balcón": true,
       "jardin": true,
-      "patio": true
+      "patio": true,
+      "balcón": true
     },
     "pisos_id": "60031477073_100500",
     "score_details": [
@@ -744,17 +875,17 @@
       "Se aceptan mascotas"
     ],
     "detail_features": {
-      "jardín": true,
-      "terraza": true,
-      "garaje": true,
+      "calefacción": true,
       "trastero": true,
       "piscina": true,
+      "jardín": true,
+      "terraza": true,
       "patio": true,
-      "calefacción": true
+      "garaje": true
     },
     "pisos_id": "64260943674_510790",
     "score_details": [
-      "💎 -53% vs media alcorcon (1,533€/m² · ref 3,284) (+25)",
+      "💎 -54% vs media alcorcon (1,533€/m² · ref 3,318) (+25)",
       "📐 Justo: 75m² (+3)",
       "🛏️ 3 habitaciones (+5)",
       "🌿 Espacio exterior (+12)",
@@ -845,14 +976,14 @@
       "Piscina: Comunitaria"
     ],
     "detail_features": {
-      "jardín": true,
-      "garaje": true,
-      "balcón": true,
+      "jardin": true,
       "trastero": true,
       "piscina": true,
-      "patio": true,
+      "jardín": true,
       "ascensor": true,
-      "jardin": true
+      "balcón": true,
+      "patio": true,
+      "garaje": true
     },
     "pisos_id": "63357355547_520514",
     "score_details": [
@@ -897,7 +1028,7 @@
     "detail_features": {},
     "pisos_id": "65007320293_106600",
     "score_details": [
-      "💎 -39% vs media leganes (1,882€/m² · ref 3,084) (+25)",
+      "💎 -40% vs media leganes (1,882€/m² · ref 3,147) (+25)",
       "📐 Tamaño mínimo: 93m² (+5)",
       "🛏️ 1 hab < 2 mínimo (no cumple)",
       "🌿 Espacio exterior (+12)",
@@ -955,6 +1086,74 @@
     ],
     "eur_m2": 321,
     "municipio": "arroyomolinos",
+    "first_seen": "2026-06-29",
+    "last_seen": "2026-06-29",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
+    "exterior": true,
+    "cumple_requisitos": true
+  },
+  {
+    "title": "Piso en calle de Villalobos",
+    "price": 249900,
+    "score": 57,
+    "location": "Inmomafer comercializa piso en planta baja (zona torreón) totalmente exterior , con patio comunitario y garaje (opcional) , vivie...",
+    "m2": 92,
+    "rooms": 3,
+    "bathrooms": 2,
+    "url": "https://www.pisos.com/comprar/piso-grinon_centro_urbano-63426615372_527024/",
+    "source": "pisos.com",
+    "floor": "bajo",
+    "year_built": 0,
+    "conservation": "en buen estado",
+    "energy_rating": "",
+    "description": "Inmomafer comercializa piso en planta baja (zona torreón) Totalmente exterior , con patio comunitario y garaje (opcional) , vivienda muy luminosa con tres dormitorios y dos baños completos , armarios empotrados , suelos de gres , puertas de roble y la principal blindada .\nVentanas de aluminio con cristales climalit y rejas en todas ellas .\nZona muy tranquila y peatonal , vivienda adaptada para personas con movilidad reducida (sin escalones) .\nVivienda con ascensor y portal recién reformado .\nTam",
+    "features": [
+      "Superficie construida: 92 m²",
+      "Superficie útil: 87 m²",
+      "Habitaciones: 3",
+      "Baños: 2",
+      "Planta: Bajo",
+      "Exterior: Muy luminoso",
+      "Antigüedad: Entre 10 y 20 años",
+      "Conservación: En buen estado",
+      "Referencia: 000002",
+      "Armarios empotrados: 2",
+      "Carpintería interior: Roble",
+      "Tipo suelo: Gres",
+      "Vidrios dobles: Climalit",
+      "Carpintería exterior: Aluminio",
+      "Gas: Natural",
+      "Calefacción",
+      "Cocina equipada: Independiente",
+      "Garaje: 1",
+      "Portero automático",
+      "Puerta blindada",
+      "Ascensor",
+      "Adaptado a personas con movilidad reducida",
+      "Orientación: Suroeste",
+      "Soleado"
+    ],
+    "detail_features": {
+      "ascensor": true,
+      "calefacción": true,
+      "patio": true,
+      "garaje": true
+    },
+    "pisos_id": "63426615372_527024",
+    "score_details": [
+      "💎 -0% vs media grinon (2,716€/m² · ref 2,716) (+12)",
+      "📐 Tamaño mínimo: 92m² (+5)",
+      "🛏️ 3 habitaciones (+5)",
+      "🌿 Espacio exterior (+12)",
+      "🚗 Garaje (+10)",
+      "🛗 Ascensor (+5)",
+      "🔧 Reformado (+5)",
+      "🏢 Ático (+3)"
+    ],
+    "eur_m2": 2716,
+    "municipio": "grinon",
     "first_seen": "2026-06-29",
     "last_seen": "2026-06-29",
     "previous_price": null,
@@ -1067,9 +1266,9 @@
       "Piscina"
     ],
     "detail_features": {
+      "piscina": true,
       "trastero": true,
       "jardín": true,
-      "piscina": true,
       "garaje": true
     },
     "pisos_id": "61714136944_104700",
@@ -1086,6 +1285,80 @@
     ],
     "eur_m2": 1385,
     "municipio": "arroyomolinos",
+    "first_seen": "2026-06-29",
+    "last_seen": "2026-06-29",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
+    "exterior": true,
+    "cumple_requisitos": true
+  },
+  {
+    "title": "Piso en Seseña",
+    "price": 244900,
+    "score": 54,
+    "location": "Urbanización El Quiñón (Seseña)",
+    "m2": 125,
+    "rooms": 3,
+    "bathrooms": 2,
+    "url": "https://www.pisos.com/comprar/piso-urbanizacion_el_quinon-64225952429_100500/",
+    "source": "pisos.com",
+    "floor": "9ª planta",
+    "year_built": 0,
+    "conservation": "en buen estado",
+    "energy_rating": "",
+    "description": "Amr inmobiliaria vende piso con terraza, garaje y trastero, en urbanización privada con piscina, pista deportiva y zona infantil en seseña – el quiñón”\nTipología: piso con terraza, garaje y trastero.\n\nDescripción: dispone de 3 dormitorios, 2 baños (dormitorio principal tipo suite con baño) salón comedor independiente con terraza, cocina independiente con terraza tendedero, y con plaza de garaje y trastero, en urbanización privada con piscina y zonas comunes, y conserjería.\nCalidades: puerta de e",
+    "features": [
+      "Superficie construida: 125 m²",
+      "Superficie útil: 106 m²",
+      "Habitaciones: 3",
+      "Baños: 2",
+      "Planta: 9ª",
+      "Exterior",
+      "Antigüedad: Entre 10 y 20 años",
+      "Conservación: En buen estado",
+      "Gastos de comunidad: Entre 80 y 100 €",
+      "Referencia: AMR-CJ1178",
+      "Armarios empotrados: 1",
+      "Tipo suelo: Tarima flotante",
+      "Vidrios dobles",
+      "Aire acondicionado: Frío",
+      "Cocina equipada: Cocina amueblada",
+      "Lavadero",
+      "Garaje: 1",
+      "Trastero",
+      "Puerta blindada",
+      "Ascensor",
+      "Terraza",
+      "Piscina: Comunitaria",
+      "Orientación: Noroeste",
+      "Soleado",
+      "Se aceptan mascotas"
+    ],
+    "detail_features": {
+      "aire acondicionado": true,
+      "trastero": true,
+      "piscina": true,
+      "terraza": true,
+      "ascensor": true,
+      "garaje": true
+    },
+    "pisos_id": "64225952429_100500",
+    "score_details": [
+      "💎 +31% vs media sesena (1,959€/m² · ref 1,497) (+0)",
+      "📐 Amplio: 125m² (+12)",
+      "🛏️ 3 habitaciones (+5)",
+      "🌿 Espacio exterior (+12)",
+      "🏊 Piscina (+8)",
+      "🚗 Garaje (+10)",
+      "📦 Trastero (+6)",
+      "🛗 Ascensor (+5)",
+      "   (características capadas: 29→18)",
+      "🏗️ Obra nueva (+10)",
+      "⚠️ Zona 'el quiñón' (-3 pts)"
+    ],
+    "eur_m2": 1959,
+    "municipio": "sesena",
     "first_seen": "2026-06-29",
     "last_seen": "2026-06-29",
     "previous_price": null,
@@ -1118,8 +1391,8 @@
       "Referencia: RT102-003/12789"
     ],
     "detail_features": {
-      "calefacción": true,
       "trastero": true,
+      "calefacción": true,
       "patio": true
     },
     "pisos_id": "63378830023_100500",
@@ -1174,12 +1447,12 @@
       "Piscina: Propia"
     ],
     "detail_features": {
-      "jardín": true,
-      "garaje": true,
       "aire acondicionado": true,
       "trastero": true,
       "piscina": true,
-      "patio": true
+      "jardín": true,
+      "patio": true,
+      "garaje": true
     },
     "pisos_id": "64222055794_103800",
     "score_details": [
@@ -1230,11 +1503,11 @@
       "Terraza"
     ],
     "detail_features": {
+      "calefacción": true,
+      "aire acondicionado": true,
       "armario empotrado": true,
       "terraza": true,
-      "aire acondicionado": true,
-      "ascensor": true,
-      "calefacción": true
+      "ascensor": true
     },
     "pisos_id": "63428627070_106400",
     "score_details": [
@@ -1294,12 +1567,12 @@
       "Orientación: Norte"
     ],
     "detail_features": {
-      "terraza": true,
-      "garaje": true,
+      "calefacción": true,
       "trastero": true,
-      "patio": true,
+      "terraza": true,
       "ascensor": true,
-      "calefacción": true
+      "patio": true,
+      "garaje": true
     },
     "pisos_id": "61672459999_109800",
     "score_details": [
@@ -1344,8 +1617,8 @@
       "Referencia: ppt00598/6765"
     ],
     "detail_features": {
-      "trastero": true,
       "aire acondicionado": true,
+      "trastero": true,
       "terraza": true
     },
     "pisos_id": "60012521571_100500",
@@ -1389,9 +1662,9 @@
       "Referencia: 302130"
     ],
     "detail_features": {
-      "ascensor": true,
       "terraza": true,
-      "patio": true
+      "patio": true,
+      "ascensor": true
     },
     "pisos_id": "63426501326_109100",
     "score_details": [
@@ -1448,12 +1721,12 @@
       "Soleado"
     ],
     "detail_features": {
-      "terraza": true,
-      "garaje": true,
+      "calefacción": true,
       "trastero": true,
-      "patio": true,
+      "terraza": true,
       "ascensor": true,
-      "calefacción": true
+      "patio": true,
+      "garaje": true
     },
     "pisos_id": "61743007262_109800",
     "score_details": [
@@ -1519,9 +1792,9 @@
       "Soleado"
     ],
     "detail_features": {
-      "ascensor": true,
       "terraza": true,
-      "calefacción": true
+      "calefacción": true,
+      "ascensor": true
     },
     "pisos_id": "65018367280_100500",
     "score_details": [
@@ -1568,8 +1841,8 @@
     ],
     "detail_features": {
       "calefacción": true,
-      "garaje": true,
-      "patio": true
+      "patio": true,
+      "garaje": true
     },
     "pisos_id": "55862621905_103800",
     "score_details": [
@@ -1621,11 +1894,11 @@
       "Puerta blindada"
     ],
     "detail_features": {
-      "terraza": true,
-      "garaje": true,
+      "calefacción": true,
       "trastero": true,
+      "terraza": true,
       "patio": true,
-      "calefacción": true
+      "garaje": true
     },
     "pisos_id": "65071931612_101800",
     "score_details": [
@@ -1673,8 +1946,8 @@
       "Calefacción"
     ],
     "detail_features": {
-      "calefacción": true,
-      "terraza": true
+      "terraza": true,
+      "calefacción": true
     },
     "pisos_id": "64260405478_100200",
     "score_details": [
@@ -1737,80 +2010,6 @@
     "last_seen": "2026-06-29",
     "previous_price": null,
     "price_drop": 10000,
-    "datos_insuficientes": false,
-    "exterior": true,
-    "cumple_requisitos": true
-  },
-  {
-    "title": "Piso en Seseña",
-    "price": 244900,
-    "score": 44,
-    "location": "Urbanización El Quiñón (Seseña)",
-    "m2": 125,
-    "rooms": 3,
-    "bathrooms": 2,
-    "url": "https://www.pisos.com/comprar/piso-urbanizacion_el_quinon-64225952429_100500/",
-    "source": "pisos.com",
-    "floor": "9ª planta",
-    "year_built": 0,
-    "conservation": "",
-    "energy_rating": "",
-    "description": "Amr inmobiliaria vende piso con terraza, garaje y trastero, en urbanización privada con piscina, pista deportiva y zona infantil e...",
-    "features": [],
-    "detail_features": {},
-    "pisos_id": "64225952429_100500",
-    "score_details": [
-      "💎 +30% vs media sesena (1,959€/m² · ref 1,507) (+0)",
-      "📐 Amplio: 125m² (+12)",
-      "🛏️ 3 habitaciones (+5)",
-      "🌿 Espacio exterior (+12)",
-      "🏊 Piscina (+8)",
-      "🚗 Garaje (+10)",
-      "📦 Trastero (+6)",
-      "   (características capadas: 24→18)",
-      "⚠️ Zona 'el quiñón' (-3 pts)"
-    ],
-    "eur_m2": 1959,
-    "municipio": "sesena",
-    "first_seen": "2026-06-29",
-    "last_seen": "2026-06-29",
-    "previous_price": null,
-    "price_drop": null,
-    "datos_insuficientes": false,
-    "exterior": true,
-    "cumple_requisitos": true
-  },
-  {
-    "title": "Piso en calle de Villalobos",
-    "price": 249900,
-    "score": 44,
-    "location": "Inmomafer comercializa piso en planta baja (zona torreón) totalmente exterior , con patio comunitario y garaje (opcional) , vivie...",
-    "m2": 92,
-    "rooms": 3,
-    "bathrooms": 2,
-    "url": "https://www.pisos.com/comprar/piso-grinon_centro_urbano-63426615372_527024/",
-    "source": "pisos.com",
-    "floor": "Bajo",
-    "year_built": 0,
-    "conservation": "",
-    "energy_rating": "",
-    "description": "",
-    "features": [],
-    "detail_features": {},
-    "pisos_id": "63426615372_527024",
-    "score_details": [
-      "💎 -0% vs media grinon (2,716€/m² · ref 2,716) (+12)",
-      "📐 Tamaño mínimo: 92m² (+5)",
-      "🛏️ 3 habitaciones (+5)",
-      "🌿 Espacio exterior (+12)",
-      "🚗 Garaje (+10)"
-    ],
-    "eur_m2": 2716,
-    "municipio": "grinon",
-    "first_seen": "2026-06-29",
-    "last_seen": "2026-06-29",
-    "previous_price": null,
-    "price_drop": null,
     "datos_insuficientes": false,
     "exterior": true,
     "cumple_requisitos": true
@@ -2012,7 +2211,7 @@
     "detail_features": {},
     "pisos_id": "65011415684_533614",
     "score_details": [
-      "💎 -9% vs media fuenlabrada (2,612€/m² · ref 2,874) (+18)",
+      "💎 -8% vs media fuenlabrada (2,612€/m² · ref 2,844) (+18)",
       "📐 Tamaño mínimo: 80m² (+5)",
       "🛏️ 3 habitaciones (+5)",
       "🌿 Espacio exterior (+12)"
@@ -2222,7 +2421,7 @@
     "detail_features": {},
     "pisos_id": "63370505826_500185",
     "score_details": [
-      "💎 +2% vs media fuenlabrada (2,923€/m² · ref 2,874) (+11)",
+      "💎 +3% vs media fuenlabrada (2,923€/m² · ref 2,844) (+11)",
       "📐 Tamaño mínimo: 85m² (+5)",
       "🛏️ 3 habitaciones (+5)",
       "🌿 Espacio exterior (+12)",
@@ -2390,41 +2589,6 @@
     "cumple_requisitos": true
   },
   {
-    "title": "Piso en calle de Alonso de Mendoza",
-    "price": 184900,
-    "score": 37,
-    "location": "La Alhóndiga (Getafe)",
-    "m2": 61,
-    "rooms": 2,
-    "bathrooms": 1,
-    "url": "https://www.pisos.com/comprar/piso-la_alhondiga28904-65062543718_510357/",
-    "source": "pisos.com",
-    "floor": "5ª planta",
-    "year_built": 0,
-    "conservation": "",
-    "energy_rating": "",
-    "description": "Vivienda en quinta planta sin ascensor, consta de 61 m² construidos y 49 m² útiles distribuidos de la siguiente forma: - 2 dormitorios - salón con a/a - terraza - cocina amueblada y equipada. - baño completo con bañera. Detalles de la vivienda: - suelos de gres. - carpintería interior sapeli - ventanas de aluminio sencillo. Situado en una finca en el centro de getafe con comercios y buenas comunicaciones, cerca de metro y renfe getafe central y el hospital de getafe. Al lado de colegios. También",
-    "features": [],
-    "detail_features": {},
-    "pisos_id": "65062543718_510357",
-    "score_details": [
-      "💎 -3% vs media getafe (3,031€/m² · ref 3,138) (+15)",
-      "📐 61m² < 70m² mínimo (no cumple)",
-      "🛏️ 2 habitaciones (+2)",
-      "🌿 Espacio exterior (+12)",
-      "🚇 Cerca transporte público (+8)"
-    ],
-    "eur_m2": 3031,
-    "municipio": "getafe",
-    "first_seen": "2026-06-29",
-    "last_seen": "2026-06-29",
-    "previous_price": null,
-    "price_drop": null,
-    "datos_insuficientes": false,
-    "exterior": true,
-    "cumple_requisitos": false
-  },
-  {
     "title": "Piso en calle del Águila",
     "price": 216500,
     "score": 37,
@@ -2443,7 +2607,7 @@
     "detail_features": {},
     "pisos_id": "65033932151_510357",
     "score_details": [
-      "💎 -0% vs media getafe (3,138€/m² · ref 3,138) (+12)",
+      "💎 +2% vs media getafe (3,138€/m² · ref 3,090) (+12)",
       "📐 69m² < 70m² mínimo (no cumple)",
       "🛏️ 3 habitaciones (+5)",
       "🌿 Espacio exterior (+12)",
@@ -2460,9 +2624,44 @@
     "cumple_requisitos": false
   },
   {
+    "title": "Piso en calle de Alonso de Mendoza",
+    "price": 184900,
+    "score": 36,
+    "location": "La Alhóndiga (Getafe)",
+    "m2": 61,
+    "rooms": 2,
+    "bathrooms": 1,
+    "url": "https://www.pisos.com/comprar/piso-la_alhondiga28904-65062543718_510357/",
+    "source": "pisos.com",
+    "floor": "5ª planta",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "Vivienda en quinta planta sin ascensor, consta de 61 m² construidos y 49 m² útiles distribuidos de la siguiente forma: - 2 dormitorios - salón con a/a - terraza - cocina amueblada y equipada. - baño completo con bañera. Detalles de la vivienda: - suelos de gres. - carpintería interior sapeli - ventanas de aluminio sencillo. Situado en una finca en el centro de getafe con comercios y buenas comunicaciones, cerca de metro y renfe getafe central y el hospital de getafe. Al lado de colegios. También",
+    "features": [],
+    "detail_features": {},
+    "pisos_id": "65062543718_510357",
+    "score_details": [
+      "💎 -2% vs media getafe (3,031€/m² · ref 3,090) (+14)",
+      "📐 61m² < 70m² mínimo (no cumple)",
+      "🛏️ 2 habitaciones (+2)",
+      "🌿 Espacio exterior (+12)",
+      "🚇 Cerca transporte público (+8)"
+    ],
+    "eur_m2": 3031,
+    "municipio": "getafe",
+    "first_seen": "2026-06-29",
+    "last_seen": "2026-06-29",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
+    "exterior": true,
+    "cumple_requisitos": false
+  },
+  {
     "title": "Piso en El Bercial",
     "price": 246000,
-    "score": 37,
+    "score": 36,
     "location": "El Bercial (Getafe)",
     "m2": 81,
     "rooms": 3,
@@ -2478,7 +2677,7 @@
     "detail_features": {},
     "pisos_id": "65090560829_100200",
     "score_details": [
-      "💎 -3% vs media getafe (3,037€/m² · ref 3,138) (+15)",
+      "💎 -2% vs media getafe (3,037€/m² · ref 3,090) (+14)",
       "📐 Tamaño mínimo: 81m² (+5)",
       "🛏️ 3 habitaciones (+5)",
       "🌿 Espacio exterior (+12)"
@@ -2856,7 +3055,7 @@
   {
     "title": "Piso en Zarzaquemada",
     "price": 249900,
-    "score": 30,
+    "score": 31,
     "location": "Zarzaquemada (Leganés)",
     "m2": 82,
     "rooms": 3,
@@ -2872,7 +3071,7 @@
     "detail_features": {},
     "pisos_id": "63387078307_100200",
     "score_details": [
-      "💎 -1% vs media leganes (3,048€/m² · ref 3,084) (+13)",
+      "💎 -3% vs media leganes (3,048€/m² · ref 3,147) (+14)",
       "📐 Tamaño mínimo: 82m² (+5)",
       "🛏️ 3 habitaciones (+5)",
       "🌿 Espacio exterior (+12)",
@@ -3100,7 +3299,7 @@
   {
     "title": "Piso en Casco Antiguo",
     "price": 163000,
-    "score": 27,
+    "score": 28,
     "location": "Casco Antiguo (Alcorcón)",
     "m2": 50,
     "rooms": 2,
@@ -3116,7 +3315,7 @@
     "detail_features": {},
     "pisos_id": "61764295963_100500",
     "score_details": [
-      "💎 -1% vs media alcorcon (3,260€/m² · ref 3,284) (+13)",
+      "💎 -2% vs media alcorcon (3,260€/m² · ref 3,318) (+14)",
       "📐 50m² < 70m² mínimo (no cumple)",
       "🛏️ 2 habitaciones (+2)",
       "🌿 Espacio exterior (+12)"
@@ -3264,7 +3463,7 @@
     "detail_features": {},
     "pisos_id": "60833419340_515668",
     "score_details": [
-      "💎 -12% vs media sesena (1,327€/m² · ref 1,507) (+20)",
+      "💎 -11% vs media sesena (1,327€/m² · ref 1,497) (+20)",
       "📐 Muy amplio: 159m² (+15)",
       "🛏️ 4 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -3317,7 +3516,7 @@
   {
     "title": "Piso en Getafe",
     "price": 290000,
-    "score": 23,
+    "score": 22,
     "location": "Las Margaritas-Universidad (Getafe)",
     "m2": 90,
     "rooms": 3,
@@ -3333,7 +3532,7 @@
     "detail_features": {},
     "pisos_id": "63347200757_100500",
     "score_details": [
-      "💎 +3% vs media getafe (3,222€/m² · ref 3,138) (+11)",
+      "💎 +4% vs media getafe (3,222€/m² · ref 3,090) (+10)",
       "📐 Tamaño mínimo: 90m² (+5)",
       "🛏️ 3 habitaciones (+5)",
       "🌿 Espacio exterior (+12)",
@@ -3383,6 +3582,41 @@
     "datos_insuficientes": false,
     "exterior": true,
     "cumple_requisitos": true
+  },
+  {
+    "title": "Piso en La Fortuna",
+    "price": 199000,
+    "score": 21,
+    "location": "La Fortuna (Leganés)",
+    "m2": 67,
+    "rooms": 3,
+    "bathrooms": 0,
+    "url": "https://www.pisos.com/comprar/piso-leganes_la_fortuna28917-65029915374_100200/",
+    "source": "pisos.com",
+    "floor": "1ª planta",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "Piso primera planta tres dormitorios con amplia terraza en el corazón de la fortuna, leganés Tecnocasa estudio inmobiliario la for...",
+    "features": [],
+    "detail_features": {},
+    "pisos_id": "65029915374_100200",
+    "score_details": [
+      "💎 -6% vs media leganes (2,970€/m² · ref 3,147) (+16)",
+      "📐 67m² < 70m² mínimo (no cumple)",
+      "🛏️ 3 habitaciones (+5)",
+      "🌿 Espacio exterior (+12)",
+      "⚠️ Zona 'la fortuna' (-12 pts)"
+    ],
+    "eur_m2": 2970,
+    "municipio": "leganes",
+    "first_seen": "2026-06-29",
+    "last_seen": "2026-06-29",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
+    "exterior": true,
+    "cumple_requisitos": false
   },
   {
     "title": "Piso en Esquivias",
@@ -3590,41 +3824,6 @@
     "cumple_requisitos": true
   },
   {
-    "title": "Piso en La Fortuna",
-    "price": 199000,
-    "score": 20,
-    "location": "La Fortuna (Leganés)",
-    "m2": 67,
-    "rooms": 3,
-    "bathrooms": 0,
-    "url": "https://www.pisos.com/comprar/piso-leganes_la_fortuna28917-65029915374_100200/",
-    "source": "pisos.com",
-    "floor": "1ª planta",
-    "year_built": 0,
-    "conservation": "",
-    "energy_rating": "",
-    "description": "Piso primera planta tres dormitorios con amplia terraza en el corazón de la fortuna, leganés Tecnocasa estudio inmobiliario la for...",
-    "features": [],
-    "detail_features": {},
-    "pisos_id": "65029915374_100200",
-    "score_details": [
-      "💎 -4% vs media leganes (2,970€/m² · ref 3,084) (+15)",
-      "📐 67m² < 70m² mínimo (no cumple)",
-      "🛏️ 3 habitaciones (+5)",
-      "🌿 Espacio exterior (+12)",
-      "⚠️ Zona 'la fortuna' (-12 pts)"
-    ],
-    "eur_m2": 2970,
-    "municipio": "leganes",
-    "first_seen": "2026-06-29",
-    "last_seen": "2026-06-29",
-    "previous_price": null,
-    "price_drop": null,
-    "datos_insuficientes": false,
-    "exterior": true,
-    "cumple_requisitos": false
-  },
-  {
     "title": "Casa adosada en calle de Veguilla",
     "price": 238000,
     "score": 20,
@@ -3643,7 +3842,7 @@
     "detail_features": {},
     "pisos_id": "65039155650_106400",
     "score_details": [
-      "💎 -29% vs media sesena (1,067€/m² · ref 1,507) (+25)",
+      "💎 -29% vs media sesena (1,067€/m² · ref 1,497) (+25)",
       "📐 Muy amplio: 223m² (+15)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -4265,6 +4464,76 @@
     "cumple_requisitos": true
   },
   {
+    "title": "Piso en La Fortuna",
+    "price": 176000,
+    "score": 15,
+    "location": "La Fortuna (Leganés)",
+    "m2": 56,
+    "rooms": 2,
+    "bathrooms": 0,
+    "url": "https://www.pisos.com/comprar/piso-leganes_la_fortuna28917-45083187178_100200/",
+    "source": "pisos.com",
+    "floor": "1ª planta",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "En venta: piso en primera planta situado en el barrio de la fortuna, distribuido en entrada, salón-comedor con terraza incorporada...",
+    "features": [],
+    "detail_features": {},
+    "pisos_id": "45083187178_100200",
+    "score_details": [
+      "💎 -0% vs media leganes (3,143€/m² · ref 3,147) (+13)",
+      "📐 56m² < 70m² mínimo (no cumple)",
+      "🛏️ 2 habitaciones (+2)",
+      "🌿 Espacio exterior (+12)",
+      "⚠️ Zona 'la fortuna' (-12 pts)"
+    ],
+    "eur_m2": 3143,
+    "municipio": "leganes",
+    "first_seen": "2026-06-29",
+    "last_seen": "2026-06-29",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
+    "exterior": true,
+    "cumple_requisitos": false
+  },
+  {
+    "title": "Chalet en Esquivias",
+    "price": 265000,
+    "score": 15,
+    "location": "",
+    "m2": 228,
+    "rooms": 4,
+    "bathrooms": 3,
+    "url": "https://www.pisos.com/comprar/chalet-esquivias_centro_urbano-62544469759_108500/",
+    "source": "pisos.com",
+    "floor": "",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "\"GARSIERRA. Vivienda ubicada en la población.<br /> <br /> Municipio que dispone de todos los servicios básicos a su alcance, con oferta comercial y educativa, variedad de servicios de restauración y zonas verdes valoradas en las que poder realizar actividades al aire libre.<br /> <br /> Vivienda para quienes quieran vivir en una zona tranquila como para aquellos que busquen invertir para arrendamiento con una muy buena rentabilidad.<br /> <br /> Todo ello, además, con excelentes comunicaciones ",
+    "features": [],
+    "detail_features": {},
+    "pisos_id": "62544469759_108500",
+    "score_details": [
+      "💎 -0% vs media esquivias (1,162€/m² · ref 1,162) (+12)",
+      "📐 Muy amplio: 228m² (+15)",
+      "🛏️ 4 habitaciones (+5)",
+      "⚠️ Sin exterior detectado (-25 pts)",
+      "🚇 Cerca transporte público (+8)"
+    ],
+    "eur_m2": 1162,
+    "municipio": "esquivias",
+    "first_seen": "2026-06-29",
+    "last_seen": "2026-06-29",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
+    "exterior": false,
+    "cumple_requisitos": true
+  },
+  {
     "title": "Piso en calle El Quiñon, nº Sn",
     "price": 152800,
     "score": 14,
@@ -4283,7 +4552,7 @@
     "detail_features": {},
     "pisos_id": "55881414428_103600",
     "score_details": [
-      "💎 -24% vs media sesena (1,140€/m² · ref 1,507) (+25)",
+      "💎 -24% vs media sesena (1,140€/m² · ref 1,497) (+25)",
       "📐 Amplio: 134m² (+12)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -4352,7 +4621,7 @@
     "detail_features": {},
     "pisos_id": "64218260116_100200",
     "score_details": [
-      "💎 -18% vs media getafe (2,588€/m² · ref 3,138) (+23)",
+      "💎 -16% vs media getafe (2,588€/m² · ref 3,090) (+23)",
       "📐 Tamaño mínimo: 85m² (+5)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -4387,7 +4656,7 @@
     "detail_features": {},
     "pisos_id": "60007311157_100500",
     "score_details": [
-      "💎 -53% vs media sesena (711€/m² · ref 1,507) (+25)",
+      "💎 -53% vs media sesena (711€/m² · ref 1,497) (+25)",
       "📐 Buen tamaño: 115m² (+8)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -4552,41 +4821,6 @@
     "cumple_requisitos": true
   },
   {
-    "title": "Piso en La Fortuna",
-    "price": 176000,
-    "score": 13,
-    "location": "La Fortuna (Leganés)",
-    "m2": 56,
-    "rooms": 2,
-    "bathrooms": 0,
-    "url": "https://www.pisos.com/comprar/piso-leganes_la_fortuna28917-45083187178_100200/",
-    "source": "pisos.com",
-    "floor": "1ª planta",
-    "year_built": 0,
-    "conservation": "",
-    "energy_rating": "",
-    "description": "En venta: piso en primera planta situado en el barrio de la fortuna, distribuido en entrada, salón-comedor con terraza incorporada...",
-    "features": [],
-    "detail_features": {},
-    "pisos_id": "45083187178_100200",
-    "score_details": [
-      "💎 +2% vs media leganes (3,143€/m² · ref 3,084) (+11)",
-      "📐 56m² < 70m² mínimo (no cumple)",
-      "🛏️ 2 habitaciones (+2)",
-      "🌿 Espacio exterior (+12)",
-      "⚠️ Zona 'la fortuna' (-12 pts)"
-    ],
-    "eur_m2": 3143,
-    "municipio": "leganes",
-    "first_seen": "2026-06-29",
-    "last_seen": "2026-06-29",
-    "previous_price": null,
-    "price_drop": null,
-    "datos_insuficientes": false,
-    "exterior": true,
-    "cumple_requisitos": false
-  },
-  {
     "title": "Casa rústica en Navalcarnero",
     "price": 195000,
     "score": 13,
@@ -4639,7 +4873,7 @@
     "detail_features": {},
     "pisos_id": "63346148662_100500",
     "score_details": [
-      "💎 -39% vs media leganes (1,869€/m² · ref 3,084) (+25)",
+      "💎 -41% vs media leganes (1,869€/m² · ref 3,147) (+25)",
       "📐 Buen tamaño: 107m² (+8)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -5510,7 +5744,7 @@
     "detail_features": {},
     "pisos_id": "65016709772_101800",
     "score_details": [
-      "💎 -0% vs media sesena (1,507€/m² · ref 1,507) (+12)",
+      "💎 +1% vs media sesena (1,507€/m² · ref 1,497) (+12)",
       "📐 Muy amplio: 146m² (+15)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -5546,7 +5780,7 @@
     "detail_features": {},
     "pisos_id": "64210335641_100200",
     "score_details": [
-      "💎 +30% vs media leganes (4,000€/m² · ref 3,084) (+0)",
+      "💎 +27% vs media leganes (4,000€/m² · ref 3,147) (+0)",
       "📐 60m² < 70m² mínimo (no cumple)",
       "🛏️ 2 habitaciones (+2)",
       "🌿 Espacio exterior (+12)",
@@ -5561,6 +5795,40 @@
     "datos_insuficientes": false,
     "exterior": true,
     "cumple_requisitos": false
+  },
+  {
+    "title": "Piso en Seseña",
+    "price": 207000,
+    "score": 9,
+    "location": "",
+    "m2": 148,
+    "rooms": 2,
+    "bathrooms": 2,
+    "url": "https://www.pisos.com/comprar/piso-sesena-65017729352_100200/",
+    "source": "pisos.com",
+    "floor": "",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "Agencia inmobiliaria zona seseña - ciempozuelos tecnocasa estudio seseña ciempo sl ¡Vende piso en seseña zona urb. Quiñón de 148m...",
+    "features": [],
+    "detail_features": {},
+    "pisos_id": "65017729352_100200",
+    "score_details": [
+      "💎 -7% vs media sesena (1,399€/m² · ref 1,497) (+17)",
+      "📐 Muy amplio: 148m² (+15)",
+      "🛏️ 2 habitaciones (+2)",
+      "⚠️ Sin exterior detectado (-25 pts)"
+    ],
+    "eur_m2": 1399,
+    "municipio": "sesena",
+    "first_seen": "2026-06-29",
+    "last_seen": "2026-06-29",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
+    "exterior": false,
+    "cumple_requisitos": true
   },
   {
     "title": "Piso en calle Cruz del Prado, 11",
@@ -5649,7 +5917,7 @@
     "detail_features": {},
     "pisos_id": "62576311466_100200",
     "score_details": [
-      "💎 -24% vs media fuenlabrada (2,172€/m² · ref 2,874) (+25)",
+      "💎 -24% vs media fuenlabrada (2,172€/m² · ref 2,844) (+25)",
       "📐 Tamaño mínimo: 87m² (+5)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -5722,7 +5990,7 @@
     "detail_features": {},
     "pisos_id": "65030682286_106400",
     "score_details": [
-      "💎 -6% vs media sesena (1,418€/m² · ref 1,507) (+16)",
+      "💎 -5% vs media sesena (1,418€/m² · ref 1,497) (+16)",
       "📐 Muy amplio: 141m² (+15)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -5828,7 +6096,7 @@
     "detail_features": {},
     "pisos_id": "65018881279_106400",
     "score_details": [
-      "💎 -6% vs media sesena (1,424€/m² · ref 1,507) (+16)",
+      "💎 -5% vs media sesena (1,424€/m² · ref 1,497) (+16)",
       "📐 Muy amplio: 172m² (+15)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -6351,6 +6619,76 @@
     "cumple_requisitos": true
   },
   {
+    "title": "Piso en San Nicasio-Campo de Tiro-Solagua",
+    "price": 199900,
+    "score": 5,
+    "location": "San Nicasio-Campo de Tiro-Solagua (Leganés)",
+    "m2": 72,
+    "rooms": 2,
+    "bathrooms": 1,
+    "url": "https://www.pisos.com/comprar/piso-san_nicasio_campo_de_tiro_solagua28913-64205383261_100200/",
+    "source": "pisos.com",
+    "floor": "",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "Inmobiliaria en san nicasio - tecnocasa estudio río duero s. L ¡Segunda planta reformada en san nicasio! Esta situado en muy buena...",
+    "features": [],
+    "detail_features": {},
+    "pisos_id": "64205383261_100200",
+    "score_details": [
+      "💎 -12% vs media leganes (2,776€/m² · ref 3,147) (+20)",
+      "📐 Justo: 72m² (+3)",
+      "🛏️ 2 habitaciones (+2)",
+      "⚠️ Sin exterior detectado (-25 pts)",
+      "🔧 Reformado (+5)"
+    ],
+    "eur_m2": 2776,
+    "municipio": "leganes",
+    "first_seen": "2026-06-29",
+    "last_seen": "2026-06-29",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
+    "exterior": false,
+    "cumple_requisitos": true
+  },
+  {
+    "title": "Dúplex en calle de Palencia",
+    "price": 145000,
+    "score": 5,
+    "location": "Naranjo-La Serna (Fuenlabrada)",
+    "m2": 119,
+    "rooms": 3,
+    "bathrooms": 3,
+    "url": "https://www.pisos.com/comprar/casa-avanzada_la_cueva28945-65073423779_101800/",
+    "source": "pisos.com",
+    "floor": "Bajo",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "",
+    "features": [],
+    "detail_features": {},
+    "pisos_id": "65073423779_101800",
+    "score_details": [
+      "💎 -57% vs media fuenlabrada (1,218€/m² · ref 2,844) (+25)",
+      "📐 Buen tamaño: 119m² (+8)",
+      "🛏️ 3 habitaciones (+5)",
+      "⚠️ Sin exterior detectado (-25 pts)",
+      "⚠️ Zona 'la serna' (-8 pts)"
+    ],
+    "eur_m2": 1218,
+    "municipio": "fuenlabrada",
+    "first_seen": "2026-06-29",
+    "last_seen": "2026-06-29",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
+    "exterior": false,
+    "cumple_requisitos": true
+  },
+  {
     "title": "Piso en Torrejón de Velasco",
     "price": 182000,
     "score": 4,
@@ -6379,41 +6717,6 @@
     ],
     "eur_m2": 1291,
     "municipio": "torrejon_de_la_calzada",
-    "first_seen": "2026-06-29",
-    "last_seen": "2026-06-29",
-    "previous_price": null,
-    "price_drop": null,
-    "datos_insuficientes": false,
-    "exterior": false,
-    "cumple_requisitos": true
-  },
-  {
-    "title": "Piso en San Nicasio-Campo de Tiro-Solagua",
-    "price": 199900,
-    "score": 4,
-    "location": "San Nicasio-Campo de Tiro-Solagua (Leganés)",
-    "m2": 72,
-    "rooms": 2,
-    "bathrooms": 1,
-    "url": "https://www.pisos.com/comprar/piso-san_nicasio_campo_de_tiro_solagua28913-64205383261_100200/",
-    "source": "pisos.com",
-    "floor": "",
-    "year_built": 0,
-    "conservation": "",
-    "energy_rating": "",
-    "description": "Inmobiliaria en san nicasio - tecnocasa estudio río duero s. L ¡Segunda planta reformada en san nicasio! Esta situado en muy buena...",
-    "features": [],
-    "detail_features": {},
-    "pisos_id": "64205383261_100200",
-    "score_details": [
-      "💎 -10% vs media leganes (2,776€/m² · ref 3,084) (+19)",
-      "📐 Justo: 72m² (+3)",
-      "🛏️ 2 habitaciones (+2)",
-      "⚠️ Sin exterior detectado (-25 pts)",
-      "🔧 Reformado (+5)"
-    ],
-    "eur_m2": 2776,
-    "municipio": "leganes",
     "first_seen": "2026-06-29",
     "last_seen": "2026-06-29",
     "previous_price": null,
@@ -6793,7 +7096,7 @@
     "detail_features": {},
     "pisos_id": "62574972731_100500",
     "score_details": [
-      "💎 -22% vs media fuenlabrada (2,238€/m² · ref 2,874) (+25)",
+      "💎 -21% vs media fuenlabrada (2,238€/m² · ref 2,844) (+25)",
       "📐 Buen tamaño: 105m² (+8)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -6986,41 +7289,6 @@
     "cumple_requisitos": true
   },
   {
-    "title": "Piso en Urbanización El Quiñón",
-    "price": 214000,
-    "score": 2,
-    "location": "Urbanización El Quiñón (Seseña)",
-    "m2": 143,
-    "rooms": 2,
-    "bathrooms": 2,
-    "url": "https://www.pisos.com/comprar/piso-urbanizacion_el_quinon-65017439087_106400/",
-    "source": "pisos.com",
-    "floor": "2ª planta",
-    "year_built": 0,
-    "conservation": "",
-    "energy_rating": "",
-    "description": "Piso en quiñón, fase 1 - ¡Tu nuevo hogar te espera! Descubre este magnífico piso de 2 dormitorios ubicado en la segunda planta de ...",
-    "features": [],
-    "detail_features": {},
-    "pisos_id": "65017439087_106400",
-    "score_details": [
-      "💎 -1% vs media sesena (1,497€/m² · ref 1,507) (+13)",
-      "📐 Muy amplio: 143m² (+15)",
-      "🛏️ 2 habitaciones (+2)",
-      "⚠️ Sin exterior detectado (-25 pts)",
-      "⚠️ Zona 'el quiñón' (-3 pts)"
-    ],
-    "eur_m2": 1497,
-    "municipio": "sesena",
-    "first_seen": "2026-06-29",
-    "last_seen": "2026-06-29",
-    "previous_price": null,
-    "price_drop": null,
-    "datos_insuficientes": false,
-    "exterior": false,
-    "cumple_requisitos": true
-  },
-  {
     "title": "Piso en Travesía de la Rejilla",
     "price": 225000,
     "score": 2,
@@ -7080,6 +7348,41 @@
     ],
     "eur_m2": 2505,
     "municipio": "navalcarnero",
+    "first_seen": "2026-06-29",
+    "last_seen": "2026-06-29",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
+    "exterior": false,
+    "cumple_requisitos": true
+  },
+  {
+    "title": "Piso en Urbanización El Quiñón",
+    "price": 214000,
+    "score": 1,
+    "location": "Urbanización El Quiñón (Seseña)",
+    "m2": 143,
+    "rooms": 2,
+    "bathrooms": 2,
+    "url": "https://www.pisos.com/comprar/piso-urbanizacion_el_quinon-65017439087_106400/",
+    "source": "pisos.com",
+    "floor": "2ª planta",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "Piso en quiñón, fase 1 - ¡Tu nuevo hogar te espera! Descubre este magnífico piso de 2 dormitorios ubicado en la segunda planta de ...",
+    "features": [],
+    "detail_features": {},
+    "pisos_id": "65017439087_106400",
+    "score_details": [
+      "💎 -0% vs media sesena (1,497€/m² · ref 1,497) (+12)",
+      "📐 Muy amplio: 143m² (+15)",
+      "🛏️ 2 habitaciones (+2)",
+      "⚠️ Sin exterior detectado (-25 pts)",
+      "⚠️ Zona 'el quiñón' (-3 pts)"
+    ],
+    "eur_m2": 1497,
+    "municipio": "sesena",
     "first_seen": "2026-06-29",
     "last_seen": "2026-06-29",
     "previous_price": null,
@@ -7199,41 +7502,6 @@
     "cumple_requisitos": false
   },
   {
-    "title": "Piso en Plaza Pinto",
-    "price": 222900,
-    "score": 1,
-    "location": "San Isidro (Getafe)",
-    "m2": 82,
-    "rooms": 3,
-    "bathrooms": 1,
-    "url": "https://www.pisos.com/comprar/piso-san_isidro_distrito-63375372632_100500/",
-    "source": "pisos.com",
-    "floor": "4ª planta",
-    "year_built": 0,
-    "conservation": "",
-    "energy_rating": "",
-    "description": "Presentamos este atractivo piso que se encuentra actualmente alquilada hasta mayo de 2030 por 839€ mensuales, lo que representa un...",
-    "features": [],
-    "detail_features": {},
-    "pisos_id": "63375372632_100500",
-    "score_details": [
-      "💎 -13% vs media getafe (2,718€/m² · ref 3,138) (+21)",
-      "📐 Tamaño mínimo: 82m² (+5)",
-      "🛏️ 3 habitaciones (+5)",
-      "⚠️ Sin exterior detectado (-25 pts)",
-      "⚠️ Zona 'san isidro' (-5 pts)"
-    ],
-    "eur_m2": 2718,
-    "municipio": "getafe",
-    "first_seen": "2026-06-29",
-    "last_seen": "2026-06-29",
-    "previous_price": null,
-    "price_drop": null,
-    "datos_insuficientes": false,
-    "exterior": false,
-    "cumple_requisitos": true
-  },
-  {
     "title": "Piso en Sur-Este",
     "price": 240000,
     "score": 1,
@@ -7297,6 +7565,41 @@
     ],
     "eur_m2": 3052,
     "municipio": "parla",
+    "first_seen": "2026-06-29",
+    "last_seen": "2026-06-29",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
+    "exterior": false,
+    "cumple_requisitos": true
+  },
+  {
+    "title": "Piso en Plaza Pinto",
+    "price": 222900,
+    "score": 0,
+    "location": "San Isidro (Getafe)",
+    "m2": 82,
+    "rooms": 3,
+    "bathrooms": 1,
+    "url": "https://www.pisos.com/comprar/piso-san_isidro_distrito-63375372632_100500/",
+    "source": "pisos.com",
+    "floor": "4ª planta",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "Presentamos este atractivo piso que se encuentra actualmente alquilada hasta mayo de 2030 por 839€ mensuales, lo que representa un...",
+    "features": [],
+    "detail_features": {},
+    "pisos_id": "63375372632_100500",
+    "score_details": [
+      "💎 -12% vs media getafe (2,718€/m² · ref 3,090) (+20)",
+      "📐 Tamaño mínimo: 82m² (+5)",
+      "🛏️ 3 habitaciones (+5)",
+      "⚠️ Sin exterior detectado (-25 pts)",
+      "⚠️ Zona 'san isidro' (-5 pts)"
+    ],
+    "eur_m2": 2718,
+    "municipio": "getafe",
     "first_seen": "2026-06-29",
     "last_seen": "2026-06-29",
     "previous_price": null,
@@ -7498,7 +7801,7 @@
     "detail_features": {},
     "pisos_id": "65052168544_100500",
     "score_details": [
-      "💎 -39% vs media sesena (917€/m² · ref 1,507) (+25)",
+      "💎 -39% vs media sesena (917€/m² · ref 1,497) (+25)",
       "📐 Buen tamaño: 103m² (+8)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -7533,7 +7836,7 @@
     "detail_features": {},
     "pisos_id": "65036166293_100500",
     "score_details": [
-      "💎 -37% vs media sesena (945€/m² · ref 1,507) (+25)",
+      "💎 -37% vs media sesena (945€/m² · ref 1,497) (+25)",
       "📐 Buen tamaño: 101m² (+8)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -8794,7 +9097,7 @@
     "detail_features": {},
     "pisos_id": "61737759255_100200",
     "score_details": [
-      "💎 +61% vs media sesena (2,429€/m² · ref 1,507) (+0)",
+      "💎 +62% vs media sesena (2,429€/m² · ref 1,497) (+0)",
       "📐 Justo: 70m² (+3)",
       "🛏️ 1 hab < 2 mínimo (no cumple)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -8896,7 +9199,7 @@
     "detail_features": {},
     "pisos_id": "61706453800_100200",
     "score_details": [
-      "💎 -20% vs media getafe (2,500€/m² · ref 3,138) (+25)",
+      "💎 -19% vs media getafe (2,500€/m² · ref 3,090) (+24)",
       "📐 Justo: 70m² (+3)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -8931,7 +9234,7 @@
     "detail_features": {},
     "pisos_id": "60062164507_100500",
     "score_details": [
-      "💎 -41% vs media sesena (884€/m² · ref 1,507) (+25)",
+      "💎 -41% vs media sesena (884€/m² · ref 1,497) (+25)",
       "📐 Muy amplio: 198m² (+15)",
       "🛏️ 5 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -9345,7 +9648,7 @@
     "detail_features": {},
     "pisos_id": "65047143173_100200",
     "score_details": [
-      "💎 -4% vs media leganes (2,949€/m² · ref 3,084) (+15)",
+      "💎 -6% vs media leganes (2,949€/m² · ref 3,147) (+16)",
       "📐 61m² < 70m² mínimo (no cumple)",
       "⚠️ Sin exterior detectado (-25 pts)",
       "⚠️ Zona 'la fortuna' (-12 pts)"
@@ -9553,7 +9856,7 @@
     "detail_features": {},
     "pisos_id": "65018595103_100500",
     "score_details": [
-      "💎 +10% vs media getafe (3,453€/m² · ref 3,138) (+6)",
+      "💎 +12% vs media getafe (3,453€/m² · ref 3,090) (+5)",
       "📐 53m² < 70m² mínimo (no cumple)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -9621,7 +9924,7 @@
     "detail_features": {},
     "pisos_id": "57529766093_100200",
     "score_details": [
-      "💎 -6% vs media leganes (2,891€/m² · ref 3,084) (+16)",
+      "💎 -8% vs media leganes (2,891€/m² · ref 3,147) (+18)",
       "📐 64m² < 70m² mínimo (no cumple)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -9655,7 +9958,7 @@
     "detail_features": {},
     "pisos_id": "65062537646_100500",
     "score_details": [
-      "💎 -23% vs media sesena (1,167€/m² · ref 1,507) (+25)",
+      "💎 -22% vs media sesena (1,167€/m² · ref 1,497) (+25)",
       "📐 Muy amplio: 159m² (+15)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -9724,7 +10027,7 @@
     "detail_features": {},
     "pisos_id": "62591131800_100200",
     "score_details": [
-      "💎 -1% vs media getafe (3,113€/m² · ref 3,138) (+13)",
+      "💎 +1% vs media getafe (3,113€/m² · ref 3,090) (+12)",
       "📐 61m² < 70m² mínimo (no cumple)",
       "🛏️ 1 hab < 2 mínimo (no cumple)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -9758,7 +10061,7 @@
     "detail_features": {},
     "pisos_id": "63353670324_100200",
     "score_details": [
-      "💎 -5% vs media getafe (2,967€/m² · ref 3,138) (+16)",
+      "💎 -4% vs media getafe (2,967€/m² · ref 3,090) (+15)",
       "📐 64m² < 70m² mínimo (no cumple)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -9897,7 +10200,7 @@
     "detail_features": {},
     "pisos_id": "62500345524_100200",
     "score_details": [
-      "💎 -4% vs media leganes (2,958€/m² · ref 3,084) (+15)",
+      "💎 -6% vs media leganes (2,958€/m² · ref 3,147) (+16)",
       "📐 65m² < 70m² mínimo (no cumple)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -10244,7 +10547,7 @@
     "detail_features": {},
     "pisos_id": "65008851470_998331",
     "score_details": [
-      "💎 -15% vs media getafe (2,667€/m² · ref 3,138) (+22)",
+      "💎 -14% vs media getafe (2,667€/m² · ref 3,090) (+21)",
       "📐 Justo: 75m² (+3)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -10382,7 +10685,7 @@
     "detail_features": {},
     "pisos_id": "62582520146_990080",
     "score_details": [
-      "💎 +58% vs media sesena (2,381€/m² · ref 1,507) (+0)",
+      "💎 +59% vs media sesena (2,381€/m² · ref 1,497) (+0)",
       "📐 Tamaño mínimo: 84m² (+5)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -10522,7 +10825,7 @@
     "detail_features": {},
     "pisos_id": "65031192969_100200",
     "score_details": [
-      "💎 -6% vs media getafe (2,957€/m² · ref 3,138) (+16)",
+      "💎 -4% vs media getafe (2,957€/m² · ref 3,090) (+15)",
       "📐 Justo: 70m² (+3)",
       "⚠️ Sin exterior detectado (-25 pts)",
       "⚠️ Zona 'juan de la cierva' (-8 pts)"
@@ -10556,7 +10859,7 @@
     "detail_features": {},
     "pisos_id": "65098215750_100500",
     "score_details": [
-      "💎 -24% vs media sesena (1,152€/m² · ref 1,507) (+25)",
+      "💎 -23% vs media sesena (1,152€/m² · ref 1,497) (+25)",
       "📐 Muy amplio: 182m² (+15)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -10591,7 +10894,7 @@
     "detail_features": {},
     "pisos_id": "64223218868_100500",
     "score_details": [
-      "💎 +60% vs media sesena (2,413€/m² · ref 1,507) (+0)",
+      "💎 +61% vs media sesena (2,413€/m² · ref 1,497) (+0)",
       "📐 Tamaño mínimo: 87m² (+5)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -10626,7 +10929,7 @@
     "detail_features": {},
     "pisos_id": "64183902784_100200",
     "score_details": [
-      "💎 +10% vs media getafe (3,441€/m² · ref 3,138) (+6)",
+      "💎 +11% vs media getafe (3,441€/m² · ref 3,090) (+5)",
       "📐 61m² < 70m² mínimo (no cumple)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -10660,7 +10963,7 @@
     "detail_features": {},
     "pisos_id": "62594810646_100200",
     "score_details": [
-      "💎 +8% vs media leganes (3,332€/m² · ref 3,084) (+7)",
+      "💎 +6% vs media leganes (3,332€/m² · ref 3,147) (+9)",
       "📐 63m² < 70m² mínimo (no cumple)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -10694,7 +10997,7 @@
     "detail_features": {},
     "pisos_id": "62517163554_100200",
     "score_details": [
-      "💎 +22% vs media leganes (3,748€/m² · ref 3,084) (+0)",
+      "💎 +19% vs media leganes (3,748€/m² · ref 3,147) (+1)",
       "📐 56m² < 70m² mínimo (no cumple)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -10728,7 +11031,7 @@
     "detail_features": {},
     "pisos_id": "64255330701_100200",
     "score_details": [
-      "💎 -7% vs media getafe (2,917€/m² · ref 3,138) (+17)",
+      "💎 -6% vs media getafe (2,917€/m² · ref 3,090) (+16)",
       "📐 Justo: 72m² (+3)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -10797,7 +11100,7 @@
     "detail_features": {},
     "pisos_id": "63428081333_100200",
     "score_details": [
-      "💎 +6% vs media fuenlabrada (3,057€/m² · ref 2,874) (+9)",
+      "💎 +7% vs media fuenlabrada (3,057€/m² · ref 2,844) (+8)",
       "📐 Justo: 70m² (+3)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -10868,7 +11171,7 @@
     "detail_features": {},
     "pisos_id": "64234978709_100200",
     "score_details": [
-      "💎 -4% vs media fuenlabrada (2,756€/m² · ref 2,874) (+15)",
+      "💎 -3% vs media fuenlabrada (2,756€/m² · ref 2,844) (+14)",
       "📐 Justo: 78m² (+3)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -10902,7 +11205,7 @@
     "detail_features": {},
     "pisos_id": "61753514271_100500",
     "score_details": [
-      "💎 +7% vs media fuenlabrada (3,071€/m² · ref 2,874) (+8)",
+      "💎 +8% vs media fuenlabrada (3,071€/m² · ref 2,844) (+8)",
       "📐 Justo: 70m² (+3)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -10937,7 +11240,7 @@
     "detail_features": {},
     "pisos_id": "65011525461_101800",
     "score_details": [
-      "💎 +66% vs media sesena (2,500€/m² · ref 1,507) (+0)",
+      "💎 +67% vs media sesena (2,500€/m² · ref 1,497) (+0)",
       "📐 Tamaño mínimo: 86m² (+5)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -10972,7 +11275,7 @@
     "detail_features": {},
     "pisos_id": "65069649851_100500",
     "score_details": [
-      "💎 +5% vs media sesena (1,581€/m² · ref 1,507) (+9)",
+      "💎 +6% vs media sesena (1,581€/m² · ref 1,497) (+9)",
       "📐 Amplio: 136m² (+12)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -11007,7 +11310,7 @@
     "detail_features": {},
     "pisos_id": "64242498297_106000",
     "score_details": [
-      "💎 +5% vs media getafe (3,308€/m² · ref 3,138) (+9)",
+      "💎 +7% vs media getafe (3,308€/m² · ref 3,090) (+8)",
       "📐 65m² < 70m² mínimo (no cumple)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -11041,7 +11344,7 @@
     "detail_features": {},
     "pisos_id": "65012418982_100500",
     "score_details": [
-      "💎 -31% vs media sesena (1,044€/m² · ref 1,507) (+25)",
+      "💎 -30% vs media sesena (1,044€/m² · ref 1,497) (+25)",
       "📐 Muy amplio: 206m² (+15)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -11110,7 +11413,7 @@
     "detail_features": {},
     "pisos_id": "65002710480_100200",
     "score_details": [
-      "💎 +9% vs media alcorcon (3,590€/m² · ref 3,284) (+7)",
+      "💎 +8% vs media alcorcon (3,590€/m² · ref 3,318) (+7)",
       "📐 61m² < 70m² mínimo (no cumple)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -11180,7 +11483,7 @@
     "detail_features": {},
     "pisos_id": "62574785007_100200",
     "score_details": [
-      "💎 -5% vs media leganes (2,929€/m² · ref 3,084) (+16)",
+      "💎 -7% vs media leganes (2,929€/m² · ref 3,147) (+17)",
       "📐 Justo: 75m² (+3)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -11214,7 +11517,7 @@
     "detail_features": {},
     "pisos_id": "64199322219_100200",
     "score_details": [
-      "💎 -2% vs media fuenlabrada (2,819€/m² · ref 2,874) (+14)",
+      "💎 -1% vs media fuenlabrada (2,819€/m² · ref 2,844) (+13)",
       "📐 Justo: 78m² (+3)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -11283,7 +11586,7 @@
     "detail_features": {},
     "pisos_id": "64254393648_101800",
     "score_details": [
-      "💎 +70% vs media sesena (2,558€/m² · ref 1,507) (+0)",
+      "💎 +71% vs media sesena (2,558€/m² · ref 1,497) (+0)",
       "📐 Tamaño mínimo: 86m² (+5)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -11423,7 +11726,7 @@
     "detail_features": {},
     "pisos_id": "65013862609_100200",
     "score_details": [
-      "💎 +6% vs media fuenlabrada (3,041€/m² · ref 2,874) (+9)",
+      "💎 +7% vs media fuenlabrada (3,041€/m² · ref 2,844) (+8)",
       "📐 Justo: 74m² (+3)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -11493,7 +11796,7 @@
     "detail_features": {},
     "pisos_id": "64172181512_100200",
     "score_details": [
-      "💎 -6% vs media alcorcon (3,081€/m² · ref 3,284) (+16)",
+      "💎 -7% vs media alcorcon (3,081€/m² · ref 3,318) (+17)",
       "📐 Justo: 74m² (+3)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -11527,7 +11830,7 @@
     "detail_features": {},
     "pisos_id": "58392532569_104700",
     "score_details": [
-      "💎 +10% vs media alcorcon (3,627€/m² · ref 3,284) (+6)",
+      "💎 +9% vs media alcorcon (3,627€/m² · ref 3,318) (+7)",
       "📐 63m² < 70m² mínimo (no cumple)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -11594,7 +11897,7 @@
     "detail_features": {},
     "pisos_id": "62559982274_100200",
     "score_details": [
-      "💎 -2% vs media fuenlabrada (2,827€/m² · ref 2,874) (+14)",
+      "💎 -1% vs media fuenlabrada (2,827€/m² · ref 2,844) (+13)",
       "📐 Tamaño mínimo: 81m² (+5)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -11665,7 +11968,7 @@
     "detail_features": {},
     "pisos_id": "64182973143_100500",
     "score_details": [
-      "💎 +16% vs media alcorcon (3,817€/m² · ref 3,284) (+2)",
+      "💎 +15% vs media alcorcon (3,817€/m² · ref 3,318) (+3)",
       "📐 60m² < 70m² mínimo (no cumple)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -11699,7 +12002,7 @@
     "detail_features": {},
     "pisos_id": "64222912814_100200",
     "score_details": [
-      "💎 +22% vs media leganes (3,765€/m² · ref 3,084) (+0)",
+      "💎 +20% vs media leganes (3,765€/m² · ref 3,147) (+0)",
       "📐 61m² < 70m² mínimo (no cumple)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -11805,7 +12108,7 @@
     "detail_features": {},
     "pisos_id": "65035203907_100500",
     "score_details": [
-      "💎 -4% vs media sesena (1,451€/m² · ref 1,507) (+15)",
+      "💎 -3% vs media sesena (1,451€/m² · ref 1,497) (+14)",
       "📐 Muy amplio: 159m² (+15)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -11840,7 +12143,7 @@
     "detail_features": {},
     "pisos_id": "63356976261_100500",
     "score_details": [
-      "💎 +21% vs media getafe (3,802€/m² · ref 3,138) (+0)",
+      "💎 +23% vs media getafe (3,802€/m² · ref 3,090) (+0)",
       "📐 61m² < 70m² mínimo (no cumple)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -12052,7 +12355,7 @@
     "detail_features": {},
     "pisos_id": "61761256292_529200",
     "score_details": [
-      "💎 +1% vs media alcorcon (3,318€/m² · ref 3,284) (+12)",
+      "💎 -0% vs media alcorcon (3,318€/m² · ref 3,318) (+12)",
       "📐 Justo: 72m² (+3)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -12192,7 +12495,7 @@
     "detail_features": {},
     "pisos_id": "60028748183_104700",
     "score_details": [
-      "💎 -3% vs media alcorcon (3,193€/m² · ref 3,284) (+14)",
+      "💎 -4% vs media alcorcon (3,193€/m² · ref 3,318) (+15)",
       "📐 Justo: 75m² (+3)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -12333,7 +12636,7 @@
     "detail_features": {},
     "pisos_id": "65025940759_106400",
     "score_details": [
-      "💎 +3% vs media getafe (3,237€/m² · ref 3,138) (+11)",
+      "💎 +5% vs media getafe (3,237€/m² · ref 3,090) (+10)",
       "📐 Justo: 76m² (+3)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -12367,7 +12670,7 @@
     "detail_features": {},
     "pisos_id": "64242904098_100500",
     "score_details": [
-      "💎 +12% vs media leganes (3,465€/m² · ref 3,084) (+5)",
+      "💎 +10% vs media leganes (3,465€/m² · ref 3,147) (+6)",
       "📐 Justo: 71m² (+3)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -12403,7 +12706,7 @@
     "detail_features": {},
     "pisos_id": "64182791845_106000",
     "score_details": [
-      "💎 +8% vs media leganes (3,320€/m² · ref 3,084) (+8)",
+      "💎 +5% vs media leganes (3,320€/m² · ref 3,147) (+9)",
       "📐 Justo: 75m² (+3)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -12438,7 +12741,7 @@
     "detail_features": {},
     "pisos_id": "62545134525_106000",
     "score_details": [
-      "💎 -0% vs media fuenlabrada (2,862€/m² · ref 2,874) (+13)",
+      "💎 +1% vs media fuenlabrada (2,862€/m² · ref 2,844) (+12)",
       "📐 Tamaño mínimo: 87m² (+5)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -12649,7 +12952,7 @@
     "detail_features": {},
     "pisos_id": "64185736661_100200",
     "score_details": [
-      "💎 +66% vs media getafe (5,198€/m² · ref 3,138) (+0)",
+      "💎 +68% vs media getafe (5,198€/m² · ref 3,090) (+0)",
       "📐 50m² < 70m² mínimo (no cumple)",
       "🛏️ 1 hab < 2 mínimo (no cumple)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -13421,6 +13724,183 @@
     "previous_price": null,
     "price_drop": null,
     "datos_insuficientes": true,
+    "exterior": false,
+    "cumple_requisitos": true
+  },
+  {
+    "title": "Piso en Centro",
+    "price": 163300,
+    "score": 0,
+    "location": "Centro (Valdemoro)",
+    "m2": 91,
+    "rooms": 4,
+    "bathrooms": 3,
+    "url": "https://www.pisos.com/comprar/piso-valdemoro_hospital28342-6401976308_109700/",
+    "source": "pisos.com",
+    "floor": "",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "***ocupado-no visitable*** Piso en venta en valdemoro, con 91 m² y 4 habitaciones y 3 baños. Vivienda actualmente ocupada. No se p...",
+    "features": [],
+    "detail_features": {},
+    "pisos_id": "6401976308_109700",
+    "score_details": [
+      "💎 -36% vs media valdemoro (1,795€/m² · ref 2,798) (+25)",
+      "📐 Tamaño mínimo: 91m² (+5)",
+      "🛏️ 4 habitaciones (+5)",
+      "⚠️ Sin exterior detectado (-25 pts)",
+      "⚠️ Propiedad ocupada / sin posesión (-30 pts)"
+    ],
+    "eur_m2": 1795,
+    "municipio": "valdemoro",
+    "first_seen": "2026-06-29",
+    "last_seen": "2026-06-29",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
+    "exterior": false,
+    "cumple_requisitos": true
+  },
+  {
+    "title": "Piso con ascensor en Reyes",
+    "price": 196500,
+    "score": 0,
+    "location": "Reyes, Parla",
+    "m2": 72,
+    "rooms": 3,
+    "bathrooms": 1,
+    "url": "https://www.fotocasa.es/es/comprar/vivienda/parla/ascensor/187802035/d",
+    "source": "fotocasa.es",
+    "floor": "",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "",
+    "features": [
+      "ascensor"
+    ],
+    "detail_features": {},
+    "pisos_id": "fotocasa:187802035",
+    "score_details": [
+      "💎 +6% vs media parla (2,729€/m² · ref 2,564) (+8)",
+      "📐 Justo: 72m² (+3)",
+      "🛏️ 3 habitaciones (+5)",
+      "⚠️ Sin exterior detectado (-25 pts)",
+      "🛗 Ascensor (+5)",
+      "📉 Bajó 13,500€ (6%) (+3)"
+    ],
+    "eur_m2": 2729,
+    "municipio": "parla",
+    "first_seen": "2026-06-29",
+    "last_seen": "2026-06-29",
+    "previous_price": null,
+    "price_drop": 13500,
+    "datos_insuficientes": false,
+    "exterior": false,
+    "cumple_requisitos": true
+  },
+  {
+    "title": "Casa pareada en Pintores-Ferial",
+    "price": 199999,
+    "score": 0,
+    "location": "Pintores-Ferial (Parla)",
+    "m2": 78,
+    "rooms": 3,
+    "bathrooms": 1,
+    "url": "https://www.pisos.com/comprar/chalet_pareado-las_americas28983-63365688250_997672/",
+    "source": "pisos.com",
+    "floor": "",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "Agencia inmobiliaria de parla - oficina tecnocasa vende casa baja en zona centro. Vivienda en venta en parla centro. Casa baja d...",
+    "features": [],
+    "detail_features": {},
+    "pisos_id": "63365688250_997672",
+    "score_details": [
+      "💎 -0% vs media parla (2,564€/m² · ref 2,564) (+12)",
+      "📐 Justo: 78m² (+3)",
+      "🛏️ 3 habitaciones (+5)",
+      "⚠️ Sin exterior detectado (-25 pts)"
+    ],
+    "eur_m2": 2564,
+    "municipio": "parla",
+    "first_seen": "2026-06-29",
+    "last_seen": "2026-06-29",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
+    "exterior": false,
+    "cumple_requisitos": true
+  },
+  {
+    "title": "Casa en calle de Juan Carlos I, 11",
+    "price": 245000,
+    "score": 0,
+    "location": "Las Lomas (Seseña)",
+    "m2": 242,
+    "rooms": 2,
+    "bathrooms": 1,
+    "url": "https://www.pisos.com/comprar/casa-sesena_las_lomas45223-65059049175_100500/",
+    "source": "pisos.com",
+    "floor": "",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "Inmueble situado en c juan carlos i 11 en seseña. Oportunidad de inversión: vivienda sin posesión. **solo para inversores** **si...",
+    "features": [],
+    "detail_features": {},
+    "pisos_id": "65059049175_100500",
+    "score_details": [
+      "💎 -32% vs media sesena (1,012€/m² · ref 1,497) (+25)",
+      "📐 Muy amplio: 242m² (+15)",
+      "🛏️ 2 habitaciones (+2)",
+      "⚠️ Sin exterior detectado (-25 pts)",
+      "⚠️ Propiedad ocupada / sin posesión (-30 pts)"
+    ],
+    "eur_m2": 1012,
+    "municipio": "sesena",
+    "first_seen": "2026-06-29",
+    "last_seen": "2026-06-29",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
+    "exterior": false,
+    "cumple_requisitos": true
+  },
+  {
+    "title": "Casa adosada en calle de Don Ángel",
+    "price": 289990,
+    "score": 0,
+    "location": "",
+    "m2": 98,
+    "rooms": 2,
+    "bathrooms": 2,
+    "url": "https://www.pisos.com/comprar/chalet_pareado-navalcarnero_centro_urbano-64242312479_525846/",
+    "source": "pisos.com",
+    "floor": "",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "Descubre esta encantadora casa de pueblo céntrica con estilo rústico de 98 metros cuadrados, perfecta para quienes buscan comodida...",
+    "features": [],
+    "detail_features": {},
+    "pisos_id": "64242312479_525846",
+    "score_details": [
+      "💎 +10% vs media navalcarnero (2,959€/m² · ref 2,696) (+6)",
+      "📐 Tamaño mínimo: 98m² (+5)",
+      "🛏️ 2 habitaciones (+2)",
+      "⚠️ Sin exterior detectado (-25 pts)",
+      "🚇 Cerca transporte público (+8)"
+    ],
+    "eur_m2": 2959,
+    "municipio": "navalcarnero",
+    "first_seen": "2026-06-29",
+    "last_seen": "2026-06-29",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
     "exterior": false,
     "cumple_requisitos": true
   }
