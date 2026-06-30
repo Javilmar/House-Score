@@ -2,48 +2,44 @@
   "updated": "2026-06-30",
   "source": "median_own",
   "municipios": {
-    "getafe": {
-      "eur_m2": 3156,
-      "n": 36
-    },
     "leganes": {
-      "eur_m2": 3151,
-      "n": 43
+      "eur_m2": 3114,
+      "n": 38
     },
     "mostoles": {
-      "eur_m2": 2867,
-      "n": 32
+      "eur_m2": 2950,
+      "n": 34
     },
     "alcorcon": {
-      "eur_m2": 3367,
+      "eur_m2": 3398,
       "n": 26
     },
     "fuenlabrada": {
-      "eur_m2": 2862,
-      "n": 37
+      "eur_m2": 2823,
+      "n": 36
     },
     "parla": {
-      "eur_m2": 2688,
-      "n": 40
+      "eur_m2": 2590,
+      "n": 38
     },
     "pinto": {
       "eur_m2": 3396,
       "n": 24
     },
     "valdemoro": {
-      "eur_m2": 2734,
+      "eur_m2": 2713,
       "n": 18
     },
     "ciempozuelos": {
-      "eur_m2": 2036,
-      "n": 43
+      "eur_m2": 2038,
+      "n": 42
     },
     "humanes_de_madrid": {
       "eur_m2": 2606,
       "n": 28
     },
     "grinon": {
-      "eur_m2": 2716,
+      "eur_m2": 2848,
       "n": 11
     },
     "navalcarnero": {
@@ -55,12 +51,12 @@
       "n": 22
     },
     "cubas_de_la_sagra": {
-      "eur_m2": 1616,
+      "eur_m2": 1704,
       "n": 16
     },
     "batres": {
-      "eur_m2": 2200,
-      "n": 19
+      "eur_m2": 1667,
+      "n": 5
     },
     "serranillos_del_valle": {
       "eur_m2": 1646,
@@ -71,8 +67,8 @@
       "n": 6
     },
     "arroyomolinos": {
-      "eur_m2": 433,
-      "n": 21
+      "eur_m2": 399,
+      "n": 2
     },
     "illescas": {
       "eur_m2": 1774,
@@ -84,25 +80,25 @@
     },
     "yeles": {
       "eur_m2": 1466,
-      "n": 43
-    },
-    "ugena": {
-      "eur_m2": 1352,
-      "n": 36
+      "n": 39
     },
     "esquivias": {
       "eur_m2": 1162,
       "n": 57
+    },
+    "getafe": {
+      "eur_m2": 3357,
+      "n": 9
     }
   },
   "zonas": {
     "madrid_sur": {
-      "eur_m2": 2684,
-      "n": 473
+      "eur_m2": 2692,
+      "n": 406
     },
     "toledo_norte": {
       "eur_m2": 1424,
-      "n": 211
+      "n": 171
     }
   }
 }
