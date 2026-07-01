@@ -1,37 +1,41 @@
 {
-  "updated": "2026-06-30",
+  "updated": "2026-07-01",
   "source": "median_own",
   "municipios": {
+    "getafe": {
+      "eur_m2": 3138,
+      "n": 35
+    },
     "leganes": {
-      "eur_m2": 3114,
-      "n": 38
+      "eur_m2": 3326,
+      "n": 42
     },
     "mostoles": {
-      "eur_m2": 2950,
-      "n": 34
+      "eur_m2": 2911,
+      "n": 33
     },
     "alcorcon": {
-      "eur_m2": 3398,
+      "eur_m2": 3432,
       "n": 26
     },
     "fuenlabrada": {
-      "eur_m2": 2823,
-      "n": 36
+      "eur_m2": 2819,
+      "n": 35
     },
     "parla": {
-      "eur_m2": 2590,
-      "n": 38
+      "eur_m2": 2578,
+      "n": 34
     },
     "pinto": {
-      "eur_m2": 3396,
+      "eur_m2": 3256,
       "n": 24
     },
     "valdemoro": {
-      "eur_m2": 2713,
-      "n": 18
+      "eur_m2": 2798,
+      "n": 17
     },
     "ciempozuelos": {
-      "eur_m2": 2038,
+      "eur_m2": 2048,
       "n": 42
     },
     "humanes_de_madrid": {
@@ -55,8 +59,8 @@
       "n": 16
     },
     "batres": {
-      "eur_m2": 1667,
-      "n": 5
+      "eur_m2": 2218,
+      "n": 18
     },
     "serranillos_del_valle": {
       "eur_m2": 1646,
@@ -67,38 +71,38 @@
       "n": 6
     },
     "arroyomolinos": {
-      "eur_m2": 399,
-      "n": 2
+      "eur_m2": 433,
+      "n": 20
     },
     "illescas": {
-      "eur_m2": 1774,
-      "n": 34
+      "eur_m2": 1785,
+      "n": 33
     },
     "sesena": {
-      "eur_m2": 1497,
+      "eur_m2": 1451,
       "n": 41
     },
     "yeles": {
-      "eur_m2": 1466,
-      "n": 39
+      "eur_m2": 1200,
+      "n": 52
+    },
+    "ugena": {
+      "eur_m2": 1352,
+      "n": 36
     },
     "esquivias": {
       "eur_m2": 1162,
       "n": 57
-    },
-    "getafe": {
-      "eur_m2": 3357,
-      "n": 9
     }
   },
   "zonas": {
     "madrid_sur": {
-      "eur_m2": 2692,
-      "n": 406
+      "eur_m2": 2669,
+      "n": 460
     },
     "toledo_norte": {
-      "eur_m2": 1424,
-      "n": 171
+      "eur_m2": 1399,
+      "n": 219
     }
   }
 }
