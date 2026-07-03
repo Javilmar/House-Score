@@ -8,6 +8,7 @@ Lanzar: streamlit run app.py
 import re
 import json
 import math
+import base64
 import unicodedata
 import pandas as pd
 import plotly.express as px
@@ -1041,15 +1042,74 @@ components.html("""<script>
 
 # ── Pestañas ─────────────────────────────────────────────────────
 
-tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
+tab1, tab2, tab5, tab3, tab4, tab6, tab7, tab8 = st.tabs([
     "Listados completos",
     "Top scoring",
+    "Novedades",
     "Evolución y análisis",
     "Bajadas de precio",
     "Hipoteca",
     "Cómo funciona",
     "Mapas",
 ])
+
+# ── Iconos SVG en pestañas (mismos paths Lucide que los KPIs) ────────
+def _tab_svg_uri(inner: str) -> str:
+    svg = (
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" '
+        'fill="none" stroke="#000" stroke-width="2" '
+        'stroke-linecap="round" stroke-linejoin="round">'
+        + inner + "</svg>"
+    )
+    b64 = base64.b64encode(svg.encode("utf-8")).decode("ascii")
+    return "data:image/svg+xml;base64," + b64
+
+_INFO_ICON_PATH = "<circle cx='12' cy='12' r='10'/><path d='M12 16v-4'/><path d='M12 8h.01'/>"
+
+_TAB_ICON_LIST = [
+    _ICON_PATHS["layers"],         # 1. Listados completos
+    _ICON_PATHS["star"],           # 2. Top scoring
+    _ICON_PATHS["sparkles"],       # 3. Novedades
+    _ICON_PATHS["waves"],          # 4. Evolución y análisis
+    _ICON_PATHS["trending-down"],  # 5. Bajadas de precio
+    _ICON_PATHS["wallet"],         # 6. Hipoteca
+    _INFO_ICON_PATH,               # 7. Cómo funciona
+    _ICON_PATHS["map-pin"],        # 8. Mapas
+]
+
+_per_tab_css = "\n".join(
+    "[data-baseweb='tab-list'] button[role='tab']:nth-of-type({n})::before {{"
+    " -webkit-mask-image: url('{u}'); mask-image: url('{u}'); }}".format(
+        n=i + 1, u=_tab_svg_uri(p)
+    )
+    for i, p in enumerate(_TAB_ICON_LIST)
+)
+st.markdown(
+    f"""<style>
+[data-baseweb='tab-list'] button[role='tab'] {{
+    display: inline-flex !important;
+    align-items: center;
+    gap: 6px;
+}}
+[data-baseweb='tab-list'] button[role='tab']::before {{
+    content: '';
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    background-color: currentColor;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    opacity: 0.85;
+}}
+{_per_tab_css}
+</style>""",
+    unsafe_allow_html=True,
+)
 
 # ── TAB 1: Listados completos ────────────────────────────────────
 
@@ -1492,6 +1552,114 @@ with tab4:
 
 with tab5:
     st.write("")
+    st.subheader("Pisos nuevos por pasada")
+
+    if "first_seen" in df.columns and "_archivo" in df.columns:
+        # Fechas de ejecución disponibles (= nombres de los JSON cargados)
+        fechas_ejecucion = sorted(
+            df["_archivo"].dropna().dt.date.unique(), reverse=True
+        )
+
+        if fechas_ejecucion:
+            fecha_labels = [str(f) for f in fechas_ejecucion]
+            _sel_label = st.selectbox(
+                "Pasada", fecha_labels,
+                index=0,
+                format_func=lambda x: x,
+                key="nov_fecha",
+            )
+            fecha_sel = next(f for f in fechas_ejecucion if str(f) == _sel_label)
+
+            nuevos_sel = df[df["first_seen"].dt.date == fecha_sel].copy()
+
+            _ORDEN_OPTS_N = {
+                "Mejor score":     ("score",   False),
+                "Precio más bajo": ("price",   True),
+                "Mayor superficie":("m2",      False),
+                "Más antiguo":     ("first_seen", True),
+            }
+            _n_orden = st.selectbox(
+                "Ordenar por", list(_ORDEN_OPTS_N.keys()), key="nov_orden"
+            )
+            _n_col, _n_asc = _ORDEN_OPTS_N[_n_orden]
+            nuevos_sel = nuevos_sel.sort_values(_n_col, ascending=_n_asc, na_position="last")
+
+            n_nuevos = len(nuevos_sel)
+            st.markdown(
+                f'<div style="font-family:\'Fraunces\',serif;font-size:2rem;'
+                f'font-weight:400;letter-spacing:-0.03em;color:#fafafa;margin:0.5rem 0 1rem;">'
+                f'{n_nuevos}'
+                f'<span style="font-size:1rem;color:#a1a1aa;margin-left:0.5rem;">pisos nuevos en esta pasada</span>'
+                f'</div>',
+                unsafe_allow_html=True,
+            )
+
+            if nuevos_sel.empty:
+                st.info("No hay pisos nuevos en esta pasada.")
+            else:
+                for _, row in nuevos_sel.iterrows():
+                    _n_titulo = clean(row.get("title", "Sin título")) or "Sin título"
+                    _n_url = row.get("url", "")
+                    _n_link_open = (
+                        f'<a class="prop-title" href="{_n_url}" target="_blank">'
+                        if (isinstance(_n_url, str) and _n_url.startswith("http"))
+                        else '<span class="prop-title">'
+                    )
+                    _n_link_close = (
+                        "</a>" if (isinstance(_n_url, str) and _n_url.startswith("http"))
+                        else "</span>"
+                    )
+
+                    _n_sc = row.get("score", 0) or 0
+                    _n_col_c = score_color(_n_sc)
+                    _n_precio = row.get("price")
+                    _n_m2 = row.get("m2")
+                    _n_eur_m2 = row.get("eur_m2")
+                    _n_rooms = row.get("rooms")
+                    _n_loc = clean(row.get("location", "—")) or "—"
+                    _n_src = clean(row.get("source", "")) or ""
+                    _n_meta = " · ".join(filter(None, [_n_loc, _n_src]))
+
+                    _n_precio_txt = f"{int(_n_precio):,} €".replace(",", ".") if pd.notna(_n_precio) else "—"
+                    _n_m2_txt = f"{int(_n_m2)} m²" if pd.notna(_n_m2) else ""
+                    _n_eur_m2_txt = f"{int(_n_eur_m2):,} €/m²".replace(",", ".") if pd.notna(_n_eur_m2) else ""
+                    _n_rooms_txt = f"{int(_n_rooms)} hab" if pd.notna(_n_rooms) else ""
+                    _n_details = " · ".join(filter(None, [_n_m2_txt, _n_eur_m2_txt, _n_rooms_txt]))
+
+                    _n_ubi = zona(row.get("location", ""), row.get("title", ""), row.get("description", ""))
+                    _n_tipo = tipo_vivienda(row.get("title", ""), row.get("description", ""), "")
+                    _n_tipo_idx = 1 if _n_tipo == "Obra nueva" else 0
+                    _n_ccaa_idx = 1 if zona_a_ccaa(_n_ubi) == "Castilla-La Mancha" else 0
+
+                    st.markdown(
+                        f"""
+                        <div class="prop-card">
+                          <div style="display:flex; gap:1.25rem; align-items:center;">
+                            <div class="score-badge" style="background:{_n_col_c};">{_n_sc:.0f}</div>
+                            <div style="flex:1; min-width:0;">
+                              <div>{_n_link_open}{_n_titulo}{_n_link_close}</div>
+                              <div class="prop-meta">{_n_meta}</div>
+                              <div class="prop-meta" style="margin-top:0.15rem;">{_n_details}</div>
+                            </div>
+                            <div style="text-align:right; white-space:nowrap;">
+                              <div style="font-size:1.15rem; font-weight:600; color:#fafafa;">{_n_precio_txt}</div>
+                            </div>
+                          </div>
+                          <button class="prop-action-btn hip-btn"
+                                  data-precio="{int(_n_precio) if pd.notna(_n_precio) else 0}"
+                                  data-tipo="{_n_tipo_idx}"
+                                  data-ccaa="{_n_ccaa_idx}">€ Hipoteca</button>
+                        </div>
+                        """,
+                        unsafe_allow_html=True,
+                    )
+        else:
+            st.info("No hay datos de ejecuciones disponibles.")
+    else:
+        st.info("Los datos no contienen información de fecha de primera aparición.")
+
+with tab6:
+    st.write("")
     st.subheader("Calculadora de hipoteca")
 
     precio_medio = int(df["price"].median()) if "price" in df.columns and df["price"].notna().any() else 200000
@@ -1658,9 +1826,9 @@ with tab5:
         """
         st.markdown(g_kpi_html, unsafe_allow_html=True)
 
-# ── TAB 6: Cómo funciona ─────────────────────────────────────────
+# ── TAB 7: Cómo funciona ─────────────────────────────────────────
 
-with tab6:
+with tab7:
     st.write("")
     st.markdown(
         """
@@ -1835,9 +2003,9 @@ with tab6:
 
     st.caption("La puntuación es orientativa: ayuda a priorizar, no sustituye una visita.")
 
-# ── TAB 7: Mapa de seguridad ──────────────────────────────────────
+# ── TAB 8: Mapa de seguridad ──────────────────────────────────────
 
-with tab7:
+with tab8:
     st.write("")
 
     # ── Carga de assets ───────────────────────────────────────────
@@ -1864,6 +2032,7 @@ with tab7:
             _opciones.append("🔴  Criminalidad · por municipio")
         if _tiene_renta:
             _opciones.append("🟢  Renta · por barrio (sección censal)")
+        _opciones.append("🟡  Precio vivienda · por municipio")
 
         _capa = st.radio(
             "Capa",
@@ -1871,7 +2040,8 @@ with tab7:
             horizontal=True,
             label_visibility="collapsed",
         )
-        _modo_renta = _capa.startswith("🟢")
+        _modo_renta    = _capa.startswith("🟢")
+        _modo_precios  = _capa.startswith("🟡")
 
         # ── Escala criminalidad: verde (seguro) → rojo (peligroso) ─
         _CRIM_COLOR_SCALE = [
@@ -1922,7 +2092,7 @@ with tab7:
         # ════════════════════════════════════════════════════════════
         # VISTA A: CRIMINALIDAD (por municipio)
         # ════════════════════════════════════════════════════════════
-        if not _modo_renta and _tiene_criminalidad:
+        if not _modo_renta and not _modo_precios and _tiene_criminalidad:
             periodo  = df_crim["periodo"].iloc[0] if "periodo" in df_crim.columns else "Q1 2026"
             tasa_max = df_crim["tasa_criminalidad"].max()
             tasa_min = df_crim["tasa_criminalidad"].min()
@@ -2051,6 +2221,109 @@ with tab7:
                 "Asset de renta por sección no encontrado. Ejecuta el script de build:\n\n"
                 "```\ncd house-dashboard/dashboard\npython scripts/build_mapa_assets.py\n```"
             )
+
+        # ════════════════════════════════════════════════════════════
+        # VISTA C: PRECIO VIVIENDA (por municipio, datos scrapeados)
+        # ════════════════════════════════════════════════════════════
+        elif _modo_precios:
+            if geojson_mun is None:
+                st.warning(
+                    "GeoJSON de municipios no encontrado. Ejecuta el script de build:\n\n"
+                    "```\ncd house-dashboard/dashboard\npython scripts/build_mapa_assets.py\n```"
+                )
+            else:
+                # Mapping nombre_display → cod_ine extraído del GeoJSON
+                def _slug_muni(nombre):
+                    n = unicodedata.normalize("NFD", nombre.lower())
+                    n = "".join(c for c in n if unicodedata.category(c) != "Mn")
+                    return n.replace(" ", "_").replace("-", "_").replace("'", "")
+
+                _slug_to_cod  = {
+                    _slug_muni(f["properties"]["nombre"]): f["properties"]["cod_ine"]
+                    for f in geojson_mun["features"]
+                }
+                _cod_to_nombre = {
+                    f["properties"]["cod_ine"]: f["properties"]["nombre"]
+                    for f in geojson_mun["features"]
+                }
+
+                # Agregar por municipio: mediana €/m², mediana precio, nº anuncios
+                _df_p = (
+                    df[df["eur_m2"].notna() & df["municipio"].notna()]
+                    .groupby("municipio")
+                    .agg(
+                        eur_m2_med=("eur_m2",  "median"),
+                        precio_med=("price",   "median"),
+                        n_listings=("price",   "count"),
+                    )
+                    .reset_index()
+                )
+                _df_p["cod_ine"] = _df_p["municipio"].map(_slug_to_cod)
+                _df_p = _df_p.dropna(subset=["cod_ine"])
+                _df_p["nombre"] = _df_p["cod_ine"].map(_cod_to_nombre)
+
+                _PRECIO_COLOR_SCALE = [
+                    [0.0,  "#22c55e"],   # verde — más barato
+                    [0.35, "#84cc16"],
+                    [0.55, "#eab308"],   # amarillo
+                    [0.75, "#f97316"],
+                    [1.0,  "#ef4444"],   # rojo  — más caro
+                ]
+
+                _p_min = _df_p["eur_m2_med"].min()
+                _p_max = _df_p["eur_m2_med"].max()
+
+                fig_precio = px.choropleth_map(
+                    _df_p,
+                    geojson=geojson_mun,
+                    locations="cod_ine",
+                    featureidkey="properties.cod_ine",
+                    color="eur_m2_med",
+                    color_continuous_scale=_PRECIO_COLOR_SCALE,
+                    range_color=(_p_min * 0.9, _p_max * 1.05),
+                    hover_name="nombre",
+                    hover_data={
+                        "cod_ine":    False,
+                        "eur_m2_med": ":,.0f",
+                        "precio_med": ":,.0f",
+                        "n_listings": True,
+                    },
+                    labels={
+                        "eur_m2_med": "€/m² (mediana)",
+                        "precio_med": "Precio mediano (€)",
+                        "n_listings": "Anuncios",
+                    },
+                    center={"lat": 40.18, "lon": -3.78},
+                    zoom=9,
+                    map_style="carto-darkmatter",
+                    opacity=0.75,
+                )
+                fig_precio.update_layout(
+                    **_MAP_LAYOUT,
+                    coloraxis_colorbar=_colorbar("€/m² mediana"),
+                )
+                st.plotly_chart(fig_precio, use_container_width=True)
+
+                _n_mun = len(_df_p)
+                _total_mun = len(geojson_mun["features"])
+                _sin_precio = _total_mun - _n_mun
+                st.caption(
+                    f"**Fuente**: anuncios scrapeados (pisos.com + idealista) · "
+                    f"**Métrica**: mediana de €/m² por municipio · "
+                    f"**Verde** = más barato · **Rojo** = más caro · "
+                    f"**Gris** = sin anuncios ({_sin_precio} municipios)"
+                )
+
+                st.write("")
+                st.subheader("Ranking de precio por municipio")
+                df_rank_p = _df_p[["nombre", "eur_m2_med", "precio_med", "n_listings"]].sort_values(
+                    "eur_m2_med", ascending=True
+                ).reset_index(drop=True)
+                df_rank_p.index += 1
+                df_rank_p.columns = ["Municipio", "€/m² mediana", "Precio mediano (€)", "Anuncios"]
+                df_rank_p["€/m² mediana"]       = df_rank_p["€/m² mediana"].map("{:,.0f}".format)
+                df_rank_p["Precio mediano (€)"] = df_rank_p["Precio mediano (€)"].map("{:,.0f}".format)
+                st.dataframe(df_rank_p, use_container_width=True, hide_index=False)
 
 # ── Footer ───────────────────────────────────────────────────────
 
