@@ -1,0 +1,138 @@
+[
+  {
+    "fecha": "2026-06-23",
+    "count": 351,
+    "avg_price": 251947,
+    "avg_score": 19.3,
+    "min_price": 76000,
+    "max_price": 799000
+  },
+  {
+    "fecha": "2026-06-24",
+    "count": 50,
+    "avg_price": 270132,
+    "avg_score": 34.3,
+    "min_price": 155000,
+    "max_price": 649000
+  },
+  {
+    "fecha": "2026-06-25",
+    "count": 13,
+    "avg_price": 303704,
+    "avg_score": 48.46,
+    "min_price": 159900,
+    "max_price": 599900
+  },
+  {
+    "fecha": "2026-06-29",
+    "count": 375,
+    "avg_price": 195818,
+    "avg_score": 12.84,
+    "min_price": 15000,
+    "max_price": 790000
+  },
+  {
+    "fecha": "2026-06-30",
+    "count": 501,
+    "avg_price": 210151,
+    "avg_score": 13.4,
+    "min_price": 15000,
+    "max_price": 340000
+  },
+  {
+    "fecha": "2026-07-01",
+    "count": 511,
+    "avg_price": 215552,
+    "avg_score": 14.18,
+    "min_price": 15000,
+    "max_price": 1206000
+  },
+  {
+    "fecha": "2026-07-02",
+    "count": 511,
+    "avg_price": 213718,
+    "avg_score": 14.08,
+    "min_price": 15000,
+    "max_price": 511500
+  },
+  {
+    "fecha": "2026-07-03",
+    "count": 505,
+    "avg_price": 213886,
+    "avg_score": 14.44,
+    "min_price": 15000,
+    "max_price": 511500
+  },
+  {
+    "fecha": "2026-07-04",
+    "count": 470,
+    "avg_price": 213780,
+    "avg_score": 14.66,
+    "min_price": 15000,
+    "max_price": 511500
+  },
+  {
+    "fecha": "2026-07-05",
+    "count": 464,
+    "avg_price": 213523,
+    "avg_score": 14.86,
+    "min_price": 15000,
+    "max_price": 511500
+  },
+  {
+    "fecha": "2026-07-06",
+    "count": 489,
+    "avg_price": 216188,
+    "avg_score": 14.76,
+    "min_price": 15000,
+    "max_price": 511500
+  },
+  {
+    "fecha": "2026-07-07",
+    "count": 518,
+    "avg_price": 215943,
+    "avg_score": 14.86,
+    "min_price": 15000,
+    "max_price": 511500
+  },
+  {
+    "fecha": "2026-07-08",
+    "count": 514,
+    "avg_price": 214056,
+    "avg_score": 14.37,
+    "min_price": 15000,
+    "max_price": 511500
+  },
+  {
+    "fecha": "2026-07-09",
+    "count": 460,
+    "avg_price": 212837,
+    "avg_score": 14.65,
+    "min_price": 15000,
+    "max_price": 511500
+  },
+  {
+    "fecha": "2026-07-10",
+    "count": 479,
+    "avg_price": 212611,
+    "avg_score": 14.23,
+    "min_price": 15000,
+    "max_price": 511500
+  },
+  {
+    "fecha": "2026-07-13",
+    "count": 487,
+    "avg_price": 215076,
+    "avg_score": 15.13,
+    "min_price": 15000,
+    "max_price": 511500
+  },
+  {
+    "fecha": "2026-07-14",
+    "count": 459,
+    "avg_price": 214000,
+    "avg_score": 14.48,
+    "min_price": 15000,
+    "max_price": 300000
+  }
+]

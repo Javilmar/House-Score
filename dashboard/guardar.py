@@ -23,11 +23,12 @@ El archivo de entrada debe ser un array JSON de listings:
 
 import json
 import sys
-import os
 import subprocess
 import unicodedata
-from datetime import date, datetime
+from datetime import date
 from pathlib import Path
+
+import listings_store
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "datos"
 REPO_DIR = DATA_DIR.parent
@@ -36,12 +37,31 @@ TODAY = date.today().isoformat()
 # Municipios de Toledo Norte que ya no son de interés.
 # Los pisos scrapeados de estas localidades se descartan antes de guardar.
 _TOLEDO_NORTE_BLOQUEADOS = {
-    "yuncos", "yuncler", "yunclillos", "cedillo",
-    "el viso de san juan", "viso de san juan", "carranque",
-    "recas", "lominchar", "alameda de la sagra", "cabanas de la sagra",
-    "villaluenga", "anover de tajo", "casarrubios", "valmojado",
-    "magan", "cobeja", "numancia", "pantoja", "chozas de canales",
-    "bargas", "mocejon", "burguillos", "cobisa", "olias",
+    "yuncos",
+    "yuncler",
+    "yunclillos",
+    "cedillo",
+    "el viso de san juan",
+    "viso de san juan",
+    "carranque",
+    "recas",
+    "lominchar",
+    "alameda de la sagra",
+    "cabanas de la sagra",
+    "villaluenga",
+    "anover de tajo",
+    "casarrubios",
+    "valmojado",
+    "magan",
+    "cobeja",
+    "numancia",
+    "pantoja",
+    "chozas de canales",
+    "bargas",
+    "mocejon",
+    "burguillos",
+    "cobisa",
+    "olias",
 }
 
 
@@ -60,77 +80,41 @@ def git_sync():
     """Empuja los datos del día a GitHub para que el dashboard en la nube los vea.
     Best-effort: si git no está configurado o falla, no rompe la pasada."""
     try:
-        subprocess.run(["git", "add", "datos/"], cwd=REPO_DIR, check=True,
-                       capture_output=True, text=True)
-        status = subprocess.run(["git", "status", "--porcelain", "datos/"],
-                                cwd=REPO_DIR, capture_output=True, text=True)
+        subprocess.run(
+            ["git", "add", "datos/"],
+            cwd=REPO_DIR,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        status = subprocess.run(
+            ["git", "status", "--porcelain", "datos/"],
+            cwd=REPO_DIR,
+            capture_output=True,
+            text=True,
+        )
         if not status.stdout.strip():
             print("   ☁️  Sin cambios que publicar")
             return
-        subprocess.run(["git", "commit", "-m", f"datos: pasada {TODAY}"],
-                       cwd=REPO_DIR, check=True, capture_output=True, text=True)
-        subprocess.run(["git", "push"], cwd=REPO_DIR, check=True,
-                       capture_output=True, text=True)
+        subprocess.run(
+            ["git", "commit", "-m", f"datos: pasada {TODAY}"],
+            cwd=REPO_DIR,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        subprocess.run(
+            ["git", "push"], cwd=REPO_DIR, check=True, capture_output=True, text=True
+        )
         print("   ☁️  Datos publicados en GitHub")
     except (subprocess.CalledProcessError, FileNotFoundError) as e:
         detail = getattr(e, "stderr", "") or str(e)
         print(f"   ⚠️  No se pudo publicar a GitHub: {detail.strip()[:200]}")
 
 
-def load_existing():
-    """Carga todos los listings históricos (diccionario indexado por url)."""
-    index = {}
-    if DATA_DIR.exists():
-        for f in sorted(DATA_DIR.glob("*.json")):
-            if f.stem == TODAY:
-                continue  # el de hoy se procesa aparte
-            try:
-                listings = json.loads(f.read_text(encoding="utf-8"))
-                for item in listings:
-                    key = item.get("url") or item.get("id") or item.get("title", "")
-                    if key:
-                        index[key] = item
-            except (json.JSONDecodeError, IOError):
-                continue
-    return index
-
-
-def merge(new_listings, existing_index):
-    """Merge nuevos listings con el índice histórico. Retorna lista actualizada."""
-    updated_index = dict(existing_index)  # copia
-    merged = []
-    today_str = TODAY
-
-    for item in new_listings:
-        key = item.get("url") or item.get("id") or item.get("title", "")
-        if not key:
-            merged.append(item)
-            continue
-
-        # Asegurar que tenga fecha
-        if "first_seen" not in item:
-            item["first_seen"] = today_str
-        item["last_seen"] = today_str
-
-        if key in updated_index:
-            old = updated_index[key]
-            # Mantener first_seen original
-            item["first_seen"] = old.get("first_seen", item["first_seen"])
-            # Detectar bajada de precio
-            old_price = old.get("price")
-            new_price = item.get("price")
-            if old_price and new_price and new_price < old_price:
-                item["price_drop"] = old_price - new_price
-                item["previous_price"] = old_price
-            elif old.get("previous_price"):
-                item["previous_price"] = old.get("previous_price")
-            if old.get("price_drop"):
-                item["price_drop"] = old.get("price_drop")
-
-        updated_index[key] = item
-        merged.append(item)
-
-    return merged
+LISTINGS_FILE = DATA_DIR / "listings.json"
+HISTORICO_FILE = DATA_DIR / "historico_diario.json"
+DELISTED_THRESHOLD_DAYS = 7
 
 
 def main():
@@ -139,7 +123,9 @@ def main():
     elif len(sys.argv) > 1:
         raw = Path(sys.argv[1]).read_text(encoding="utf-8")
     else:
-        print("Uso: python guardar.py <archivo.json>  |  cat datos.json | python guardar.py --stdin")
+        print(
+            "Uso: python guardar.py <archivo.json>  |  cat datos.json | python guardar.py --stdin"
+        )
         sys.exit(1)
 
     new_listings = json.loads(raw)
@@ -152,51 +138,44 @@ def main():
     new_listings = [item for item in new_listings if not _bloqueado(item)]
     descartados = antes - len(new_listings)
     if descartados:
-        print(f"   🚫 Descartados {descartados} pisos de municipios Toledo Norte no permitidos")
-
-    existing = load_existing()
-    merged = merge(new_listings, existing)
+        print(
+            f"   🚫 Descartados {descartados} pisos de municipios Toledo Norte no permitidos"
+        )
 
     DATA_DIR.mkdir(parents=True, exist_ok=True)
 
-    # Cargar lo que ya hubiera hoy y hacer merge
-    today_file = DATA_DIR / f"{TODAY}.json"
-    today_existing = []
-    today_index = {}
-    if today_file.exists():
-        try:
-            today_existing = json.loads(today_file.read_text(encoding="utf-8"))
-            for item in today_existing:
-                key = item.get("url") or item.get("id") or item.get("title", "")
-                if key:
-                    today_index[key] = item
-        except (json.JSONDecodeError, IOError):
-            pass
+    existing = listings_store.load_listings(LISTINGS_FILE)
+    index = listings_store.upsert(existing, new_listings, TODAY)
+    index = listings_store.mark_delisted(
+        index, TODAY, threshold_days=DELISTED_THRESHOLD_DAYS
+    )
+    listings_store.save_listings(LISTINGS_FILE, index)
 
-    # Merge con lo de hoy
-    for item in merged:
-        key = item.get("url") or item.get("id") or item.get("title", "")
-        if key and key not in today_index:
-            today_index[key] = item
+    new_count = len(
+        [
+            i
+            for i in new_listings
+            if index.get(i.get("url") or i.get("id") or i.get("title", ""), {}).get(
+                "first_seen"
+            )
+            == TODAY
+        ]
+    )
 
-    final = sorted(today_index.values(), key=lambda x: x.get("score", 0), reverse=True)
-    today_file.write_text(json.dumps(final, ensure_ascii=False, indent=2), encoding="utf-8")
+    historico = listings_store.load_historico(HISTORICO_FILE)
+    activos_hoy = [i for i in index.values() if i.get("status") == "active"]
+    historico = listings_store.append_daily_aggregate(historico, activos_hoy, TODAY)
+    listings_store.save_historico(HISTORICO_FILE, historico)
 
-    new_count = len([i for i in merged if i.get("first_seen") == TODAY])
-    updated_count = len(merged) - new_count
+    updated_count = len(new_listings) - new_count
+    delistados = len([i for i in index.values() if i.get("status") == "delisted"])
 
-    print(f"✅ Guardado en {today_file}")
+    print(f"✅ Guardado en {LISTINGS_FILE}")
     print(f"   🆕 Nuevos: {new_count}")
     print(f"   🔄 Actualizados: {updated_count}")
-    print(f"   📊 Total hoy: {len(final)}")
-
-    # También generar el histórico completo (para el dashboard)
-    full_index = existing
-    for item in merged:
-        key = item.get("url") or item.get("id") or item.get("title", "")
-        if key:
-            full_index[key] = item
-    print(f"   🗄️  Total histórico: {len(full_index)} listings únicos")
+    print(f"   📊 Activos hoy: {len(activos_hoy)}")
+    print(f"   🚪 Retirados (delisted): {delistados}")
+    print(f"   🗄️  Total en almacén: {len(index)} listings únicos")
 
     git_sync()
 
