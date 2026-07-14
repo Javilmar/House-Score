@@ -30,13 +30,13 @@ ASSETS_DIR = Path(__file__).resolve().parent / "assets"
 
 # ── Paleta semántica ─────────────────────────────────────────────
 
-ACCENT = "#6366f1"          # indigo-500 — único color de acento
-INK = "#e4e4e7"             # zinc-200 (texto principal)
-MUTED = "#a1a1aa"           # zinc-400
-SUBTLE = "#52525b"          # zinc-600
-BORDER = "#27272a"          # zinc-800
-SURFACE = "#18181b"         # zinc-900 (tarjetas)
-GRID = "#1f1f23"            # rejilla apenas perceptible
+ACCENT = "#6366f1"  # indigo-500 — único color de acento
+INK = "#e4e4e7"  # zinc-200 (texto principal)
+MUTED = "#a1a1aa"  # zinc-400
+SUBTLE = "#52525b"  # zinc-600
+BORDER = "#27272a"  # zinc-800
+SURFACE = "#18181b"  # zinc-900 (tarjetas)
+GRID = "#1f1f23"  # rejilla apenas perceptible
 
 # Escala de score sobria (tonos apagados, sin colores chillones)
 SCORE_SCALE = [
@@ -56,8 +56,8 @@ SERIES = ["#6366f1", "#94a3b8", "#22d3ee", "#a78bfa", "#2dd4bf", "#94a3b8"]
 IVA_OBRA_NUEVA = 0.10
 ITP = {"Comunidad de Madrid": 0.06, "Castilla-La Mancha": 0.09}
 AJD = {"Comunidad de Madrid": 0.0075, "Castilla-La Mancha": 0.015}
-OTROS_GASTOS_PCT = 0.015          # notaría + registro + gestoría (~1,5%)
-TASACION_EUR = 400                 # tasación bancaria orientativa (€ fijos)
+OTROS_GASTOS_PCT = 0.015  # notaría + registro + gestoría (~1,5%)
+TASACION_EUR = 400  # tasación bancaria orientativa (€ fijos)
 CCAA_DEFAULT = "Comunidad de Madrid"
 HIP_DEFAULTS = {"entrada_pct": 0.20, "plazo": 30, "tin": 0.03}
 
@@ -92,6 +92,7 @@ def icon(name, size=16, color="currentColor", stroke=1.75):
 
 
 # ── Estilos premium (CSS) ────────────────────────────────────────
+
 
 def inject_styles():
     st.markdown(
@@ -329,8 +330,8 @@ def inject_styles():
 # ── Utilidades de limpieza ───────────────────────────────────────
 
 _EMOJI_RE = re.compile(
-    "[\U0001F000-\U0001FAFF\U00002600-\U000027BF\U0001F1E6-\U0001F1FF"
-    "\U00002190-\U000021FF\U00002B00-\U00002BFF️‍]",
+    "[\U0001f000-\U0001faff\U00002600-\U000027bf\U0001f1e6-\U0001f1ff"
+    "\U00002190-\U000021ff\U00002b00-\U00002bff️‍]",
     flags=re.UNICODE,
 )
 
@@ -347,16 +348,31 @@ def clean(text):
 # infiere del texto del anuncio. Los pueblos toledanos son de la Sagra.
 
 _MADRID_SUR = [
-    "getafe", "leganes", "mostoles", "alcorcon", "fuenlabrada", "parla",
-    "pinto", "valdemoro", "ciempozuelos", "humanes", "grinon",
-    "navalcarnero", "torrejon de la calzada",
-    "cubas de la sagra", "batres", "serranillos del valle",
-    "moraleja de enmedio", "arroyomolinos",
+    "getafe",
+    "leganes",
+    "mostoles",
+    "alcorcon",
+    "fuenlabrada",
+    "parla",
+    "pinto",
+    "valdemoro",
+    "ciempozuelos",
+    "humanes",
+    "grinon",
+    "navalcarnero",
+    "torrejon de la calzada",
+    "cubas de la sagra",
+    "batres",
+    "serranillos del valle",
+    "moraleja de enmedio",
+    "arroyomolinos",
 ]
 _TOLEDO_NORTE = [
     # Solo los 5 municipios de interés: Illescas, Seseña, Yeles, Ugena, Esquivias
-    "illescas", "senorio",          # Illescas / El Señorío
-    "sesena", "quinon",             # Seseña / El Quiñón
+    "illescas",
+    "senorio",  # Illescas / El Señorío
+    "sesena",
+    "quinon",  # Seseña / El Quiñón
     "yeles",
     "ugena",
     "esquivias",
@@ -388,9 +404,16 @@ def zona_a_ccaa(z):
 
 
 _OBRA_NUEVA_KW = [
-    "obra nueva", "a estrenar", "nueva construccion", "primera ocupacion",
-    "de obra nueva", "promocion de obra", "llave en mano", "recien construid",
-    "vivienda nueva", "promocion nueva",
+    "obra nueva",
+    "a estrenar",
+    "nueva construccion",
+    "primera ocupacion",
+    "de obra nueva",
+    "promocion de obra",
+    "llave en mano",
+    "recien construid",
+    "vivienda nueva",
+    "promocion nueva",
 ]
 
 
@@ -524,26 +547,32 @@ function ord(idx, th) {
 
 # ── Carga de datos ──────────────────────────────────────────────
 
+
 @st.cache_data(ttl=30)
 def cargar_datos():
-    if not DATA_DIR.exists():
+    listings_path = DATA_DIR / "listings.json"
+    if not listings_path.exists():
         return pd.DataFrame()
 
-    todos = []
-    for f in sorted(DATA_DIR.glob("*.json")):
-        try:
-            listings = json.loads(f.read_text(encoding="utf-8"))
-            for item in listings:
-                item["_archivo"] = f.stem
-                todos.append(item)
-        except (json.JSONDecodeError, IOError):
-            continue
+    try:
+        todos = json.loads(listings_path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, IOError):
+        return pd.DataFrame()
 
     if not todos:
         return pd.DataFrame()
 
     df = pd.DataFrame(todos)
-    for col in ["price", "m2", "rooms", "bathrooms", "score", "year_built", "price_drop", "previous_price"]:
+    for col in [
+        "price",
+        "m2",
+        "rooms",
+        "bathrooms",
+        "score",
+        "year_built",
+        "price_drop",
+        "previous_price",
+    ]:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce")
 
@@ -551,13 +580,34 @@ def cargar_datos():
         df["first_seen"] = pd.to_datetime(df["first_seen"], errors="coerce")
     if "last_seen" in df.columns:
         df["last_seen"] = pd.to_datetime(df["last_seen"], errors="coerce")
-    if "_archivo" in df.columns:
-        df["_archivo"] = pd.to_datetime(df["_archivo"], errors="coerce")
 
     if "price" in df.columns and "m2" in df.columns:
         df["eur_m2"] = (df["price"] / df["m2"]).round(0)
 
     return df.sort_values("score", ascending=False, na_position="last")
+
+
+@st.cache_data(ttl=30)
+def cargar_historico():
+    historico_path = DATA_DIR / "historico_diario.json"
+    if not historico_path.exists():
+        return pd.DataFrame()
+
+    try:
+        filas = json.loads(historico_path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, IOError):
+        return pd.DataFrame()
+
+    if not filas:
+        return pd.DataFrame()
+
+    df = pd.DataFrame(filas)
+    df["fecha"] = pd.to_datetime(df["fecha"], errors="coerce")
+    for col in ["count", "avg_price", "avg_score", "min_price", "max_price"]:
+        if col in df.columns:
+            df[col] = pd.to_numeric(df[col], errors="coerce")
+
+    return df.sort_values("fecha")
 
 
 @st.cache_data
@@ -577,7 +627,9 @@ def cargar_criminalidad(mtime: float = 0.0):
         return pd.DataFrame()
     # Saltar líneas de comentario (#)
     df_c = pd.read_csv(path, comment="#")
-    df_c["tasa_criminalidad"] = pd.to_numeric(df_c["tasa_criminalidad"], errors="coerce")
+    df_c["tasa_criminalidad"] = pd.to_numeric(
+        df_c["tasa_criminalidad"], errors="coerce"
+    )
     return df_c
 
 
@@ -610,23 +662,31 @@ def score_color(score):
 
 # ── Plotly: plantilla limpia ─────────────────────────────────────
 
+
 def style_fig(fig, title=None):
     fig.update_layout(
-        title=dict(text=title, font=dict(size=16, color=INK, family="Fraunces")) if title else None,
+        title=dict(text=title, font=dict(size=16, color=INK, family="Fraunces"))
+        if title
+        else None,
         font=dict(family="Inter", size=12, color=MUTED),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         margin=dict(l=12, r=12, t=44 if title else 12, b=12),
         height=350,
         legend=dict(bgcolor="rgba(0,0,0,0)", font=dict(size=11)),
-        hoverlabel=dict(bgcolor=SURFACE, bordercolor=BORDER, font=dict(family="Inter", color=INK)),
+        hoverlabel=dict(
+            bgcolor=SURFACE, bordercolor=BORDER, font=dict(family="Inter", color=INK)
+        ),
     )
     fig.update_xaxes(showgrid=False, zeroline=False, linecolor=BORDER, tickcolor=BORDER)
-    fig.update_yaxes(showgrid=True, gridcolor=GRID, zeroline=False, linecolor="rgba(0,0,0,0)")
+    fig.update_yaxes(
+        showgrid=True, gridcolor=GRID, zeroline=False, linecolor="rgba(0,0,0,0)"
+    )
     return fig
 
 
 # ── Extraer features del score_details ──────────────────────────
+
 
 def parse_score_details(prop):
     """Parsea score_details (marcadores con emoji del scraper) en categorías."""
@@ -635,7 +695,24 @@ def parse_score_details(prop):
     for d in details:
         if "⚠️" in d or "🕸️" in d or "❓" in d:
             penalties.append(clean(d))
-        elif any(e in d for e in ["🏊", "🚗", "📦", "🌿", "🏡", "🛗", "🌳", "🏗️", "🔧", "🚇", "🏢", "⚡", "📅"]):
+        elif any(
+            e in d
+            for e in [
+                "🏊",
+                "🚗",
+                "📦",
+                "🌿",
+                "🏡",
+                "🛗",
+                "🌳",
+                "🏗️",
+                "🔧",
+                "🚇",
+                "🏢",
+                "⚡",
+                "📅",
+            ]
+        ):
             features.append(clean(d))
         elif "💰" in d or "📐" in d or "💎" in d or "📉" in d:
             bonuses.append(clean(d))
@@ -653,8 +730,8 @@ FEATURE_NAMES = {
     "🌳": "Jardín",
 }
 
-_PTS_RE = re.compile(r'\s*\(([+-]?\d+)\s*(?:pts)?\)\s*$')
-_CAP_RE = re.compile(r'características capadas:\s*(\d+)[→>](\d+)', re.IGNORECASE)
+_PTS_RE = re.compile(r"\s*\(([+-]?\d+)\s*(?:pts)?\)\s*$")
+_CAP_RE = re.compile(r"características capadas:\s*(\d+)[→>](\d+)", re.IGNORECASE)
 
 
 def breakdown_score_details(prop):
@@ -672,11 +749,13 @@ def breakdown_score_details(prop):
         if cap_m:
             raw = int(cap_m.group(1))
             capped = int(cap_m.group(2))
-            items.append({
-                "label": f"Características (tope: {raw}→{capped})",
-                "points": capped - raw,
-                "categoria": "características",
-            })
+            items.append(
+                {
+                    "label": f"Características (tope: {raw}→{capped})",
+                    "points": capped - raw,
+                    "categoria": "características",
+                }
+            )
             continue
 
         # Extraer puntos del último paréntesis anclado al final
@@ -718,11 +797,13 @@ def breakdown_score_details(prop):
     suma = sum(it["points"] for it in items)
     if suma != score_final:
         ajuste = score_final - suma
-        items.append({
-            "label": "Ajuste (límite 0-100)",
-            "points": ajuste,
-            "categoria": "penalización" if ajuste < 0 else "otro",
-        })
+        items.append(
+            {
+                "label": "Ajuste (límite 0-100)",
+                "points": ajuste,
+                "categoria": "penalización" if ajuste < 0 else "otro",
+            }
+        )
 
     return items, score_final
 
@@ -738,7 +819,7 @@ def _render_breakdown_html(items, score_final):
         elif pts < 0:
             pts_html = f'<span class="sb-pts-neg">{pts}</span>'
         else:
-            pts_html = f'<span class="sb-pts-zero">0</span>'
+            pts_html = '<span class="sb-pts-zero">0</span>'
         filas.append(f'<tr class="sb-row"><td>{label}</td><td>{pts_html}</td></tr>')
 
     filas_html = "".join(filas)
@@ -754,6 +835,7 @@ def _render_breakdown_html(items, score_final):
 
 
 # ── Cálculo hipotecario ──────────────────────────────────────────
+
 
 def calc_impuestos(precio, es_obra_nueva, ccaa):
     """Devuelve los ítems de impuestos y el total para una compraventa.
@@ -775,14 +857,14 @@ def calc_impuestos(precio, es_obra_nueva, ccaa):
         ajd_tipo = AJD.get(ccaa, AJD[CCAA_DEFAULT])
         ajd = round(p * ajd_tipo)
         items = [
-            (f"IVA (10%)", iva),
-            (f"AJD ({ajd_tipo*100:.2f}% — {ccaa})", ajd),
+            ("IVA (10%)", iva),
+            (f"AJD ({ajd_tipo * 100:.2f}% — {ccaa})", ajd),
         ]
         total = iva + ajd
     else:
         itp_tipo = ITP.get(ccaa, ITP[CCAA_DEFAULT])
         itp = round(p * itp_tipo)
-        items = [(f"ITP ({itp_tipo*100:.0f}% — {ccaa})", itp)]
+        items = [(f"ITP ({itp_tipo * 100:.0f}% — {ccaa})", itp)]
         total = itp
 
     return {"items": items, "total": total}
@@ -801,10 +883,14 @@ def calc_hipoteca(precio, entrada_pct, plazo_anios, tin, es_obra_nueva, ccaa):
             raise ValueError
     except (TypeError, ValueError):
         return {
-            "principal": 0, "entrada": 0, "cuota_mensual": 0,
+            "principal": 0,
+            "entrada": 0,
+            "cuota_mensual": 0,
             "impuestos": {"items": [], "total": 0},
-            "otros_gastos": 0, "ahorro_necesario": 0,
-            "total_intereses": 0, "total_pagado": 0,
+            "otros_gastos": 0,
+            "ahorro_necesario": 0,
+            "total_intereses": 0,
+            "total_pagado": 0,
         }
 
     entrada = round(p * entrada_pct)
@@ -834,7 +920,9 @@ def calc_hipoteca(precio, entrada_pct, plazo_anios, tin, es_obra_nueva, ccaa):
         "otros_gastos": otros_gastos,
         "ahorro_necesario": ahorro_necesario,
         "total_intereses": round(total_intereses),
-        "total_pagado": round(total_pagado_prestamo + entrada + impuestos["total"] + otros_gastos),
+        "total_pagado": round(
+            total_pagado_prestamo + entrada + impuestos["total"] + otros_gastos
+        ),
     }
 
 
@@ -858,7 +946,7 @@ def _render_hipoteca_inline_html(precio, es_obra_nueva, ccaa):
     summary = (
         f"hipoteca ~{_e(h['cuota_mensual'])}/mes "
         f"<span style='color:#52525b;font-size:0.68rem;'>"
-        f"(80%, {HIP_DEFAULTS['plazo']} a., {HIP_DEFAULTS['tin']*100:.1f}%)</span>"
+        f"(80%, {HIP_DEFAULTS['plazo']} a., {HIP_DEFAULTS['tin'] * 100:.1f}%)</span>"
     )
 
     filas = [
@@ -890,7 +978,8 @@ def _render_hipoteca_inline_html(precio, es_obra_nueva, ccaa):
 inject_styles()
 
 # ── Botón "volver arriba" flotante ───────────────────────────────
-components.html("""<script>
+components.html(
+    """<script>
 (function(){
   var p = window.parent, doc = p.document;
   if (doc.getElementById('_back-top')) return;
@@ -915,25 +1004,39 @@ components.html("""<script>
     btn.style.display = p.scrollY > 300 ? 'flex' : 'none';
   }, {passive:true});
 })();
-</script>""", height=0)
+</script>""",
+    height=0,
+)
 
 st.title("House Score")
-st.caption("Madrid Sur · Toledo Norte — pisos.com · idealista · Scoring a medida · Hasta 300.000 €")
+st.caption(
+    "Madrid Sur · Toledo Norte — pisos.com · idealista · Scoring a medida · Hasta 300.000 €"
+)
 
 df = cargar_datos()
 
 if df.empty:
     st.warning("No hay datos todavía. Ejecuta primero el scraper:")
     st.code("python ~/AppData/Local/hermes/scripts/property_scorer.py")
-    st.info("Luego guarda los resultados con: python dashboard/guardar.py ~/AppData/Local/hermes/last_property_data.json")
+    st.info(
+        "Luego guarda los resultados con: python dashboard/guardar.py ~/AppData/Local/hermes/last_property_data.json"
+    )
     st.stop()
 
 # ── KPIs ─────────────────────────────────────────────────────────
 
 hoy = date.today()
-df_hoy = df[df["_archivo"] == pd.Timestamp(hoy)] if "_archivo" in df.columns else pd.DataFrame()
-nuevos_hoy = df[df["first_seen"] == pd.Timestamp(hoy)] if "first_seen" in df.columns else pd.DataFrame()
-bajadas = df[df["price_drop"].notna() & (df["price_drop"] > 0)] if "price_drop" in df.columns else pd.DataFrame()
+nuevos_hoy = (
+    df[df["first_seen"] == pd.Timestamp(hoy)]
+    if "first_seen" in df.columns
+    else pd.DataFrame()
+)
+activos = df[df["status"] == "active"] if "status" in df.columns else df
+bajadas = (
+    df[df["price_drop"].notna() & (df["price_drop"] > 0)]
+    if "price_drop" in df.columns
+    else pd.DataFrame()
+)
 # Listings sin €/m² fiable (datos insuficientes): no entran en el score medio
 if "datos_insuficientes" in df.columns:
     di_mask = df["datos_insuficientes"].fillna(False).astype(bool)
@@ -945,10 +1048,18 @@ else:
 score_src = fiables if ("score" in fiables.columns and not fiables.empty) else df
 
 kpis = [
-    ("layers", "Total listings", f"{len(df)}"),
+    ("layers", "Total listings", f"{len(activos)}"),
     ("sparkles", "Nuevos hoy", f"{len(nuevos_hoy)}"),
-    ("star", "Score medio", f"{score_src['score'].mean():.1f}" if "score" in score_src.columns else "—"),
-    ("wallet", "Precio medio", f"{df['price'].mean():,.0f} €" if "price" in df.columns else "—"),
+    (
+        "star",
+        "Score medio",
+        f"{score_src['score'].mean():.1f}" if "score" in score_src.columns else "—",
+    ),
+    (
+        "wallet",
+        "Precio medio",
+        f"{df['price'].mean():,.0f} €" if "price" in df.columns else "—",
+    ),
     ("trending-down", "Bajadas", f"{len(bajadas)}"),
     ("ruler", "Sin valorar", f"{len(sin_valorar)}"),
 ]
@@ -987,7 +1098,8 @@ if _hip_nav_id and st.session_state.get("_last_hip_nav_id") != _hip_nav_id:
 #   1. sessionStorage._sw_tab → goToHipoteca (location.href reload)
 #   2. _hip_py_nav en session_state → boton € en Tab 2 / Tab 4 (sin reload)
 _py_nav_tab = 4 if st.session_state.pop("_hip_py_nav", False) else "null"
-components.html(f"""<script>
+components.html(
+    f"""<script>
 (function(){{
   var p = window.parent;
   var ss = p.sessionStorage.getItem('_sw_tab');
@@ -1005,12 +1117,15 @@ components.html(f"""<script>
     setTimeout(function() {{ obs.disconnect(); }}, 4000);
   }}
 }})();
-</script>""", height=0)
+</script>""",
+    height=0,
+)
 
 # ── Wire-up botones € dentro de cards (hip-btn) ─────────────────
 # Los botones en st.markdown no pueden tener onclick, pero si data-*.
 # Este script los inyecta en el padre via event listeners.
-components.html("""<script>
+components.html(
+    """<script>
 (function(){
   var p = window.parent;
   var tipos = ["Segunda mano","Obra nueva"];
@@ -1038,43 +1153,50 @@ components.html("""<script>
   var obs = new MutationObserver(wire);
   obs.observe(p.document.body, {childList:true, subtree:true});
 })();
-</script>""", height=0)
+</script>""",
+    height=0,
+)
 
 # ── Pestañas ─────────────────────────────────────────────────────
 
-tab1, tab2, tab5, tab3, tab4, tab6, tab7, tab8 = st.tabs([
-    "Listados completos",
-    "Top scoring",
-    "Novedades",
-    "Evolución y análisis",
-    "Bajadas de precio",
-    "Hipoteca",
-    "Cómo funciona",
-    "Mapas",
-])
+tab1, tab2, tab5, tab3, tab4, tab6, tab7, tab8 = st.tabs(
+    [
+        "Listados completos",
+        "Top scoring",
+        "Novedades",
+        "Evolución y análisis",
+        "Bajadas de precio",
+        "Hipoteca",
+        "Cómo funciona",
+        "Mapas",
+    ]
+)
+
 
 # ── Iconos SVG en pestañas (mismos paths Lucide que los KPIs) ────────
 def _tab_svg_uri(inner: str) -> str:
     svg = (
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" '
         'fill="none" stroke="#000" stroke-width="2" '
-        'stroke-linecap="round" stroke-linejoin="round">'
-        + inner + "</svg>"
+        'stroke-linecap="round" stroke-linejoin="round">' + inner + "</svg>"
     )
     b64 = base64.b64encode(svg.encode("utf-8")).decode("ascii")
     return "data:image/svg+xml;base64," + b64
 
-_INFO_ICON_PATH = "<circle cx='12' cy='12' r='10'/><path d='M12 16v-4'/><path d='M12 8h.01'/>"
+
+_INFO_ICON_PATH = (
+    "<circle cx='12' cy='12' r='10'/><path d='M12 16v-4'/><path d='M12 8h.01'/>"
+)
 
 _TAB_ICON_LIST = [
-    _ICON_PATHS["layers"],         # 1. Listados completos
-    _ICON_PATHS["star"],           # 2. Top scoring
-    _ICON_PATHS["sparkles"],       # 3. Novedades
-    _ICON_PATHS["waves"],          # 4. Evolución y análisis
+    _ICON_PATHS["layers"],  # 1. Listados completos
+    _ICON_PATHS["star"],  # 2. Top scoring
+    _ICON_PATHS["sparkles"],  # 3. Novedades
+    _ICON_PATHS["waves"],  # 4. Evolución y análisis
     _ICON_PATHS["trending-down"],  # 5. Bajadas de precio
-    _ICON_PATHS["wallet"],         # 6. Hipoteca
-    _INFO_ICON_PATH,               # 7. Cómo funciona
-    _ICON_PATHS["map-pin"],        # 8. Mapas
+    _ICON_PATHS["wallet"],  # 6. Hipoteca
+    _INFO_ICON_PATH,  # 7. Cómo funciona
+    _ICON_PATHS["map-pin"],  # 8. Mapas
 ]
 
 _per_tab_css = "\n".join(
@@ -1116,10 +1238,21 @@ st.markdown(
 with tab1:
     st.write("")
 
+    mostrar_retirados = st.checkbox(
+        "Mostrar retirados", value=False, key="f1_retirados"
+    )
+
     # Columnas derivadas para filtros combinables (zona + municipio)
-    base = df.copy()
+    base = (
+        df.copy()
+        if mostrar_retirados or "status" not in df.columns
+        else df[df["status"] != "delisted"].copy()
+    )
     _recs = base.to_dict("records")
-    base["_zona"] = [zona(r.get("location", ""), r.get("title", ""), r.get("description", "")) for r in _recs]
+    base["_zona"] = [
+        zona(r.get("location", ""), r.get("title", ""), r.get("description", ""))
+        for r in _recs
+    ]
 
     def _muni(r):
         m = r.get("municipio")
@@ -1132,20 +1265,31 @@ with tab1:
 
     col_f1, col_f2, col_f3, col_f4 = st.columns(4)
     with col_f1:
-        zonas_disp = [z for z in ("Madrid Sur", "Toledo Norte") if z in set(base["_zona"])]
+        zonas_disp = [
+            z for z in ("Madrid Sur", "Toledo Norte") if z in set(base["_zona"])
+        ]
         filtro_zona = st.multiselect("Zona", zonas_disp, default=[], key="f1_zona")
     with col_f2:
         # El municipio se acota a la(s) zona(s) elegida(s) → filtros combinativos
         muni_pool = base[base["_zona"].isin(filtro_zona)] if filtro_zona else base
-        municipios = sorted(m for m in muni_pool["_municipio"].dropna().unique() if m and m != "—")
+        municipios = sorted(
+            m for m in muni_pool["_municipio"].dropna().unique() if m and m != "—"
+        )
         filtro_muni = st.multiselect("Municipio", municipios, default=[], key="f1_muni")
     with col_f3:
         score_range = st.slider("Rango de score", 0, 100, (0, 100), key="f1_score")
     with col_f4:
         if "price" in base.columns and base["price"].notna().any():
             pmin, pmax = int(base["price"].min()), int(base["price"].max())
-            filtro_precio = st.slider("Rango de precio (€)", pmin, pmax, (pmin, pmax),
-                                      step=1000, format="%,d €", key="f1_precio")
+            filtro_precio = st.slider(
+                "Rango de precio (€)",
+                pmin,
+                pmax,
+                (pmin, pmax),
+                step=1000,
+                format="%,d €",
+                key="f1_precio",
+            )
         else:
             filtro_precio = None
 
@@ -1154,7 +1298,11 @@ with tab1:
         if "rooms" in base.columns and base["rooms"].notna().any():
             rmin = int(base["rooms"].dropna().min())
             rmax = int(base["rooms"].dropna().max())
-            filtro_rooms = st.slider("Habitaciones", rmin, rmax, (rmin, rmax), key="f1_rooms") if rmin < rmax else None
+            filtro_rooms = (
+                st.slider("Habitaciones", rmin, rmax, (rmin, rmax), key="f1_rooms")
+                if rmin < rmax
+                else None
+            )
         else:
             filtro_rooms = None
 
@@ -1164,13 +1312,41 @@ with tab1:
     if filtro_muni:
         df_filtrado = df_filtrado[df_filtrado["_municipio"].isin(filtro_muni)]
     if "score" in df_filtrado.columns:
-        df_filtrado = df_filtrado[(df_filtrado["score"] >= score_range[0]) & (df_filtrado["score"] <= score_range[1])]
+        df_filtrado = df_filtrado[
+            (df_filtrado["score"] >= score_range[0])
+            & (df_filtrado["score"] <= score_range[1])
+        ]
     if filtro_precio and "price" in df_filtrado.columns:
-        df_filtrado = df_filtrado[(df_filtrado["price"] >= filtro_precio[0]) & (df_filtrado["price"] <= filtro_precio[1])]
+        df_filtrado = df_filtrado[
+            (df_filtrado["price"] >= filtro_precio[0])
+            & (df_filtrado["price"] <= filtro_precio[1])
+        ]
     if filtro_rooms and "rooms" in df_filtrado.columns:
-        df_filtrado = df_filtrado[(df_filtrado["rooms"] >= filtro_rooms[0]) & (df_filtrado["rooms"] <= filtro_rooms[1])]
+        df_filtrado = df_filtrado[
+            (df_filtrado["rooms"] >= filtro_rooms[0])
+            & (df_filtrado["rooms"] <= filtro_rooms[1])
+        ]
 
-    columnas_csv = [c for c in ["title", "price", "score", "eur_m2", "location", "m2", "rooms", "bathrooms", "floor", "year_built", "energy_rating", "source", "first_seen", "url"] if c in df_filtrado.columns]
+    columnas_csv = [
+        c
+        for c in [
+            "title",
+            "price",
+            "score",
+            "eur_m2",
+            "location",
+            "m2",
+            "rooms",
+            "bathrooms",
+            "floor",
+            "year_built",
+            "energy_rating",
+            "source",
+            "first_seen",
+            "url",
+        ]
+        if c in df_filtrado.columns
+    ]
 
     df_tabla = df_filtrado.copy()
     if "score" in df_tabla.columns:
@@ -1206,17 +1382,28 @@ with tab1:
             titulo_html = f"<span>{titulo}</span>"
         di = row.get("datos_insuficientes")
         if pd.notna(di) and bool(di):
-            titulo_html = ('<span class="lt-tag lt-usada" '
-                           'title="Sin m² fiable: no valorado">s/valorar</span> ') + titulo_html
+            titulo_html = (
+                '<span class="lt-tag lt-usada" '
+                'title="Sin m² fiable: no valorado">s/valorar</span> '
+            ) + titulo_html
+        if row.get("status") == "delisted":
+            titulo_html = (
+                '<span class="lt-tag lt-usada" '
+                'title="Sin apariciones recientes en el scraping">retirado</span> '
+            ) + titulo_html
 
         sc = row.get("score", 0) or 0
         sc = sc if isinstance(sc, (int, float)) and math.isfinite(sc) else 0
         m2_val = row.get("m2")
         m2_txt = f"{int(m2_val)}" if pd.notna(m2_val) and math.isfinite(m2_val) else "—"
-        ubi = zona(row.get("location", ""), row.get("title", ""), row.get("description", ""))
+        ubi = zona(
+            row.get("location", ""), row.get("title", ""), row.get("description", "")
+        )
         feats = row.get("features", [])
         feats_txt = " ".join(feats) if isinstance(feats, list) else ""
-        tipo = tipo_vivienda(row.get("title", ""), row.get("description", ""), feats_txt)
+        tipo = tipo_vivienda(
+            row.get("title", ""), row.get("description", ""), feats_txt
+        )
         tipo_cls = "lt-nuevo" if tipo == "Obra nueva" else "lt-usada"
         col = score_color(sc)
 
@@ -1230,11 +1417,16 @@ with tab1:
             _dias_val = None
         _dias_txt = f"{_dias_val}d" if _dias_val is not None else "—"
         _dias_num = _dias_val if _dias_val is not None else 9999
-        _dias_col = "#f87171" if (_dias_val is not None and _dias_val > 45) else (
-                    "#fbbf24" if (_dias_val is not None and _dias_val > 20) else "#a1a1aa")
+        _dias_col = (
+            "#f87171"
+            if (_dias_val is not None and _dias_val > 45)
+            else (
+                "#fbbf24" if (_dias_val is not None and _dias_val > 20) else "#a1a1aa"
+            )
+        )
 
         ccaa_fila = zona_a_ccaa(ubi)
-        es_obra_nueva_fila = (tipo == "Obra nueva")
+        es_obra_nueva_fila = tipo == "Obra nueva"
 
         _precio_int = int(row.get("price") or 0)
         _tipo_idx = 1 if es_obra_nueva_fila else 0
@@ -1252,11 +1444,13 @@ with tab1:
                 f'<td style="padding:0.4rem 0.5rem;">'
                 f'<div style="display:flex;flex-direction:column;align-items:center;gap:0.2rem;">'
                 f'<button class="lt-goto-btn" onclick="goToCard({global_rank})" title="Ver en Top scoring">↗</button>'
-                f'{hip_btn}'
-                f'</div></td>'
+                f"{hip_btn}"
+                f"</div></td>"
             )
         else:
-            goto_cell = f'<td style="padding:0.4rem 0.5rem;text-align:center;">{hip_btn}</td>'
+            goto_cell = (
+                f'<td style="padding:0.4rem 0.5rem;text-align:center;">{hip_btn}</td>'
+            )
 
         src_raw = str(row.get("source", "") or "").strip().lower()
         src_label = src_raw if src_raw else "—"
@@ -1283,7 +1477,7 @@ with tab1:
             f'<td data-v="{src_raw}"><span class="{src_cls}">{src_label}</span></td>'
             f'<td data-v="{ubi}">{ubi}</td>'
             f'<td class="lt-num" data-v="{_dias_num}" style="color:{_dias_col};white-space:nowrap;">{_dias_txt}</td>'
-            f'{goto_cell}'
+            f"{goto_cell}"
             "</tr>"
         )
 
@@ -1303,13 +1497,17 @@ with tab1:
             '<th class="noord" style="width:38px;" title="Ver en Top scoring"></th>'
             "</tr>"
         )
-        doc = _TABLA_TEMPLATE.replace("__THEAD__", thead).replace("__ROWS__", "".join(filas))
+        doc = _TABLA_TEMPLATE.replace("__THEAD__", thead).replace(
+            "__ROWS__", "".join(filas)
+        )
         altura = min(660, 64 + len(filas) * 41)
         components.html(doc, height=altura, scrolling=False)
     else:
         st.info("No hay listados con esos filtros.")
 
-    st.caption(f"{len(df_filtrado)} listings · clic en una cabecera para ordenar · clic en el título para abrir el anuncio")
+    st.caption(
+        f"{len(df_filtrado)} listings · clic en una cabecera para ordenar · clic en el título para abrir el anuncio"
+    )
     csv_data = df_filtrado[columnas_csv].to_csv(index=False).encode("utf-8")
     st.download_button("Descargar CSV", csv_data, f"listings_{hoy}.csv", "text/csv")
 
@@ -1327,8 +1525,14 @@ with tab2:
 
         titulo = clean(row.get("title", "Sin título")) or "Sin título"
         url = row.get("url", "")
-        link_open = f'<a class="prop-title" href="{url}" target="_blank">' if (isinstance(url, str) and url.startswith("http")) else '<span class="prop-title">'
-        link_close = "</a>" if (isinstance(url, str) and url.startswith("http")) else "</span>"
+        link_open = (
+            f'<a class="prop-title" href="{url}" target="_blank">'
+            if (isinstance(url, str) and url.startswith("http"))
+            else '<span class="prop-title">'
+        )
+        link_close = (
+            "</a>" if (isinstance(url, str) and url.startswith("http")) else "</span>"
+        )
 
         meta_fields = [
             ("map-pin", row.get("location", "—")),
@@ -1347,24 +1551,48 @@ with tab2:
         rooms = row.get("rooms", 0) or 0
         baths = row.get("bathrooms", 0) or 0
 
-        chips = "".join(f'<span class="chip">{c}</span>' for c in features) if features else ""
-        warns = "".join(f'<span class="chip chip-warn">{p}</span>' for p in penalties) if penalties else ""
+        chips = (
+            "".join(f'<span class="chip">{c}</span>' for c in features)
+            if features
+            else ""
+        )
+        warns = (
+            "".join(f'<span class="chip chip-warn">{p}</span>' for p in penalties)
+            if penalties
+            else ""
+        )
 
-        _t2_ubi = zona(row.get("location", ""), row.get("title", ""), row.get("description", ""))
+        _t2_ubi = zona(
+            row.get("location", ""), row.get("title", ""), row.get("description", "")
+        )
         _t2_tipo = tipo_vivienda(row.get("title", ""), row.get("description", ""), "")
         _t2_tipo_idx = 1 if _t2_tipo == "Obra nueva" else 0
         _t2_ccaa_idx = 1 if zona_a_ccaa(_t2_ubi) == "Castilla-La Mancha" else 0
 
         _desc_raw = row.get("description", "")
-        _desc_clean = clean(_desc_raw[:1500]) if _desc_raw and len(_desc_raw) > 20 else ""
-        _desc_safe = (_desc_clean.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-                                 .replace("\n", "<br>")) if _desc_clean else ""
+        _desc_clean = (
+            clean(_desc_raw[:1500]) if _desc_raw and len(_desc_raw) > 20 else ""
+        )
+        _desc_safe = (
+            (
+                _desc_clean.replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("\n", "<br>")
+            )
+            if _desc_clean
+            else ""
+        )
         _desc_html = (
-            f'<details class="score-breakdown" style="margin-top:0.65rem;">'
-            f'<summary>Descripción</summary>'
-            f'<p style="margin-top:0.5rem;font-size:0.83rem;color:#a1a1aa;line-height:1.55;margin-bottom:0;">{_desc_safe}</p>'
-            f'</details>'
-        ) if _desc_safe else ""
+            (
+                f'<details class="score-breakdown" style="margin-top:0.65rem;">'
+                f"<summary>Descripción</summary>"
+                f'<p style="margin-top:0.5rem;font-size:0.83rem;color:#a1a1aa;line-height:1.55;margin-bottom:0;">{_desc_safe}</p>'
+                f"</details>"
+            )
+            if _desc_safe
+            else ""
+        )
 
         st.markdown(
             f"""
@@ -1372,9 +1600,9 @@ with tab2:
               <div class="prop-card-row">
                 <div class="score-badge" style="background:{color};">{score:.0f}</div>
                 <div class="prop-card-body">
-                  <div><span class="prop-rank">{i+1}.</span> {link_open}{titulo}{link_close}</div>
+                  <div><span class="prop-rank">{i + 1}.</span> {link_open}{titulo}{link_close}</div>
                   <div class="prop-meta">{meta}</div>
-                  <div class="score-bar-track"><div class="score-bar-fill" style="width:{min(score,100)}%; background:{color};"></div></div>
+                  <div class="score-bar-track"><div class="score-bar-fill" style="width:{min(score, 100)}%; background:{color};"></div></div>
                 </div>
                 <div class="prop-price">
                   <div style="font-size:1.15rem; font-weight:600; color:#fafafa;">{precio:,.0f} €</div>
@@ -1406,40 +1634,69 @@ with tab3:
 
     with col_c1:
         st.subheader("Evolución diaria")
-        if "_archivo" in df.columns and len(df["_archivo"].unique()) > 1:
-            diario = df.groupby("_archivo").agg(
-                count=("title", "count"),
-                avg_score=("score", "mean"),
-                avg_price=("price", "mean"),
-                min_price=("price", "min"),
-                max_price=("price", "max"),
-            ).reset_index().sort_values("_archivo")
-
+        diario = cargar_historico()
+        if not diario.empty and len(diario) > 1:
             fig1 = go.Figure()
-            fig1.add_trace(go.Bar(x=diario["_archivo"], y=diario["count"],
-                                  name="Listings", marker_color=SUBTLE,
-                                  marker_line_width=0))
-            fig1.add_trace(go.Scatter(x=diario["_archivo"], y=diario["avg_score"],
-                                      name="Score medio", yaxis="y2",
-                                      line=dict(color=ACCENT, width=2.5)))
+            fig1.add_trace(
+                go.Bar(
+                    x=diario["fecha"],
+                    y=diario["count"],
+                    name="Listings",
+                    marker_color=SUBTLE,
+                    marker_line_width=0,
+                )
+            )
+            fig1.add_trace(
+                go.Scatter(
+                    x=diario["fecha"],
+                    y=diario["avg_score"],
+                    name="Score medio",
+                    yaxis="y2",
+                    line=dict(color=ACCENT, width=2.5),
+                )
+            )
             style_fig(fig1, "Listings y score medio por día")
             fig1.update_layout(
                 yaxis=dict(title=None),
-                yaxis2=dict(title=None, overlaying="y", side="right", range=[0, 100], showgrid=False),
+                yaxis2=dict(
+                    title=None,
+                    overlaying="y",
+                    side="right",
+                    range=[0, 100],
+                    showgrid=False,
+                ),
                 legend=dict(x=0.01, y=0.99),
             )
             st.plotly_chart(fig1, use_container_width=True)
 
             fig2 = go.Figure()
-            fig2.add_trace(go.Scatter(x=diario["_archivo"], y=diario["avg_price"],
-                                      mode="lines+markers", name="Medio",
-                                      line=dict(color=ACCENT, width=2.5)))
-            fig2.add_trace(go.Scatter(x=diario["_archivo"], y=diario["min_price"],
-                                      mode="lines", name="Mínimo",
-                                      line=dict(color=SUBTLE, width=1.5, dash="dot")))
-            fig2.add_trace(go.Scatter(x=diario["_archivo"], y=diario["max_price"],
-                                      mode="lines", name="Máximo",
-                                      line=dict(color=SUBTLE, width=1.5, dash="dot")))
+            fig2.add_trace(
+                go.Scatter(
+                    x=diario["fecha"],
+                    y=diario["avg_price"],
+                    mode="lines+markers",
+                    name="Medio",
+                    line=dict(color=ACCENT, width=2.5),
+                )
+            )
+            fig2.add_trace(
+                go.Scatter(
+                    x=diario["fecha"],
+                    y=diario["min_price"],
+                    mode="lines",
+                    name="Mínimo",
+                    line=dict(color=SUBTLE, width=1.5, dash="dot"),
+                )
+            )
+            fig2.add_trace(
+                go.Scatter(
+                    x=diario["fecha"],
+                    y=diario["max_price"],
+                    mode="lines",
+                    name="Máximo",
+                    line=dict(color=SUBTLE, width=1.5, dash="dot"),
+                )
+            )
             style_fig(fig2, "Evolución de precios (€)")
             st.plotly_chart(fig2, use_container_width=True)
         else:
@@ -1448,7 +1705,9 @@ with tab3:
     with col_c2:
         st.subheader("Distribución de scores")
         if "score" in df.columns:
-            fig3 = px.histogram(df, x="score", nbins=20, color_discrete_sequence=[ACCENT])
+            fig3 = px.histogram(
+                df, x="score", nbins=20, color_discrete_sequence=[ACCENT]
+            )
             style_fig(fig3)
             fig3.update_traces(marker_line_width=0, opacity=0.85)
             fig3.update_layout(xaxis_title="Score", yaxis_title=None, bargap=0.08)
@@ -1458,12 +1717,18 @@ with tab3:
         if "location" in df.columns:
             loc_counts = df["location"].value_counts().head(10).reset_index()
             loc_counts.columns = ["Ubicación", "Cantidad"]
-            fig4 = px.bar(loc_counts, x="Cantidad", y="Ubicación", orientation="h",
-                          color_discrete_sequence=[ACCENT])
+            fig4 = px.bar(
+                loc_counts,
+                x="Cantidad",
+                y="Ubicación",
+                orientation="h",
+                color_discrete_sequence=[ACCENT],
+            )
             style_fig(fig4)
             fig4.update_traces(marker_line_width=0)
-            fig4.update_layout(xaxis_title=None, yaxis_title=None,
-                               yaxis=dict(autorange="reversed"))
+            fig4.update_layout(
+                xaxis_title=None, yaxis_title=None, yaxis=dict(autorange="reversed")
+            )
             st.plotly_chart(fig4, use_container_width=True)
 
 # ── TAB 4: Bajadas de precio ─────────────────────────────────────
@@ -1474,48 +1739,72 @@ with tab4:
 
     if not bajadas.empty:
         _ORDEN_OPTS = {
-            "Mayor bajada (€)":  ("price_drop",  False),
-            "Mayor bajada (%)":  ("_pct_drop",   False),
-            "Mejor score":       ("score",        False),
-            "Precio más bajo":   ("price",        True),
-            "Más reciente":      ("first_seen",   False),
+            "Mayor bajada (€)": ("price_drop", False),
+            "Mayor bajada (%)": ("_pct_drop", False),
+            "Mejor score": ("score", False),
+            "Precio más bajo": ("price", True),
+            "Más reciente": ("first_seen", False),
         }
-        _orden_sel = st.selectbox("Ordenar por", list(_ORDEN_OPTS.keys()), key="b_orden")
+        _orden_sel = st.selectbox(
+            "Ordenar por", list(_ORDEN_OPTS.keys()), key="b_orden"
+        )
         _sort_col, _sort_asc = _ORDEN_OPTS[_orden_sel]
 
         bajadas_show = bajadas.copy()
         if _sort_col == "_pct_drop":
             bajadas_show["_pct_drop"] = (
-                bajadas_show["price_drop"] /
-                (bajadas_show["price"] + bajadas_show["price_drop"]) * 100
+                bajadas_show["price_drop"]
+                / (bajadas_show["price"] + bajadas_show["price_drop"])
+                * 100
             )
-        bajadas_show = bajadas_show.sort_values(_sort_col, ascending=_sort_asc, na_position="last")
+        bajadas_show = bajadas_show.sort_values(
+            _sort_col, ascending=_sort_asc, na_position="last"
+        )
 
         for _b_i, (_, row) in enumerate(bajadas_show.iterrows()):
             titulo = clean(row.get("title", "Sin título")) or "Sin título"
             url = row.get("url", "")
-            link_open = f'<a class="prop-title" href="{url}" target="_blank">' if (isinstance(url, str) and url.startswith("http")) else '<span class="prop-title">'
-            link_close = "</a>" if (isinstance(url, str) and url.startswith("http")) else "</span>"
-            meta = " · ".join(str(clean(p) or "—") for p in [row.get("location", "—"), row.get("source", "—")])
+            link_open = (
+                f'<a class="prop-title" href="{url}" target="_blank">'
+                if (isinstance(url, str) and url.startswith("http"))
+                else '<span class="prop-title">'
+            )
+            link_close = (
+                "</a>"
+                if (isinstance(url, str) and url.startswith("http"))
+                else "</span>"
+            )
+            meta = " · ".join(
+                str(clean(p) or "—")
+                for p in [row.get("location", "—"), row.get("source", "—")]
+            )
 
-            cur  = row.get("price")
+            cur = row.get("price")
             drop = row.get("price_drop")
             prev = row.get("previous_price")
-            cur  = cur  if pd.notna(cur)  else 0
+            cur = cur if pd.notna(cur) else 0
             drop = drop if pd.notna(drop) else 0
-            prev = prev if pd.notna(prev) else (cur + drop)   # reconstruir si falta
-            pct  = (drop / prev * 100) if prev else 0
+            prev = prev if pd.notna(prev) else (cur + drop)  # reconstruir si falta
+            pct = (drop / prev * 100) if prev else 0
 
             _b_sc = row.get("score", 0) or 0
             _b_col = score_color(_b_sc)
-            _b_ubi = zona(row.get("location", ""), row.get("title", ""), row.get("description", ""))
-            _b_tipo = tipo_vivienda(row.get("title", ""), row.get("description", ""), "")
+            _b_ubi = zona(
+                row.get("location", ""),
+                row.get("title", ""),
+                row.get("description", ""),
+            )
+            _b_tipo = tipo_vivienda(
+                row.get("title", ""), row.get("description", ""), ""
+            )
             _b_tipo_idx = 1 if _b_tipo == "Obra nueva" else 0
             _b_ccaa_idx = 1 if zona_a_ccaa(_b_ubi) == "Castilla-La Mancha" else 0
 
             _b_fs = row.get("first_seen")
             try:
-                _b_dias = (hoy - pd.Timestamp(_b_fs).date()).days if pd.notna(_b_fs) else None
+                _b_dias = (
+                    (hoy - pd.Timestamp(_b_fs).date()).days if pd.notna(_b_fs) else None
+                )
             except Exception:
                 _b_dias = None
             _b_dias_txt = f"{_b_dias}d en mercado" if _b_dias is not None else ""
@@ -1546,7 +1835,9 @@ with tab4:
                 unsafe_allow_html=True,
             )
     else:
-        st.info("No se han detectado bajadas de precio todavía. Aparecerán aquí cuando un listing baje entre pasadas.")
+        st.info(
+            "No se han detectado bajadas de precio todavía. Aparecerán aquí cuando un listing baje entre pasadas."
+        )
 
 # ── TAB 5: Hipoteca ──────────────────────────────────────────────
 
@@ -1554,16 +1845,17 @@ with tab5:
     st.write("")
     st.subheader("Pisos nuevos por pasada")
 
-    if "first_seen" in df.columns and "_archivo" in df.columns:
-        # Fechas de ejecución disponibles (= nombres de los JSON cargados)
+    if "first_seen" in df.columns:
+        # Fechas en las que aparecieron pisos nuevos por primera vez
         fechas_ejecucion = sorted(
-            df["_archivo"].dropna().dt.date.unique(), reverse=True
+            df["first_seen"].dropna().dt.date.unique(), reverse=True
         )
 
         if fechas_ejecucion:
             fecha_labels = [str(f) for f in fechas_ejecucion]
             _sel_label = st.selectbox(
-                "Pasada", fecha_labels,
+                "Pasada",
+                fecha_labels,
                 index=0,
                 format_func=lambda x: x,
                 key="nov_fecha",
@@ -1573,24 +1865,26 @@ with tab5:
             nuevos_sel = df[df["first_seen"].dt.date == fecha_sel].copy()
 
             _ORDEN_OPTS_N = {
-                "Mejor score":     ("score",   False),
-                "Precio más bajo": ("price",   True),
-                "Mayor superficie":("m2",      False),
-                "Más antiguo":     ("first_seen", True),
+                "Mejor score": ("score", False),
+                "Precio más bajo": ("price", True),
+                "Mayor superficie": ("m2", False),
+                "Más antiguo": ("first_seen", True),
             }
             _n_orden = st.selectbox(
                 "Ordenar por", list(_ORDEN_OPTS_N.keys()), key="nov_orden"
             )
             _n_col, _n_asc = _ORDEN_OPTS_N[_n_orden]
-            nuevos_sel = nuevos_sel.sort_values(_n_col, ascending=_n_asc, na_position="last")
+            nuevos_sel = nuevos_sel.sort_values(
+                _n_col, ascending=_n_asc, na_position="last"
+            )
 
             n_nuevos = len(nuevos_sel)
             st.markdown(
-                f'<div style="font-family:\'Fraunces\',serif;font-size:2rem;'
+                f"<div style=\"font-family:'Fraunces',serif;font-size:2rem;"
                 f'font-weight:400;letter-spacing:-0.03em;color:#fafafa;margin:0.5rem 0 1rem;">'
-                f'{n_nuevos}'
+                f"{n_nuevos}"
                 f'<span style="font-size:1rem;color:#a1a1aa;margin-left:0.5rem;">pisos nuevos en esta pasada</span>'
-                f'</div>',
+                f"</div>",
                 unsafe_allow_html=True,
             )
 
@@ -1606,7 +1900,8 @@ with tab5:
                         else '<span class="prop-title">'
                     )
                     _n_link_close = (
-                        "</a>" if (isinstance(_n_url, str) and _n_url.startswith("http"))
+                        "</a>"
+                        if (isinstance(_n_url, str) and _n_url.startswith("http"))
                         else "</span>"
                     )
 
@@ -1620,16 +1915,34 @@ with tab5:
                     _n_src = clean(row.get("source", "")) or ""
                     _n_meta = " · ".join(filter(None, [_n_loc, _n_src]))
 
-                    _n_precio_txt = f"{int(_n_precio):,} €".replace(",", ".") if pd.notna(_n_precio) else "—"
+                    _n_precio_txt = (
+                        f"{int(_n_precio):,} €".replace(",", ".")
+                        if pd.notna(_n_precio)
+                        else "—"
+                    )
                     _n_m2_txt = f"{int(_n_m2)} m²" if pd.notna(_n_m2) else ""
-                    _n_eur_m2_txt = f"{int(_n_eur_m2):,} €/m²".replace(",", ".") if pd.notna(_n_eur_m2) else ""
+                    _n_eur_m2_txt = (
+                        f"{int(_n_eur_m2):,} €/m²".replace(",", ".")
+                        if pd.notna(_n_eur_m2)
+                        else ""
+                    )
                     _n_rooms_txt = f"{int(_n_rooms)} hab" if pd.notna(_n_rooms) else ""
-                    _n_details = " · ".join(filter(None, [_n_m2_txt, _n_eur_m2_txt, _n_rooms_txt]))
+                    _n_details = " · ".join(
+                        filter(None, [_n_m2_txt, _n_eur_m2_txt, _n_rooms_txt])
+                    )
 
-                    _n_ubi = zona(row.get("location", ""), row.get("title", ""), row.get("description", ""))
-                    _n_tipo = tipo_vivienda(row.get("title", ""), row.get("description", ""), "")
+                    _n_ubi = zona(
+                        row.get("location", ""),
+                        row.get("title", ""),
+                        row.get("description", ""),
+                    )
+                    _n_tipo = tipo_vivienda(
+                        row.get("title", ""), row.get("description", ""), ""
+                    )
                     _n_tipo_idx = 1 if _n_tipo == "Obra nueva" else 0
-                    _n_ccaa_idx = 1 if zona_a_ccaa(_n_ubi) == "Castilla-La Mancha" else 0
+                    _n_ccaa_idx = (
+                        1 if zona_a_ccaa(_n_ubi) == "Castilla-La Mancha" else 0
+                    )
 
                     st.markdown(
                         f"""
@@ -1662,68 +1975,101 @@ with tab6:
     st.write("")
     st.subheader("Calculadora de hipoteca")
 
-    precio_medio = int(df["price"].median()) if "price" in df.columns and df["price"].notna().any() else 200000
+    precio_medio = (
+        int(df["price"].median())
+        if "price" in df.columns and df["price"].notna().any()
+        else 200000
+    )
 
     col_h1, col_h2, col_h3 = st.columns(3)
     with col_h1:
         hip_precio = st.number_input(
-            "Precio de compra (€)", min_value=10_000, max_value=5_000_000,
-            value=precio_medio, step=5_000, format="%d", key="hip_precio",
+            "Precio de compra (€)",
+            min_value=10_000,
+            max_value=5_000_000,
+            value=precio_medio,
+            step=5_000,
+            format="%d",
+            key="hip_precio",
         )
         _precio_fmt = f"{int(hip_precio):,}".replace(",", ".")
         st.markdown(
-            f'<div style="font-family:\'Fraunces\',serif;font-size:2.4rem;'
-            f'font-weight:400;letter-spacing:-0.03em;color:#fafafa;'
+            f"<div style=\"font-family:'Fraunces',serif;font-size:2.4rem;"
+            f"font-weight:400;letter-spacing:-0.03em;color:#fafafa;"
             f'line-height:1;margin:-0.25rem 0 1rem 0;">'
-            f'{_precio_fmt}'
+            f"{_precio_fmt}"
             f'<span style="font-size:1.1rem;color:#a1a1aa;margin-left:0.3rem;">€</span>'
-            f'</div>',
+            f"</div>",
             unsafe_allow_html=True,
         )
         hip_tipo = st.radio(
-            "Tipo de vivienda", ["Segunda mano", "Obra nueva"],
-            index=0, key="hip_tipo", horizontal=True,
+            "Tipo de vivienda",
+            ["Segunda mano", "Obra nueva"],
+            index=0,
+            key="hip_tipo",
+            horizontal=True,
         )
         hip_ccaa = st.radio(
-            "Comunidad autónoma", ["Comunidad de Madrid", "Castilla-La Mancha"],
-            index=0, key="hip_ccaa", horizontal=True,
+            "Comunidad autónoma",
+            ["Comunidad de Madrid", "Castilla-La Mancha"],
+            index=0,
+            key="hip_ccaa",
+            horizontal=True,
         )
     with col_h2:
         hip_entrada_pct = st.slider(
-            "Entrada (%)", min_value=5, max_value=50, value=20, step=1,
-            format="%d%%", key="hip_entrada",
+            "Entrada (%)",
+            min_value=5,
+            max_value=50,
+            value=20,
+            step=1,
+            format="%d%%",
+            key="hip_entrada",
         )
         hip_plazo = st.slider(
-            "Plazo (años)", min_value=5, max_value=40, value=30, step=1,
+            "Plazo (años)",
+            min_value=5,
+            max_value=40,
+            value=30,
+            step=1,
             key="hip_plazo",
         )
     with col_h3:
         hip_tin = st.slider(
-            "Tipo de interés fijo (%)", min_value=0.5, max_value=8.0,
-            value=3.0, step=0.05, format="%.2f%%", key="hip_tin",
+            "Tipo de interés fijo (%)",
+            min_value=0.5,
+            max_value=8.0,
+            value=3.0,
+            step=0.05,
+            format="%.2f%%",
+            key="hip_tin",
         )
 
-    hip_es_obra_nueva = (hip_tipo == "Obra nueva")
+    hip_es_obra_nueva = hip_tipo == "Obra nueva"
     hip_result = calc_hipoteca(
-        hip_precio, hip_entrada_pct / 100, hip_plazo,
-        hip_tin / 100, hip_es_obra_nueva, hip_ccaa,
+        hip_precio,
+        hip_entrada_pct / 100,
+        hip_plazo,
+        hip_tin / 100,
+        hip_es_obra_nueva,
+        hip_ccaa,
     )
 
     def _hip_eur(v):
         return f"{int(round(v)):,}".replace(",", ".") + " €"
 
     hip_kpis = [
-        ("wallet",        "Cuota mensual",        _hip_eur(hip_result["cuota_mensual"])),
-        ("zap",           "Ahorro necesario",      _hip_eur(hip_result["ahorro_necesario"])),
-        ("trending-down", "Total intereses",       _hip_eur(hip_result["total_intereses"])),
-        ("building",      "Total desembolso",      _hip_eur(hip_result["total_pagado"])),
+        ("wallet", "Cuota mensual", _hip_eur(hip_result["cuota_mensual"])),
+        ("zap", "Ahorro necesario", _hip_eur(hip_result["ahorro_necesario"])),
+        ("trending-down", "Total intereses", _hip_eur(hip_result["total_intereses"])),
+        ("building", "Total desembolso", _hip_eur(hip_result["total_pagado"])),
     ]
     hip_cards = "".join(
         f'<div class="kpi-card">'
         f'<div class="kpi-icon">{icon(n, size=18)}</div>'
         f'<div class="kpi-label">{lbl}</div>'
         f'<div class="kpi-value">{val}</div>'
-        f'</div>'
+        f"</div>"
         for n, lbl, val in hip_kpis
     )
     st.markdown(f'<div class="kpi-grid">{hip_cards}</div>', unsafe_allow_html=True)
@@ -1735,20 +2081,20 @@ with tab6:
     tipo_txt = "Obra nueva (IVA + AJD)" if hip_es_obra_nueva else "Segunda mano (ITP)"
     imp_filas = "".join(
         f'<tr class="sb-row"><td>{et}</td>'
-        f'<td style="font-family:\'JetBrains Mono\',monospace;color:#a1a1aa;">{_hip_eur(im)}</td></tr>'
+        f"<td style=\"font-family:'JetBrains Mono',monospace;color:#a1a1aa;\">{_hip_eur(im)}</td></tr>"
         for et, im in imp["items"]
     )
     otros_filas = (
         f'<tr class="sb-row"><td>Otros gastos (gestoría, notaría, tasación…)</td>'
-        f'<td style="font-family:\'JetBrains Mono\',monospace;color:#a1a1aa;">{_hip_eur(hip_result["otros_gastos"])}</td></tr>'
+        f"<td style=\"font-family:'JetBrains Mono',monospace;color:#a1a1aa;\">{_hip_eur(hip_result['otros_gastos'])}</td></tr>"
     )
     entrada_fila = (
         f'<tr class="sb-row"><td>Entrada ({hip_entrada_pct}%)</td>'
-        f'<td style="font-family:\'JetBrains Mono\',monospace;color:#a1a1aa;">{_hip_eur(hip_result["entrada"])}</td></tr>'
+        f"<td style=\"font-family:'JetBrains Mono',monospace;color:#a1a1aa;\">{_hip_eur(hip_result['entrada'])}</td></tr>"
     )
     total_fila = (
         f'<tr class="sb-total"><td>Ahorro necesario total</td>'
-        f'<td>{_hip_eur(hip_result["ahorro_necesario"])}</td></tr>'
+        f"<td>{_hip_eur(hip_result['ahorro_necesario'])}</td></tr>"
     )
 
     desglose_html = f"""
@@ -1781,27 +2127,35 @@ with tab6:
         col_g1, col_g2 = st.columns(2)
         with col_g1:
             g_comunidad = st.slider("Comunidad (€/mes)", 0, 300, 80, 5, key="g_com")
-            g_ibi       = st.slider("IBI mensual (€/mes)", 0, 200, 50, 5, key="g_ibi")
-            g_seguro    = st.slider("Seguro hogar (€/mes)", 0, 150, 30, 5, key="g_seg")
+            g_ibi = st.slider("IBI mensual (€/mes)", 0, 200, 50, 5, key="g_ibi")
+            g_seguro = st.slider("Seguro hogar (€/mes)", 0, 150, 30, 5, key="g_seg")
         with col_g2:
-            g_luz      = st.slider("Luz + gas (€/mes)", 0, 250, 80, 5, key="g_luz")
+            g_luz = st.slider("Luz + gas (€/mes)", 0, 250, 80, 5, key="g_luz")
             g_internet = st.slider("Internet (€/mes)", 0, 80, 35, 5, key="g_net")
             g_ingresos = st.number_input(
                 "Ingresos netos mensuales (€)",
-                min_value=500, max_value=20_000, value=2_500, step=100, key="g_ing",
+                min_value=500,
+                max_value=20_000,
+                value=2_500,
+                step=100,
+                key="g_ing",
             )
 
         g_gastos = g_comunidad + g_ibi + g_seguro + g_luz + g_internet
-        g_total  = hip_result["cuota_mensual"] + g_gastos
-        g_ratio  = (g_total / g_ingresos * 100) if g_ingresos > 0 else 0
-        g_color  = "#4ade80" if g_ratio < 30 else ("#fb923c" if g_ratio < 40 else "#f87171")
-        g_bg     = (
-            "rgba(74,222,128,0.1)"  if g_ratio < 30 else
-            ("rgba(251,146,60,0.1)" if g_ratio < 40 else "rgba(248,113,113,0.1)")
+        g_total = hip_result["cuota_mensual"] + g_gastos
+        g_ratio = (g_total / g_ingresos * 100) if g_ingresos > 0 else 0
+        g_color = (
+            "#4ade80" if g_ratio < 30 else ("#fb923c" if g_ratio < 40 else "#f87171")
+        )
+        g_bg = (
+            "rgba(74,222,128,0.1)"
+            if g_ratio < 30
+            else ("rgba(251,146,60,0.1)" if g_ratio < 40 else "rgba(248,113,113,0.1)")
         )
         g_border = (
-            "rgba(74,222,128,0.25)"  if g_ratio < 30 else
-            ("rgba(251,146,60,0.25)" if g_ratio < 40 else "rgba(248,113,113,0.25)")
+            "rgba(74,222,128,0.25)"
+            if g_ratio < 30
+            else ("rgba(251,146,60,0.25)" if g_ratio < 40 else "rgba(248,113,113,0.25)")
         )
 
         st.write("")
@@ -1856,70 +2210,94 @@ with tab7:
             f"{filas}</div>"
         )
 
-    POS = "#22c55e"   # suma
-    NEG = "#f87171"   # resta
-    NEU = "#818cf8"   # base
+    POS = "#22c55e"  # suma
+    NEG = "#f87171"  # resta
+    NEU = "#818cf8"  # base
 
     c1, c2 = st.columns(2)
     with c1:
         st.markdown(
-            _bloque("💎 Valor vs zona", "€/m² frente a la media de su municipio", [
-                ("≈ 20% o más bajo la media (chollo)", "+25", POS),
-                ("En la media de su zona", "≈ +12", NEU),
-                ("≈ 20% o más por encima (caro)", "+0", NEG),
-                ("Sin m² fiable → no se puede valorar", "fuera del Top", NEG),
-            ]),
+            _bloque(
+                "💎 Valor vs zona",
+                "€/m² frente a la media de su municipio",
+                [
+                    ("≈ 20% o más bajo la media (chollo)", "+25", POS),
+                    ("En la media de su zona", "≈ +12", NEU),
+                    ("≈ 20% o más por encima (caro)", "+0", NEG),
+                    ("Sin m² fiable → no se puede valorar", "fuera del Top", NEG),
+                ],
+            ),
             unsafe_allow_html=True,
         )
         st.write("")
         st.markdown(
-            _bloque("📐 Superficie", "Cuanto más grande, mejor", [
-                ("≥ 140 m²", "+15", NEU),
-                ("≥ 120 m²", "+12", NEU),
-                ("≥ 100 m²", "+8", NEU),
-                ("≥ 80 m²", "+5", NEU),
-            ]),
+            _bloque(
+                "📐 Superficie",
+                "Cuanto más grande, mejor",
+                [
+                    ("≥ 140 m²", "+15", NEU),
+                    ("≥ 120 m²", "+12", NEU),
+                    ("≥ 100 m²", "+8", NEU),
+                    ("≥ 80 m²", "+5", NEU),
+                ],
+            ),
             unsafe_allow_html=True,
         )
         st.write("")
         st.markdown(
-            _bloque("📈 Señales de mercado", "Cómo se comporta el anuncio en el tiempo", [
-                ("📉 Ha bajado de precio", "+1 a +5", POS),
-                ("🕸️ Lleva > 45 días anunciado", "−3", NEG),
-                ("🕸️ Lleva > 90 días anunciado", "−5", NEG),
-            ]),
+            _bloque(
+                "📈 Señales de mercado",
+                "Cómo se comporta el anuncio en el tiempo",
+                [
+                    ("📉 Ha bajado de precio", "+1 a +5", POS),
+                    ("🕸️ Lleva > 45 días anunciado", "−3", NEG),
+                    ("🕸️ Lleva > 90 días anunciado", "−5", NEG),
+                ],
+            ),
             unsafe_allow_html=True,
         )
     with c2:
         st.markdown(
-            _bloque("✨ Características", "Detectadas en anuncio y ficha · el total se limita a +15", [
-                ("🏊 Piscina", "+15", POS),
-                ("🚗 Garaje", "+12", POS),
-                ("📦 Trastero", "+10", POS),
-                ("🌿 Terraza / 🏡 Patio", "+10", POS),
-                ("🛗 Ascensor / 🌳 Jardín", "+5", POS),
-                ("Tope del bloque (no se acumula sin fin)", "máx +15", NEU),
-            ]),
+            _bloque(
+                "✨ Características",
+                "Detectadas en anuncio y ficha · el total se limita a +15",
+                [
+                    ("🏊 Piscina", "+15", POS),
+                    ("🚗 Garaje", "+12", POS),
+                    ("📦 Trastero", "+10", POS),
+                    ("🌿 Terraza / 🏡 Patio", "+10", POS),
+                    ("🛗 Ascensor / 🌳 Jardín", "+5", POS),
+                    ("Tope del bloque (no se acumula sin fin)", "máx +15", NEU),
+                ],
+            ),
             unsafe_allow_html=True,
         )
         st.write("")
         st.markdown(
-            _bloque("➕ Extras (suman)", "Antigüedad, ubicación y calidad", [
-                ("🏗️ Obra nueva / a estrenar", "+10", POS),
-                ("🚇 Cerca de transporte público", "+8", POS),
-                ("🔧 Reformado", "+5", POS),
-                ("📅 Construido desde 2000", "+1 a +5", POS),
-                ("🏢 Ático / última planta", "+3", POS),
-                ("⚡ Eficiencia energética A/B/C", "+2", POS),
-            ]),
+            _bloque(
+                "➕ Extras (suman)",
+                "Antigüedad, ubicación y calidad",
+                [
+                    ("🏗️ Obra nueva / a estrenar", "+10", POS),
+                    ("🚇 Cerca de transporte público", "+8", POS),
+                    ("🔧 Reformado", "+5", POS),
+                    ("📅 Construido desde 2000", "+1 a +5", POS),
+                    ("🏢 Ático / última planta", "+3", POS),
+                    ("⚡ Eficiencia energética A/B/C", "+2", POS),
+                ],
+            ),
             unsafe_allow_html=True,
         )
         st.write("")
         st.markdown(
-            _bloque("⚠️ Penalizaciones (restan)", "Avisan de posibles problemas", [
-                ("🚫 Ocupada / no admite visitas", "−30", NEG),
-                ("📍 Zona conflictiva", "−3 a −20", NEG),
-            ]),
+            _bloque(
+                "⚠️ Penalizaciones (restan)",
+                "Avisan de posibles problemas",
+                [
+                    ("🚫 Ocupada / no admite visitas", "−30", NEG),
+                    ("📍 Zona conflictiva", "−3 a −20", NEG),
+                ],
+            ),
             unsafe_allow_html=True,
         )
 
@@ -1952,8 +2330,7 @@ with tab7:
             )
         with c_tn:
             st.markdown(
-                "**Toledo Norte (5)**\n\n"
-                "Esquivias · Illescas · Seseña · Ugena · Yeles"
+                "**Toledo Norte (5)**\n\nEsquivias · Illescas · Seseña · Ugena · Yeles"
             )
     with st.expander("¿Cómo se asegura que el precio es real?"):
         st.markdown(
@@ -1977,8 +2354,8 @@ with tab7:
         )
     with st.expander('¿Por qué algunos salen como "sin valorar"?'):
         st.markdown(
-            'Si un anuncio no trae los **m² de forma fiable** (faltan o el dato es '
-            'absurdo), no se puede calcular su €/m² ni compararlo con su zona. Esos '
+            "Si un anuncio no trae los **m² de forma fiable** (faltan o el dato es "
+            "absurdo), no se puede calcular su €/m² ni compararlo con su zona. Esos "
             'anuncios se marcan **"s/valorar"**, quedan **fuera del Top** y no cuentan '
             'en el "Score medio", pero siguen guardados por si quieres revisarlos.'
         )
@@ -2001,7 +2378,9 @@ with tab7:
             "Fuente: ine.es/experimental/atlas"
         )
 
-    st.caption("La puntuación es orientativa: ayuda a priorizar, no sustituye una visita.")
+    st.caption(
+        "La puntuación es orientativa: ayuda a priorizar, no sustituye una visita."
+    )
 
 # ── TAB 8: Mapa de seguridad ──────────────────────────────────────
 
@@ -2009,16 +2388,22 @@ with tab8:
     st.write("")
 
     # ── Carga de assets ───────────────────────────────────────────
-    _gj_path  = ASSETS_DIR / "municipios_zona.geojson"
+    _gj_path = ASSETS_DIR / "municipios_zona.geojson"
     _csv_path = ASSETS_DIR / "criminalidad.csv"
     _sec_path = ASSETS_DIR / "secciones_renta.geojson"
 
-    geojson_mun = cargar_geojson_municipios(_gj_path.stat().st_mtime if _gj_path.exists() else 0.0)
-    df_crim     = cargar_criminalidad(_csv_path.stat().st_mtime if _csv_path.exists() else 0.0)
-    geojson_sec, df_renta = cargar_secciones_renta(_sec_path.stat().st_mtime if _sec_path.exists() else 0.0)
+    geojson_mun = cargar_geojson_municipios(
+        _gj_path.stat().st_mtime if _gj_path.exists() else 0.0
+    )
+    df_crim = cargar_criminalidad(
+        _csv_path.stat().st_mtime if _csv_path.exists() else 0.0
+    )
+    geojson_sec, df_renta = cargar_secciones_renta(
+        _sec_path.stat().st_mtime if _sec_path.exists() else 0.0
+    )
 
     _tiene_criminalidad = geojson_mun is not None and not df_crim.empty
-    _tiene_renta        = geojson_sec is not None and not df_renta.empty
+    _tiene_renta = geojson_sec is not None and not df_renta.empty
 
     if not _tiene_criminalidad and not _tiene_renta:
         st.warning(
@@ -2040,26 +2425,26 @@ with tab8:
             horizontal=True,
             label_visibility="collapsed",
         )
-        _modo_renta    = _capa.startswith("🟢")
-        _modo_precios  = _capa.startswith("🟡")
+        _modo_renta = _capa.startswith("🟢")
+        _modo_precios = _capa.startswith("🟡")
 
         # ── Escala criminalidad: verde (seguro) → rojo (peligroso) ─
         _CRIM_COLOR_SCALE = [
-            [0.0,  "#22c55e"],
+            [0.0, "#22c55e"],
             [0.35, "#84cc16"],
             [0.55, "#eab308"],
             [0.75, "#f97316"],
-            [1.0,  "#ef4444"],
+            [1.0, "#ef4444"],
         ]
 
         # ── Escala renta: rojo (renta baja) → verde (renta alta) ──
         # Semánticamente invertida: renta alta = mejor barrio = verde
         _RENTA_COLOR_SCALE = [
-            [0.0,  "#ef4444"],   # rojo  — renta muy baja
-            [0.25, "#f97316"],   # naranja
-            [0.5,  "#eab308"],   # amarillo
+            [0.0, "#ef4444"],  # rojo  — renta muy baja
+            [0.25, "#f97316"],  # naranja
+            [0.5, "#eab308"],  # amarillo
             [0.75, "#84cc16"],
-            [1.0,  "#22c55e"],   # verde — renta muy alta
+            [1.0, "#22c55e"],  # verde — renta muy alta
         ]
 
         _MAP_LAYOUT = dict(
@@ -2069,7 +2454,8 @@ with tab8:
             height=540,
             font=dict(family="Inter", size=12, color=MUTED),
             hoverlabel=dict(
-                bgcolor=SURFACE, bordercolor=BORDER,
+                bgcolor=SURFACE,
+                bordercolor=BORDER,
                 font=dict(family="Inter", color=INK),
             ),
         )
@@ -2077,8 +2463,10 @@ with tab8:
         def _colorbar(title_text):
             return dict(
                 orientation="h",
-                x=0.5, xanchor="center",
-                y=-0.04, yanchor="top",
+                x=0.5,
+                xanchor="center",
+                y=-0.04,
+                yanchor="top",
                 thickness=10,
                 len=0.72,
                 title=title_text,
@@ -2093,7 +2481,11 @@ with tab8:
         # VISTA A: CRIMINALIDAD (por municipio)
         # ════════════════════════════════════════════════════════════
         if not _modo_renta and not _modo_precios and _tiene_criminalidad:
-            periodo  = df_crim["periodo"].iloc[0] if "periodo" in df_crim.columns else "Q1 2026"
+            periodo = (
+                df_crim["periodo"].iloc[0]
+                if "periodo" in df_crim.columns
+                else "Q1 2026"
+            )
             tasa_max = df_crim["tasa_criminalidad"].max()
             tasa_min = df_crim["tasa_criminalidad"].min()
 
@@ -2139,17 +2531,23 @@ with tab8:
                 f"**Rojo** = más peligroso · **Verde** = más seguro · "
                 f"**Gris** = sin publicación oficial (<20 000 hab)"
             )
-            with st.expander(f"Municipios sin datos oficiales ({len(sin_dato)} en gris)"):
+            with st.expander(
+                f"Municipios sin datos oficiales ({len(sin_dato)} en gris)"
+            ):
                 st.write(", ".join(sin_dato) if sin_dato else "Todos tienen datos.")
 
             st.write("")
             st.subheader("Ranking de peligrosidad")
-            df_rank = df_crim[["municipio", "tasa_criminalidad"]].sort_values(
-                "tasa_criminalidad", ascending=False
-            ).reset_index(drop=True)
+            df_rank = (
+                df_crim[["municipio", "tasa_criminalidad"]]
+                .sort_values("tasa_criminalidad", ascending=False)
+                .reset_index(drop=True)
+            )
             df_rank.index += 1
             df_rank.columns = ["Municipio", "Tasa / 100 000 hab"]
-            df_rank["Tasa / 100 000 hab"] = df_rank["Tasa / 100 000 hab"].map("{:.0f}".format)
+            df_rank["Tasa / 100 000 hab"] = df_rank["Tasa / 100 000 hab"].map(
+                "{:.0f}".format
+            )
             st.dataframe(df_rank, use_container_width=True, hide_index=False)
 
         # ════════════════════════════════════════════════════════════
@@ -2176,8 +2574,8 @@ with tab8:
                 },
                 labels={
                     "renta_persona": "Renta neta media (€/pers)",
-                    "cusec":         "Sección censal",
-                    "anio":          "Año",
+                    "cusec": "Sección censal",
+                    "anio": "Año",
                 },
                 center={"lat": 40.18, "lon": -3.78},
                 zoom=10,
@@ -2191,9 +2589,11 @@ with tab8:
             st.plotly_chart(fig_sec, use_container_width=True)
 
             # Secciones sin dato de renta
-            total_sec   = len(df_renta)
-            sin_renta   = total_sec - len(df_r)
-            _anio_renta = df_renta["anio"].iloc[0] if "anio" in df_renta.columns else "2023"
+            total_sec = len(df_renta)
+            sin_renta = total_sec - len(df_r)
+            _anio_renta = (
+                df_renta["anio"].iloc[0] if "anio" in df_renta.columns else "2023"
+            )
             st.caption(
                 f"**Fuente**: Atlas de Distribución de Renta de los Hogares (ADRH {_anio_renta}) · INE · "
                 f"**Métrica**: renta neta media por persona (€/año) · "
@@ -2203,17 +2603,31 @@ with tab8:
             )
             if sin_renta:
                 with st.expander(f"Secciones sin dato de renta ({sin_renta} en gris)"):
-                    sin_df = df_renta[df_renta["renta_persona"].isna()][["municipio", "cusec"]].sort_values("municipio")
-                    st.dataframe(sin_df.reset_index(drop=True), use_container_width=True, hide_index=True)
+                    sin_df = df_renta[df_renta["renta_persona"].isna()][
+                        ["municipio", "cusec"]
+                    ].sort_values("municipio")
+                    st.dataframe(
+                        sin_df.reset_index(drop=True),
+                        use_container_width=True,
+                        hide_index=True,
+                    )
 
             st.write("")
             st.subheader("Ranking de barrios por renta")
-            df_rank_r = df_r[["municipio", "cusec", "renta_persona"]].sort_values(
-                "renta_persona", ascending=False
-            ).reset_index(drop=True)
+            df_rank_r = (
+                df_r[["municipio", "cusec", "renta_persona"]]
+                .sort_values("renta_persona", ascending=False)
+                .reset_index(drop=True)
+            )
             df_rank_r.index += 1
-            df_rank_r.columns = ["Municipio", "Sección censal", "Renta neta media (€/pers)"]
-            df_rank_r["Renta neta media (€/pers)"] = df_rank_r["Renta neta media (€/pers)"].map("{:,.0f}".format)
+            df_rank_r.columns = [
+                "Municipio",
+                "Sección censal",
+                "Renta neta media (€/pers)",
+            ]
+            df_rank_r["Renta neta media (€/pers)"] = df_rank_r[
+                "Renta neta media (€/pers)"
+            ].map("{:,.0f}".format)
             st.dataframe(df_rank_r, use_container_width=True, hide_index=False)
 
         elif _modo_renta and not _tiene_renta:
@@ -2238,7 +2652,7 @@ with tab8:
                     n = "".join(c for c in n if unicodedata.category(c) != "Mn")
                     return n.replace(" ", "_").replace("-", "_").replace("'", "")
 
-                _slug_to_cod  = {
+                _slug_to_cod = {
                     _slug_muni(f["properties"]["nombre"]): f["properties"]["cod_ine"]
                     for f in geojson_mun["features"]
                 }
@@ -2252,9 +2666,9 @@ with tab8:
                     df[df["eur_m2"].notna() & df["municipio"].notna()]
                     .groupby("municipio")
                     .agg(
-                        eur_m2_med=("eur_m2",  "median"),
-                        precio_med=("price",   "median"),
-                        n_listings=("price",   "count"),
+                        eur_m2_med=("eur_m2", "median"),
+                        precio_med=("price", "median"),
+                        n_listings=("price", "count"),
                     )
                     .reset_index()
                 )
@@ -2263,11 +2677,11 @@ with tab8:
                 _df_p["nombre"] = _df_p["cod_ine"].map(_cod_to_nombre)
 
                 _PRECIO_COLOR_SCALE = [
-                    [0.0,  "#22c55e"],   # verde — más barato
+                    [0.0, "#22c55e"],  # verde — más barato
                     [0.35, "#84cc16"],
-                    [0.55, "#eab308"],   # amarillo
+                    [0.55, "#eab308"],  # amarillo
                     [0.75, "#f97316"],
-                    [1.0,  "#ef4444"],   # rojo  — más caro
+                    [1.0, "#ef4444"],  # rojo  — más caro
                 ]
 
                 _p_min = _df_p["eur_m2_med"].min()
@@ -2283,7 +2697,7 @@ with tab8:
                     range_color=(_p_min * 0.9, _p_max * 1.05),
                     hover_name="nombre",
                     hover_data={
-                        "cod_ine":    False,
+                        "cod_ine": False,
                         "eur_m2_med": ":,.0f",
                         "precio_med": ":,.0f",
                         "n_listings": True,
@@ -2316,13 +2730,24 @@ with tab8:
 
                 st.write("")
                 st.subheader("Ranking de precio por municipio")
-                df_rank_p = _df_p[["nombre", "eur_m2_med", "precio_med", "n_listings"]].sort_values(
-                    "eur_m2_med", ascending=True
-                ).reset_index(drop=True)
+                df_rank_p = (
+                    _df_p[["nombre", "eur_m2_med", "precio_med", "n_listings"]]
+                    .sort_values("eur_m2_med", ascending=True)
+                    .reset_index(drop=True)
+                )
                 df_rank_p.index += 1
-                df_rank_p.columns = ["Municipio", "€/m² mediana", "Precio mediano (€)", "Anuncios"]
-                df_rank_p["€/m² mediana"]       = df_rank_p["€/m² mediana"].map("{:,.0f}".format)
-                df_rank_p["Precio mediano (€)"] = df_rank_p["Precio mediano (€)"].map("{:,.0f}".format)
+                df_rank_p.columns = [
+                    "Municipio",
+                    "€/m² mediana",
+                    "Precio mediano (€)",
+                    "Anuncios",
+                ]
+                df_rank_p["€/m² mediana"] = df_rank_p["€/m² mediana"].map(
+                    "{:,.0f}".format
+                )
+                df_rank_p["Precio mediano (€)"] = df_rank_p["Precio mediano (€)"].map(
+                    "{:,.0f}".format
+                )
                 st.dataframe(df_rank_p, use_container_width=True, hide_index=False)
 
 # ── Footer ───────────────────────────────────────────────────────
