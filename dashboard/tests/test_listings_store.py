@@ -71,6 +71,129 @@ class UpsertTests(unittest.TestCase):
 
         self.assertEqual(index["https://a.com/1"]["status"], "active")
 
+    def test_bajada_normal_limpia_price_drop_obsoleto(self):
+        existing = {
+            "https://a.com/1": {
+                "url": "https://a.com/1",
+                "price": 200000,
+                "price_drop": 999,
+                "previous_price": 999999,
+                "first_seen": "2026-07-01",
+                "last_seen": "2026-07-10",
+                "status": "active",
+            }
+        }
+        bajado = {"url": "https://a.com/1", "price": 190000}
+
+        index = listings_store.upsert(existing, [bajado], "2026-07-14")
+
+        item = index["https://a.com/1"]
+        self.assertEqual(item["price_drop"], 10000)
+        self.assertEqual(item["previous_price"], 200000)
+
+    def test_precio_igual_o_al_alza_limpia_bajada_previa(self):
+        existing = {
+            "https://a.com/1": {
+                "url": "https://a.com/1",
+                "price": 200000,
+                "price_drop": 20000,
+                "previous_price": 220000,
+                "first_seen": "2026-07-01",
+                "last_seen": "2026-07-10",
+                "status": "active",
+            }
+        }
+        igual = {"url": "https://a.com/1", "price": 200000}
+
+        index = listings_store.upsert(existing, [igual], "2026-07-14")
+
+        item = index["https://a.com/1"]
+        self.assertNotIn("price_drop", item)
+        self.assertNotIn("previous_price", item)
+
+    def test_salto_mayor_40_por_ciento_no_se_acepta_la_primera_vez(self):
+        existing = {
+            "https://a.com/1": {
+                "url": "https://a.com/1",
+                "price": 449500,
+                "first_seen": "2026-06-29",
+                "last_seen": "2026-06-29",
+                "status": "active",
+            }
+        }
+        sospechoso = {"url": "https://a.com/1", "price": 215000}
+
+        index = listings_store.upsert(existing, [sospechoso], "2026-06-30")
+
+        item = index["https://a.com/1"]
+        self.assertEqual(item["price"], 449500)
+        self.assertEqual(item["_candidate_price"], 215000)
+        self.assertNotIn("price_drop", item)
+        self.assertNotIn("previous_price", item)
+
+    def test_salto_mayor_40_por_ciento_confirmado_se_acepta(self):
+        existing = {
+            "https://a.com/1": {
+                "url": "https://a.com/1",
+                "price": 449500,
+                "_candidate_price": 215000,
+                "first_seen": "2026-06-29",
+                "last_seen": "2026-06-30",
+                "status": "active",
+            }
+        }
+        confirmado = {"url": "https://a.com/1", "price": 215000}
+
+        index = listings_store.upsert(existing, [confirmado], "2026-07-06")
+
+        item = index["https://a.com/1"]
+        self.assertEqual(item["price"], 215000)
+        self.assertEqual(item["price_drop"], 234500)
+        self.assertEqual(item["previous_price"], 449500)
+        self.assertNotIn("_candidate_price", item)
+
+    def test_salto_mayor_40_por_ciento_no_confirmado_cambia_de_candidato(self):
+        existing = {
+            "https://a.com/1": {
+                "url": "https://a.com/1",
+                "price": 449500,
+                "_candidate_price": 215000,
+                "first_seen": "2026-06-29",
+                "last_seen": "2026-06-30",
+                "status": "active",
+            }
+        }
+        otro_sospechoso = {"url": "https://a.com/1", "price": 200000}
+
+        index = listings_store.upsert(existing, [otro_sospechoso], "2026-07-06")
+
+        item = index["https://a.com/1"]
+        self.assertEqual(item["price"], 449500)
+        self.assertEqual(item["_candidate_price"], 200000)
+        self.assertNotIn("price_drop", item)
+        self.assertNotIn("previous_price", item)
+
+    def test_precio_ausente_conserva_estado_previo(self):
+        existing = {
+            "https://a.com/1": {
+                "url": "https://a.com/1",
+                "price": 200000,
+                "price_drop": 10000,
+                "previous_price": 210000,
+                "first_seen": "2026-07-01",
+                "last_seen": "2026-07-10",
+                "status": "active",
+            }
+        }
+        sin_precio = {"url": "https://a.com/1"}
+
+        index = listings_store.upsert(existing, [sin_precio], "2026-07-14")
+
+        item = index["https://a.com/1"]
+        self.assertEqual(item["price"], 200000)
+        self.assertEqual(item["price_drop"], 10000)
+        self.assertEqual(item["previous_price"], 210000)
+
 
 class MarkDelistedTests(unittest.TestCase):
     def test_piso_sin_ver_7_dias_pasa_a_delisted(self):

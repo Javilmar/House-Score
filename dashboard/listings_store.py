@@ -10,6 +10,55 @@ def _key(item):
     return item.get("url") or item.get("id") or item.get("title", "")
 
 
+OUTLIER_DROP_RATIO = (
+    0.6  # nuevo_precio / precio_anterior por debajo de esto = bajada >40%, sospechosa
+)
+
+
+def _aplicar_precio(item, old):
+    """Decide price/price_drop/previous_price/_candidate_price para `item` dado `old`.
+
+    Regla: price_drop/previous_price se recalculan contra el último precio
+    visto (old_price) en cada pasada -- nunca se arrastran de pasadas
+    anteriores. Un salto a la baja de más del 40% en una sola pasada no se
+    acepta hasta que se confirme con un valor similar en la pasada siguiente.
+    """
+    old_price = old.get("price")
+    new_price = item.get("price")
+
+    if new_price is None:
+        item["price"] = old_price
+        if "price_drop" in old:
+            item["price_drop"] = old["price_drop"]
+        if "previous_price" in old:
+            item["previous_price"] = old["previous_price"]
+        if "_candidate_price" in old:
+            item["_candidate_price"] = old["_candidate_price"]
+        return
+
+    if not old_price or new_price >= old_price:
+        item.pop("price_drop", None)
+        item.pop("previous_price", None)
+        item.pop("_candidate_price", None)
+        return
+
+    es_salto_grande = (new_price / old_price) < OUTLIER_DROP_RATIO
+    confirmado = old.get("_candidate_price") == new_price
+
+    if es_salto_grande and not confirmado:
+        item["price"] = old_price
+        item["_candidate_price"] = new_price
+        if "price_drop" in old:
+            item["price_drop"] = old["price_drop"]
+        if "previous_price" in old:
+            item["previous_price"] = old["previous_price"]
+        return
+
+    item["price_drop"] = old_price - new_price
+    item["previous_price"] = old_price
+    item.pop("_candidate_price", None)
+
+
 def upsert(existing_index, new_listings, today):
     """Fusiona new_listings en existing_index. Devuelve el índice actualizado.
 
@@ -28,15 +77,7 @@ def upsert(existing_index, new_listings, today):
 
         if old is not None:
             item["first_seen"] = old.get("first_seen", today)
-            old_price = old.get("price")
-            new_price = item.get("price")
-            if old_price and new_price and new_price < old_price:
-                item["price_drop"] = old_price - new_price
-                item["previous_price"] = old_price
-            elif old.get("previous_price"):
-                item["previous_price"] = old.get("previous_price")
-                if old.get("price_drop"):
-                    item["price_drop"] = old.get("price_drop")
+            _aplicar_precio(item, old)
         else:
             item.setdefault("first_seen", today)
 
