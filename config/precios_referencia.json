@@ -1,34 +1,34 @@
 {
-  "updated": "2026-07-14",
+  "updated": "2026-07-15",
   "source": "median_own",
   "municipios": {
     "getafe": {
-      "eur_m2": 2967,
-      "n": 35
+      "eur_m2": 3067,
+      "n": 37
     },
     "leganes": {
-      "eur_m2": 3151,
-      "n": 43
+      "eur_m2": 3060,
+      "n": 37
     },
     "mostoles": {
-      "eur_m2": 2990,
-      "n": 35
+      "eur_m2": 2982,
+      "n": 32
     },
     "alcorcon": {
-      "eur_m2": 3370,
-      "n": 28
+      "eur_m2": 3276,
+      "n": 27
     },
     "fuenlabrada": {
-      "eur_m2": 2823,
-      "n": 38
+      "eur_m2": 2862,
+      "n": 37
     },
     "parla": {
-      "eur_m2": 2564,
-      "n": 43
+      "eur_m2": 2604,
+      "n": 38
     },
     "pinto": {
       "eur_m2": 3182,
-      "n": 23
+      "n": 21
     },
     "valdemoro": {
       "eur_m2": 2620,
@@ -51,43 +51,43 @@
       "n": 20
     },
     "torrejon_de_la_calzada": {
-      "eur_m2": 2226,
-      "n": 20
+      "eur_m2": 2179,
+      "n": 19
     },
     "cubas_de_la_sagra": {
       "eur_m2": 1612,
       "n": 15
     },
     "batres": {
-      "eur_m2": 2218,
-      "n": 18
+      "eur_m2": 2368,
+      "n": 19
     },
     "serranillos_del_valle": {
-      "eur_m2": 1665,
-      "n": 34
+      "eur_m2": 1705,
+      "n": 35
     },
     "moraleja_de_enmedio": {
-      "eur_m2": 2368,
-      "n": 7
+      "eur_m2": 2698,
+      "n": 8
     },
     "arroyomolinos": {
       "eur_m2": 403,
       "n": 21
     },
     "illescas": {
-      "eur_m2": 2059,
+      "eur_m2": 2078,
       "n": 31
     },
     "sesena": {
-      "eur_m2": 1424,
+      "eur_m2": 1506,
       "n": 39
     },
     "yeles": {
-      "eur_m2": 1243,
-      "n": 59
+      "eur_m2": 1324,
+      "n": 60
     },
     "ugena": {
-      "eur_m2": 1157,
+      "eur_m2": 1214,
       "n": 36
     },
     "esquivias": {
@@ -97,12 +97,12 @@
   },
   "zonas": {
     "madrid_sur": {
-      "eur_m2": 2685,
-      "n": 481
+      "eur_m2": 2692,
+      "n": 467
     },
     "toledo_norte": {
-      "eur_m2": 1318,
-      "n": 224
+      "eur_m2": 1352,
+      "n": 225
     }
   }
 }
