@@ -3,36 +3,36 @@
   "source": "median_own",
   "municipios": {
     "getafe": {
-      "eur_m2": 3090,
-      "n": 40
+      "eur_m2": 3067,
+      "n": 41
     },
     "leganes": {
       "eur_m2": 3143,
-      "n": 40
+      "n": 39
     },
     "mostoles": {
       "eur_m2": 3041,
-      "n": 31
+      "n": 29
     },
     "alcorcon": {
-      "eur_m2": 3300,
+      "eur_m2": 3408,
       "n": 30
     },
     "fuenlabrada": {
-      "eur_m2": 2820,
-      "n": 40
-    },
-    "parla": {
-      "eur_m2": 2617,
+      "eur_m2": 2827,
       "n": 39
     },
+    "parla": {
+      "eur_m2": 2590,
+      "n": 38
+    },
     "pinto": {
-      "eur_m2": 3202,
-      "n": 20
+      "eur_m2": 3182,
+      "n": 19
     },
     "valdemoro": {
       "eur_m2": 2571,
-      "n": 18
+      "n": 22
     },
     "ciempozuelos": {
       "eur_m2": 2037,
@@ -47,24 +47,24 @@
       "n": 11
     },
     "navalcarnero": {
-      "eur_m2": 2537,
-      "n": 19
+      "eur_m2": 2946,
+      "n": 18
     },
     "torrejon_de_la_calzada": {
       "eur_m2": 2179,
       "n": 19
     },
     "cubas_de_la_sagra": {
-      "eur_m2": 1693,
+      "eur_m2": 1762,
       "n": 15
     },
     "batres": {
-      "eur_m2": 2235,
+      "eur_m2": 2368,
       "n": 17
     },
     "serranillos_del_valle": {
-      "eur_m2": 1728,
-      "n": 36
+      "eur_m2": 1730,
+      "n": 37
     },
     "moraleja_de_enmedio": {
       "eur_m2": 2698,
@@ -83,8 +83,8 @@
       "n": 39
     },
     "yeles": {
-      "eur_m2": 1414,
-      "n": 59
+      "eur_m2": 1425,
+      "n": 53
     },
     "ugena": {
       "eur_m2": 1238,
@@ -97,12 +97,12 @@
   },
   "zonas": {
     "madrid_sur": {
-      "eur_m2": 2694,
-      "n": 481
+      "eur_m2": 2692,
+      "n": 480
     },
     "toledo_norte": {
-      "eur_m2": 1414,
-      "n": 209
+      "eur_m2": 1418,
+      "n": 203
     }
   }
 }
