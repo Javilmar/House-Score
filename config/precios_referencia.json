@@ -1,38 +1,38 @@
 {
-  "updated": "2026-07-28",
+  "updated": "2026-07-29",
   "source": "median_own",
   "municipios": {
     "getafe": {
-      "eur_m2": 3017,
+      "eur_m2": 3090,
       "n": 36
     },
     "leganes": {
-      "eur_m2": 3143,
-      "n": 39
+      "eur_m2": 3024,
+      "n": 38
     },
     "mostoles": {
       "eur_m2": 3026,
-      "n": 32
+      "n": 30
     },
     "alcorcon": {
-      "eur_m2": 3448,
-      "n": 29
+      "eur_m2": 3342,
+      "n": 30
     },
     "fuenlabrada": {
-      "eur_m2": 2795,
-      "n": 37
+      "eur_m2": 2824,
+      "n": 38
     },
     "parla": {
-      "eur_m2": 2590,
-      "n": 40
+      "eur_m2": 2558,
+      "n": 38
     },
     "pinto": {
       "eur_m2": 3182,
       "n": 21
     },
     "valdemoro": {
-      "eur_m2": 2732,
-      "n": 19
+      "eur_m2": 2680,
+      "n": 20
     },
     "ciempozuelos": {
       "eur_m2": 2086,
@@ -59,16 +59,16 @@
       "n": 15
     },
     "batres": {
-      "eur_m2": 2368,
-      "n": 17
+      "eur_m2": 2302,
+      "n": 16
     },
     "serranillos_del_valle": {
       "eur_m2": 1728,
       "n": 36
     },
     "moraleja_de_enmedio": {
-      "eur_m2": 2384,
-      "n": 8
+      "eur_m2": 2368,
+      "n": 7
     },
     "arroyomolinos": {
       "eur_m2": 410,
@@ -83,26 +83,26 @@
       "n": 39
     },
     "yeles": {
-      "eur_m2": 1425,
-      "n": 53
+      "eur_m2": 1574,
+      "n": 58
     },
     "ugena": {
       "eur_m2": 1318,
       "n": 34
     },
     "esquivias": {
-      "eur_m2": 1162,
-      "n": 49
+      "eur_m2": 1250,
+      "n": 47
     }
   },
   "zonas": {
     "madrid_sur": {
       "eur_m2": 2692,
-      "n": 477
+      "n": 473
     },
     "toledo_norte": {
-      "eur_m2": 1418,
-      "n": 204
+      "eur_m2": 1494,
+      "n": 207
     }
   }
 }
