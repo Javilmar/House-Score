@@ -1,34 +1,34 @@
 {
-  "updated": "2026-07-31",
+  "updated": "2026-08-01",
   "source": "median_own",
   "municipios": {
     "getafe": {
-      "eur_m2": 3056,
-      "n": 38
+      "eur_m2": 3052,
+      "n": 40
     },
     "leganes": {
-      "eur_m2": 3060,
-      "n": 39
+      "eur_m2": 3116,
+      "n": 40
     },
     "mostoles": {
       "eur_m2": 3086,
-      "n": 32
+      "n": 34
     },
     "alcorcon": {
-      "eur_m2": 3380,
-      "n": 28
+      "eur_m2": 3368,
+      "n": 29
     },
     "fuenlabrada": {
-      "eur_m2": 2827,
-      "n": 39
+      "eur_m2": 2837,
+      "n": 38
     },
     "parla": {
-      "eur_m2": 2478,
-      "n": 40
+      "eur_m2": 2617,
+      "n": 39
     },
     "pinto": {
-      "eur_m2": 3222,
-      "n": 25
+      "eur_m2": 3182,
+      "n": 23
     },
     "valdemoro": {
       "eur_m2": 2726,
@@ -39,31 +39,31 @@
       "n": 45
     },
     "humanes_de_madrid": {
-      "eur_m2": 2692,
-      "n": 34
+      "eur_m2": 2691,
+      "n": 33
     },
     "grinon": {
-      "eur_m2": 2662,
+      "eur_m2": 2632,
       "n": 9
     },
     "navalcarnero": {
-      "eur_m2": 2846,
-      "n": 18
+      "eur_m2": 2959,
+      "n": 17
     },
     "torrejon_de_la_calzada": {
       "eur_m2": 2226,
       "n": 20
     },
     "cubas_de_la_sagra": {
-      "eur_m2": 2235,
-      "n": 13
+      "eur_m2": 2336,
+      "n": 12
     },
     "batres": {
-      "eur_m2": 2302,
-      "n": 16
+      "eur_m2": 2368,
+      "n": 17
     },
     "serranillos_del_valle": {
-      "eur_m2": 1728,
+      "eur_m2": 1715,
       "n": 40
     },
     "moraleja_de_enmedio": {
@@ -76,10 +76,10 @@
     },
     "illescas": {
       "eur_m2": 1961,
-      "n": 30
+      "n": 29
     },
     "sesena": {
-      "eur_m2": 1513,
+      "eur_m2": 1516,
       "n": 39
     },
     "yeles": {
@@ -97,12 +97,12 @@
   },
   "zonas": {
     "madrid_sur": {
-      "eur_m2": 2691,
+      "eur_m2": 2693,
       "n": 480
     },
     "toledo_norte": {
-      "eur_m2": 1512,
-      "n": 198
+      "eur_m2": 1513,
+      "n": 197
     }
   }
 }
