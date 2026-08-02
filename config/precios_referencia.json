@@ -1,34 +1,34 @@
 {
-  "updated": "2026-08-01",
+  "updated": "2026-08-02",
   "source": "median_own",
   "municipios": {
     "getafe": {
-      "eur_m2": 3034,
+      "eur_m2": 3052,
       "n": 40
     },
     "leganes": {
-      "eur_m2": 3147,
-      "n": 38
+      "eur_m2": 3143,
+      "n": 37
     },
     "mostoles": {
-      "eur_m2": 3143,
-      "n": 35
+      "eur_m2": 3086,
+      "n": 34
     },
     "alcorcon": {
-      "eur_m2": 3301,
+      "eur_m2": 3300,
       "n": 28
     },
     "fuenlabrada": {
-      "eur_m2": 2856,
-      "n": 41
-    },
-    "parla": {
-      "eur_m2": 2620,
+      "eur_m2": 2871,
       "n": 40
     },
+    "parla": {
+      "eur_m2": 2500,
+      "n": 37
+    },
     "pinto": {
-      "eur_m2": 3182,
-      "n": 23
+      "eur_m2": 3202,
+      "n": 24
     },
     "valdemoro": {
       "eur_m2": 2726,
@@ -47,8 +47,8 @@
       "n": 9
     },
     "navalcarnero": {
-      "eur_m2": 2959,
-      "n": 17
+      "eur_m2": 2846,
+      "n": 18
     },
     "torrejon_de_la_calzada": {
       "eur_m2": 2226,
@@ -75,34 +75,34 @@
       "n": 20
     },
     "illescas": {
-      "eur_m2": 2020,
-      "n": 30
+      "eur_m2": 1961,
+      "n": 31
     },
     "sesena": {
       "eur_m2": 1516,
       "n": 39
     },
     "yeles": {
-      "eur_m2": 1754,
-      "n": 52
+      "eur_m2": 1750,
+      "n": 53
     },
     "ugena": {
       "eur_m2": 1157,
       "n": 33
     },
     "esquivias": {
-      "eur_m2": 1303,
+      "eur_m2": 1345,
       "n": 45
     }
   },
   "zonas": {
     "madrid_sur": {
-      "eur_m2": 2704,
-      "n": 483
+      "eur_m2": 2694,
+      "n": 479
     },
     "toledo_norte": {
       "eur_m2": 1513,
-      "n": 199
+      "n": 201
     }
   }
 }
