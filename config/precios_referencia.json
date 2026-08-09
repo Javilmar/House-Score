@@ -7,35 +7,35 @@
       "n": 39
     },
     "leganes": {
-      "eur_m2": 2958,
+      "eur_m2": 3088,
       "n": 41
     },
     "mostoles": {
-      "eur_m2": 3132,
-      "n": 37
+      "eur_m2": 3138,
+      "n": 36
     },
     "alcorcon": {
       "eur_m2": 3368,
       "n": 25
     },
     "fuenlabrada": {
-      "eur_m2": 2903,
+      "eur_m2": 2847,
       "n": 33
     },
     "parla": {
-      "eur_m2": 2617,
-      "n": 37
+      "eur_m2": 2558,
+      "n": 38
     },
     "pinto": {
-      "eur_m2": 2915,
-      "n": 21
+      "eur_m2": 2891,
+      "n": 23
     },
     "valdemoro": {
       "eur_m2": 2628,
       "n": 19
     },
     "ciempozuelos": {
-      "eur_m2": 2233,
+      "eur_m2": 2173,
       "n": 43
     },
     "humanes_de_madrid": {
@@ -79,8 +79,8 @@
       "n": 32
     },
     "sesena": {
-      "eur_m2": 1507,
-      "n": 41
+      "eur_m2": 1510,
+      "n": 40
     },
     "yeles": {
       "eur_m2": 1742,
@@ -97,12 +97,12 @@
   },
   "zonas": {
     "madrid_sur": {
-      "eur_m2": 2692,
-      "n": 468
+      "eur_m2": 2684,
+      "n": 470
     },
     "toledo_norte": {
-      "eur_m2": 1505,
-      "n": 202
+      "eur_m2": 1507,
+      "n": 201
     }
   }
 }
