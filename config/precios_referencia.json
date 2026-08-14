@@ -3,23 +3,23 @@
   "source": "median_own",
   "municipios": {
     "getafe": {
-      "eur_m2": 3036,
-      "n": 39
+      "eur_m2": 3000,
+      "n": 40
     },
     "leganes": {
-      "eur_m2": 3020,
-      "n": 40
+      "eur_m2": 3068,
+      "n": 42
     },
     "mostoles": {
       "eur_m2": 3138,
       "n": 32
     },
     "alcorcon": {
-      "eur_m2": 3280,
-      "n": 24
+      "eur_m2": 3284,
+      "n": 23
     },
     "fuenlabrada": {
-      "eur_m2": 2918,
+      "eur_m2": 2903,
       "n": 37
     },
     "parla": {
@@ -35,7 +35,7 @@
       "n": 17
     },
     "ciempozuelos": {
-      "eur_m2": 2233,
+      "eur_m2": 2238,
       "n": 43
     },
     "humanes_de_madrid": {
@@ -98,7 +98,7 @@
   "zonas": {
     "madrid_sur": {
       "eur_m2": 2692,
-      "n": 451
+      "n": 453
     },
     "toledo_norte": {
       "eur_m2": 1500,
