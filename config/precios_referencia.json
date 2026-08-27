@@ -3,56 +3,56 @@
   "source": "median_own",
   "municipios": {
     "getafe": {
-      "eur_m2": 3174,
-      "n": 37
+      "eur_m2": 3172,
+      "n": 36
     },
     "leganes": {
       "eur_m2": 3150,
       "n": 42
     },
     "mostoles": {
-      "eur_m2": 3097,
-      "n": 34
-    },
-    "alcorcon": {
-      "eur_m2": 3214,
+      "eur_m2": 3063,
       "n": 32
     },
-    "fuenlabrada": {
-      "eur_m2": 2827,
+    "alcorcon": {
+      "eur_m2": 3235,
       "n": 31
     },
+    "fuenlabrada": {
+      "eur_m2": 2844,
+      "n": 30
+    },
     "parla": {
-      "eur_m2": 2620,
-      "n": 44
+      "eur_m2": 2617,
+      "n": 45
     },
     "pinto": {
-      "eur_m2": 2943,
+      "eur_m2": 2956,
       "n": 25
     },
     "valdemoro": {
       "eur_m2": 2566,
-      "n": 25
+      "n": 27
     },
     "ciempozuelos": {
       "eur_m2": 2323,
-      "n": 52
+      "n": 54
     },
     "humanes_de_madrid": {
       "eur_m2": 2694,
       "n": 45
     },
     "grinon": {
-      "eur_m2": 2632,
-      "n": 11
+      "eur_m2": 2662,
+      "n": 9
     },
     "navalcarnero": {
-      "eur_m2": 2838,
-      "n": 24
+      "eur_m2": 2889,
+      "n": 23
     },
     "torrejon_de_la_calzada": {
-      "eur_m2": 2446,
-      "n": 30
+      "eur_m2": 2513,
+      "n": 31
     },
     "cubas_de_la_sagra": {
       "eur_m2": 2021,
@@ -64,7 +64,7 @@
     },
     "serranillos_del_valle": {
       "eur_m2": 1747,
-      "n": 36
+      "n": 34
     },
     "moraleja_de_enmedio": {
       "eur_m2": 2292,
@@ -75,34 +75,34 @@
       "n": 20
     },
     "illescas": {
-      "eur_m2": 1874,
+      "eur_m2": 1918,
       "n": 36
     },
     "sesena": {
-      "eur_m2": 1505,
+      "eur_m2": 1496,
       "n": 46
     },
     "yeles": {
       "eur_m2": 1733,
-      "n": 59
+      "n": 61
     },
     "ugena": {
-      "eur_m2": 1090,
+      "eur_m2": 1016,
       "n": 44
     },
     "esquivias": {
-      "eur_m2": 1303,
-      "n": 61
+      "eur_m2": 1273,
+      "n": 62
     }
   },
   "zonas": {
     "madrid_sur": {
-      "eur_m2": 2675,
-      "n": 545
+      "eur_m2": 2692,
+      "n": 541
     },
     "toledo_norte": {
-      "eur_m2": 1492,
-      "n": 246
+      "eur_m2": 1438,
+      "n": 249
     }
   }
 }
