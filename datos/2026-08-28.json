@@ -30,16 +30,16 @@
       "Terraza"
     ],
     "detail_features": {
+      "jardín": true,
       "aire acondicionado": true,
-      "calefacción": true,
       "terraza": true,
       "garaje": true,
       "piscina": true,
-      "jardín": true
+      "calefacción": true
     },
     "pisos_id": "65098355538_106100",
     "score_details": [
-      "💎 -24% vs media ciempozuelos (1,695€/m² · ref 2,238) (+25)",
+      "💎 -25% vs media ciempozuelos (1,695€/m² · ref 2,258) (+25)",
       "📐 Muy amplio: 174m² (+15)",
       "🛏️ 3 habitaciones (+5)",
       "🌿 Espacio exterior (+12)",
@@ -98,13 +98,13 @@
       "Se aceptan mascotas"
     ],
     "detail_features": {
-      "patio": true,
       "trastero": true,
+      "patio": true,
+      "jardín": true,
       "aire acondicionado": true,
-      "calefacción": true,
       "garaje": true,
       "piscina": true,
-      "jardín": true
+      "calefacción": true
     },
     "pisos_id": "63410258733_100500",
     "score_details": [
@@ -157,14 +157,14 @@
     ],
     "detail_features": {
       "trastero": true,
+      "jardín": true,
       "aire acondicionado": true,
       "garaje": true,
-      "piscina": true,
-      "jardín": true
+      "piscina": true
     },
     "pisos_id": "63345834462_106700",
     "score_details": [
-      "💎 -45% vs media grinon (1,453€/m² · ref 2,662) (+25)",
+      "💎 -42% vs media grinon (1,453€/m² · ref 2,508) (+25)",
       "📐 Muy amplio: 430m² (+15)",
       "🛏️ 5 habitaciones (+5)",
       "🌿 Espacio exterior (+12)",
@@ -212,14 +212,14 @@
       "Terraza"
     ],
     "detail_features": {
-      "patio": true,
       "garaje": true,
       "trastero": true,
+      "patio": true,
       "terraza": true
     },
     "pisos_id": "62517476939_109300",
     "score_details": [
-      "💎 -29% vs media sesena (1,064€/m² · ref 1,503) (+25)",
+      "💎 -29% vs media sesena (1,064€/m² · ref 1,496) (+25)",
       "📐 Muy amplio: 281m² (+15)",
       "🛏️ 6 habitaciones (+5)",
       "🌿 Espacio exterior (+12)",
@@ -274,11 +274,11 @@
     ],
     "detail_features": {
       "trastero": true,
-      "calefacción": true,
+      "jardín": true,
       "terraza": true,
       "garaje": true,
       "piscina": true,
-      "jardín": true
+      "calefacción": true
     },
     "pisos_id": "65020728497_108500",
     "score_details": [
@@ -338,11 +338,11 @@
     ],
     "detail_features": {
       "patio": true,
+      "jardín": true,
       "aire acondicionado": true,
-      "calefacción": true,
       "garaje": true,
       "piscina": true,
-      "jardín": true
+      "calefacción": true
     },
     "pisos_id": "65030662010_525652",
     "score_details": [
@@ -577,18 +577,18 @@
     ],
     "detail_features": {
       "trastero": true,
-      "balcón": true,
-      "calefacción": true,
-      "ascensor": true,
+      "armario empotrado": true,
+      "jardín": true,
       "terraza": true,
+      "balcón": true,
       "garaje": true,
       "piscina": true,
-      "jardín": true,
-      "armario empotrado": true
+      "calefacción": true,
+      "ascensor": true
     },
     "pisos_id": "46705170378_100200",
     "score_details": [
-      "💎 -10% vs media sesena (1,352€/m² · ref 1,503) (+19)",
+      "💎 -10% vs media sesena (1,352€/m² · ref 1,496) (+19)",
       "📐 Muy amplio: 196m² (+15)",
       "🛏️ 5 habitaciones (+5)",
       "🌿 Espacio exterior (+12)",
@@ -639,12 +639,12 @@
     ],
     "detail_features": {
       "trastero": true,
-      "aire acondicionado": true,
-      "calefacción": true,
-      "ascensor": true,
       "terraza": true,
+      "aire acondicionado": true,
       "garaje": true,
-      "piscina": true
+      "piscina": true,
+      "calefacción": true,
+      "ascensor": true
     },
     "pisos_id": "65082145131_106400",
     "score_details": [
@@ -671,6 +671,109 @@
     "cumple_requisitos": true
   },
   {
+    "title": "Piso con balcón en Calle del Torreón, Griñón",
+    "price": 249900,
+    "score": 60,
+    "location": "Griñón",
+    "m2": 113,
+    "rooms": 2,
+    "bathrooms": 3,
+    "url": "https://www.fotocasa.es/es/comprar/vivienda/grinon/aire-acondicionado-calefaccion-trastero-zona-comunitaria-ascensor-amueblado-piscina/190567494/d",
+    "source": "fotocasa.es",
+    "floor": "2ª Planta",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "E",
+    "description": "",
+    "features": [
+      "trastero",
+      "armarios empotrados",
+      "aire acondicionado",
+      "balcón",
+      "piscina",
+      "calefacción",
+      "ascensor"
+    ],
+    "detail_features": {
+      "trastero": true,
+      "armarios empotrados": true,
+      "aire acondicionado": true,
+      "balcón": true,
+      "piscina": true,
+      "calefacción": true,
+      "ascensor": true
+    },
+    "pisos_id": "fotocasa:190567494",
+    "score_details": [
+      "💎 -12% vs media grinon (2,212€/m² · ref 2,508) (+20)",
+      "📐 Buen tamaño: 113m² (+8)",
+      "🛏️ 2 habitaciones (+2)",
+      "🌿 Espacio exterior (+12)",
+      "🏊 Piscina (+8)",
+      "📦 Trastero (+6)",
+      "🛗 Ascensor (+5)",
+      "   (características capadas: 19→18)"
+    ],
+    "eur_m2": 2212,
+    "municipio": "grinon",
+    "first_seen": "2026-08-28",
+    "last_seen": "2026-08-28",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
+    "exterior": true,
+    "cumple_requisitos": true
+  },
+  {
+    "title": "Piso en Calle San Juan, 4, Casco Antiguo",
+    "price": 239000,
+    "score": 58,
+    "location": "Casco Antiguo, Alcorcón",
+    "m2": 89,
+    "rooms": 3,
+    "bathrooms": 1,
+    "url": "https://www.fotocasa.es/es/comprar/vivienda/alcorcon/calefaccion-terraza-ascensor-no-amueblado/188681949/d",
+    "source": "fotocasa.es",
+    "floor": "1ª Planta",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "E",
+    "description": "",
+    "features": [
+      "calefaccion",
+      "terraza",
+      "garaje",
+      "calefacción",
+      "ascensor"
+    ],
+    "detail_features": {
+      "calefaccion": true,
+      "terraza": true,
+      "garaje": true,
+      "calefacción": true,
+      "ascensor": true
+    },
+    "pisos_id": "fotocasa:188681949",
+    "score_details": [
+      "💎 -19% vs media alcorcon (2,685€/m² · ref 3,313) (+24)",
+      "📐 Tamaño mínimo: 89m² (+5)",
+      "🛏️ 3 habitaciones (+5)",
+      "🌿 Espacio exterior (+12)",
+      "🚗 Garaje (+10)",
+      "🛗 Ascensor (+5)",
+      "🕸️ 65d en el mercado (-3)"
+    ],
+    "eur_m2": 2685,
+    "municipio": "alcorcon",
+    "first_seen": "2026-06-24",
+    "last_seen": "2026-08-28",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
+    "exterior": true,
+    "cumple_requisitos": true
+  },
+  {
     "title": "Piso con terraza en Sur - PAU 4",
     "price": 280000,
     "score": 57,
@@ -686,20 +789,20 @@
     "energy_rating": "G",
     "description": "",
     "features": [
-      "aire acondicionado",
-      "calefacción",
-      "ascensor",
       "calefaccion",
       "terraza",
-      "piscina"
+      "aire acondicionado",
+      "piscina",
+      "calefacción",
+      "ascensor"
     ],
     "detail_features": {
-      "aire acondicionado": true,
-      "calefacción": true,
-      "ascensor": true,
       "calefaccion": true,
       "terraza": true,
-      "piscina": true
+      "aire acondicionado": true,
+      "piscina": true,
+      "calefacción": true,
+      "ascensor": true
     },
     "pisos_id": "fotocasa:189315951",
     "score_details": [
@@ -755,11 +858,11 @@
     ],
     "detail_features": {
       "trastero": true,
-      "calefacción": true,
+      "jardín": true,
       "terraza": true,
       "garaje": true,
       "piscina": true,
-      "jardín": true
+      "calefacción": true
     },
     "pisos_id": "65094559691_100700",
     "score_details": [
@@ -814,10 +917,10 @@
       "Calle alumbrada"
     ],
     "detail_features": {
-      "patio": true,
-      "aire acondicionado": true,
+      "balcón": true,
       "trastero": true,
-      "balcón": true
+      "patio": true,
+      "aire acondicionado": true
     },
     "pisos_id": "65890307702_109800",
     "score_details": [
@@ -867,11 +970,11 @@
     ],
     "detail_features": {
       "trastero": true,
-      "ascensor": true,
+      "jardín": true,
       "terraza": true,
       "garaje": true,
       "piscina": true,
-      "jardín": true
+      "ascensor": true
     },
     "pisos_id": "66756804649_106500",
     "score_details": [
@@ -914,19 +1017,19 @@
     "description": "",
     "features": [
       "trastero",
-      "calefacción",
-      "ascensor",
       "calefaccion",
       "terraza",
-      "piscina"
+      "piscina",
+      "calefacción",
+      "ascensor"
     ],
     "detail_features": {
       "trastero": true,
-      "calefacción": true,
-      "ascensor": true,
       "calefaccion": true,
       "terraza": true,
-      "piscina": true
+      "piscina": true,
+      "calefacción": true,
+      "ascensor": true
     },
     "pisos_id": "fotocasa:190172079",
     "score_details": [
@@ -978,8 +1081,8 @@
       "Urbanizado"
     ],
     "detail_features": {
-      "aire acondicionado": true,
-      "jardin": true
+      "jardin": true,
+      "aire acondicionado": true
     },
     "pisos_id": "65843651101_100500",
     "score_details": [
@@ -1078,22 +1181,22 @@
     "energy_rating": "E",
     "description": "",
     "features": [
+      "calefaccion",
+      "terraza",
       "aire acondicionado",
       "calefacción",
-      "ascensor",
-      "calefaccion",
-      "terraza"
+      "ascensor"
     ],
     "detail_features": {
+      "calefaccion": true,
+      "terraza": true,
       "aire acondicionado": true,
       "calefacción": true,
-      "ascensor": true,
-      "calefaccion": true,
-      "terraza": true
+      "ascensor": true
     },
     "pisos_id": "fotocasa:190145683",
     "score_details": [
-      "💎 -9% vs media leganes (2,856€/m² · ref 3,151) (+18)",
+      "💎 -8% vs media leganes (2,856€/m² · ref 3,116) (+18)",
       "📐 Buen tamaño: 105m² (+8)",
       "🛏️ 3 habitaciones (+5)",
       "🌿 Espacio exterior (+12)",
@@ -1151,11 +1254,11 @@
     ],
     "detail_features": {
       "trastero": true,
-      "balcón": true,
-      "aire acondicionado": true,
-      "ascensor": true,
       "terraza": true,
-      "garaje": true
+      "aire acondicionado": true,
+      "balcón": true,
+      "garaje": true,
+      "ascensor": true
     },
     "pisos_id": "65925491425_109800",
     "score_details": [
@@ -1226,17 +1329,17 @@
       "Soleado"
     ],
     "detail_features": {
-      "patio": true,
       "trastero": true,
-      "balcón": true,
+      "patio": true,
+      "terraza": true,
       "aire acondicionado": true,
+      "balcón": true,
       "calefacción": true,
-      "ascensor": true,
-      "terraza": true
+      "ascensor": true
     },
     "pisos_id": "61713317165_993118",
     "score_details": [
-      "💎 +8% vs media pinto (3,182€/m² · ref 2,950) (+8)",
+      "💎 +8% vs media pinto (3,182€/m² · ref 2,956) (+8)",
       "📐 Tamaño mínimo: 88m² (+5)",
       "🛏️ 2 habitaciones (+2)",
       "🌿 Espacio exterior (+12)",
@@ -1283,10 +1386,10 @@
       "Terraza"
     ],
     "detail_features": {
-      "patio": true,
       "garaje": true,
-      "terraza": true,
-      "ascensor": true
+      "patio": true,
+      "ascensor": true,
+      "terraza": true
     },
     "pisos_id": "65838573133_106100",
     "score_details": [
@@ -1727,14 +1830,14 @@
     "energy_rating": "G",
     "description": "",
     "features": [
-      "aire acondicionado",
       "terraza",
-      "ascensor"
+      "ascensor",
+      "aire acondicionado"
     ],
     "detail_features": {
-      "aire acondicionado": true,
       "terraza": true,
-      "ascensor": true
+      "ascensor": true,
+      "aire acondicionado": true
     },
     "pisos_id": "fotocasa:189944580",
     "score_details": [
@@ -1752,6 +1855,52 @@
     "last_seen": "2026-08-28",
     "previous_price": 299000,
     "price_drop": 21000,
+    "datos_insuficientes": false,
+    "exterior": true,
+    "cumple_requisitos": true
+  },
+  {
+    "title": "Piso con terraza en Villayuventus - Renfe",
+    "price": 220000,
+    "score": 42,
+    "location": "Villayuventus - Renfe, Parla",
+    "m2": 80,
+    "rooms": 3,
+    "bathrooms": 2,
+    "url": "https://www.fotocasa.es/es/comprar/vivienda/parla/calefaccion-terraza-ascensor/189129939/d",
+    "source": "fotocasa.es",
+    "floor": "3ª Planta",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "E",
+    "description": "",
+    "features": [
+      "calefaccion",
+      "ascensor",
+      "terraza",
+      "calefacción"
+    ],
+    "detail_features": {
+      "calefaccion": true,
+      "ascensor": true,
+      "terraza": true,
+      "calefacción": true
+    },
+    "pisos_id": "fotocasa:189129939",
+    "score_details": [
+      "💎 +9% vs media parla (2,750€/m² · ref 2,527) (+7)",
+      "📐 Tamaño mínimo: 80m² (+5)",
+      "🛏️ 3 habitaciones (+5)",
+      "🌿 Espacio exterior (+12)",
+      "🛗 Ascensor (+5)",
+      "🚇 Cerca transporte público (+8)"
+    ],
+    "eur_m2": 2750,
+    "municipio": "parla",
+    "first_seen": "2026-07-30",
+    "last_seen": "2026-08-28",
+    "previous_price": null,
+    "price_drop": null,
     "datos_insuficientes": false,
     "exterior": true,
     "cumple_requisitos": true
@@ -1795,7 +1944,7 @@
   {
     "title": "Piso con terraza en Calle Rio Duero, San Nicasio",
     "price": 229900,
-    "score": 40,
+    "score": 39,
     "location": "San Nicasio, Leganés",
     "m2": 73,
     "rooms": 3,
@@ -1808,22 +1957,22 @@
     "energy_rating": "C",
     "description": "",
     "features": [
+      "calefaccion",
+      "terraza",
       "balcón",
       "calefacción",
-      "ascensor",
-      "calefaccion",
-      "terraza"
+      "ascensor"
     ],
     "detail_features": {
+      "calefaccion": true,
+      "terraza": true,
       "balcón": true,
       "calefacción": true,
-      "ascensor": true,
-      "calefaccion": true,
-      "terraza": true
+      "ascensor": true
     },
     "pisos_id": "fotocasa:190369256",
     "score_details": [
-      "💎 -0% vs media leganes (3,149€/m² · ref 3,151) (+13)",
+      "💎 +1% vs media leganes (3,149€/m² · ref 3,116) (+12)",
       "📐 Justo: 73m² (+3)",
       "🛏️ 3 habitaciones (+5)",
       "🌿 Espacio exterior (+12)",
@@ -1877,6 +2026,70 @@
     "datos_insuficientes": false,
     "exterior": true,
     "cumple_requisitos": false
+  },
+  {
+    "title": "Piso en Parla",
+    "price": 199000,
+    "score": 37,
+    "location": "",
+    "m2": 73,
+    "rooms": 2,
+    "bathrooms": 1,
+    "url": "https://www.pisos.com/comprar/piso-parla-66730189167_100500/",
+    "source": "pisos.com",
+    "floor": "2ª planta",
+    "year_built": 0,
+    "conservation": "en buen estado",
+    "energy_rating": "",
+    "description": "VIVIENDA ALQUILADA, IDEAL PARA INVERSORES Y SIN COMISIONES DE AGENCIA\n\nExcelente piso de 2 dormitorios y 1 baño. Se encuentra en la planta 2 de un edificio residencial y cuenta con ascensor, terraza y armarios.\n\nLa vivienda se distribuye en 2 dormitorios, salón-comedor, cocina independiente, equipada con muebles altos y bajos, vitrocerámica, horno y campana extractora. Dispone de suelos de tarima en cocina, baño y en el resto de estancias. Dispone de calefacción individual.\n\nSe encuentra ubicado",
+    "features": [
+      "La zona cuenta con una amplia oferta de entretenimiento con 3 parques, bares, restaurantes y comercios a pocos minutos de la vivienda.",
+      "En cuanto al transporte privado, la zona dispone de parkings privados, 2 parkings públicos y aparcamiento en la calle. La vivienda tiene un fácil acceso por carretera y está bien comunicado a través de la Autovia de Toledo, Calle Real y la Viario de Ronda. La vivienda se encuentra actualmente alquilada a precio de mercado, con inquilinos solventes que cuentan con empleo fijo y nómina, abonando la renta de manera puntual y regular.",
+      "Detalles del contrato:",
+      "Vencimiento del contrato: 18/11/2031",
+      "Renta mensual actual: 1.015€",
+      "Rentabilidad estimada: 6.1%",
+      "Además de ofrecerte la compra de un activo en rentabilidad, ponemos a tu disposición un servicio de gestión inmobiliaria que te ayudará a optimizar tu inversión. Si estás interesado, no dudes en ponerte en contacto con nosotros a través de la web de Alquizen que pertenece a PROMONTORIA MACC RESIDENCIAL, S.L. Estaremos encantados de enviarte información adicional tanto sobre el activo como sobre los servicios mencionados.",
+      "*Importante:",
+      "Dado que la propiedad está alquilada, no es posible realizar visitas en este momento.",
+      "La vivienda se comercializa mediante colaboradores que no cobran comisión de agencia, ofreciéndote un proceso directo, claro y sin costes añadidos.",
+      "Mostrar más",
+      "Superficie construida: 73 m²",
+      "Habitaciones: 2",
+      "Baños: 1",
+      "Planta: 2ª",
+      "Exterior",
+      "Conservación: En buen estado",
+      "Referencia: 2001/20010005/34",
+      "Tipo suelo: Tarima flotante",
+      "Agua",
+      "Cocina equipada",
+      "Ascensor",
+      "Terraza"
+    ],
+    "detail_features": {
+      "ascensor": true,
+      "terraza": true,
+      "calefacción": true
+    },
+    "pisos_id": "66730189167_100500",
+    "score_details": [
+      "💎 +8% vs media torrejon_de_la_calzada (2,726€/m² · ref 2,513) (+7)",
+      "📐 Justo: 73m² (+3)",
+      "🛏️ 2 habitaciones (+2)",
+      "🌿 Espacio exterior (+12)",
+      "🛗 Ascensor (+5)",
+      "🚇 Cerca transporte público (+8)"
+    ],
+    "eur_m2": 2726,
+    "municipio": "torrejon_de_la_calzada",
+    "first_seen": "2026-08-05",
+    "last_seen": "2026-08-28",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
+    "exterior": true,
+    "cumple_requisitos": true
   },
   {
     "title": "Piso en San Nicasio-Campo de Tiro-Solagua",
@@ -2019,12 +2232,12 @@
       "Soleado: Todo el día"
     ],
     "detail_features": {
+      "jardin": true,
       "jardín": true,
       "aire acondicionado": true,
-      "calefacción": true,
-      "ascensor": true,
       "terraza": true,
-      "jardin": true
+      "calefacción": true,
+      "ascensor": true
     },
     "pisos_id": "65844595664_305300",
     "score_details": [
@@ -2081,79 +2294,6 @@
     "cumple_requisitos": true
   },
   {
-    "title": "Piso con terraza en Calle Río Urbión, San Nicasio",
-    "price": 197500,
-    "score": 33,
-    "location": "San Nicasio, Leganés",
-    "m2": 66,
-    "rooms": 3,
-    "bathrooms": 1,
-    "url": "https://www.fotocasa.es/es/comprar/vivienda/leganes/aire-acondicionado-calefaccion-terraza-no-amueblado/190264401/d",
-    "source": "fotocasa.es",
-    "floor": "",
-    "year_built": 0,
-    "conservation": "",
-    "energy_rating": "",
-    "description": "",
-    "features": [
-      "aire acondicionado",
-      "terraza",
-      "calefaccion"
-    ],
-    "detail_features": {},
-    "pisos_id": "fotocasa:190264401",
-    "score_details": [
-      "💎 -5% vs media leganes (2,992€/m² · ref 3,151) (+16)",
-      "📐 66m² < 70m² mínimo (no cumple)",
-      "🛏️ 3 habitaciones (+5)",
-      "🌿 Espacio exterior (+12)"
-    ],
-    "eur_m2": 2992,
-    "municipio": "leganes",
-    "first_seen": "2026-07-30",
-    "last_seen": "2026-08-28",
-    "previous_price": null,
-    "price_drop": null,
-    "datos_insuficientes": false,
-    "exterior": true,
-    "cumple_requisitos": false
-  },
-  {
-    "title": "Piso en Parla",
-    "price": 203000,
-    "score": 33,
-    "location": "",
-    "m2": 72,
-    "rooms": 3,
-    "bathrooms": 1,
-    "url": "https://www.pisos.com/comprar/piso-parla-66730189167_100500/",
-    "source": "pisos.com",
-    "floor": "1ª planta",
-    "year_built": 0,
-    "conservation": "",
-    "energy_rating": "",
-    "description": "VIVIENDA ALQUILADA, IDEAL PARA INVERSORES Y SIN COMISIONES DE AGENCIA Excelente piso de 3 dormitorios y 1 baño. Se encuentra en la planta 1 de un edificio residencial y cuenta con terraza. La vivienda se distribuye en 3 dormitorios, salón-comedor, cocina independiente, equipada con muebles altos y bajos, vitrocerámica, horno y campana extractora. Dispone de suelos de tarima en cocina, baño y en el resto de estancias. Dispone de calefacción central. Se encuentra ubicado en Fuentebella San Felix E",
-    "features": [],
-    "detail_features": {},
-    "pisos_id": "66730189167_100500",
-    "score_details": [
-      "💎 +12% vs media torrejon_de_la_calzada (2,819€/m² · ref 2,513) (+5)",
-      "📐 Justo: 72m² (+3)",
-      "🛏️ 3 habitaciones (+5)",
-      "🌿 Espacio exterior (+12)",
-      "🚇 Cerca transporte público (+8)"
-    ],
-    "eur_m2": 2819,
-    "municipio": "torrejon_de_la_calzada",
-    "first_seen": "2026-08-05",
-    "last_seen": "2026-08-28",
-    "previous_price": null,
-    "price_drop": null,
-    "datos_insuficientes": false,
-    "exterior": true,
-    "cumple_requisitos": true
-  },
-  {
     "title": "Piso con terraza en Calle Comusa, Zona Renfe",
     "price": 240000,
     "score": 33,
@@ -2169,15 +2309,15 @@
     "energy_rating": "",
     "description": "",
     "features": [
-      "aire acondicionado",
-      "terraza",
       "calefaccion",
-      "ascensor"
+      "aire acondicionado",
+      "ascensor",
+      "terraza"
     ],
     "detail_features": {},
     "pisos_id": "fotocasa:190416858",
     "score_details": [
-      "💎 +10% vs media alcorcon (3,636€/m² · ref 3,298) (+6)",
+      "💎 +10% vs media alcorcon (3,636€/m² · ref 3,313) (+6)",
       "📐 66m² < 70m² mínimo (no cumple)",
       "🛏️ 2 habitaciones (+2)",
       "🌿 Espacio exterior (+12)",
@@ -2309,6 +2449,44 @@
     "datos_insuficientes": false,
     "exterior": true,
     "cumple_requisitos": true
+  },
+  {
+    "title": "Piso con terraza en Calle Río Urbión, San Nicasio",
+    "price": 197500,
+    "score": 32,
+    "location": "San Nicasio, Leganés",
+    "m2": 66,
+    "rooms": 3,
+    "bathrooms": 1,
+    "url": "https://www.fotocasa.es/es/comprar/vivienda/leganes/aire-acondicionado-calefaccion-terraza-no-amueblado/190264401/d",
+    "source": "fotocasa.es",
+    "floor": "",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "",
+    "features": [
+      "calefaccion",
+      "aire acondicionado",
+      "terraza"
+    ],
+    "detail_features": {},
+    "pisos_id": "fotocasa:190264401",
+    "score_details": [
+      "💎 -4% vs media leganes (2,992€/m² · ref 3,116) (+15)",
+      "📐 66m² < 70m² mínimo (no cumple)",
+      "🛏️ 3 habitaciones (+5)",
+      "🌿 Espacio exterior (+12)"
+    ],
+    "eur_m2": 2992,
+    "municipio": "leganes",
+    "first_seen": "2026-07-30",
+    "last_seen": "2026-08-28",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
+    "exterior": true,
+    "cumple_requisitos": false
   },
   {
     "title": "Piso en San Nicasio-Campo de Tiro-Solagua",
@@ -2499,44 +2677,6 @@
     "cumple_requisitos": false
   },
   {
-    "title": "Piso con terraza en San Nicasio",
-    "price": 210000,
-    "score": 28,
-    "location": "San Nicasio, Leganés",
-    "m2": 68,
-    "rooms": 3,
-    "bathrooms": 1,
-    "url": "https://www.fotocasa.es/es/comprar/vivienda/leganes/calefaccion-terraza-no-amueblado/190176883/d",
-    "source": "fotocasa.es",
-    "floor": "2ª Planta",
-    "year_built": 0,
-    "conservation": "",
-    "energy_rating": "",
-    "description": "",
-    "features": [
-      "terraza",
-      "calefaccion"
-    ],
-    "detail_features": {},
-    "pisos_id": "fotocasa:190176883",
-    "score_details": [
-      "💎 -2% vs media leganes (3,088€/m² · ref 3,151) (+14)",
-      "📐 68m² < 70m² mínimo (no cumple)",
-      "🛏️ 3 habitaciones (+5)",
-      "🌿 Espacio exterior (+12)",
-      "🕸️ 52d en el mercado (-3)"
-    ],
-    "eur_m2": 3088,
-    "municipio": "leganes",
-    "first_seen": "2026-07-07",
-    "last_seen": "2026-08-28",
-    "previous_price": null,
-    "price_drop": null,
-    "datos_insuficientes": false,
-    "exterior": true,
-    "cumple_requisitos": false
-  },
-  {
     "title": "Chalet en Avenida de los Pintores",
     "price": 275000,
     "score": 28,
@@ -2570,6 +2710,44 @@
     "datos_insuficientes": false,
     "exterior": false,
     "cumple_requisitos": true
+  },
+  {
+    "title": "Piso con terraza en San Nicasio",
+    "price": 210000,
+    "score": 27,
+    "location": "San Nicasio, Leganés",
+    "m2": 68,
+    "rooms": 3,
+    "bathrooms": 1,
+    "url": "https://www.fotocasa.es/es/comprar/vivienda/leganes/calefaccion-terraza-no-amueblado/190176883/d",
+    "source": "fotocasa.es",
+    "floor": "2ª Planta",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "",
+    "features": [
+      "calefaccion",
+      "terraza"
+    ],
+    "detail_features": {},
+    "pisos_id": "fotocasa:190176883",
+    "score_details": [
+      "💎 -1% vs media leganes (3,088€/m² · ref 3,116) (+13)",
+      "📐 68m² < 70m² mínimo (no cumple)",
+      "🛏️ 3 habitaciones (+5)",
+      "🌿 Espacio exterior (+12)",
+      "🕸️ 52d en el mercado (-3)"
+    ],
+    "eur_m2": 3088,
+    "municipio": "leganes",
+    "first_seen": "2026-07-07",
+    "last_seen": "2026-08-28",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
+    "exterior": true,
+    "cumple_requisitos": false
   },
   {
     "title": "Piso con terraza en Avenida del Campo Hermoso, Humanes de Madrid",
@@ -2732,7 +2910,7 @@
     "detail_features": {},
     "pisos_id": "65885765511_101800",
     "score_details": [
-      "💎 +61% vs media esquivias (2,000€/m² · ref 1,243) (+0)",
+      "💎 +53% vs media esquivias (2,000€/m² · ref 1,303) (+0)",
       "📐 Tamaño mínimo: 85m² (+5)",
       "🛏️ 2 habitaciones (+2)",
       "🌿 Espacio exterior (+12)",
@@ -2804,7 +2982,7 @@
     "detail_features": {},
     "pisos_id": "66731408778_532742",
     "score_details": [
-      "💎 +37% vs media esquivias (1,708€/m² · ref 1,243) (+0)",
+      "💎 +31% vs media esquivias (1,708€/m² · ref 1,303) (+0)",
       "📐 Tamaño mínimo: 98m² (+5)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -2845,7 +3023,7 @@
     "detail_features": {},
     "pisos_id": "65927197215_101800",
     "score_details": [
-      "💎 -32% vs media ciempozuelos (1,523€/m² · ref 2,238) (+25)",
+      "💎 -33% vs media ciempozuelos (1,523€/m² · ref 2,258) (+25)",
       "📐 Amplio: 128m² (+12)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -2950,9 +3128,9 @@
     "energy_rating": "",
     "description": "",
     "features": [
-      "aire acondicionado",
       "calefaccion",
-      "ascensor"
+      "ascensor",
+      "aire acondicionado"
     ],
     "detail_features": {},
     "pisos_id": "fotocasa:190159708",
@@ -2977,7 +3155,7 @@
   {
     "title": "Piso en Centro",
     "price": 219000,
-    "score": 21,
+    "score": 22,
     "location": "Centro (Illescas)",
     "m2": 130,
     "rooms": 4,
@@ -2993,7 +3171,7 @@
     "detail_features": {},
     "pisos_id": "66718085429_106700",
     "score_details": [
-      "💎 -14% vs media illescas (1,685€/m² · ref 1,961) (+21)",
+      "💎 -15% vs media illescas (1,685€/m² · ref 1,988) (+22)",
       "📐 Amplio: 130m² (+12)",
       "🛏️ 4 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -3025,8 +3203,8 @@
     "energy_rating": "",
     "description": "",
     "features": [
-      "trastero",
       "calefaccion",
+      "trastero",
       "ascensor"
     ],
     "detail_features": {},
@@ -3069,7 +3247,7 @@
     "detail_features": {},
     "pisos_id": "63411312190_100200",
     "score_details": [
-      "💎 -63% vs media navalcarnero (1,068€/m² · ref 2,889) (+25)",
+      "💎 -64% vs media navalcarnero (1,068€/m² · ref 2,959) (+25)",
       "📐 Muy amplio: 262m² (+15)",
       "🛏️ 4 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -3103,7 +3281,7 @@
     "detail_features": {},
     "pisos_id": "65058723814_106400",
     "score_details": [
-      "💎 +65% vs media sesena (2,473€/m² · ref 1,503) (+0)",
+      "💎 +65% vs media sesena (2,473€/m² · ref 1,496) (+0)",
       "📐 Tamaño mínimo: 97m² (+5)",
       "🛏️ 3 habitaciones (+5)",
       "🌿 Espacio exterior (+12)",
@@ -3117,6 +3295,42 @@
     "price_drop": null,
     "datos_insuficientes": false,
     "exterior": true,
+    "cumple_requisitos": true
+  },
+  {
+    "title": "Chalet en Esquivias",
+    "price": 265000,
+    "score": 19,
+    "location": "",
+    "m2": 228,
+    "rooms": 4,
+    "bathrooms": 3,
+    "url": "https://www.pisos.com/comprar/chalet-esquivias_centro_urbano-64242136279_108500/",
+    "source": "pisos.com",
+    "floor": "",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "\"GARSIERRA. Vivienda ubicada en la población.<br /> <br /> Municipio que dispone de todos los servicios básicos a su alcance, con oferta comercial y educativa, variedad de servicios de restauración y zonas verdes valoradas en las que poder realizar actividades al aire libre.<br /> <br /> Vivienda para quienes quieran vivir en una zona tranquila como para aquellos que busquen invertir para arrendamiento con una muy buena rentabilidad.<br /> <br /> Todo ello, además, con excelentes comunicaciones ",
+    "features": [],
+    "detail_features": {},
+    "pisos_id": "64242136279_108500",
+    "score_details": [
+      "💎 -11% vs media esquivias (1,162€/m² · ref 1,303) (+19)",
+      "📐 Muy amplio: 228m² (+15)",
+      "🛏️ 4 habitaciones (+5)",
+      "⚠️ Sin exterior detectado (-25 pts)",
+      "🚇 Cerca transporte público (+8)",
+      "🕸️ 66d en el mercado (-3)"
+    ],
+    "eur_m2": 1162,
+    "municipio": "esquivias",
+    "first_seen": "2026-06-23",
+    "last_seen": "2026-08-28",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
+    "exterior": false,
     "cumple_requisitos": true
   },
   {
@@ -3236,7 +3450,7 @@
     "detail_features": {},
     "pisos_id": "64198116308_100500",
     "score_details": [
-      "💎 -71% vs media sesena (430€/m² · ref 1,503) (+25)",
+      "💎 -71% vs media sesena (430€/m² · ref 1,496) (+25)",
       "📐 Muy amplio: 458m² (+15)",
       "🛏️ 4 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -3271,7 +3485,7 @@
     "detail_features": {},
     "pisos_id": "59186986719_992238",
     "score_details": [
-      "💎 -67% vs media ciempozuelos (749€/m² · ref 2,238) (+25)",
+      "💎 -67% vs media ciempozuelos (749€/m² · ref 2,258) (+25)",
       "📐 Muy amplio: 334m² (+15)",
       "🛏️ 5 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -3306,7 +3520,7 @@
     "detail_features": {},
     "pisos_id": "65856790607_100200",
     "score_details": [
-      "💎 -16% vs media sesena (1,268€/m² · ref 1,503) (+22)",
+      "💎 -15% vs media sesena (1,268€/m² · ref 1,496) (+22)",
       "📐 Muy amplio: 209m² (+15)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -3314,42 +3528,6 @@
     "eur_m2": 1268,
     "municipio": "sesena",
     "first_seen": "2026-08-12",
-    "last_seen": "2026-08-28",
-    "previous_price": null,
-    "price_drop": null,
-    "datos_insuficientes": false,
-    "exterior": false,
-    "cumple_requisitos": true
-  },
-  {
-    "title": "Chalet en Esquivias",
-    "price": 265000,
-    "score": 17,
-    "location": "",
-    "m2": 228,
-    "rooms": 4,
-    "bathrooms": 3,
-    "url": "https://www.pisos.com/comprar/chalet-esquivias_centro_urbano-64242136279_108500/",
-    "source": "pisos.com",
-    "floor": "",
-    "year_built": 0,
-    "conservation": "",
-    "energy_rating": "",
-    "description": "\"GARSIERRA. Vivienda ubicada en la población.<br /> <br /> Municipio que dispone de todos los servicios básicos a su alcance, con oferta comercial y educativa, variedad de servicios de restauración y zonas verdes valoradas en las que poder realizar actividades al aire libre.<br /> <br /> Vivienda para quienes quieran vivir en una zona tranquila como para aquellos que busquen invertir para arrendamiento con una muy buena rentabilidad.<br /> <br /> Todo ello, además, con excelentes comunicaciones ",
-    "features": [],
-    "detail_features": {},
-    "pisos_id": "64242136279_108500",
-    "score_details": [
-      "💎 -7% vs media esquivias (1,162€/m² · ref 1,243) (+17)",
-      "📐 Muy amplio: 228m² (+15)",
-      "🛏️ 4 habitaciones (+5)",
-      "⚠️ Sin exterior detectado (-25 pts)",
-      "🚇 Cerca transporte público (+8)",
-      "🕸️ 66d en el mercado (-3)"
-    ],
-    "eur_m2": 1162,
-    "municipio": "esquivias",
-    "first_seen": "2026-06-23",
     "last_seen": "2026-08-28",
     "previous_price": null,
     "price_drop": null,
@@ -3411,7 +3589,7 @@
     "detail_features": {},
     "pisos_id": "66678797199_100500",
     "score_details": [
-      "💎 -28% vs media navalcarnero (2,076€/m² · ref 2,889) (+25)",
+      "💎 -30% vs media navalcarnero (2,076€/m² · ref 2,959) (+25)",
       "📐 Amplio: 130m² (+12)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -3424,6 +3602,41 @@
     "price_drop": null,
     "datos_insuficientes": false,
     "exterior": false,
+    "cumple_requisitos": true
+  },
+  {
+    "title": "Piso en El Álamo",
+    "price": 255000,
+    "score": 17,
+    "location": "",
+    "m2": 70,
+    "rooms": 3,
+    "bathrooms": 2,
+    "url": "https://www.pisos.com/comprar/piso-el_alamo_centro_urbano-65889650970_108500/",
+    "source": "pisos.com",
+    "floor": "Bajo",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "Sin Limites Servicios vende en el casco urbano de El Almao, amplio piso de 70 m2 de tres habitaciones con armarios, salon con cocina incorporada, patio, dos baños completos con plato de ducha, suelos de porcelanico, ventanas de PVC, puertas de interior lacadas en blanco, puerta de entrada blindada, calefaccion electrica por conducto frio y calor[IW]",
+    "features": [],
+    "detail_features": {},
+    "pisos_id": "65889650970_108500",
+    "score_details": [
+      "💎 +48% vs media batres (3,643€/m² · ref 2,468) (+0)",
+      "📐 Justo: 70m² (+3)",
+      "🛏️ 3 habitaciones (+5)",
+      "🌿 Espacio exterior (+12)",
+      "🕸️ 57d en el mercado (-3)"
+    ],
+    "eur_m2": 3643,
+    "municipio": "batres",
+    "first_seen": "2026-07-02",
+    "last_seen": "2026-08-28",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
+    "exterior": true,
     "cumple_requisitos": true
   },
   {
@@ -3592,7 +3805,7 @@
     "detail_features": {},
     "pisos_id": "65907353718_101800",
     "score_details": [
-      "💎 +78% vs media sesena (2,674€/m² · ref 1,503) (+0)",
+      "💎 +79% vs media sesena (2,674€/m² · ref 1,496) (+0)",
       "📐 Tamaño mínimo: 86m² (+5)",
       "🛏️ 2 habitaciones (+2)",
       "🌿 Espacio exterior (+12)",
@@ -3608,6 +3821,78 @@
     "price_drop": 5000,
     "datos_insuficientes": false,
     "exterior": true,
+    "cumple_requisitos": true
+  },
+  {
+    "title": "Chalet en Illescas",
+    "price": 300000,
+    "score": 14,
+    "location": "",
+    "m2": 167,
+    "rooms": 3,
+    "bathrooms": 1,
+    "url": "https://www.pisos.com/comprar/chalet-illescas-66685915014_106500/",
+    "source": "pisos.com",
+    "floor": "",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "Inmobiliaria marina vende fantástico chalet independiente con amplia parcela en urbanización el negrete (con acceso desde el viso ...",
+    "features": [],
+    "detail_features": {},
+    "pisos_id": "66685915014_106500",
+    "score_details": [
+      "💎 -10% vs media illescas (1,796€/m² · ref 1,988) (+19)",
+      "📐 Muy amplio: 167m² (+15)",
+      "🛏️ 3 habitaciones (+5)",
+      "⚠️ Sin exterior detectado (-25 pts)"
+    ],
+    "eur_m2": 1796,
+    "municipio": "illescas",
+    "first_seen": "2026-08-02",
+    "last_seen": "2026-08-28",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
+    "exterior": false,
+    "cumple_requisitos": true
+  },
+  {
+    "title": "Piso en calle de San Lorenzo",
+    "price": 244000,
+    "score": 14,
+    "location": "Centro (Leganés)",
+    "m2": 86,
+    "rooms": 3,
+    "bathrooms": 1,
+    "url": "https://www.pisos.com/comprar/piso-leganes_centro28912-65927618205_513777/",
+    "source": "pisos.com",
+    "floor": "4ª planta",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "AGIL Inmobiliaria Vende vivienda en Leganés cuarta planta con obra de ascensor próxima a ejecución, derrama abonada en el precio de venta. Amplia vivienda de tres dormitorios y un baño, muy luminosa, A/Acondicionado en el salón, armarios empotrados, calefacción gas natural la vivienda se encuentra bien comunicada con metro y autobuses, rodeada de todos los servicios a mano. Pide información, solicita una visita.",
+    "features": [],
+    "detail_features": {},
+    "pisos_id": "65927618205_513777",
+    "score_details": [
+      "💎 -9% vs media leganes (2,837€/m² · ref 3,116) (+18)",
+      "📐 Tamaño mínimo: 86m² (+5)",
+      "🛏️ 3 habitaciones (+5)",
+      "⚠️ Sin exterior detectado (-25 pts)",
+      "🛗 Ascensor (+5)",
+      "🚇 Cerca transporte público (+8)",
+      "📉 Bajó 900€ (0%) (+1)",
+      "🕸️ 53d en el mercado (-3)"
+    ],
+    "eur_m2": 2837,
+    "municipio": "leganes",
+    "first_seen": "2026-07-06",
+    "last_seen": "2026-08-28",
+    "previous_price": 244900,
+    "price_drop": 900,
+    "datos_insuficientes": false,
+    "exterior": false,
     "cumple_requisitos": true
   },
   {
@@ -3629,7 +3914,7 @@
     "detail_features": {},
     "pisos_id": "65884708035_100200",
     "score_details": [
-      "💎 +48% vs media ciempozuelos (3,323€/m² · ref 2,238) (+0)",
+      "💎 +47% vs media ciempozuelos (3,323€/m² · ref 2,258) (+0)",
       "📐 62m² < 70m² mínimo (no cumple)",
       "🛏️ 2 habitaciones (+2)",
       "🌿 Espacio exterior (+12)",
@@ -3647,32 +3932,34 @@
     "cumple_requisitos": false
   },
   {
-    "title": "Chalet en Illescas",
-    "price": 300000,
+    "title": "Piso en Navalcarnero",
+    "price": 205000,
     "score": 13,
     "location": "",
-    "m2": 167,
+    "m2": 75,
     "rooms": 3,
-    "bathrooms": 1,
-    "url": "https://www.pisos.com/comprar/chalet-illescas-66685915014_106500/",
+    "bathrooms": 2,
+    "url": "https://www.pisos.com/comprar/piso-navalcarnero_centro_urbano-62555853488_100200/",
     "source": "pisos.com",
     "floor": "",
     "year_built": 0,
     "conservation": "",
     "energy_rating": "",
-    "description": "Inmobiliaria marina vende fantástico chalet independiente con amplia parcela en urbanización el negrete (con acceso desde el viso ...",
+    "description": "Agencia inmobiliaria de navalcarnero Piso recien reformado a 150 metros de la plaza segovia de 75 m² construidos Compuesto por: ...",
     "features": [],
     "detail_features": {},
-    "pisos_id": "66685915014_106500",
+    "pisos_id": "62555853488_100200",
     "score_details": [
-      "💎 -8% vs media illescas (1,796€/m² · ref 1,961) (+18)",
-      "📐 Muy amplio: 167m² (+15)",
+      "💎 -8% vs media navalcarnero (2,733€/m² · ref 2,959) (+17)",
+      "📐 Justo: 75m² (+3)",
       "🛏️ 3 habitaciones (+5)",
-      "⚠️ Sin exterior detectado (-25 pts)"
+      "⚠️ Sin exterior detectado (-25 pts)",
+      "🔧 Reformado (+5)",
+      "🚇 Cerca transporte público (+8)"
     ],
-    "eur_m2": 1796,
-    "municipio": "illescas",
-    "first_seen": "2026-08-02",
+    "eur_m2": 2733,
+    "municipio": "navalcarnero",
+    "first_seen": "2026-08-05",
     "last_seen": "2026-08-28",
     "previous_price": null,
     "price_drop": null,
@@ -3717,42 +4004,6 @@
     "cumple_requisitos": true
   },
   {
-    "title": "Piso en Navalcarnero",
-    "price": 205000,
-    "score": 12,
-    "location": "",
-    "m2": 75,
-    "rooms": 3,
-    "bathrooms": 2,
-    "url": "https://www.pisos.com/comprar/piso-navalcarnero_centro_urbano-62555853488_100200/",
-    "source": "pisos.com",
-    "floor": "",
-    "year_built": 0,
-    "conservation": "",
-    "energy_rating": "",
-    "description": "Agencia inmobiliaria de navalcarnero Piso recien reformado a 150 metros de la plaza segovia de 75 m² construidos Compuesto por: ...",
-    "features": [],
-    "detail_features": {},
-    "pisos_id": "62555853488_100200",
-    "score_details": [
-      "💎 -5% vs media navalcarnero (2,733€/m² · ref 2,889) (+16)",
-      "📐 Justo: 75m² (+3)",
-      "🛏️ 3 habitaciones (+5)",
-      "⚠️ Sin exterior detectado (-25 pts)",
-      "🔧 Reformado (+5)",
-      "🚇 Cerca transporte público (+8)"
-    ],
-    "eur_m2": 2733,
-    "municipio": "navalcarnero",
-    "first_seen": "2026-08-05",
-    "last_seen": "2026-08-28",
-    "previous_price": null,
-    "price_drop": null,
-    "datos_insuficientes": false,
-    "exterior": false,
-    "cumple_requisitos": true
-  },
-  {
     "title": "Piso en Urbanización El Quiñón",
     "price": 299000,
     "score": 12,
@@ -3771,7 +4022,7 @@
     "detail_features": {},
     "pisos_id": "65929298766_106100",
     "score_details": [
-      "💎 -0% vs media sesena (1,503€/m² · ref 1,503) (+12)",
+      "💎 +0% vs media sesena (1,503€/m² · ref 1,496) (+12)",
       "📐 Muy amplio: 199m² (+15)",
       "🛏️ 4 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -3841,7 +4092,7 @@
     "detail_features": {},
     "pisos_id": "65894518666_527024",
     "score_details": [
-      "💎 -9% vs media sesena (1,364€/m² · ref 1,503) (+18)",
+      "💎 -9% vs media sesena (1,364€/m² · ref 1,496) (+18)",
       "📐 Muy amplio: 209m² (+15)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -3892,6 +4143,40 @@
     "cumple_requisitos": true
   },
   {
+    "title": "Piso con 1 baño en Río Manzanares, Brezo",
+    "price": 163300,
+    "score": 10,
+    "location": "Brezo, Valdemoro",
+    "m2": 85,
+    "rooms": 4,
+    "bathrooms": 1,
+    "url": "https://www.fotocasa.es/es/comprar/vivienda/valdemoro/no-amueblado/185973095/d",
+    "source": "fotocasa.es",
+    "floor": "3ª Planta",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "",
+    "features": [],
+    "detail_features": {},
+    "pisos_id": "fotocasa:185973095",
+    "score_details": [
+      "💎 -25% vs media valdemoro (1,921€/m² · ref 2,566) (+25)",
+      "📐 Tamaño mínimo: 85m² (+5)",
+      "🛏️ 4 habitaciones (+5)",
+      "⚠️ Sin exterior detectado (-25 pts)"
+    ],
+    "eur_m2": 1921,
+    "municipio": "valdemoro",
+    "first_seen": "2026-08-28",
+    "last_seen": "2026-08-28",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
+    "exterior": false,
+    "cumple_requisitos": true
+  },
+  {
     "title": "Piso en calle de la Violeta",
     "price": 129000,
     "score": 9,
@@ -3910,7 +4195,7 @@
     "detail_features": {},
     "pisos_id": "60006702537_106000",
     "score_details": [
-      "💎 -30% vs media ciempozuelos (1,573€/m² · ref 2,238) (+25)",
+      "💎 -30% vs media ciempozuelos (1,573€/m² · ref 2,258) (+25)",
       "📐 Tamaño mínimo: 82m² (+5)",
       "🌿 Espacio exterior (+12)",
       "⚠️ Propiedad ocupada / sin posesión (-30 pts)",
@@ -3966,7 +4251,7 @@
   {
     "title": "Piso en calle del Río Tajo",
     "price": 169990,
-    "score": 7,
+    "score": 8,
     "location": "Descubre este luminoso y reformado piso de 67 metros cuadrados, perfecto para quienes buscan comodidad y estilo en su hogar. Con dos dormitorios y un baño completo,( también cuenta con instalación para realizar un baño completo en habitación principal) esta vivienda ofrece un espacio funcional y acogedor. La propiedad se encuentra en buen estado y cuenta con una moderna cocina americana totalmente amueblada, ideal para disfrutar de momentos en familia o con amigos. El piso es exterior, lo que garantiza una excelente iluminación natural en todas sus estancias. Además, dispone de calefacción eléctrica para mantener un ambiente cálido durante los meses más fríos y aire acondicionado en el salón para disfrutar los meses mas calurosos. Las ventanas de oscilobatientes de aluminio con doble acristalamiento climalit y los acabados en pintura lisa aportan un toque de calidad y confort. La puerta blindada proporciona mayor seguridad, mientras que el suelo de gres facilita su mantenimiento. La propiedad se entrega sin amueblar, permitiendo que puedas decorarla a tu gusto. Una oportunidad ideal para vivir en un espacio luminoso, reformado y listo para entrar a vivir.",
     "m2": 67,
     "rooms": 2,
@@ -3982,7 +4267,7 @@
     "detail_features": {},
     "pisos_id": "65915924886_100500",
     "score_details": [
-      "💎 -12% vs media navalcarnero (2,537€/m² · ref 2,889) (+20)",
+      "💎 -14% vs media navalcarnero (2,537€/m² · ref 2,959) (+21)",
       "📐 67m² < 70m² mínimo (no cumple)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -4203,7 +4488,7 @@
     "detail_features": {},
     "pisos_id": "65017729352_100200",
     "score_details": [
-      "💎 -7% vs media sesena (1,399€/m² · ref 1,503) (+17)",
+      "💎 -6% vs media sesena (1,399€/m² · ref 1,496) (+17)",
       "📐 Muy amplio: 148m² (+15)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -4238,7 +4523,7 @@
     "detail_features": {},
     "pisos_id": "60920841471_100500",
     "score_details": [
-      "💎 -13% vs media pinto (2,570€/m² · ref 2,950) (+21)",
+      "💎 -13% vs media pinto (2,570€/m² · ref 2,956) (+21)",
       "📐 Buen tamaño: 107m² (+8)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -4246,6 +4531,41 @@
     "eur_m2": 2570,
     "municipio": "pinto",
     "first_seen": "2026-08-04",
+    "last_seen": "2026-08-28",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
+    "exterior": false,
+    "cumple_requisitos": true
+  },
+  {
+    "title": "Piso en Zona de la Estación-Cruz Roja",
+    "price": 179900,
+    "score": 6,
+    "location": "Zona de la Estación-Cruz Roja (Illescas)",
+    "m2": 96,
+    "rooms": 3,
+    "bathrooms": 1,
+    "url": "https://www.pisos.com/comprar/piso-zona_de_la_estacion_cruz_roja-65841622047_100200/",
+    "source": "pisos.com",
+    "floor": "2ª planta",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "¡Vive en el corazón de illescas con una vivienda completamente reformada! Hay pisos bonitos… y luego están los que enamoran desde...",
+    "features": [],
+    "detail_features": {},
+    "pisos_id": "65841622047_100200",
+    "score_details": [
+      "💎 -6% vs media illescas (1,874€/m² · ref 1,988) (+16)",
+      "📐 Tamaño mínimo: 96m² (+5)",
+      "🛏️ 3 habitaciones (+5)",
+      "⚠️ Sin exterior detectado (-25 pts)",
+      "🔧 Reformado (+5)"
+    ],
+    "eur_m2": 1874,
+    "municipio": "illescas",
+    "first_seen": "2026-07-29",
     "last_seen": "2026-08-28",
     "previous_price": null,
     "price_drop": null,
@@ -4283,41 +4603,6 @@
     "eur_m2": 1211,
     "municipio": "arroyomolinos",
     "first_seen": "2026-07-04",
-    "last_seen": "2026-08-28",
-    "previous_price": null,
-    "price_drop": null,
-    "datos_insuficientes": false,
-    "exterior": false,
-    "cumple_requisitos": true
-  },
-  {
-    "title": "Piso en Zona de la Estación-Cruz Roja",
-    "price": 179900,
-    "score": 5,
-    "location": "Zona de la Estación-Cruz Roja (Illescas)",
-    "m2": 96,
-    "rooms": 3,
-    "bathrooms": 1,
-    "url": "https://www.pisos.com/comprar/piso-zona_de_la_estacion_cruz_roja-65841622047_100200/",
-    "source": "pisos.com",
-    "floor": "2ª planta",
-    "year_built": 0,
-    "conservation": "",
-    "energy_rating": "",
-    "description": "¡Vive en el corazón de illescas con una vivienda completamente reformada! Hay pisos bonitos… y luego están los que enamoran desde...",
-    "features": [],
-    "detail_features": {},
-    "pisos_id": "65841622047_100200",
-    "score_details": [
-      "💎 -4% vs media illescas (1,874€/m² · ref 1,961) (+15)",
-      "📐 Tamaño mínimo: 96m² (+5)",
-      "🛏️ 3 habitaciones (+5)",
-      "⚠️ Sin exterior detectado (-25 pts)",
-      "🔧 Reformado (+5)"
-    ],
-    "eur_m2": 1874,
-    "municipio": "illescas",
-    "first_seen": "2026-07-29",
     "last_seen": "2026-08-28",
     "previous_price": null,
     "price_drop": null,
@@ -4380,7 +4665,7 @@
     "detail_features": {},
     "pisos_id": "66724664231_532430",
     "score_details": [
-      "💎 -27% vs media leganes (2,294€/m² · ref 3,151) (+25)",
+      "💎 -26% vs media leganes (2,294€/m² · ref 3,116) (+25)",
       "📐 Tamaño mínimo: 85m² (+5)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -4503,6 +4788,41 @@
     "eur_m2": 2685,
     "municipio": "parla",
     "first_seen": "2026-06-24",
+    "last_seen": "2026-08-28",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
+    "exterior": false,
+    "cumple_requisitos": true
+  },
+  {
+    "title": "Dúplex en calle de Palencia",
+    "price": 145000,
+    "score": 5,
+    "location": "Naranjo-La Serna (Fuenlabrada)",
+    "m2": 119,
+    "rooms": 3,
+    "bathrooms": 3,
+    "url": "https://www.pisos.com/comprar/casa-loranca_nuevo_versalles_parque_miraflores-65849066383_109300/",
+    "source": "pisos.com",
+    "floor": "Bajo",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "",
+    "features": [],
+    "detail_features": {},
+    "pisos_id": "65849066383_109300",
+    "score_details": [
+      "💎 -57% vs media fuenlabrada (1,218€/m² · ref 2,814) (+25)",
+      "📐 Buen tamaño: 119m² (+8)",
+      "🛏️ 3 habitaciones (+5)",
+      "⚠️ Sin exterior detectado (-25 pts)",
+      "⚠️ Zona 'la serna' (-8 pts)"
+    ],
+    "eur_m2": 1218,
+    "municipio": "fuenlabrada",
+    "first_seen": "2026-07-28",
     "last_seen": "2026-08-28",
     "previous_price": null,
     "price_drop": null,
@@ -4705,7 +5025,7 @@
     "detail_features": {},
     "pisos_id": "61684403665_100500",
     "score_details": [
-      "💎 -12% vs media pinto (2,603€/m² · ref 2,950) (+20)",
+      "💎 -12% vs media pinto (2,603€/m² · ref 2,956) (+20)",
       "📐 Buen tamaño: 101m² (+8)",
       "🛏️ 1 hab < 2 mínimo (no cumple)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -4748,6 +5068,42 @@
     "eur_m2": 2884,
     "municipio": "mostoles",
     "first_seen": "2026-07-02",
+    "last_seen": "2026-08-28",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
+    "exterior": false,
+    "cumple_requisitos": true
+  },
+  {
+    "title": "Piso en Cuevas - Ilustración",
+    "price": 199200,
+    "score": 3,
+    "location": "Cuevas-Ilustración (Ciempozuelos)",
+    "m2": 89,
+    "rooms": 3,
+    "bathrooms": 1,
+    "url": "https://www.pisos.com/comprar/piso-cuevas_ilustracion-65006692897_100500/",
+    "source": "pisos.com",
+    "floor": "2ª planta",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "Hay viviendas que destacan por sus metros cuadrados. Otras por su ubicación. Algunas por sus reformas. Pero muy pocas consiguen re...",
+    "features": [],
+    "detail_features": {},
+    "pisos_id": "65006692897_100500",
+    "score_details": [
+      "💎 -1% vs media ciempozuelos (2,238€/m² · ref 2,258) (+13)",
+      "📐 Tamaño mínimo: 89m² (+5)",
+      "🛏️ 3 habitaciones (+5)",
+      "⚠️ Sin exterior detectado (-25 pts)",
+      "🚇 Cerca transporte público (+8)",
+      "🕸️ 51d en el mercado (-3)"
+    ],
+    "eur_m2": 2238,
+    "municipio": "ciempozuelos",
+    "first_seen": "2026-07-08",
     "last_seen": "2026-08-28",
     "previous_price": null,
     "price_drop": null,
@@ -4897,42 +5253,6 @@
     "cumple_requisitos": true
   },
   {
-    "title": "Piso en Cuevas - Ilustración",
-    "price": 199200,
-    "score": 2,
-    "location": "Cuevas-Ilustración (Ciempozuelos)",
-    "m2": 89,
-    "rooms": 3,
-    "bathrooms": 1,
-    "url": "https://www.pisos.com/comprar/piso-cuevas_ilustracion-65006692897_100500/",
-    "source": "pisos.com",
-    "floor": "2ª planta",
-    "year_built": 0,
-    "conservation": "",
-    "energy_rating": "",
-    "description": "Hay viviendas que destacan por sus metros cuadrados. Otras por su ubicación. Algunas por sus reformas. Pero muy pocas consiguen re...",
-    "features": [],
-    "detail_features": {},
-    "pisos_id": "65006692897_100500",
-    "score_details": [
-      "💎 -0% vs media ciempozuelos (2,238€/m² · ref 2,238) (+12)",
-      "📐 Tamaño mínimo: 89m² (+5)",
-      "🛏️ 3 habitaciones (+5)",
-      "⚠️ Sin exterior detectado (-25 pts)",
-      "🚇 Cerca transporte público (+8)",
-      "🕸️ 51d en el mercado (-3)"
-    ],
-    "eur_m2": 2238,
-    "municipio": "ciempozuelos",
-    "first_seen": "2026-07-08",
-    "last_seen": "2026-08-28",
-    "previous_price": null,
-    "price_drop": null,
-    "datos_insuficientes": false,
-    "exterior": false,
-    "cumple_requisitos": true
-  },
-  {
     "title": "Chalet en calle Río Miño, 7",
     "price": 289000,
     "score": 2,
@@ -5022,7 +5342,7 @@
     "detail_features": {},
     "pisos_id": "65888658473_106700",
     "score_details": [
-      "💎 +26% vs media illescas (2,467€/m² · ref 1,961) (+0)",
+      "💎 +24% vs media illescas (2,467€/m² · ref 1,988) (+0)",
       "📐 Justo: 75m² (+3)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -5117,6 +5437,41 @@
     "cumple_requisitos": true
   },
   {
+    "title": "Piso en La Estación - Psiquiátrico San José",
+    "price": 220000,
+    "score": 1,
+    "location": "Zona de la Estación-San Juan de Dios (Ciempozuelos)",
+    "m2": 91,
+    "rooms": 3,
+    "bathrooms": 2,
+    "url": "https://www.pisos.com/comprar/piso-zona_de_la_estacion_san_juan_de_dios-66764468965_100500/",
+    "source": "pisos.com",
+    "floor": "3ª planta",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "Hoy te presentamos este espectacular piso en ciempozuelos, una vivienda ideal para quienes buscan amplitud, comodidad y calidad de...",
+    "features": [],
+    "detail_features": {},
+    "pisos_id": "66764468965_100500",
+    "score_details": [
+      "💎 +7% vs media ciempozuelos (2,418€/m² · ref 2,258) (+8)",
+      "📐 Tamaño mínimo: 91m² (+5)",
+      "🛏️ 3 habitaciones (+5)",
+      "⚠️ Sin exterior detectado (-25 pts)",
+      "🚇 Cerca transporte público (+8)"
+    ],
+    "eur_m2": 2418,
+    "municipio": "ciempozuelos",
+    "first_seen": "2026-08-03",
+    "last_seen": "2026-08-28",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
+    "exterior": false,
+    "cumple_requisitos": true
+  },
+  {
     "title": "Piso en calle de Postas",
     "price": 93000,
     "score": 0,
@@ -5135,7 +5490,7 @@
     "detail_features": {},
     "pisos_id": "45931935391_100700",
     "score_details": [
-      "💎 -47% vs media ciempozuelos (1,192€/m² · ref 2,238) (+25)",
+      "💎 -47% vs media ciempozuelos (1,192€/m² · ref 2,258) (+25)",
       "📐 Justo: 78m² (+3)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -5171,7 +5526,7 @@
     "detail_features": {},
     "pisos_id": "65012106023_100500",
     "score_details": [
-      "💎 -46% vs media ciempozuelos (1,208€/m² · ref 2,238) (+25)",
+      "💎 -47% vs media ciempozuelos (1,208€/m² · ref 2,258) (+25)",
       "📐 Justo: 77m² (+3)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -5242,7 +5597,7 @@
     "detail_features": {},
     "pisos_id": "60005371989_100500",
     "score_details": [
-      "💎 -46% vs media ciempozuelos (1,215€/m² · ref 2,238) (+25)",
+      "💎 -46% vs media ciempozuelos (1,215€/m² · ref 2,258) (+25)",
       "📐 Tamaño mínimo: 87m² (+5)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -5279,7 +5634,7 @@
     "detail_features": {},
     "pisos_id": "54230470510_100700",
     "score_details": [
-      "💎 -46% vs media ciempozuelos (1,201€/m² · ref 2,238) (+25)",
+      "💎 -47% vs media ciempozuelos (1,201€/m² · ref 2,258) (+25)",
       "📐 Tamaño mínimo: 88m² (+5)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -5423,7 +5778,7 @@
     "detail_features": {},
     "pisos_id": "60030226946_100500",
     "score_details": [
-      "💎 -30% vs media ciempozuelos (1,573€/m² · ref 2,238) (+25)",
+      "💎 -30% vs media ciempozuelos (1,573€/m² · ref 2,258) (+25)",
       "📐 Tamaño mínimo: 82m² (+5)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -5459,7 +5814,7 @@
     "detail_features": {},
     "pisos_id": "65025416693_100500",
     "score_details": [
-      "💎 -15% vs media ciempozuelos (1,897€/m² · ref 2,238) (+22)",
+      "💎 -16% vs media ciempozuelos (1,897€/m² · ref 2,258) (+22)",
       "📐 68m² < 70m² mínimo (no cumple)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -5566,7 +5921,7 @@
     "detail_features": {},
     "pisos_id": "65073100743_100500",
     "score_details": [
-      "💎 -20% vs media ciempozuelos (1,786€/m² · ref 2,238) (+25)",
+      "💎 -21% vs media ciempozuelos (1,786€/m² · ref 2,258) (+25)",
       "📐 Tamaño mínimo: 84m² (+5)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -5599,8 +5954,8 @@
     "energy_rating": "",
     "description": "",
     "features": [
-      "aire acondicionado",
-      "calefaccion"
+      "calefaccion",
+      "aire acondicionado"
     ],
     "detail_features": {},
     "pisos_id": "fotocasa:189627842",
@@ -5642,7 +5997,7 @@
     "detail_features": {},
     "pisos_id": "66753860676_531934",
     "score_details": [
-      "💎 -0% vs media pinto (2,943€/m² · ref 2,950) (+13)",
+      "💎 -0% vs media pinto (2,943€/m² · ref 2,956) (+13)",
       "📐 54m² < 70m² mínimo (no cumple)",
       "🛏️ 1 hab < 2 mínimo (no cumple)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -5676,7 +6031,7 @@
     "detail_features": {},
     "pisos_id": "66739752922_100200",
     "score_details": [
-      "💎 +13% vs media ciempozuelos (2,540€/m² · ref 2,238) (+4)",
+      "💎 +12% vs media ciempozuelos (2,540€/m² · ref 2,258) (+5)",
       "📐 63m² < 70m² mínimo (no cumple)",
       "🛏️ 1 hab < 2 mínimo (no cumple)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -5885,36 +6240,43 @@
     "cumple_requisitos": false
   },
   {
-    "title": "Casa en calle de Pedro de Alvarado",
-    "price": 173000,
+    "title": "Dúplex en calle Arquímedes",
+    "price": 175000,
     "score": 0,
-    "location": "Centro (Leganés)",
-    "m2": 67,
+    "location": "Valdepelayo-Montepinos-Arroyo Culebro (Leganés)",
+    "m2": 45,
     "rooms": 1,
     "bathrooms": 1,
     "url": "https://www.pisos.com/comprar/casa-leganes_la_fortuna28917-66691681865_100700/",
     "source": "pisos.com",
-    "floor": "",
-    "year_built": 0,
+    "floor": "1ª planta",
+    "year_built": 1976,
     "conservation": "",
     "energy_rating": "",
-    "description": "No cobramos comisión de intermediación al comprador Inmueble en rentabilidad Excelente oportunidad de adquirir esta vivienda en...",
-    "features": [],
+    "description": "NO COBRAMOS COMISIÓN DE INTERMEDIACIÓN AL COMPRADOR\n\nINMUEBLE EN RENTABILIDAD\n\nExcelente oportunidad de adquirir esta vivienda en propiedad ubicada en la localidad de Leganés (Madrid).\n\nDisponemos de este inmueble en edificio residencial que puedes adquirir en propiedad, muy bien distribuido optimizando los espacios, ofreciendo todo lo que necesitas para una vida cómoda y moderna. Desde el momento en que cruces la puerta de entrada, te sentirás acogido por su ambiente cálido. Este inmueble es id",
+    "features": [
+      "Superficie construida: 45 m²",
+      "Superficie solar: 45 m²",
+      "Habitaciones: 1",
+      "Baños: 1",
+      "Antigüedad: Más de 50 años",
+      "Referencia: RARE-03911"
+    ],
     "detail_features": {},
     "pisos_id": "66691681865_100700",
     "score_details": [
-      "💎 -18% vs media leganes (2,582€/m² · ref 3,151) (+24)",
-      "📐 67m² < 70m² mínimo (no cumple)",
+      "💎 +25% vs media leganes (3,889€/m² · ref 3,116) (+0)",
+      "📐 45m² < 70m² mínimo (no cumple)",
       "🛏️ 1 hab < 2 mínimo (no cumple)",
       "⚠️ Sin exterior detectado (-25 pts)",
-      "📉 Bajó 2,000€ (1%) (+1)"
+      "🚇 Cerca transporte público (+8)"
     ],
-    "eur_m2": 2582,
+    "eur_m2": 3889,
     "municipio": "leganes",
     "first_seen": "2026-08-14",
     "last_seen": "2026-08-28",
-    "previous_price": 175000,
-    "price_drop": 2000,
+    "previous_price": null,
+    "price_drop": null,
     "datos_insuficientes": false,
     "exterior": false,
     "cumple_requisitos": false
@@ -6043,7 +6405,7 @@
     "detail_features": {},
     "pisos_id": "61671261137_100200",
     "score_details": [
-      "💎 +17% vs media alcorcon (3,870€/m² · ref 3,298) (+2)",
+      "💎 +17% vs media alcorcon (3,870€/m² · ref 3,313) (+2)",
       "📐 46m² < 70m² mínimo (no cumple)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -6114,7 +6476,7 @@
     "detail_features": {},
     "pisos_id": "66667276821_100500",
     "score_details": [
-      "💎 -2% vs media ciempozuelos (2,194€/m² · ref 2,238) (+14)",
+      "💎 -3% vs media ciempozuelos (2,194€/m² · ref 2,258) (+14)",
       "📐 Tamaño mínimo: 82m² (+5)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -6220,7 +6582,7 @@
     "detail_features": {},
     "pisos_id": "66684345861_106100",
     "score_details": [
-      "💎 +51% vs media ciempozuelos (3,370€/m² · ref 2,238) (+0)",
+      "💎 +49% vs media ciempozuelos (3,370€/m² · ref 2,258) (+0)",
       "📐 54m² < 70m² mínimo (no cumple)",
       "🛏️ 1 hab < 2 mínimo (no cumple)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -6329,7 +6691,7 @@
     "detail_features": {},
     "pisos_id": "64247094766_100200",
     "score_details": [
-      "💎 +73% vs media leganes (5,441€/m² · ref 3,151) (+0)",
+      "💎 +75% vs media leganes (5,441€/m² · ref 3,116) (+0)",
       "📐 34m² < 70m² mínimo (no cumple)",
       "⚠️ Sin exterior detectado (-25 pts)",
       "🏗️ Obra nueva (+10)",
@@ -6364,7 +6726,7 @@
     "detail_features": {},
     "pisos_id": "65062537646_100500",
     "score_details": [
-      "💎 -22% vs media sesena (1,167€/m² · ref 1,503) (+25)",
+      "💎 -22% vs media sesena (1,167€/m² · ref 1,496) (+25)",
       "📐 Muy amplio: 159m² (+15)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -6400,7 +6762,7 @@
     "detail_features": {},
     "pisos_id": "65833450198_106100",
     "score_details": [
-      "💎 +6% vs media illescas (2,078€/m² · ref 1,961) (+9)",
+      "💎 +5% vs media illescas (2,078€/m² · ref 1,988) (+10)",
       "📐 Tamaño mínimo: 90m² (+5)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -6471,7 +6833,7 @@
     "detail_features": {},
     "pisos_id": "65056876125_101800",
     "score_details": [
-      "💎 -5% vs media ciempozuelos (2,129€/m² · ref 2,238) (+16)",
+      "💎 -6% vs media ciempozuelos (2,129€/m² · ref 2,258) (+16)",
       "📐 Tamaño mínimo: 89m² (+5)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -6648,7 +7010,7 @@
     "detail_features": {},
     "pisos_id": "66744272959_108900",
     "score_details": [
-      "💎 +61% vs media sesena (2,416€/m² · ref 1,503) (+0)",
+      "💎 +61% vs media sesena (2,416€/m² · ref 1,496) (+0)",
       "📐 Tamaño mínimo: 82m² (+5)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -6822,7 +7184,7 @@
     "detail_features": {},
     "pisos_id": "65886591656_993744",
     "score_details": [
-      "💎 +3% vs media alcorcon (3,387€/m² · ref 3,298) (+11)",
+      "💎 +2% vs media alcorcon (3,387€/m² · ref 3,313) (+11)",
       "📐 62m² < 70m² mínimo (no cumple)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -6898,7 +7260,7 @@
     "detail_features": {},
     "pisos_id": "fotocasa:190093662",
     "score_details": [
-      "💎 +9% vs media alcorcon (3,582€/m² · ref 3,298) (+7)",
+      "💎 +8% vs media alcorcon (3,582€/m² · ref 3,313) (+7)",
       "📐 60m² < 70m² mínimo (no cumple)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -6968,7 +7330,7 @@
     "detail_features": {},
     "pisos_id": "65012418982_100500",
     "score_details": [
-      "💎 -31% vs media sesena (1,044€/m² · ref 1,503) (+25)",
+      "💎 -30% vs media sesena (1,044€/m² · ref 1,496) (+25)",
       "📐 Muy amplio: 206m² (+15)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -7039,7 +7401,7 @@
     "detail_features": {},
     "pisos_id": "65857232582_526848",
     "score_details": [
-      "💎 -0% vs media leganes (3,143€/m² · ref 3,151) (+13)",
+      "💎 +1% vs media leganes (3,143€/m² · ref 3,116) (+12)",
       "📐 Justo: 70m² (+3)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -7048,41 +7410,6 @@
     "eur_m2": 3143,
     "municipio": "leganes",
     "first_seen": "2026-07-14",
-    "last_seen": "2026-08-28",
-    "previous_price": null,
-    "price_drop": null,
-    "datos_insuficientes": false,
-    "exterior": false,
-    "cumple_requisitos": true
-  },
-  {
-    "title": "Piso en La Estación - Psiquiátrico San José",
-    "price": 220000,
-    "score": 0,
-    "location": "Zona de la Estación-San Juan de Dios (Ciempozuelos)",
-    "m2": 91,
-    "rooms": 3,
-    "bathrooms": 2,
-    "url": "https://www.pisos.com/comprar/piso-zona_de_la_estacion_san_juan_de_dios-66764468965_100500/",
-    "source": "pisos.com",
-    "floor": "3ª planta",
-    "year_built": 0,
-    "conservation": "",
-    "energy_rating": "",
-    "description": "Hoy te presentamos este espectacular piso en ciempozuelos, una vivienda ideal para quienes buscan amplitud, comodidad y calidad de...",
-    "features": [],
-    "detail_features": {},
-    "pisos_id": "66764468965_100500",
-    "score_details": [
-      "💎 +8% vs media ciempozuelos (2,418€/m² · ref 2,238) (+7)",
-      "📐 Tamaño mínimo: 91m² (+5)",
-      "🛏️ 3 habitaciones (+5)",
-      "⚠️ Sin exterior detectado (-25 pts)",
-      "🚇 Cerca transporte público (+8)"
-    ],
-    "eur_m2": 2418,
-    "municipio": "ciempozuelos",
-    "first_seen": "2026-08-03",
     "last_seen": "2026-08-28",
     "previous_price": null,
     "price_drop": null,
@@ -7214,7 +7541,7 @@
     "detail_features": {},
     "pisos_id": "66675869111_100200",
     "score_details": [
-      "💎 +10% vs media leganes (3,462€/m² · ref 3,151) (+6)",
+      "💎 +11% vs media leganes (3,462€/m² · ref 3,116) (+6)",
       "📐 65m² < 70m² mínimo (no cumple)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -7354,7 +7681,7 @@
     "detail_features": {},
     "pisos_id": "65903513323_997852",
     "score_details": [
-      "💎 -7% vs media alcorcon (3,067€/m² · ref 3,298) (+17)",
+      "💎 -7% vs media alcorcon (3,067€/m² · ref 3,313) (+17)",
       "📐 Justo: 75m² (+3)",
       "🛏️ 4 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -7427,7 +7754,7 @@
     "detail_features": {},
     "pisos_id": "66761111845_100200",
     "score_details": [
-      "💎 +38% vs media sesena (2,072€/m² · ref 1,503) (+0)",
+      "💎 +39% vs media sesena (2,072€/m² · ref 1,496) (+0)",
       "📐 Buen tamaño: 111m² (+8)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -7531,7 +7858,7 @@
     "detail_features": {},
     "pisos_id": "66698709540_100500",
     "score_details": [
-      "💎 +0% vs media pinto (2,956€/m² · ref 2,950) (+12)",
+      "💎 -0% vs media pinto (2,956€/m² · ref 2,956) (+12)",
       "📐 Tamaño mínimo: 80m² (+5)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -7601,7 +7928,7 @@
     "detail_features": {},
     "pisos_id": "65053646954_100500",
     "score_details": [
-      "💎 +1% vs media alcorcon (3,318€/m² · ref 3,298) (+12)",
+      "💎 +0% vs media alcorcon (3,318€/m² · ref 3,313) (+12)",
       "📐 Justo: 72m² (+3)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -7632,16 +7959,15 @@
     "year_built": 0,
     "conservation": "",
     "energy_rating": "",
-    "description": "INMUEBLE SIN POSESION Activo adjudicado en subasta sin posesión Actualmente, no es posible realizar visitas al interior del inmueble. Las fotografías pueden no reflejar el estado actual de la propiedad. El precio del inmueble ha sido fijado en atención a que el inmueble se adquiera por el comprador en estado de ocupado por lo que no aplicaría dicho precio si en el momento de formalización de la escritura pública el inmueble se encontrara libre de ocupantes. En Magna 4 Inmobiliaria somos especial",
+    "description": "Inmueble sin posesion Activo adjudicado en subasta sin posesión Actualmente, no es posible realizar visitas al interior del inmue...",
     "features": [],
     "detail_features": {},
     "pisos_id": "65048324983_106100",
     "score_details": [
-      "💎 -51% vs media illescas (968€/m² · ref 1,961) (+25)",
+      "💎 -51% vs media illescas (968€/m² · ref 1,988) (+25)",
       "📐 Muy amplio: 247m² (+15)",
       "🛏️ 4 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
-      "🚇 Cerca transporte público (+8)",
       "⚠️ Propiedad ocupada / sin posesión (-30 pts)",
       "🕸️ 60d en el mercado (-3)"
     ],
@@ -7744,7 +8070,7 @@
     "detail_features": {},
     "pisos_id": "65885258319_100200",
     "score_details": [
-      "💎 +10% vs media illescas (2,161€/m² · ref 1,961) (+6)",
+      "💎 +9% vs media illescas (2,161€/m² · ref 1,988) (+7)",
       "📐 Buen tamaño: 111m² (+8)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -7816,7 +8142,7 @@
     "detail_features": {},
     "pisos_id": "64177104794_526195",
     "score_details": [
-      "💎 +29% vs media ciempozuelos (2,892€/m² · ref 2,238) (+0)",
+      "💎 +28% vs media ciempozuelos (2,892€/m² · ref 2,258) (+0)",
       "📐 Tamaño mínimo: 83m² (+5)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -7889,7 +8215,7 @@
     "detail_features": {},
     "pisos_id": "65064927835_100200",
     "score_details": [
-      "💎 +19% vs media ciempozuelos (2,659€/m² · ref 2,238) (+1)",
+      "💎 +18% vs media ciempozuelos (2,659€/m² · ref 2,258) (+1)",
       "📐 Tamaño mínimo: 91m² (+5)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -8033,7 +8359,7 @@
     "detail_features": {},
     "pisos_id": "65922489148_100500",
     "score_details": [
-      "💎 +49% vs media sesena (2,232€/m² · ref 1,503) (+0)",
+      "💎 +49% vs media sesena (2,232€/m² · ref 1,496) (+0)",
       "📐 Buen tamaño: 112m² (+8)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -8176,7 +8502,7 @@
     "detail_features": {},
     "pisos_id": "65880665233_108900",
     "score_details": [
-      "💎 +39% vs media sesena (2,091€/m² · ref 1,503) (+0)",
+      "💎 +40% vs media sesena (2,091€/m² · ref 1,496) (+0)",
       "📐 Amplio: 121m² (+12)",
       "🛏️ 4 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -8210,7 +8536,7 @@
     "detail_features": {},
     "pisos_id": "5802127191_109700",
     "score_details": [
-      "💎 +14% vs media ciempozuelos (2,561€/m² · ref 2,238) (+3)",
+      "💎 +13% vs media ciempozuelos (2,561€/m² · ref 2,258) (+4)",
       "📐 Tamaño mínimo: 99m² (+5)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -8317,7 +8643,7 @@
     "detail_features": {},
     "pisos_id": "66756855142_106100",
     "score_details": [
-      "💎 +14% vs media leganes (3,592€/m² · ref 3,151) (+4)",
+      "💎 +15% vs media leganes (3,592€/m² · ref 3,116) (+3)",
       "📐 Justo: 71m² (+3)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -8352,7 +8678,7 @@
     "detail_features": {},
     "pisos_id": "65038659280_528592",
     "score_details": [
-      "💎 -45% vs media leganes (1,723€/m² · ref 3,151) (+25)",
+      "💎 -45% vs media leganes (1,723€/m² · ref 3,116) (+25)",
       "📐 Muy amplio: 148m² (+15)",
       "🛏️ 4 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -8496,7 +8822,7 @@
     "detail_features": {},
     "pisos_id": "65855306287_100500",
     "score_details": [
-      "💎 +17% vs media leganes (3,700€/m² · ref 3,151) (+2)",
+      "💎 +19% vs media leganes (3,700€/m² · ref 3,116) (+1)",
       "📐 Justo: 70m² (+3)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -8636,7 +8962,7 @@
     "detail_features": {},
     "pisos_id": "61710779867_106000",
     "score_details": [
-      "💎 +16% vs media leganes (3,662€/m² · ref 3,151) (+2)",
+      "💎 +18% vs media leganes (3,662€/m² · ref 3,116) (+2)",
       "📐 Justo: 71m² (+3)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -8783,7 +9109,7 @@
     "detail_features": {},
     "pisos_id": "65098931487_100200",
     "score_details": [
-      "💎 +18% vs media ciempozuelos (2,640€/m² · ref 2,238) (+1)",
+      "💎 +17% vs media ciempozuelos (2,640€/m² · ref 2,258) (+2)",
       "📐 Buen tamaño: 100m² (+8)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -8964,7 +9290,7 @@
     "detail_features": {},
     "pisos_id": "65863332549_100200",
     "score_details": [
-      "💎 +27% vs media pinto (3,736€/m² · ref 2,950) (+0)",
+      "💎 +26% vs media pinto (3,736€/m² · ref 2,956) (+0)",
       "📐 Justo: 72m² (+3)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -8998,7 +9324,7 @@
     "detail_features": {},
     "pisos_id": "65025458617_106400",
     "score_details": [
-      "💎 -5% vs media leganes (3,000€/m² · ref 3,151) (+15)",
+      "💎 -4% vs media leganes (3,000€/m² · ref 3,116) (+15)",
       "📐 Tamaño mínimo: 90m² (+5)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -9176,7 +9502,7 @@
     "detail_features": {},
     "pisos_id": "65066583642_100500",
     "score_details": [
-      "💎 -39% vs media pinto (1,800€/m² · ref 2,950) (+25)",
+      "💎 -39% vs media pinto (1,800€/m² · ref 2,956) (+25)",
       "📐 Muy amplio: 155m² (+15)",
       "🛏️ 4 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -9317,7 +9643,7 @@
     "detail_features": {},
     "pisos_id": "65053697855_106100",
     "score_details": [
-      "💎 +5% vs media leganes (3,322€/m² · ref 3,151) (+9)",
+      "💎 +7% vs media leganes (3,322€/m² · ref 3,116) (+8)",
       "📐 Tamaño mínimo: 87m² (+5)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -9354,7 +9680,7 @@
     "detail_features": {},
     "pisos_id": "65082437218_106400",
     "score_details": [
-      "💎 +15% vs media pinto (3,400€/m² · ref 2,950) (+3)",
+      "💎 +15% vs media pinto (3,400€/m² · ref 2,956) (+3)",
       "📐 Tamaño mínimo: 85m² (+5)",
       "🛏️ 3 habitaciones (+5)",
       "⚠️ Sin exterior detectado (-25 pts)",
@@ -9390,7 +9716,7 @@
     "detail_features": {},
     "pisos_id": "66735888911_100500",
     "score_details": [
-      "💎 -6% vs media alcorcon (3,104€/m² · ref 3,298) (+16)",
+      "💎 -6% vs media alcorcon (3,104€/m² · ref 3,313) (+16)",
       "📐 Tamaño mínimo: 96m² (+5)",
       "🛏️ 2 habitaciones (+2)",
       "⚠️ Sin exterior detectado (-25 pts)"
@@ -9398,6 +9724,115 @@
     "eur_m2": 3104,
     "municipio": "alcorcon",
     "first_seen": "2026-08-11",
+    "last_seen": "2026-08-28",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
+    "exterior": false,
+    "cumple_requisitos": true
+  },
+  {
+    "title": "Piso en Avenida de Castilla-La Mancha",
+    "price": 230000,
+    "score": 0,
+    "location": "Centro (Illescas)",
+    "m2": 81,
+    "rooms": 2,
+    "bathrooms": 2,
+    "url": "https://www.pisos.com/comprar/piso-illescas_centro-66690264600_100700/",
+    "source": "pisos.com",
+    "floor": "2ª planta",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "No cobramos comisión de intermediación al comprador Excelente oportunidad de adquirir esta vivienda en propiedad ubicada en la lo...",
+    "features": [],
+    "detail_features": {},
+    "pisos_id": "66690264600_100700",
+    "score_details": [
+      "💎 +43% vs media illescas (2,840€/m² · ref 1,988) (+0)",
+      "📐 Tamaño mínimo: 81m² (+5)",
+      "🛏️ 2 habitaciones (+2)",
+      "⚠️ Sin exterior detectado (-25 pts)"
+    ],
+    "eur_m2": 2840,
+    "municipio": "illescas",
+    "first_seen": "2026-08-01",
+    "last_seen": "2026-08-28",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
+    "exterior": false,
+    "cumple_requisitos": true
+  },
+  {
+    "title": "Piso con ascensor en El Quiñón",
+    "price": 249900,
+    "score": 0,
+    "location": "El Quiñón , Seseña",
+    "m2": 115,
+    "rooms": 3,
+    "bathrooms": 2,
+    "url": "https://www.fotocasa.es/es/comprar/vivienda/sesena/aire-acondicionado-calefaccion-parking-trastero-ascensor-piscina/190567560/d",
+    "source": "fotocasa.es",
+    "floor": "1ª Planta",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "",
+    "features": [
+      "calefaccion",
+      "ascensor",
+      "aire acondicionado"
+    ],
+    "detail_features": {},
+    "pisos_id": "fotocasa:190567560",
+    "score_details": [
+      "💎 +45% vs media sesena (2,173€/m² · ref 1,496) (+0)",
+      "📐 Buen tamaño: 115m² (+8)",
+      "🛏️ 3 habitaciones (+5)",
+      "⚠️ Sin exterior detectado (-25 pts)",
+      "🛗 Ascensor (+5)",
+      "⚠️ Zona 'el quiñón' (-3 pts)"
+    ],
+    "eur_m2": 2173,
+    "municipio": "sesena",
+    "first_seen": "2026-08-28",
+    "last_seen": "2026-08-28",
+    "previous_price": null,
+    "price_drop": null,
+    "datos_insuficientes": false,
+    "exterior": false,
+    "cumple_requisitos": true
+  },
+  {
+    "title": "Piso en calle de Barcelona",
+    "price": 267260,
+    "score": 0,
+    "location": "Avanzada-La Cueva (Fuenlabrada)",
+    "m2": 73,
+    "rooms": 3,
+    "bathrooms": 1,
+    "url": "https://www.pisos.com/comprar/piso-avanzada_la_cueva28945-66680833715_510357/",
+    "source": "pisos.com",
+    "floor": "Bajo",
+    "year_built": 0,
+    "conservation": "",
+    "energy_rating": "",
+    "description": "",
+    "features": [],
+    "detail_features": {},
+    "pisos_id": "66680833715_510357",
+    "score_details": [
+      "💎 +30% vs media fuenlabrada (3,661€/m² · ref 2,814) (+0)",
+      "📐 Justo: 73m² (+3)",
+      "🛏️ 3 habitaciones (+5)",
+      "⚠️ Sin exterior detectado (-25 pts)",
+      "⚠️ Zona 'la cueva' (-10 pts)"
+    ],
+    "eur_m2": 3661,
+    "municipio": "fuenlabrada",
+    "first_seen": "2026-08-09",
     "last_seen": "2026-08-28",
     "previous_price": null,
     "price_drop": null,
