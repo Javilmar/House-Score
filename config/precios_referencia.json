@@ -3,44 +3,44 @@
   "source": "median_own",
   "municipios": {
     "getafe": {
-      "eur_m2": 3174,
-      "n": 35
+      "eur_m2": 3226,
+      "n": 36
     },
     "leganes": {
-      "eur_m2": 3133,
-      "n": 42
+      "eur_m2": 3090,
+      "n": 40
     },
     "mostoles": {
-      "eur_m2": 3109,
-      "n": 33
+      "eur_m2": 3126,
+      "n": 34
     },
     "alcorcon": {
       "eur_m2": 3280,
       "n": 30
     },
     "fuenlabrada": {
-      "eur_m2": 2953,
-      "n": 33
+      "eur_m2": 2814,
+      "n": 32
     },
     "parla": {
-      "eur_m2": 2620,
-      "n": 42
+      "eur_m2": 2500,
+      "n": 41
     },
     "pinto": {
-      "eur_m2": 2910,
+      "eur_m2": 2934,
       "n": 27
     },
     "valdemoro": {
       "eur_m2": 2566,
-      "n": 27
+      "n": 28
     },
     "ciempozuelos": {
-      "eur_m2": 2248,
-      "n": 52
+      "eur_m2": 2294,
+      "n": 54
     },
     "humanes_de_madrid": {
-      "eur_m2": 2692,
-      "n": 47
+      "eur_m2": 2693,
+      "n": 46
     },
     "grinon": {
       "eur_m2": 2662,
@@ -63,20 +63,20 @@
       "n": 25
     },
     "serranillos_del_valle": {
-      "eur_m2": 1747,
-      "n": 50
+      "eur_m2": 2104,
+      "n": 33
     },
     "moraleja_de_enmedio": {
       "eur_m2": 2292,
-      "n": 15
+      "n": 14
     },
     "arroyomolinos": {
       "eur_m2": 403,
       "n": 21
     },
     "illescas": {
-      "eur_m2": 1988,
-      "n": 35
+      "eur_m2": 1874,
+      "n": 37
     },
     "sesena": {
       "eur_m2": 1496,
@@ -87,8 +87,8 @@
       "n": 64
     },
     "ugena": {
-      "eur_m2": 1016,
-      "n": 44
+      "eur_m2": 1024,
+      "n": 45
     },
     "esquivias": {
       "eur_m2": 1303,
@@ -97,12 +97,12 @@
   },
   "zonas": {
     "madrid_sur": {
-      "eur_m2": 2692,
-      "n": 556
+      "eur_m2": 2704,
+      "n": 538
     },
     "toledo_norte": {
-      "eur_m2": 1432,
-      "n": 250
+      "eur_m2": 1439,
+      "n": 253
     }
   }
 }
