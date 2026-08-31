@@ -1,49 +1,49 @@
 {
-  "updated": "2026-08-30",
+  "updated": "2026-08-31",
   "source": "median_own",
   "municipios": {
     "getafe": {
-      "eur_m2": 3231,
-      "n": 37
-    },
-    "leganes": {
-      "eur_m2": 3146,
-      "n": 40
-    },
-    "mostoles": {
-      "eur_m2": 3143,
+      "eur_m2": 3174,
       "n": 35
     },
+    "leganes": {
+      "eur_m2": 3118,
+      "n": 38
+    },
+    "mostoles": {
+      "eur_m2": 3085,
+      "n": 31
+    },
     "alcorcon": {
-      "eur_m2": 3418,
+      "eur_m2": 3316,
       "n": 32
     },
     "fuenlabrada": {
-      "eur_m2": 2779,
-      "n": 31
+      "eur_m2": 2844,
+      "n": 32
     },
     "parla": {
-      "eur_m2": 2455,
-      "n": 41
+      "eur_m2": 2428,
+      "n": 44
     },
     "pinto": {
       "eur_m2": 2926,
-      "n": 26
+      "n": 28
     },
     "valdemoro": {
-      "eur_m2": 2566,
+      "eur_m2": 2544,
       "n": 28
     },
     "ciempozuelos": {
-      "eur_m2": 2416,
-      "n": 53
+      "eur_m2": 2248,
+      "n": 52
     },
     "humanes_de_madrid": {
       "eur_m2": 2694,
       "n": 45
     },
     "grinon": {
-      "eur_m2": 2709,
+      "eur_m2": 2662,
       "n": 7
     },
     "navalcarnero": {
@@ -63,8 +63,8 @@
       "n": 25
     },
     "serranillos_del_valle": {
-      "eur_m2": 1764,
-      "n": 31
+      "eur_m2": 2104,
+      "n": 33
     },
     "moraleja_de_enmedio": {
       "eur_m2": 2292,
@@ -75,34 +75,34 @@
       "n": 21
     },
     "illescas": {
-      "eur_m2": 2033,
-      "n": 36
+      "eur_m2": 2078,
+      "n": 35
     },
     "sesena": {
-      "eur_m2": 1505,
+      "eur_m2": 1510,
       "n": 46
     },
     "yeles": {
       "eur_m2": 1733,
-      "n": 62
+      "n": 61
     },
     "ugena": {
       "eur_m2": 1090,
       "n": 44
     },
     "esquivias": {
-      "eur_m2": 1212,
-      "n": 62
+      "eur_m2": 1180,
+      "n": 61
     }
   },
   "zonas": {
     "madrid_sur": {
-      "eur_m2": 2704,
-      "n": 538
+      "eur_m2": 2678,
+      "n": 537
     },
     "toledo_norte": {
-      "eur_m2": 1482,
-      "n": 250
+      "eur_m2": 1474,
+      "n": 247
     }
   }
 }
