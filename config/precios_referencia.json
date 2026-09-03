@@ -3,52 +3,52 @@
   "source": "median_own",
   "municipios": {
     "getafe": {
-      "eur_m2": 3102,
-      "n": 34
+      "eur_m2": 3174,
+      "n": 35
     },
     "leganes": {
-      "eur_m2": 3191,
+      "eur_m2": 3254,
       "n": 41
     },
     "mostoles": {
-      "eur_m2": 3154,
-      "n": 33
+      "eur_m2": 3156,
+      "n": 36
     },
     "alcorcon": {
-      "eur_m2": 3276,
-      "n": 32
+      "eur_m2": 3318,
+      "n": 31
     },
     "fuenlabrada": {
       "eur_m2": 2953,
       "n": 31
     },
     "parla": {
-      "eur_m2": 2521,
+      "eur_m2": 2478,
       "n": 44
     },
     "pinto": {
-      "eur_m2": 2943,
-      "n": 25
+      "eur_m2": 2938,
+      "n": 26
     },
     "valdemoro": {
-      "eur_m2": 2599,
-      "n": 28
+      "eur_m2": 2632,
+      "n": 27
     },
     "ciempozuelos": {
-      "eur_m2": 2330,
-      "n": 53
+      "eur_m2": 2328,
+      "n": 54
     },
     "humanes_de_madrid": {
       "eur_m2": 2741,
       "n": 44
     },
     "grinon": {
-      "eur_m2": 2709,
-      "n": 10
+      "eur_m2": 2686,
+      "n": 8
     },
     "navalcarnero": {
-      "eur_m2": 2811,
-      "n": 24
+      "eur_m2": 2787,
+      "n": 25
     },
     "torrejon_de_la_calzada": {
       "eur_m2": 2590,
@@ -59,8 +59,8 @@
       "n": 17
     },
     "batres": {
-      "eur_m2": 2468,
-      "n": 27
+      "eur_m2": 2470,
+      "n": 26
     },
     "serranillos_del_valle": {
       "eur_m2": 2116,
@@ -75,16 +75,16 @@
       "n": 21
     },
     "illescas": {
-      "eur_m2": 1961,
-      "n": 35
+      "eur_m2": 1918,
+      "n": 32
     },
     "sesena": {
-      "eur_m2": 1505,
-      "n": 46
+      "eur_m2": 1503,
+      "n": 45
     },
     "yeles": {
-      "eur_m2": 1707,
-      "n": 62
+      "eur_m2": 1681,
+      "n": 63
     },
     "ugena": {
       "eur_m2": 1157,
@@ -98,11 +98,11 @@
   "zonas": {
     "madrid_sur": {
       "eur_m2": 2692,
-      "n": 538
+      "n": 540
     },
     "toledo_norte": {
-      "eur_m2": 1500,
-      "n": 244
+      "eur_m2": 1490,
+      "n": 241
     }
   }
 }
