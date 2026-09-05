@@ -1,33 +1,33 @@
 {
-  "updated": "2026-09-04",
+  "updated": "2026-09-05",
   "source": "median_own",
   "municipios": {
     "getafe": {
       "eur_m2": 3231,
-      "n": 37
+      "n": 35
     },
     "leganes": {
-      "eur_m2": 3222,
-      "n": 40
+      "eur_m2": 3191,
+      "n": 41
     },
     "mostoles": {
-      "eur_m2": 3232,
-      "n": 33
+      "eur_m2": 3085,
+      "n": 31
     },
     "alcorcon": {
-      "eur_m2": 3368,
-      "n": 29
+      "eur_m2": 3383,
+      "n": 30
     },
     "fuenlabrada": {
-      "eur_m2": 2862,
+      "eur_m2": 2930,
       "n": 35
     },
     "parla": {
-      "eur_m2": 2478,
-      "n": 44
+      "eur_m2": 2455,
+      "n": 45
     },
     "pinto": {
-      "eur_m2": 2922,
+      "eur_m2": 2998,
       "n": 28
     },
     "valdemoro": {
@@ -36,22 +36,22 @@
     },
     "ciempozuelos": {
       "eur_m2": 2238,
-      "n": 52
+      "n": 53
     },
     "humanes_de_madrid": {
       "eur_m2": 2707,
       "n": 46
     },
     "grinon": {
-      "eur_m2": 2662,
-      "n": 9
+      "eur_m2": 2448,
+      "n": 10
     },
     "navalcarnero": {
-      "eur_m2": 2889,
+      "eur_m2": 2959,
       "n": 25
     },
     "torrejon_de_la_calzada": {
-      "eur_m2": 2598,
+      "eur_m2": 2552,
       "n": 30
     },
     "cubas_de_la_sagra": {
@@ -63,8 +63,8 @@
       "n": 26
     },
     "serranillos_del_valle": {
-      "eur_m2": 2174,
-      "n": 28
+      "eur_m2": 2113,
+      "n": 27
     },
     "moraleja_de_enmedio": {
       "eur_m2": 2752,
@@ -75,16 +75,16 @@
       "n": 21
     },
     "illescas": {
-      "eur_m2": 1888,
-      "n": 36
+      "eur_m2": 1904,
+      "n": 34
     },
     "sesena": {
       "eur_m2": 1503,
-      "n": 48
+      "n": 49
     },
     "yeles": {
       "eur_m2": 1545,
-      "n": 66
+      "n": 64
     },
     "ugena": {
       "eur_m2": 1157,
@@ -97,12 +97,12 @@
   },
   "zonas": {
     "madrid_sur": {
-      "eur_m2": 2693,
+      "eur_m2": 2704,
       "n": 540
     },
     "toledo_norte": {
       "eur_m2": 1425,
-      "n": 252
+      "n": 249
     }
   }
 }
