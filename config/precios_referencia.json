@@ -7,7 +7,7 @@
       "n": 35
     },
     "leganes": {
-      "eur_m2": 3210,
+      "eur_m2": 3222,
       "n": 38
     },
     "mostoles": {
@@ -15,8 +15,8 @@
       "n": 31
     },
     "alcorcon": {
-      "eur_m2": 3375,
-      "n": 29
+      "eur_m2": 3372,
+      "n": 28
     },
     "fuenlabrada": {
       "eur_m2": 2909,
@@ -27,28 +27,28 @@
       "n": 41
     },
     "pinto": {
-      "eur_m2": 2934,
+      "eur_m2": 2891,
       "n": 27
     },
     "valdemoro": {
-      "eur_m2": 2678,
+      "eur_m2": 2623,
       "n": 26
     },
     "ciempozuelos": {
-      "eur_m2": 2248,
-      "n": 52
+      "eur_m2": 2238,
+      "n": 51
     },
     "humanes_de_madrid": {
       "eur_m2": 2720,
       "n": 43
     },
     "grinon": {
-      "eur_m2": 2686,
-      "n": 10
+      "eur_m2": 2662,
+      "n": 11
     },
     "navalcarnero": {
-      "eur_m2": 2911,
-      "n": 26
+      "eur_m2": 2889,
+      "n": 27
     },
     "torrejon_de_la_calzada": {
       "eur_m2": 2552,
@@ -67,8 +67,8 @@
       "n": 42
     },
     "moraleja_de_enmedio": {
-      "eur_m2": 2420,
-      "n": 14
+      "eur_m2": 3105,
+      "n": 11
     },
     "arroyomolinos": {
       "eur_m2": 403,
@@ -77,8 +77,8 @@
   },
   "zonas": {
     "madrid_sur": {
-      "eur_m2": 2694,
-      "n": 543
+      "eur_m2": 2692,
+      "n": 540
     }
   }
 }
