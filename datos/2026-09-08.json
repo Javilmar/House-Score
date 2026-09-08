@@ -159,13 +159,13 @@
       "Piscina"
     ],
     "detail_features": {
-      "terraza": true,
+      "calefacción": true,
       "aire acondicionado": true,
       "ascensor": true,
-      "calefacción": true,
-      "trastero": true,
+      "piscina": true,
       "garaje": true,
-      "piscina": true
+      "terraza": true,
+      "trastero": true
     },
     "pisos_id": "64247662483_109300",
     "score_details": [
@@ -282,13 +282,13 @@
       "Jardín: Privado"
     ],
     "detail_features": {
-      "terraza": true,
       "jardín": true,
-      "patio": true,
       "aire acondicionado": true,
       "calefacción": true,
-      "trastero": true,
-      "garaje": true
+      "patio": true,
+      "garaje": true,
+      "terraza": true,
+      "trastero": true
     },
     "pisos_id": "65069734315_101800",
     "score_details": [
@@ -337,8 +337,8 @@
     ],
     "detail_features": {
       "jardín": true,
-      "trastero": true,
-      "piscina": true
+      "piscina": true,
+      "trastero": true
     },
     "pisos_id": "65894748876_100200",
     "score_details": [
@@ -663,10 +663,10 @@
       "Jardín: Privado"
     ],
     "detail_features": {
-      "terraza": true,
-      "calefacción": true,
       "jardín": true,
-      "patio": true
+      "calefacción": true,
+      "patio": true,
+      "terraza": true
     },
     "pisos_id": "66682324654_532742",
     "score_details": [
@@ -813,11 +813,11 @@
       "Terraza"
     ],
     "detail_features": {
-      "terraza": true,
       "jardín": true,
       "calefacción": true,
-      "trastero": true,
-      "garaje": true
+      "garaje": true,
+      "terraza": true,
+      "trastero": true
     },
     "pisos_id": "66685915014_106500",
     "score_details": [
@@ -1011,10 +1011,10 @@
       "Terraza"
     ],
     "detail_features": {
-      "terraza": true,
       "calefacción": true,
-      "patio": true,
-      "piscina": true
+      "piscina": true,
+      "terraza": true,
+      "patio": true
     },
     "pisos_id": "65096578046_106500",
     "score_details": [
@@ -2090,10 +2090,10 @@
       "Piscina: Propia"
     ],
     "detail_features": {
-      "terraza": true,
-      "calefacción": true,
       "jardín": true,
-      "piscina": true
+      "calefacción": true,
+      "piscina": true,
+      "terraza": true
     },
     "pisos_id": "40881932528_101800",
     "score_details": [
@@ -2417,12 +2417,12 @@
       "Soleado"
     ],
     "detail_features": {
-      "terraza": true,
       "aire acondicionado": true,
-      "balcón": true,
+      "garaje": true,
       "ascensor": true,
-      "trastero": true,
-      "garaje": true
+      "balcón": true,
+      "terraza": true,
+      "trastero": true
     },
     "pisos_id": "65925491425_109800",
     "score_details": [
