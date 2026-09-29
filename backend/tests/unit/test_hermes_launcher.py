@@ -121,3 +121,17 @@ def test_falta_el_scorer(tmp_path, api_falsa, capsys):
     codigo = cargar().main(entorno(tmp_path, tmp_path / "no-existe.py", api_falsa))
     assert codigo == 2
     assert "no existe" in capsys.readouterr().out
+
+
+def test_las_lineas_de_municipios_bloqueados_se_resumen_en_un_contador(tmp_path, api_falsa, capsys):
+    scorer = escribir_scorer(
+        tmp_path,
+        "for i in range(23):\n"
+        "    print(f'[i {i}/23] getafe (idealista)... ⚠️ bloqueado (getafe) — saltando')\n"
+        "print('✅ Pasada guardada en la API: {}')\n",
+    )
+    cargar().main(entorno(tmp_path, scorer, api_falsa))
+    resumen = capsys.readouterr().out.split("---- final de la salida ----")[0]
+    assert "23 municipios bloqueados" in resumen
+    assert resumen.count("saltando") == 0  # no se repiten en las líneas clave
+    assert "Pasada guardada" in resumen

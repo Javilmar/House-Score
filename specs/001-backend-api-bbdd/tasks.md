@@ -143,11 +143,11 @@ Según `plan.md` > Estructura del Proyecto: todo el código nuevo vive bajo `bac
 
 - [X] T045 [P] Documentar las variables de entorno (`INGEST_SECRET`, `DATABASE_URL`, etc.) en `backend/README.md`
 - [X] T046 [P] Test de integración de rate limiting: verificar que se devuelve `429` al superar el límite, en `backend/tests/integration/test_rate_limiting.py` (Escenario 5 de `quickstart.md`, FR-012)
-- [ ] T047 Ejecutar los 6 escenarios de `quickstart.md` de principio a fin antes de dar el backend por operativo _(Escenarios 1-5 verificados; falta el 6)_
-- [ ] T048 Configurar la tarea programada de Windows (Task Scheduler) que lanza `run_scraper.ps1` a diario, con la opción de ejecutar lo antes posible si se perdió el inicio programado, y documentarla en `backend/README.md` (FR-015) _(`ops/registrar_tareas.ps1` listo y con sintaxis validada; falta registrarlo en el equipo)_
-- [ ] T049 Configurar el arranque automático: Docker Desktop iniciándose con Windows y comprobar que `api` y `db` vuelven solos tras un reinicio (`restart: unless-stopped`) (FR-015, SC-006) _(`restart: unless-stopped` ya en compose; falta activar Docker Desktop al iniciar y probar un reinicio)_
+- [ ] T047 Ejecutar los 6 escenarios de `quickstart.md` de principio a fin antes de dar el backend por operativo _(Escenarios 1-5 verificados; del 6 faltan el reinicio completo del PC y la comprobación de la tarea del scraper tras él)_
+- [X] T048 Configurar la tarea programada de Windows (Task Scheduler) que lanza `run_scraper.ps1` a diario, con la opción de ejecutar lo antes posible si se perdió el inicio programado, y documentarla en `backend/README.md` (FR-015) _(verificado 2026-09-29: el scraper lo programa el cron de hermes, job `Buscador Pisos` `0 9 * * *`, con `script: housescore_scraper.py` = `ops/hermes_launcher.py`; probado bajo el Python 3.14 de hermes con los tres lotes reales, exit 0. La tarea de Windows del scraper es opcional. Existe además una tarea heredada `HouseScore_Scraper`, desactivada, que ejecutaba el monolito antiguo)_
+- [X] T049 Configurar el arranque automático: Docker Desktop iniciándose con Windows y comprobar que `api` y `db` vuelven solos tras un reinicio (`restart: unless-stopped`) (FR-015, SC-006) _(verificado: `AutoStart` activado en Docker Desktop y `restart: unless-stopped`; tras `docker desktop restart` la API vuelve sola con los datos intactos. No probado con un reinicio completo del PC)_
 - [ ] T050 Instalar `cloudflared` como servicio de Windows con `backend/ops/cloudflared.yml`, cuyo `ingress` publica solo `GET /listings` y `GET /historico` y termina con `http_status:404`; verificar que `POST /ingest` devuelve 404 desde la URL pública (FR-011, Escenario 3 de `quickstart.md`) _(`ops/cloudflared.yml` listo con marcadores; falta cuenta, dominio y servicio)_
-- [ ] T051 Escribir `backend/ops/backup.ps1` (`pg_dump` con rotación a una ubicación fuera del disco del volumen), programarlo, y probar la restauración en una base de datos limpia (FR-016, SC-007) _(`ops/backup.ps1` listo y con sintaxis validada; falta probarlo con Docker y la restauracion)_
+- [X] T051 Escribir `backend/ops/backup.ps1` (`pg_dump` con rotación a una ubicación fuera del disco del volumen), programarlo, y probar la restauración en una base de datos limpia (FR-016, SC-007) _(verificado: tarea `HouseScore-Backup` registrada a las 09:30 con `StartWhenAvailable`, destino en OneDrive; backup real de 420 KB restaurado en una base vacía con los mismos 2018 listings, 45 pasadas y 141 bajadas: SC-007)_
 - [ ] T052 Retirar por completo `frontend/dashboard/guardar.py` y su flujo de `git push` una vez el backend esté en marcha y el scraper enviando pasadas — sin periodo de doble escritura (Principio VI, corte duro) _(el dashboard ya no lee `frontend/datos/` desde la spec 002; quedan por retirar `guardar.py`, `listings_store.py`, su test y los JSON)_
 
 ---
@@ -222,6 +222,13 @@ Task: "Crear el modelo PrecioReferencia en backend/app/models/precio_referencia.
 - `listings.json` va por detras de las pasadas actuales; la migracion repite las pasadas diarias posteriores. Los datos usan campos en ingles y `municipio` como id con guiones bajos.
 - Reglas migradas con dos ajustes deliberados: el municipio bloqueado se compara sin guiones bajos ni acentos, y un reintento de la misma pasada el mismo dia no borra la marca de bajada ni confirma una bajada candidata.
 - La API sirve tambien `detalle`, `precio_anterior` y `bajada_precio` para que el front pueda migrar sin perder campos (ver `contracts/api.md`).
+
+## Hallazgos del cron de hermes (2026-09-29)
+
+- El job ejecutaba `property_scorer_all.py` como script previo con el **Python 3.14 de hermes**, donde Playwright no importa (`greenlet._greenlet`): los tres lotes fallaban siempre (exit 1) y un agente LLM los reejecutaba a mano, con `git push`. El estado del job figuraba como "ok".
+- hermes solo admite scripts dentro de `~/AppData/Local/hermes/scripts/`, por eso se añade un lanzador solo con librería estándar (`ops/hermes_launcher.py`, desplegado como `housescore_scraper.py`) que ejecuta el scorer del repo con el Python del entorno de hermes.
+- El prompt del job se reescribió: informa del resultado sin reejecutar scripts ni hacer `git push`.
+- Idealista bloquea los 23 municipios (esperado); no rompe el job.
 
 ## Notas
 

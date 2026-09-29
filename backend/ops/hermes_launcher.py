@@ -121,10 +121,14 @@ def main(env=None):
         salida += f"\nTiempo máximo agotado ({timeout} s): se detuvo el scorer."
 
     lineas = salida.splitlines()
-    clave = [linea for linea in lineas if _CLAVE.search(linea)]
+    # Idealista bloquea todos los municipios y cada uno imprime su línea: se cuentan aparte
+    bloqueados = sum(1 for linea in lineas if "bloqueado (" in linea)
+    clave = [linea for linea in lineas if _CLAVE.search(linea) and "bloqueado (" not in linea]
     print("==== RESUMEN ====")
     print(f"Scorer: {scorer}")
     print(f"Terminó con código {codigo}")
+    if bloqueados:
+        print(f"Idealista: {bloqueados} municipios bloqueados")
     if clave:
         print("Líneas clave:")
         print("\n".join(clave[-40:]))

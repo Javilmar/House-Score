@@ -3,22 +3,21 @@
   Registra las tareas programadas de Windows del backend (T048, T051).
 
 .DESCRIPTION
-  - HouseScore-Scraper: lanza worker\scraper\run_scraper.ps1 cada dia.
-  - HouseScore-Backup:  lanza ops\backup.ps1 cada dia.
-  Ambas usan StartWhenAvailable: si el equipo estaba apagado a la hora programada, la
-  tarea se ejecuta en cuanto vuelve a encenderse (FR-015).
-
-  El scraper necesita la sesion de Windows abierta si abre un Chromium visible. Ejecuta este
-  script una vez, desde una consola con tu usuario.
+  - HouseScore-Backup: lanza ops\backup.ps1 cada dia (siempre).
+  - HouseScore-Scraper: lanza worker\scraper\run_scraper.ps1 cada dia. Es OPCIONAL (-Comando):
+    el scraper ya lo programa el cron de hermes (job "Buscador Pisos", 09:00) a traves de
+    ops\hermes_launcher.py; registrar ademas esta tarea lo ejecutaria dos veces.
+  Ambas usan StartWhenAvailable: si el equipo estaba apagado a la hora programada, la tarea se
+  ejecuta en cuanto vuelve a encenderse (FR-015).
 
 .EXAMPLE
-  .\ops\registrar_tareas.ps1 -Comando "python C:\ruta\al\scorer.py" -DestinoBackup "D:\backups\housescore"
+  .\ops\registrar_tareas.ps1 -DestinoBackup "D:\backups\housescore"
 #>
 param(
-    [Parameter(Mandatory = $true)][string]$Comando,
     [Parameter(Mandatory = $true)][string]$DestinoBackup,
-    [string]$HoraScraper = "08:00",
-    [string]$HoraBackup = "09:30"
+    [string]$Comando,
+    [string]$HoraBackup = "09:30",
+    [string]$HoraScraper = "08:00"
 )
 
 $ErrorActionPreference = "Stop"
@@ -36,7 +35,10 @@ function Registrar($nombre, $hora, $argumentos) {
     Write-Host "Tarea registrada: $nombre ($hora)"
 }
 
-Registrar "HouseScore-Scraper" $HoraScraper `
-    ("-File `"{0}`" -Comando `"{1}`"" -f (Join-Path $backend "worker\scraper\run_scraper.ps1"), $Comando)
 Registrar "HouseScore-Backup" $HoraBackup `
     ("-File `"{0}`" -Destino `"{1}`"" -f (Join-Path $backend "ops\backup.ps1"), $DestinoBackup)
+
+if ($Comando) {
+    Registrar "HouseScore-Scraper" $HoraScraper `
+        ("-File `"{0}`" -Comando `"{1}`"" -f (Join-Path $backend "worker\scraper\run_scraper.ps1"), $Comando)
+}

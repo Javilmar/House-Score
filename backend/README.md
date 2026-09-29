@@ -92,25 +92,19 @@ y el orquestador `property_scorer_all.py`. Cambios respecto a los originales, y 
    diario y hacer `git commit` + `push`. Si falla, el lote se guarda en `HERMES_DATA_DIR/pendientes/`
    y se reenvía con `python -m worker.scraper.client <fichero>`.
 
-Los originales **no se han tocado**: el cron de hermes (`0 9 * * *`) sigue ejecutando
-`~/AppData/Local/hermes/scripts/property_scorer_all.py`. Para cambiar al flujo nuevo, con la API en
-marcha y `INGEST_SECRET` (y opcionalmente `HOUSESCORE_API_URL`) en el entorno del cron, apunta el job a
-`backend/worker/scraper/property_scorer_all.py` y ejecútalo con el Python de hermes (tiene
-`playwright`, `playwright_stealth` y `httpx`). La sesión de idealista (`idealista_session.json`) sigue
-fuera del repo, en `HERMES_DATA_DIR`. Sigue leyendo y escribiendo
-`frontend/config/precios_referencia.json` (precios de referencia), que ya no se commitea.
+Los originales de `~/AppData/Local/hermes/scripts/` **no se han tocado**. El job de hermes
+(`Buscador Pisos`, `0 9 * * *`) ya no los usa: su `script` es `housescore_scraper.py`, una copia de
+`ops/hermes_launcher.py`. Hace falta un lanzador porque hermes ejecuta sus scripts con su propio
+Python 3.14, en el que Playwright no importa (`greenlet._greenlet`), y solo admite scripts dentro de
+`~/AppData/Local/hermes/scripts/`. El lanzador (solo librería estándar) comprueba que la API responde,
+carga `INGEST_SECRET` de `backend/.env` y ejecuta `worker/scraper/property_scorer_all.py` con el
+Python del entorno de hermes (que tiene `playwright`, `playwright_stealth` y `httpx`).
 
-## Operación en Windows (`ops/`)
-
-| Fichero | Para qué |
-|---|---|
-| `ops/cloudflared.yml` | Configuración del túnel: publica solo `GET /listings` y `GET /historico` |
-| `ops/registrar_tareas.ps1` | Registra las tareas programadas del scraper y del backup (`StartWhenAvailable`) |
-| `ops/backup.ps1` | `pg_dump` con rotación a una carpeta fuera del disco del volumen |
-
-Además: activa "Iniciar Docker Desktop al iniciar sesión" y instala `cloudflared` como servicio
-de Windows (`cloudflared service install`). Con `restart: unless-stopped`, `api` y `db` vuelven
-solos tras un reinicio.
+Si cambias `ops/hermes_launcher.py`, vuelve a copiarlo:
+`cp backend/ops/hermes_launcher.py ~/AppData/Local/hermes/scripts/housescore_scraper.py`.
+La sesión de idealista (`idealista_session.json`) sigue fuera del repo, en `HERMES_DATA_DIR`.
+Idealista bloquea hoy todos los municipios (es esperado y no rompe el job). El scorer sigue leyendo y
+escribiendo `frontend/config/precios_referencia.json`, que ya no se commitea.
 
 ## Dashboard (Streamlit)
 

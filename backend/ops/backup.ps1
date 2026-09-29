@@ -7,9 +7,10 @@
   -Destino, que debe estar FUERA del disco que aloja el volumen de Docker (otro disco o
   una carpeta sincronizada con la nube). Conserva los -Conservar volcados mas recientes.
 
-  Restaurar en una base limpia:
-    docker compose exec -T db pg_restore -U housescore -d housescore --clean --if-exists < volcado.dump
-  (o copia el fichero al contenedor con `docker compose cp` y restauralo alli).
+  Restaurar (verificado): copiar el volcado al contenedor y restaurarlo en una base vacia
+    docker compose cp volcado.dump db:/tmp/r.dump
+    docker compose exec -T db pg_restore -U housescore -d <base> --no-owner /tmp/r.dump
+  (desde Git Bash, con MSYS_NO_PATHCONV=1 para que /tmp no se convierta en ruta de Windows).
 
 .EXAMPLE
   .\ops\backup.ps1 -Destino "D:\backups\housescore"
