@@ -135,3 +135,22 @@ def test_las_lineas_de_municipios_bloqueados_se_resumen_en_un_contador(tmp_path,
     assert "23 municipios bloqueados" in resumen
     assert resumen.count("saltando") == 0  # no se repiten en las líneas clave
     assert "Pasada guardada" in resumen
+
+
+def test_el_scorer_no_hereda_las_variables_que_redirigen_a_otro_python(
+    tmp_path, api_falsa, capsys, monkeypatch
+):
+    # hermes ejecuta el lanzador con PYTHONPATH apuntando a su propio entorno (con un Playwright
+    # roto para su Python 3.14); si el hijo lo hereda, pisa los paquetes del venv que sí funciona.
+    monkeypatch.setenv("PYTHONPATH", "C:/entorno/roto/site-packages")
+    monkeypatch.setenv("PYTHONHOME", "C:/otro/python")
+    scorer = escribir_scorer(
+        tmp_path,
+        "import os\n"
+        "print('PYTHONPATH=', os.environ.get('PYTHONPATH'))\n"
+        "print('PYTHONHOME=', os.environ.get('PYTHONHOME'))\n",
+    )
+    cargar().main(entorno(tmp_path, scorer, api_falsa))
+    salida = capsys.readouterr().out
+    assert "PYTHONPATH= None" in salida
+    assert "PYTHONHOME= None" in salida

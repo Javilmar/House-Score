@@ -24,6 +24,16 @@ from pathlib import Path
 
 API_URL_DEFECTO = "http://127.0.0.1:8000"  # no "localhost": en Windows añade ~2 s por petición
 TIMEOUT_DEFECTO = 3600
+# hermes ejecuta el lanzador con estas variables apuntando a su propio entorno (con un Playwright
+# roto para su Python 3.14). Si el scorer las hereda, pisan los paquetes de su venv, que sí
+# funciona.
+_VARS_DE_OTRO_PYTHON = (
+    "PYTHONPATH",
+    "PYTHONHOME",
+    "PYTHONSTARTUP",
+    "PYTHONUSERBASE",
+    "VIRTUAL_ENV",
+)
 _CLAVE = re.compile(r"Pasada guardada|❌|⚠️|Traceback|Error|error")
 
 
@@ -96,6 +106,8 @@ def main(env=None):
         return 2
 
     sub_env = dict(os.environ)
+    for var in _VARS_DE_OTRO_PYTHON:
+        sub_env.pop(var, None)
     sub_env.update(cargar_env(env_file))  # INGEST_SECRET vive en backend/.env, no en el cron
     sub_env["HOUSESCORE_API_URL"] = api_url
     sub_env["PYTHONUTF8"] = "1"
