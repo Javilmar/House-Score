@@ -33,6 +33,9 @@
 
 - Las 2 dudas de FR-010/FR-011 (canal de escritura y su protección) se
   resolvieron con el propietario el 2026-09-08: endpoint de escritura en la
-  API (Q1: A), sin exposición pública porque el scraper corre como worker en
-  la misma red privada que el backend (Q2: B). Ver "Assumptions" en spec.md.
+  API (Q1: A), sin exposición pública (Q2: B).
+- Revisión 2026-09-29: el despliegue pasa de Render a Docker Compose en el PC
+  del propietario. El scraper sigue en local (Playwright + sesión manual de
+  idealista) y la ruta de escritura no se publica en el túnel. Ver
+  "Clarifications" y "Assumptions" en spec.md.
 - Items marked incomplete require spec updates before `/speckit-clarify` or `/speckit-plan`.

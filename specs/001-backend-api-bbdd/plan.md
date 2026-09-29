@@ -9,12 +9,14 @@
 Sustituir el flujo actual de HouseScore (scraper local → `guardar.py` →
 JSON commiteado en `frontend/datos/` → Streamlit lee el repo) por un backend
 con API + base de datos: una API FastAPI que sirve los listings ya
-puntuados y el histórico agregado, y un worker (el propio scraper,
-migrado desde fuera del repo) que escribe cada pasada llamando a un
-endpoint de ingesta de esa misma API. Todo se despliega en Render
-(Web Service para la API, Background Worker para el scraper, PostgreSQL
-gestionado), con un `docker-compose` para poder levantarlo todo en local
-con un único comando. El front (Streamlit) no se toca en este plan.
+puntuados y el histórico agregado, y el scraper (migrado al repo desde
+fuera de él) que escribe cada pasada llamando a un endpoint de ingesta de
+esa misma API por `localhost`. Todo corre en el PC del propietario: API +
+PostgreSQL en Docker Compose con arranque automático, el scraper como tarea
+programada de Windows (usa Playwright/Chromium y una sesión de idealista
+capturada a mano, inviable en un datacenter), y un Cloudflare Tunnel que
+publica solo las rutas de lectura para el front desplegado en la nube. El
+front (Streamlit) no se toca en este plan.
 
 ## Contexto Técnico
 
@@ -25,19 +27,23 @@ con el resto del código Python del proyecto)
 Pydantic, slowapi (rate limiting), psycopg (driver PostgreSQL), pytest,
 httpx (cliente de test para FastAPI)
 
-**Almacenamiento**: PostgreSQL 16 (instancia gestionada de Render en
-producción; contenedor Postgres oficial en `docker-compose` para local)
+**Almacenamiento**: PostgreSQL 16 (contenedor oficial en `docker-compose`,
+con volumen persistente en el PC del propietario; copias de seguridad
+periódicas con `pg_dump` a otra ubicación, FR-016)
 
 **Testing**: pytest + `httpx.AsyncClient`/`TestClient` de FastAPI, siguiendo
 TDD (Principio IV de la constitución): tests de contrato para cada
-endpoint, tests de integración para el flujo worker→API→BBDD, tests
+endpoint, tests de integración para el flujo scraper→API→BBDD, tests
 unitarios para las reglas de negocio migradas de `listings_store.py`
 
-**Plataforma objetivo**: contenedores Linux en Render (Web Service +
-Background Worker + PostgreSQL gestionado); local vía Docker Compose
+**Plataforma objetivo**: PC Windows del propietario. Docker Desktop
+(arranque automático con Windows) ejecuta `api` + `db` con
+`restart: unless-stopped`; `cloudflared` como servicio de Windows publica
+las rutas de lectura; el scraper corre en el host (fuera de Docker) vía
+Task Scheduler
 
-**Tipo de proyecto**: web-service (API) + worker (proceso en segundo plano)
-— dos artefactos desplegables que comparten la misma base de datos
+**Tipo de proyecto**: web-service (API) + scraper local (proceso programado
+en el host) — comparten la misma base de datos a través de la API
 
 **Objetivos de rendimiento**: sin exigencias de alto rendimiento — un único
 usuario real, unos pocos cientos de listings vigentes (≈500, según el
@@ -45,8 +51,11 @@ volumen actual de `frontend/datos/listings.json`). El objetivo es
 disponibilidad y consistencia, no throughput.
 
 **Restricciones**:
-- El endpoint de ingesta (escritura) no debe ser invocable por nadie salvo
-  el worker del scraper (FR-011) — ver nota de Render en Constitution Check.
+- El endpoint de ingesta (escritura) no debe ser invocable desde internet
+  (FR-011): el túnel solo enruta `GET /listings` y `GET /historico`, y
+  `POST /ingest` exige además el secreto compartido.
+- La API y la base de datos deben volver solas tras reiniciar el PC
+  (FR-015, SC-006).
 - Los endpoints de lectura deben aplicar rate limiting básico por IP
   (FR-012).
 - El entorno local completo debe arrancar con un único comando en menos de
@@ -62,7 +71,7 @@ de 2026, un único cliente (el dashboard actual) en esta fase.
 
 | Principio | Evaluación |
 |---|---|
-| I. Motor de scoring como única fuente de verdad | **PASS, con nota.** El motor de scoring (`property_scorer.py`) no se reimplementa: se migra tal cual como parte del worker. **Hallazgo importante**: hoy ese script vive fuera de este repositorio, en el ordenador del propietario (`~/AppData/Local/hermes/scripts/property_scorer.py`), no está en git. Traerlo al repo (bajo `backend/worker/`) es un prerrequisito de esta implementación — se refleja como tarea explícita en `/speckit-tasks`, no como una violación del principio. |
+| I. Motor de scoring como única fuente de verdad | **PASS, con nota.** El motor de scoring (`property_scorer.py`) no se reimplementa: se migra tal cual junto al scraper. **Hallazgo importante**: hoy el scorer vive fuera de este repositorio, en `~/AppData/Local/hermes/scripts/`, y no está en git; además no es un solo fichero sino cuatro (`property_scorer.py`, `property_scorer_common.py`, `property_scorer_idealista.py`, `property_scorer_all.py`), los dos últimos modificados por última vez el 2026-09-27. Traerlos al repo (bajo `backend/worker/scraper/`) es un prerrequisito de esta implementación — se refleja como tarea explícita en `/speckit-tasks`, no como una violación del principio. `capture_idealista_session.py` y la sesión de cookies (`idealista_session.json`) son locales y con datos de sesión: no se versionan. |
 | II. Desacoplo front-datos (fases) | **PASS.** Este plan implementa la Fase 2 (API+BBDD); el front (Fase 2→3) no se toca aquí, tal como fija el spec. |
 | III. Desarrollo gateado por el harness | **PASS.** Este plan es en sí mismo un artefacto de la cadena `/speckit-*`. |
 | IV. Desarrollo guiado por tests | **PASS, exigido explícitamente.** `/speckit-tasks` debe generar cada tarea de comportamiento con sus tests primero (contrato, integración, unitarios) — ver Contexto Técnico > Testing. |
@@ -99,14 +108,15 @@ backend/
 │   ├── db/                     # engine, sesión, Alembic
 │   └── core/                   # config, rate limiting, logging
 ├── worker/
-│   └── scraper/                 # property_scorer.py migrado + cliente que llama a POST /ingest
+│   └── scraper/                 # scorer migrado (4 ficheros) + cliente que llama a POST /ingest + run_scraper.ps1 (Task Scheduler)
 ├── tests/
 │   ├── contract/                # un test por endpoint público/de ingesta
-│   ├── integration/              # flujo worker → API → BBDD de extremo a extremo
+│   ├── integration/              # flujo scraper → API → BBDD de extremo a extremo
 │   └── unit/                     # reglas migradas de listings_store.py (price_drop, dedupe, delisted...)
 ├── alembic/                      # migraciones versionadas
 ├── Dockerfile
-├── docker-compose.yml            # api + postgres + worker, para desarrollo local
+├── docker-compose.yml            # api + postgres (restart: unless-stopped); el scraper corre en el host
+├── ops/                          # cloudflared (config del túnel), backup de Postgres, tarea programada
 └── requirements.txt / pyproject.toml
 
 frontend/        # sin cambios en este plan
@@ -114,10 +124,10 @@ frontend/        # sin cambios en este plan
 
 **Decisión de estructura**: se usa `backend/` (ya reservado en la raíz del
 monorepo, ver README.md) como único proyecto, con dos puntos de entrada
-(`app/main.py` para la API, `worker/scraper/` para el worker) que comparten
-`app/models/` y `app/db/`. No se crean paquetes ni repos separados para API
-y worker — es innecesario a esta escala y complicaría compartir el modelo
-de datos entre ambos.
+(`app/main.py` para la API, `worker/scraper/` para el scraper). El scraper
+solo habla con la API por HTTP, no importa `app/models/`. No se crean
+paquetes ni repos separados para API y scraper — es innecesario a esta
+escala.
 
 ## Complexity Tracking
 
@@ -128,11 +138,11 @@ de datos entre ambos.
 Tras diseñar `data-model.md`, `contracts/api.md` y `quickstart.md`, se
 revisan de nuevo los 6 principios: ningún diseño de la Fase 1 introduce una
 violación nueva. Las notas a llevar a `/speckit-tasks` explícitamente
-son: Principio I (migrar `property_scorer.py` al repo como prerrequisito),
+son: Principio I (migrar los cuatro ficheros del scorer al repo como prerrequisito),
 Principio VI (retirar `guardar.py` por completo al desplegar, sin periodo
 de doble escritura), y una nota de alcance: el secreto compartido de
 `POST /ingest` (ver `research.md` §4) es una solución mínima válida solo
-mientras el único escritor sea el worker del scraper — el propietario ha
+mientras el único escritor sea el scraper local — el propietario ha
 confirmado que quiere usuarios reales en el futuro, momento en el que un
 spec propio de autenticación de usuarios deberá sustituir este mecanismo
 por completo, no ampliarlo.

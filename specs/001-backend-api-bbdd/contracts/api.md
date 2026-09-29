@@ -58,9 +58,10 @@ evolución.
 
 ## POST /ingest
 
-Endpoint de escritura: el worker del scraper envía aquí cada pasada
-completa. **No es de uso público** (FR-010/FR-011) — requiere cabecera
-`Authorization: Bearer <secreto>`.
+Endpoint de escritura: el scraper local envía aquí cada pasada completa,
+por `http://localhost:8000/ingest`. **No es de uso público** (FR-010/FR-011):
+el Cloudflare Tunnel no enruta esta ruta (responde 404 desde fuera), y
+además requiere cabecera `Authorization: Bearer <secreto>`.
 
 **Request body**:
 ```json

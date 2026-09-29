@@ -5,8 +5,10 @@ local reproducible (Historia 3 / SC-003).
 
 ## Prerrequisitos
 
-- Docker y Docker Compose instalados.
-- Checkout limpio de este repositorio en la rama `001-backend-api-bbdd`.
+- Docker Desktop y Docker Compose instalados.
+- Checkout limpio de este repositorio.
+- Para el Escenario 6 (arranque tras reinicio): Docker Desktop configurado
+  para iniciarse con Windows.
 
 ## Arranque
 
@@ -29,7 +31,7 @@ curl http://localhost:8000/listings | jq '.[0]'
 `datos_insuficientes` presente (verdadero o falso). Ningún campo requiere
 tocar `frontend/datos/`.
 
-## Escenario 2 — El worker guarda una pasada sin git (Historia 2)
+## Escenario 2 — El scraper guarda una pasada sin git (Historia 2)
 
 ```bash
 curl -X POST http://localhost:8000/ingest \
@@ -58,6 +60,10 @@ curl -i -X POST http://localhost:8000/ingest \
 **Resultado esperado**: `401 Unauthorized` — sin la cabecera `Authorization`
 correcta, el endpoint de escritura rechaza la petición.
 
+Con el Cloudflare Tunnel activo, repetir la petición contra la URL pública
+del túnel: **Resultado esperado**: `404` (la ruta no está publicada),
+incluso enviando el secreto correcto.
+
 ## Escenario 4 — Histórico agregado disponible (FR-013)
 
 ```bash
@@ -75,6 +81,17 @@ for i in $(seq 1 200); do curl -s -o /dev/null -w "%{http_code}\n" http://localh
 
 **Resultado esperado**: a partir de cierto número de peticiones en la
 ventana configurada, empiezan a aparecer respuestas `429`.
+
+## Escenario 6 — Arranque automático y copia de seguridad (FR-015/FR-016)
+
+1. Reiniciar el PC sin abrir ninguna terminal y, pasados unos minutos,
+   ejecutar `curl http://localhost:8000/listings`. **Resultado esperado**:
+   responde 200 con los datos previos al reinicio (SC-006).
+2. Comprobar que la tarea programada del scraper figura como pendiente o
+   ejecutada, y que si se perdió su hora se lanza al volver a encender el
+   equipo.
+3. Ejecutar la copia de seguridad, restaurarla en una base de datos limpia
+   y comprobar que `GET /listings` devuelve los mismos datos (SC-007).
 
 ## Tests automatizados
 

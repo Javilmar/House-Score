@@ -6,7 +6,7 @@
 
 **Estado**: Borrador
 
-**Entrada**: Descripción del usuario: "Introducir un backend (API + base de datos) para HouseScore, sustituyendo el flujo actual de JSON commiteado en frontend/datos/. Cubrir: diseño de la base de datos para listings + histórico, una API que sirva esos datos ya puntuados, dockerización para pruebas locales reproducibles, decidir dónde se despliega en producción, y cualquier otra pieza necesaria. El front actual no se reescribe en este spec — seguirá desplegándose (previsiblemente en Vercel) y en un spec futuro pasará a consumir esta API en vez de leer JSON del repo."
+**Entrada**: Descripción del usuario: "Introducir un backend (API + base de datos) para HouseScore, sustituyendo el flujo actual de JSON commiteado en frontend/datos/. Cubrir: diseño de la base de datos para listings + histórico, una API que sirva esos datos ya puntuados, dockerización para pruebas locales reproducibles, decidir dónde se despliega en producción, y cualquier otra pieza necesaria. El front actual no se reescribe en este spec — seguirá desplegándose por separado (Streamlit no corre en Vercel; el hosting del front se decide fuera de este spec) y en un spec futuro pasará a consumir esta API en vez de leer JSON del repo."
 
 ## Clarifications
 
@@ -15,6 +15,12 @@
 - Q: ¿Los endpoints de lectura de la API deben ser completamente públicos sin autenticación, o con algún control mínimo como rate limiting? → A: Públicos, sin autenticación, con rate limiting básico por IP.
 - Q: ¿La API debe exponer ya un endpoint de lectura para el histórico agregado (gráficos de evolución), o basta con guardarlo en la BBDD y añadir ese endpoint en un spec futuro? → A: Sí, incluir el endpoint de histórico ya en este spec.
 - Q: ¿El sistema debe notificar activamente cuando el worker del scraper falla en guardar una pasada, o basta con que quede registrado en un log sin notificación activa? → A: Solo logging — los fallos quedan registrados y consultables, sin notificación activa.
+
+### Session 2026-09-29
+
+- Q: ¿Dónde corren la API, la base de datos y el scraper? → A: En el PC del propietario. API + PostgreSQL en Docker Compose con arranque automático al encender el equipo; el scraper corre en el propio equipo (fuera de Docker) mediante una tarea programada de Windows, porque usa Playwright/Chromium y una sesión de idealista capturada a mano (CAPTCHA) que no es viable desde un datacenter. Sustituye a la propuesta anterior de Render.
+- Q: ¿Cómo llega el front desplegado en la nube a la API? → A: Con un Cloudflare Tunnel que publica solo las rutas de lectura (`GET /listings`, `GET /historico`); `POST /ingest` no se publica.
+- Q: ¿Unidad del precio? → A: Entero en euros (no céntimos), igual que en los JSON actuales.
 
 ## User Scenarios & Testing *(obligatorio)*
 
@@ -50,11 +56,11 @@ listings, sin que el front necesite tocar `frontend/datos/`.
 
 ### Historia de Usuario 2 - Cada pasada del scraper queda disponible sin intervención manual (Prioridad: P1)
 
-Como propietario del proyecto, quiero que el scraper corra como un worker
-dentro de la misma infraestructura que la API (no en mi ordenador) y que
-cada pasada quede reflejada en la base de datos llamando a un endpoint de
-escritura de la API, para que publicar una nueva pasada no dependa de que mi
-ordenador esté encendido ni de que se haga `git push` a este repositorio.
+Como propietario del proyecto, quiero que el scraper, que sigue corriendo en
+mi ordenador de forma programada, deje cada pasada reflejada en la base de
+datos llamando a un endpoint de escritura de la API local, para que
+publicar una nueva pasada no dependa de ningún `git push` a este
+repositorio ni de ningún paso manual.
 
 **Por qué esta prioridad**: es el otro lado del mismo cambio — si el front
 lee de la API pero nadie escribe ahí, no hay progreso real. Junto con la
@@ -67,7 +73,7 @@ para la API inmediatamente después, sin ningún paso de git de por medio.
 **Acceptance Scenarios**:
 
 1. **Dado** un archivo de resultados de una pasada de scraping, **Cuando**
-   el worker del scraper lo envía al endpoint de escritura de la API,
+   el scraper local lo envía al endpoint de escritura de la API,
    **Entonces** los listings quedan persistidos y son consultables por la
    API sin necesidad de un commit a este repositorio.
 2. **Dado** que un listing ya existente baja de precio en una nueva pasada,
@@ -111,7 +117,7 @@ comando, sin pasos de configuración manual adicionales.
 
 ### Edge Cases
 
-- ¿Qué ocurre si el worker del scraper pierde conexión a mitad de guardar
+- ¿Qué ocurre si el scraper pierde conexión a mitad de guardar
   una pasada (llamando al endpoint de escritura)? Los listings ya
   persistidos no deben quedar en un estado inconsistente ni duplicarse en un
   reintento.
@@ -124,6 +130,13 @@ comando, sin pasos de configuración manual adicionales.
   días?
 - ¿Qué pasa si dos pasadas del scraper se ejecutan casi a la vez (p. ej. un
   reintento manual)? No deben crear listings duplicados.
+- ¿Qué pasa si el PC está apagado a la hora programada del scraper? Al
+  volver a encenderse debe ejecutarse la pasada pendiente (la tarea
+  programada se configura para lanzarse si se perdió su ejecución), y la API
+  sigue sirviendo la última pasada completa mientras tanto.
+- ¿Qué pasa si el PC se reinicia o se apaga de golpe con la API en marcha?
+  Al encenderse, la API y la base de datos deben volver a estar operativas
+  sin intervención manual, sin corrupción de datos.
 
 ## Requirements *(obligatorio)*
 
@@ -159,10 +172,11 @@ comando, sin pasos de configuración manual adicionales.
   que el proceso de scraping guarde en él cada nueva pasada de resultados
   (en vez de escribir directamente en la base de datos).
 - **FR-011**: El endpoint de escritura de la API NO DEBE ser accesible desde
-  fuera de la red privada en la que corre el backend — no requiere
-  autenticación adicional porque no existe ninguna ruta pública hacia él; el
-  scraper corre como un worker dentro de esa misma red/infra, no desde el
-  ordenador del propietario.
+  internet. Se garantiza en dos capas: (1) el túnel que publica la API solo
+  enruta las rutas de lectura, de modo que `POST /ingest` no tiene ruta
+  pública, y el scraper lo invoca por `localhost`; (2) como defensa en
+  profundidad, `POST /ingest` exige además un secreto compartido
+  (`Authorization: Bearer`).
 - **FR-012**: Los endpoints de lectura de la API (los que consulta el front)
   DEBEN quedar públicos y sin autenticación, igual que hoy los datos son
   públicos, pero DEBEN aplicar un límite de peticiones (rate limiting) básico
@@ -172,9 +186,17 @@ comando, sin pasos de configuración manual adicionales.
   evolución que ya tiene el dashboard puedan seguir mostrándose cuando el
   front migre a consumir esta API.
 - **FR-014**: El sistema DEBE registrar en un log consultable cualquier fallo
-  del worker del scraper al guardar una pasada (p. ej. error al escribir en
+  del scraper al guardar una pasada (p. ej. error al escribir en
   el endpoint de escritura o en la base de datos). No se requiere ningún
   mecanismo de notificación activa (email, push, etc.) en esta fase.
+- **FR-015**: Tras encender o reiniciar el equipo, la API y la base de datos
+  DEBEN quedar operativas automáticamente, y el scraper DEBE ejecutarse de
+  forma programada (incluyendo la pasada perdida si el equipo estaba
+  apagado a su hora), sin intervención manual.
+- **FR-016**: El sistema DEBE realizar copias de seguridad periódicas de la
+  base de datos a una ubicación distinta del disco que la aloja, dado que
+  pasa a ser la única fuente de verdad del histórico.
+- **FR-017**: Los precios se almacenan y sirven como entero en euros.
 
 ### Key Entities
 
@@ -190,7 +212,7 @@ comando, sin pasos de configuración manual adicionales.
   evolución del dashboard.
 - **Precio de referencia por municipio**: municipio, mediana €/m² (fuente:
   equivalente a `config/precios_referencia.json`), usado por el motor de
-  scoring quando un listing no aporta m² fiables.
+  scoring cuando un listing no aporta m² fiables.
 
 ## Success Criteria *(obligatorio)*
 
@@ -210,29 +232,42 @@ comando, sin pasos de configuración manual adicionales.
   pérdida de datos históricos.
 - **SC-005**: Ningún listing aparece duplicado tras ejecutar la misma pasada
   del scraper dos veces seguidas.
+- **SC-006**: Tras reiniciar el equipo, la API responde a `GET /listings` sin
+  ninguna acción manual en menos de 5 minutos desde que el sistema operativo
+  está en marcha.
+- **SC-007**: Se puede restaurar la base de datos desde la copia de
+  seguridad más reciente en un entorno limpio y `GET /listings` devuelve los
+  mismos datos.
 
 ## Assumptions
 
-- El motor de scoring (`property_scorer` / `listings_store`) se reutiliza
+- El motor de scoring (`property_scorer.py`, `property_scorer_common.py`,
+  `property_scorer_idealista.py` y `property_scorer_all.py`, hoy en
+  `~/AppData/Local/hermes/scripts/`, más `listings_store`) se reutiliza
   tal cual desde el backend; este spec no reimplementa ni cambia su lógica
   de puntuación (Principio I).
 - El front consumidor de esta API sigue siendo, inicialmente, el dashboard
   actual — no se asume ningún otro cliente ni multiusuario en esta fase.
 - Los datos de vivienda siguen siendo públicos, como fija la constitución en
   "Restricciones de Datos y Despliegue" — este spec no introduce
-  restricciones de acceso salvo lo que resuelvan las clarificaciones
-  pendientes sobre el canal de escritura.
-- El scraper deja de ejecutarse en el ordenador local del propietario y pasa
-  a correr como un worker dentro de la misma infraestructura que la API (así
-  puede llamar a su endpoint de escritura sin exponerlo a internet, según lo
-  resuelto en FR-010/FR-011). Este spec asume que ese worker existe y llama
-  a la API, pero la implementación concreta de cómo se programa/despliega
-  ese worker (cron, cola de tareas, contenedor propio...) se decide en
-  `/speckit-plan`.
-- La elección concreta de tecnología (lenguaje, framework, motor de base de
-  datos, proveedor de hosting, y si se usa Docker) se decide en
-  `/speckit-plan`, no en este spec — la constitución deja el stack de
-  backend intencionadamente abierto.
+  restricciones de acceso salvo lo descrito en FR-010/FR-011 sobre el canal
+  de escritura.
+- El scraper SIGUE ejecutándose en el ordenador del propietario, ahora de
+  forma programada (tarea de Windows) y enviando cada pasada por `localhost`
+  a `POST /ingest` en lugar de escribir JSON + `git push`. Motivo: usa
+  Playwright/Chromium y una sesión de idealista capturada a mano (CAPTCHA,
+  cookies que caducan), inviable desde un datacenter. La API y PostgreSQL
+  corren en el mismo equipo, en Docker Compose.
+- La disponibilidad del servicio es la de ese equipo: si está apagado o sin
+  conexión, el front desplegado no recibe datos nuevos (ni datos en absoluto
+  si depende de la API en directo). Se acepta para un proyecto personal de
+  un único usuario.
+- El front desplegado en la nube accede a la API a través de un Cloudflare
+  Tunnel que publica únicamente las rutas de lectura. Elegir el hosting del
+  front queda fuera de este spec.
+- La tecnología se fija en `plan.md` (FastAPI, PostgreSQL 16, Docker
+  Compose); la constitución deja el stack de backend intencionadamente
+  abierto.
 - El corte del front de leer JSON del repo a consumir esta API es un spec
   futuro y no se implementa aquí (Principio VI: corte duro, no shims
   temporales); este spec entrega el backend, no la migración del front.

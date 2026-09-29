@@ -13,7 +13,7 @@ Un piso/vivienda scrapeado, en su estado más reciente conocido.
 | `id` | UUID / serial (clave primaria interna) | Generado por la BBDD |
 | `url` | string, único, no nulo | Identificador natural del listing (FR-009); origen de la fuente |
 | `titulo` | string | |
-| `precio` | entero (céntimos o € — decidir en implementación), nullable | `null` posible si el listing llega sin precio en una pasada |
+| `precio` | entero en euros (decidido, FR-017), nullable | `null` posible si el listing llega sin precio en una pasada |
 | `m2` | entero, nullable | Ausente ⇒ `datos_insuficientes = true` |
 | `habitaciones` | entero, nullable | |
 | `banos` | entero, nullable | |
@@ -95,7 +95,9 @@ PasadaDiaria                         (tabla independiente, agregados por fecha)
 
 ## Migración de datos existentes (SC-004)
 
-Los ficheros actuales se cargan una única vez en las tablas de arriba como
+Los ficheros actuales (incluidas las pasadas diarias recientes
+`frontend/datos/YYYY-MM-DD.json`, que siguen creciendo hasta el corte) se
+cargan una única vez en las tablas de arriba como
 parte de la implementación (no de este plan): `listings.json` → `Listing`,
 `historico_diario.json` → `PasadaDiaria`, y las bajadas de precio ya
 registradas en `listings.json` (`price_drop`/`previous_price`) → filas de
