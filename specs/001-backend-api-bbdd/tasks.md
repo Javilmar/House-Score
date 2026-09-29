@@ -148,7 +148,7 @@ Según `plan.md` > Estructura del Proyecto: todo el código nuevo vive bajo `bac
 - [ ] T049 Configurar el arranque automático: Docker Desktop iniciándose con Windows y comprobar que `api` y `db` vuelven solos tras un reinicio (`restart: unless-stopped`) (FR-015, SC-006) _(`restart: unless-stopped` ya en compose; falta activar Docker Desktop al iniciar y probar un reinicio)_
 - [ ] T050 Instalar `cloudflared` como servicio de Windows con `backend/ops/cloudflared.yml`, cuyo `ingress` publica solo `GET /listings` y `GET /historico` y termina con `http_status:404`; verificar que `POST /ingest` devuelve 404 desde la URL pública (FR-011, Escenario 3 de `quickstart.md`) _(`ops/cloudflared.yml` listo con marcadores; falta cuenta, dominio y servicio)_
 - [ ] T051 Escribir `backend/ops/backup.ps1` (`pg_dump` con rotación a una ubicación fuera del disco del volumen), programarlo, y probar la restauración en una base de datos limpia (FR-016, SC-007) _(`ops/backup.ps1` listo y con sintaxis validada; falta probarlo con Docker y la restauracion)_
-- [ ] T052 Retirar por completo `frontend/dashboard/guardar.py` y su flujo de `git push` una vez el backend esté en marcha y el scraper enviando pasadas — sin periodo de doble escritura (Principio VI, corte duro)
+- [ ] T052 Retirar por completo `frontend/dashboard/guardar.py` y su flujo de `git push` una vez el backend esté en marcha y el scraper enviando pasadas — sin periodo de doble escritura (Principio VI, corte duro) _(el dashboard ya no lee `frontend/datos/` desde la spec 002; quedan por retirar `guardar.py`, `listings_store.py`, su test y los JSON)_
 
 ---
 

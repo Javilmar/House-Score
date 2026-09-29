@@ -16,7 +16,7 @@ cd frontend/dashboard
 streamlit run app.py
 ```
 
-Sin más configuración consulta `http://localhost:8000`. Para otra API:
+Sin más configuración consulta `http://127.0.0.1:8000`. Para otra API:
 `HOUSESCORE_API_URL=http://otra-direccion:8000 streamlit run app.py`.
 
 ## Escenario 1 — Datos vivos de la API (Historia 1)
@@ -24,7 +24,7 @@ Sin más configuración consulta `http://localhost:8000`. Para otra API:
 Abrir el dashboard y comparar con la API:
 
 ```bash
-curl -s "http://localhost:8000/historico" | python -c "import sys,json; print(json.load(sys.stdin)[-1])"
+curl -s "http://127.0.0.1:8000/historico" | python -c "import sys,json; print(json.load(sys.stdin)[-1])"
 ```
 
 **Resultado esperado**: el gráfico de evolución y los KPIs (listings activos,

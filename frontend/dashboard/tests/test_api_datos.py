@@ -238,7 +238,7 @@ class DireccionConfigurableTests(unittest.TestCase):
     def test_sin_variable_se_usa_la_direccion_local(self):
         with mock.patch.dict(os.environ):
             os.environ.pop("HOUSESCORE_API_URL", None)
-            self.assertEqual(api_datos.url_api(), "http://localhost:8000")
+            self.assertEqual(api_datos.url_api(), "http://127.0.0.1:8000")
 
     def test_con_variable_se_consulta_esa_direccion(self):
         with FakeApi() as api, mock.patch.dict(os.environ, {"HOUSESCORE_API_URL": api.url}):

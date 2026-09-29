@@ -13,8 +13,11 @@
 corona sur de Madrid (Madrid Sur) y norte de Toledo (Toledo Norte). El flujo es:
 
 ```
-property_scorer.py   →  guardar.py  →  datos/YYYY-MM-DD.json  →  app.py (Streamlit)
-(scraper + scoring)     (merge/git)     (ficheros diarios)        (UI)
+scorer (3 lotes)  →  API POST /ingest  →  PostgreSQL  →  API GET /listings, /historico  →  app.py
+(backend/worker/scraper) (backend/, Docker)                                                (Streamlit, UI)
+
+El dashboard ya no lee ficheros: `api_datos.py` pide los datos a la API
+(`HOUSESCORE_API_URL`, por defecto `http://127.0.0.1:8000`). Ver spec 002.
 ```
 
 - Precio máximo scrapeado: **≤ 300.000 €**
@@ -31,7 +34,8 @@ property_scorer.py   →  guardar.py  →  datos/YYYY-MM-DD.json  →  app.py (S
 house-dashboard/
 ├── dashboard/
 │   ├── app.py                  ← UI principal (Streamlit, ~1850 líneas)
-│   ├── guardar.py              ← merge de pasadas + git push
+│   ├── api_datos.py            ← cliente de la API (lo usa app.py para cargar datos)
+│   ├── guardar.py              ← (heredado) merge de pasadas + git push; se retira con T052 de la spec 001
 │   ├── assets/
 │   │   ├── municipios_zona.geojson     ← polígonos municipales (47 mun.)
 │   │   ├── criminalidad.csv            ← tasa criminalidad oficial (12 mun.)
@@ -324,7 +328,8 @@ GRID    = "#1f1f23"   # rejilla apenas perceptible
 ## 8. Flujo de datos en app.py
 
 ```
-cargar_datos()          → df principal (carga todos los JSON de datos/)
+cargar_datos()          → df principal (GET /listings?incluir_retirados=true vía api_datos.py)
+cargar_historico()      → histórico diario (GET /historico)
 cargar_geojson_municipios()  → dict GeoJSON (municipios_zona.geojson)
 cargar_criminalidad()        → DataFrame (criminalidad.csv)
 cargar_secciones_renta()     → (dict GeoJSON, DataFrame) (secciones_renta.geojson)
@@ -407,17 +412,17 @@ Todos los loaders son `@st.cache_data` invalidados por `mtime` del fichero.
 ## 11. Comandos operativos
 
 ```bash
-# Lanzar dashboard
-streamlit run dashboard/app.py
+# Lanzar dashboard (con la API en marcha: cd backend && docker compose up -d)
+streamlit run frontend/dashboard/app.py
+# otra API: HOUSESCORE_API_URL=http://otra-direccion:8000 streamlit run frontend/dashboard/app.py
 
 # Regenerar assets del mapa (geometrías + criminalidad + renta)
 cd house-dashboard/dashboard
 python scripts/build_mapa_assets.py
 
-# Guardar una pasada del scraper
-python dashboard/guardar.py ~/AppData/Local/hermes/last_property_data.json
-# o por stdin
-cat resultados.json | python dashboard/guardar.py --stdin
+# Enviar una pasada del scraper a la API (sustituye a guardar.py)
+INGEST_SECRET=... python -m worker.scraper.client ~/AppData/Local/hermes/last_property_data.json
+# (desde backend/; los lotes del scorer ya lo hacen solos: backend/worker/scraper/property_scorer_all.py)
 ```
 
 ---

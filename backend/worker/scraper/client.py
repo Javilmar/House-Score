@@ -21,7 +21,8 @@ import httpx
 
 from app.services.formato_scraper import payload_desde_scraper
 
-API_URL_DEFECTO = "http://localhost:8000"
+# 127.0.0.1 y no "localhost": en Windows "localhost" prueba antes ::1 y cada peticion pierde ~2 s
+API_URL_DEFECTO = "http://127.0.0.1:8000"
 _TIMEOUT = 120.0
 
 

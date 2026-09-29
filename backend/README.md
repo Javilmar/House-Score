@@ -14,7 +14,7 @@ cp .env.example .env        # y edita INGEST_SECRET / POSTGRES_PASSWORD
 docker compose up --build
 ```
 
-La API queda en `http://localhost:8000` (solo accesible desde el propio equipo). Las migraciones
+La API queda en `http://127.0.0.1:8000` (solo accesible desde el propio equipo; usa `127.0.0.1` y no `localhost`, que en Windows añade ~2 s por petición al probar IPv6 primero). Las migraciones
 de Alembic corren solas al arrancar el contenedor `api`. Tras el primer arranque, carga los datos
 actuales una sola vez:
 
@@ -32,7 +32,7 @@ El contenedor `api` monta `../frontend` en solo lectura para esa migración.
 | `INGEST_SECRET` | Secreto Bearer de `POST /ingest`. Sin él, la ingesta rechaza todo | — (obligatorio en compose) |
 | `RATE_LIMIT` | Límite por IP de los endpoints de lectura | `60/minute` |
 | `POSTGRES_PASSWORD` | Contraseña de la base de datos en compose | `housescore` |
-| `HOUSESCORE_API_URL` | URL de la API para el cliente del scraper | `http://localhost:8000` |
+| `HOUSESCORE_API_URL` | URL de la API para el cliente del scraper y el dashboard | `http://127.0.0.1:8000` |
 | `TEST_DATABASE_URL` | Base de datos de los tests | `sqlite://` (memoria) |
 
 `backend/.env` no se versiona.
@@ -111,6 +111,18 @@ fuera del repo, en `HERMES_DATA_DIR`. Sigue leyendo y escribiendo
 Además: activa "Iniciar Docker Desktop al iniciar sesión" y instala `cloudflared` como servicio
 de Windows (`cloudflared service install`). Con `restart: unless-stopped`, `api` y `db` vuelven
 solos tras un reinicio.
+
+## Dashboard (Streamlit)
+
+El dashboard lee de esta API (no de `frontend/datos/`). Con el backend en marcha:
+
+```bash
+pip install -r frontend/requirements.txt
+streamlit run frontend/dashboard/app.py
+```
+
+Consulta `http://127.0.0.1:8000`; para otra dirección, `HOUSESCORE_API_URL=... streamlit run ...`.
+Si la API no responde, muestra un aviso con la dirección consultada y ninguna cifra.
 
 ## Estructura
 

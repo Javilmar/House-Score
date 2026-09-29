@@ -33,7 +33,7 @@ adaptador, y `streamlit.testing.v1.AppTest` para un test de humo de la app
 completa contra esa API falsa.
 
 **Plataforma objetivo**: ejecución local con `streamlit run` en el PC del
-propietario, junto a la API (`http://localhost:8000`).
+propietario, junto a la API (`http://127.0.0.1:8000`).
 
 **Tipo de proyecto**: aplicación web de un solo usuario (cliente de la API).
 

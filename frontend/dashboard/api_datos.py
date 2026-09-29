@@ -10,7 +10,9 @@ import os
 import pandas as pd
 import requests
 
-API_URL_DEFECTO = "http://localhost:8000"
+# 127.0.0.1 y no "localhost": en Windows "localhost" prueba antes ::1 y cada petición pierde ~2 s
+# (la API solo escucha en IPv4). Medido: 2,06 s con localhost frente a 0,01 s con 127.0.0.1.
+API_URL_DEFECTO = "http://127.0.0.1:8000"
 _TIMEOUT = (3, 15)  # conexión, lectura (segundos)
 
 # Campo de la API -> columna que usa app.py

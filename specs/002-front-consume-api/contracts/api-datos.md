@@ -6,7 +6,7 @@ que ofrece el módulo adaptador a `app.py` y lo que espera de la API.
 
 ## Configuración
 
-- Variable de entorno `HOUSESCORE_API_URL` (por defecto `http://localhost:8000`).
+- Variable de entorno `HOUSESCORE_API_URL` (por defecto `http://127.0.0.1:8000`; no `localhost`, que en Windows añade ~2 s por petición al probar IPv6 primero).
   Se lee en cada llamada, no al importar el módulo, para poder cambiarla en tests.
 - Tiempo máximo: 3 s de conexión y 15 s de lectura.
 

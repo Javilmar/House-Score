@@ -97,7 +97,7 @@ a otra dirección y comprobar que consulta esa.
 
 1. **Dado** que no hay variable de entorno definida, **Cuando** arranco el
    dashboard, **Entonces** consulta la API en la dirección local por defecto
-   (`http://localhost:8000`).
+   (`http://127.0.0.1:8000`; equivale a la dirección local de la API, y se usa la IP y no `localhost` porque en Windows este último añade ~2 s por petición).
 2. **Dado** que defino la variable con otra dirección, **Cuando** arranco el
    dashboard, **Entonces** consulta esa dirección y el aviso de fallo (si lo
    hay) la menciona.
@@ -146,7 +146,7 @@ a otra dirección y comprobar que consulta esa.
 - **FR-007**: El dashboard DEBE recuperarse sin reiniciarse cuando la API
   vuelve a estar disponible.
 - **FR-008**: La dirección de la API DEBE poder configurarse mediante una
-  variable de entorno, con `http://localhost:8000` como valor por defecto.
+  variable de entorno, con `http://127.0.0.1:8000` como valor por defecto.
 - **FR-009**: Se DEBE retirar del dashboard el código de lectura de los JSON
   del repositorio, sin dejar un modo de compatibilidad ni una alternativa por
   ficheros (Principio VI: corte duro sin shims).

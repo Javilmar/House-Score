@@ -10,6 +10,8 @@ import streamlit as st
 from streamlit.testing.v1 import AppTest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+# `streamlit run` añade la carpeta del script al path; AppTest no, y app.py hace `import api_datos`
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from fake_api import FakeApi, puerto_sin_servidor  # noqa: E402
 

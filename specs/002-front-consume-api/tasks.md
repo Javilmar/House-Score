@@ -101,7 +101,7 @@ Todo el código nuevo vive en `frontend/dashboard/` (junto a `app.py`) y sus tes
 
 > **Escribe estos tests PRIMERO y asegúrate de que FALLAN antes de implementar**
 
-- [X] T017 [P] [US3] Tests en `frontend/dashboard/tests/test_api_datos.py`: sin `HOUSESCORE_API_URL` se consulta `http://localhost:8000`; con la variable (puesta con `monkeypatch`/`mock.patch.dict` después de importar el módulo) se consulta esa dirección; el `mensaje` de error incluye la dirección configurada
+- [X] T017 [P] [US3] Tests en `frontend/dashboard/tests/test_api_datos.py`: sin `HOUSESCORE_API_URL` se consulta `http://127.0.0.1:8000`; con la variable (puesta con `monkeypatch`/`mock.patch.dict` después de importar el módulo) se consulta esa dirección; el `mensaje` de error incluye la dirección configurada
 - [X] T018 [P] [US3] Test en `frontend/dashboard/tests/test_app_api.py`: el pie de página de la app muestra la dirección de la API y ya no muestra rutas de ficheros ni `property_scorer.py`
 
 ### Implementación de la Historia de Usuario 3
@@ -115,10 +115,10 @@ Todo el código nuevo vive en `frontend/dashboard/` (junto a `app.py`) y sus tes
 
 ## Fase Final: Pulido y aspectos transversales
 
-- [ ] T021 Ejecutar la suite completa `python -m pytest frontend/dashboard/tests -q` y comprobar que sigue pasando `test_listings_store.py` (se retira con T052 de la spec 001)
-- [ ] T022 Validar `quickstart.md` contra la API real de Docker con los ~2.000 listings: Escenarios 1 a 5 (datos del último día, `grep` sin lecturas de ficheros, API parada y recuperación, dirección configurable, primera carga < 5 s)
-- [ ] T023 [P] Actualizar `frontend/dashboard/FUNCIONALIDADES.md` (diagrama y descripción del flujo de datos: ya no es `guardar.py → datos/*.json → app.py`, sino scorer → API → `app.py`) y añadir cómo arrancar el dashboard a `backend/README.md`
-- [ ] T024 [P] En `specs/001-backend-api-bbdd/tasks.md`, anotar en T052 que el dashboard ya no lee `frontend/datos/` (queda por retirar `guardar.py`, `listings_store.py`, su test y los JSON)
+- [X] T021 Ejecutar la suite completa `python -m pytest frontend/dashboard/tests -q` y comprobar que sigue pasando `test_listings_store.py` (se retira con T052 de la spec 001; suite completa: 51 passed)
+- [X] T022 Validar `quickstart.md` contra la API real de Docker con los ~2.000 listings: Escenarios 1 a 5 (datos del último día, `grep` sin lecturas de ficheros, API parada y recuperación, dirección configurable, primera carga < 5 s)
+- [X] T023 [P] Actualizar `frontend/dashboard/FUNCIONALIDADES.md` (diagrama y descripción del flujo de datos: ya no es `guardar.py → datos/*.json → app.py`, sino scorer → API → `app.py`) y añadir cómo arrancar el dashboard a `backend/README.md`
+- [X] T024 [P] En `specs/001-backend-api-bbdd/tasks.md`, anotar en T052 que el dashboard ya no lee `frontend/datos/` (queda por retirar `guardar.py`, `listings_store.py`, su test y los JSON)
 
 ---
 
@@ -143,6 +143,13 @@ Todo el código nuevo vive en `frontend/dashboard/` (junto a `app.py`) y sus tes
 3. US2: errores y avisos. Validar con la API parada.
 4. US3: variable de entorno y pie de página.
 5. Pulido y validación con la API real de Docker.
+
+## Notas de implementación (2026-09-29)
+
+- Validado con la API real de Docker (~2.000 listings): KPIs del último día (434 activos, 16 sin valorar), aviso con la API parada y recuperación al volver, dirección configurable. Primera carga: 2,2 s.
+- **Hallazgo de rendimiento**: con `localhost` cada petición perdía ~2 s en Windows (prueba IPv6 primero y la API solo escucha en IPv4); con `127.0.0.1`, 0,01 s. La primera carga pasó de 6,2 s a 2,2 s (SC-004 < 5 s). Por eso la dirección por defecto es `http://127.0.0.1:8000` (dashboard y cliente del scraper).
+- **Hallazgo de datos**: los JSON antiguos escribían `0` para precio, m², habitaciones, baños y score ausentes, y `app.py` hace `int()` sobre ellos; con `NaN` la app fallaba (`int(score)`, `int(eur_m2)` con `inf`). El adaptador los rellena con `0`, deja `eur_m2` en `NaN` si `m2` no es fiable, y da valores neutros a los campos de texto y lista del detalle. `datos_insuficientes` sigue siendo la marca real de "sin valorar".
+- `AppTest` no añade la carpeta del script al `sys.path` como `streamlit run`; los tests lo hacen explícito. Con `streamlit run` funciona desde cualquier carpeta.
 
 ## Notas
 
