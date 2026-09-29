@@ -29,11 +29,11 @@ Según `plan.md` > Estructura del Proyecto: todo el código nuevo vive bajo `bac
 
 **Propósito**: Inicialización del proyecto backend
 
-- [ ] T001 Crear la estructura de directorios de `backend/` (`app/api/`, `app/models/`, `app/db/`, `app/core/`, `worker/scraper/`, `tests/contract/`, `tests/integration/`, `tests/unit/`, `alembic/`) según `plan.md` > Estructura del Proyecto
-- [ ] T002 Inicializar el proyecto Python 3.11 en `backend/pyproject.toml` con las dependencias decididas en `research.md`: fastapi, uvicorn, sqlalchemy, alembic, pydantic, slowapi, psycopg, pytest, httpx
-- [ ] T003 [P] Configurar linting/formato (ruff) en `backend/pyproject.toml`
-- [ ] T004 [P] Escribir `backend/Dockerfile` (imagen de `api`, per `research.md` §6; el scraper corre en el host, no en Docker)
-- [ ] T005 Escribir `backend/docker-compose.yml` con los servicios `api` y `db` (`postgres:16`, volumen persistente), ambos con `restart: unless-stopped`, más un perfil `test` con una base de datos efímera para la suite, per `research.md` §6
+- [X] T001 Crear la estructura de directorios de `backend/` (`app/api/`, `app/models/`, `app/db/`, `app/core/`, `worker/scraper/`, `tests/contract/`, `tests/integration/`, `tests/unit/`, `alembic/`) según `plan.md` > Estructura del Proyecto
+- [X] T002 Inicializar el proyecto Python 3.11 en `backend/pyproject.toml` con las dependencias decididas en `research.md`: fastapi, uvicorn, sqlalchemy, alembic, pydantic, slowapi, psycopg, pytest, httpx
+- [X] T003 [P] Configurar linting/formato (ruff) en `backend/pyproject.toml`
+- [X] T004 [P] Escribir `backend/Dockerfile` (imagen de `api`, per `research.md` §6; el scraper corre en el host, no en Docker) _(Dockerfile escrito; imagen sin construir: Docker Desktop apagado al implementar)_
+- [X] T005 Escribir `backend/docker-compose.yml` con los servicios `api` y `db` (`postgres:16`, volumen persistente), ambos con `restart: unless-stopped`, más un perfil `test` con una base de datos efímera para la suite, per `research.md` §6 _(`docker compose config` valida; no se ha arrancado)_
 
 ---
 
@@ -43,17 +43,17 @@ Según `plan.md` > Estructura del Proyecto: todo el código nuevo vive bajo `bac
 
 **⚠️ CRÍTICO**: Ninguna historia de usuario puede empezar hasta que esta fase esté completa
 
-- [ ] T006 Configurar el engine y la sesión de SQLAlchemy en `backend/app/db/session.py`, leyendo `DATABASE_URL` de entorno
-- [ ] T007 Inicializar Alembic en `backend/alembic/` apuntando a los modelos de `backend/app/models/`
-- [ ] T008 [P] Crear el modelo `Listing` en `backend/app/models/listing.py` con los campos y reglas de `data-model.md` § Listing: `url` único no nulo (clave de deduplicación), `m2` nullable (si es `null` ⇒ `datos_insuficientes=true` y `score=null`), `estado` enum (`activo`/`retirado`), `municipio` no nulo
-- [ ] T009 [P] Crear el modelo `HistorialPrecio` en `backend/app/models/historial_precio.py` con FK a `Listing`, per `data-model.md` § HistorialPrecio
-- [ ] T010 [P] Crear el modelo `PasadaDiaria` en `backend/app/models/pasada_diaria.py` con `fecha` única, per `data-model.md` § PasadaDiaria
-- [ ] T011 [P] Crear el modelo `PrecioReferencia` en `backend/app/models/precio_referencia.py` con `municipio` único, per `data-model.md` § PrecioReferencia
-- [ ] T012 Generar la migración Alembic inicial para las 4 tablas anteriores en `backend/alembic/versions/`
-- [ ] T013 Configurar rate limiting por IP con `slowapi` en `backend/app/core/rate_limit.py`, para aplicarlo a los endpoints de lectura (FR-012), leyendo la IP real de la cabecera `CF-Connecting-IP` cuando la petición llega por el túnel (`research.md` §3)
-- [ ] T014 Configurar logging estructurado en `backend/app/core/logging.py` que registre cualquier fallo de ingesta de forma consultable (FR-014) — sin notificación activa, per la clarificación del spec
-- [ ] T015 Configurar la carga del secreto compartido (`INGEST_SECRET`) desde variables de entorno en `backend/app/core/config.py`, per `research.md` §4
-- [ ] T016 Crear la app FastAPI base en `backend/app/main.py`, montando routers vacíos para `listings`, `historico` e `ingest`
+- [X] T006 Configurar el engine y la sesión de SQLAlchemy en `backend/app/db/session.py`, leyendo `DATABASE_URL` de entorno
+- [X] T007 Inicializar Alembic en `backend/alembic/` apuntando a los modelos de `backend/app/models/`
+- [X] T008 [P] Crear el modelo `Listing` en `backend/app/models/listing.py` con los campos y reglas de `data-model.md` § Listing: `url` único no nulo (clave de deduplicación), `m2` nullable (si es `null` ⇒ `datos_insuficientes=true` y `score=null`), `estado` enum (`activo`/`retirado`), `municipio` no nulo
+- [X] T009 [P] Crear el modelo `HistorialPrecio` en `backend/app/models/historial_precio.py` con FK a `Listing`, per `data-model.md` § HistorialPrecio
+- [X] T010 [P] Crear el modelo `PasadaDiaria` en `backend/app/models/pasada_diaria.py` con `fecha` única, per `data-model.md` § PasadaDiaria
+- [X] T011 [P] Crear el modelo `PrecioReferencia` en `backend/app/models/precio_referencia.py` con `municipio` único, per `data-model.md` § PrecioReferencia
+- [X] T012 Generar la migración Alembic inicial para las 4 tablas anteriores en `backend/alembic/versions/`
+- [X] T013 Configurar rate limiting por IP con `slowapi` en `backend/app/core/rate_limit.py`, para aplicarlo a los endpoints de lectura (FR-012), leyendo la IP real de la cabecera `CF-Connecting-IP` cuando la petición llega por el túnel (`research.md` §3)
+- [X] T014 Configurar logging estructurado en `backend/app/core/logging.py` que registre cualquier fallo de ingesta de forma consultable (FR-014) — sin notificación activa, per la clarificación del spec
+- [X] T015 Configurar la carga del secreto compartido (`INGEST_SECRET`) desde variables de entorno en `backend/app/core/config.py`, per `research.md` §4
+- [X] T016 Crear la app FastAPI base en `backend/app/main.py`, montando routers vacíos para `listings`, `historico` e `ingest`
 
 **Punto de control**: Fundación lista — puede empezar la implementación de las historias de usuario.
 
@@ -69,16 +69,16 @@ Según `plan.md` > Estructura del Proyecto: todo el código nuevo vive bajo `bac
 
 > **Escribe estos tests PRIMERO, asegúrate de que FALLAN antes de implementar**
 
-- [ ] T017 [P] [US1] Test de contrato para `GET /listings` en `backend/tests/contract/test_listings_get.py`: verifica que cada listing devuelto trae `score` y `datos_insuficientes` (per `contracts/api.md`)
-- [ ] T018 [P] [US1] Test de contrato para `GET /historico` en `backend/tests/contract/test_historico_get.py`: verifica el shape de `contracts/api.md` (`fecha`, `total_listings`, `score_medio`, `precio_medio`)
-- [ ] T019 [P] [US1] Test unitario: un listing sin `m2` queda marcado `datos_insuficientes=true` y con `score=null` en `backend/tests/unit/test_datos_insuficientes.py` (FR-005)
+- [X] T017 [P] [US1] Test de contrato para `GET /listings` en `backend/tests/contract/test_listings_get.py`: verifica que cada listing devuelto trae `score` y `datos_insuficientes` (per `contracts/api.md`)
+- [X] T018 [P] [US1] Test de contrato para `GET /historico` en `backend/tests/contract/test_historico_get.py`: verifica el shape de `contracts/api.md` (`fecha`, `total_listings`, `score_medio`, `precio_medio`)
+- [X] T019 [P] [US1] Test unitario: un listing sin `m2` queda marcado `datos_insuficientes=true` y con `score=null` en `backend/tests/unit/test_datos_insuficientes.py` (FR-005)
 
 ### Implementación de la Historia de Usuario 1
 
-- [ ] T020 [US1] Implementar `GET /listings` en `backend/app/api/routes_listings.py` con filtros `municipio` e `incluir_retirados` (depende de T008)
-- [ ] T021 [US1] Implementar `GET /historico` en `backend/app/api/routes_listings.py` con filtros `desde`/`hasta` (depende de T010)
-- [ ] T022 [US1] Aplicar el rate limiting de T013 a ambos endpoints de lectura (FR-012)
-- [ ] T023 [US1] Escribir el script de migración one-off `backend/scripts/migrar_datos_existentes.py` que carga `frontend/datos/listings.json`, `frontend/datos/historico_diario.json` `frontend/config/precios_referencia.json` y las pasadas diarias `frontend/datos/YYYY-MM-DD.json` (para reconstruir el historial de precios) en las tablas correspondientes, sin pérdida de datos (SC-004). Precios como entero en euros (FR-017)
+- [X] T020 [US1] Implementar `GET /listings` en `backend/app/api/routes_listings.py` con filtros `municipio` e `incluir_retirados` (depende de T008)
+- [X] T021 [US1] Implementar `GET /historico` en `backend/app/api/routes_listings.py` con filtros `desde`/`hasta` (depende de T010)
+- [X] T022 [US1] Aplicar el rate limiting de T013 a ambos endpoints de lectura (FR-012)
+- [X] T023 [US1] Escribir el script de migración one-off `backend/scripts/migrar_datos_existentes.py` que carga `frontend/datos/listings.json`, `frontend/datos/historico_diario.json` `frontend/config/precios_referencia.json` y las pasadas diarias `frontend/datos/YYYY-MM-DD.json` (para reconstruir el historial de precios) en las tablas correspondientes, sin pérdida de datos (SC-004). Precios como entero en euros (FR-017) _(probada con los datos reales sobre SQLite temporal: 1824 base + 4 pasadas repetidas; el JSON de precios de referencia local esta vacio)_
 
 **Punto de control**: `GET /listings` y `GET /historico` devuelven los datos reales migrados, con rate limiting activo.
 
@@ -94,26 +94,26 @@ Según `plan.md` > Estructura del Proyecto: todo el código nuevo vive bajo `bac
 
 > **Escribe estos tests PRIMERO, asegúrate de que FALLAN antes de implementar**
 
-- [ ] T024 [P] [US2] Test de contrato: `POST /ingest` con secreto correcto devuelve `201` y el resumen de la pasada, en `backend/tests/contract/test_ingest_post.py`
-- [ ] T025 [P] [US2] Test de contrato: `POST /ingest` sin cabecera `Authorization` o con secreto incorrecto devuelve `401`, en `backend/tests/contract/test_ingest_auth.py` (FR-010/FR-011)
-- [ ] T026 [P] [US2] Test de integración: enviar la misma pasada dos veces no crea listings duplicados (dedupe por `url`), en `backend/tests/integration/test_ingest_dedupe.py` (FR-009/SC-005)
-- [ ] T027 [P] [US2] Test de integración: una bajada de precio >40% en una pasada queda como candidata y no se confirma hasta la siguiente pasada similar, en `backend/tests/integration/test_price_drop.py` (regla `OUTLIER_DROP_RATIO` migrada de `listings_store.py`)
-- [ ] T028 [P] [US2] Test de integración: un listing de un municipio bloqueado de Toledo Norte se descarta antes de persistir, en `backend/tests/integration/test_municipios_bloqueados.py` (FR-006)
-- [ ] T029 [P] [US2] Test de integración: un listing activo sin aparecer en 7 días pasa a `retirado`, en `backend/tests/integration/test_delisted.py` (FR-007)
+- [X] T024 [P] [US2] Test de contrato: `POST /ingest` con secreto correcto devuelve `201` y el resumen de la pasada, en `backend/tests/contract/test_ingest_post.py`
+- [X] T025 [P] [US2] Test de contrato: `POST /ingest` sin cabecera `Authorization` o con secreto incorrecto devuelve `401`, en `backend/tests/contract/test_ingest_auth.py` (FR-010/FR-011)
+- [X] T026 [P] [US2] Test de integración: enviar la misma pasada dos veces no crea listings duplicados (dedupe por `url`), en `backend/tests/integration/test_ingest_dedupe.py` (FR-009/SC-005)
+- [X] T027 [P] [US2] Test de integración: una bajada de precio >40% en una pasada queda como candidata y no se confirma hasta la siguiente pasada similar, en `backend/tests/integration/test_price_drop.py` (regla `OUTLIER_DROP_RATIO` migrada de `listings_store.py`)
+- [X] T028 [P] [US2] Test de integración: un listing de un municipio bloqueado de Toledo Norte se descarta antes de persistir, en `backend/tests/integration/test_municipios_bloqueados.py` (FR-006)
+- [X] T029 [P] [US2] Test de integración: un listing activo sin aparecer en 7 días pasa a `retirado`, en `backend/tests/integration/test_delisted.py` (FR-007)
 
 ### Implementación de la Historia de Usuario 2
 
-- [ ] T030 [US2] Implementar la verificación del secreto compartido (cabecera `Authorization: Bearer`) en `backend/app/api/routes_ingest.py` (depende de T015)
-- [ ] T031 [US2] Implementar la deduplicación por `url` en `backend/app/services/ingest_service.py` (depende de T008)
-- [ ] T032 [US2] Implementar la regla de historial de precio / precio candidato en `backend/app/services/ingest_service.py` (depende de T009, T031)
-- [ ] T033 [US2] Migrar a `backend/app/services/ingest_service.py` la lista de municipios bloqueados de Toledo Norte actualmente en `frontend/dashboard/guardar.py` (`_TOLEDO_NORTE_BLOQUEADOS`)
-- [ ] T034 [US2] Implementar la detección de listings retirados (umbral 7 días) en `backend/app/services/ingest_service.py` (depende de T031)
-- [ ] T035 [US2] Implementar la actualización de `PasadaDiaria` tras cada ingesta en `backend/app/services/ingest_service.py` (depende de T010)
-- [ ] T036 [US2] Implementar `POST /ingest` completo en `backend/app/api/routes_ingest.py`, orquestando T031-T035 (depende de T030)
-- [ ] T037 [US2] Registrar en el log (T014) cualquier fallo de la ingesta, sin notificación activa (FR-014)
-- [ ] T038 [US2] Incorporar a `backend/worker/scraper/` los cuatro ficheros del scorer desde `~/AppData/Local/hermes/scripts/`: `property_scorer.py`, `property_scorer_common.py`, `property_scorer_idealista.py` y `property_scorer_all.py`. NO versionar `capture_idealista_session*.py` ni `idealista_session.json` (datos de sesión); añadir el fichero de cookies a `.gitignore` y parametrizar su ruta por variable de entorno (sin rutas de máquina en el código, per constitución)
-- [ ] T039 [US2] Implementar el cliente HTTP del scraper que llama a `POST /ingest` por `localhost` con el secreto compartido, en `backend/worker/scraper/client.py`, con reintentos seguros (la ingesta es idempotente por `url`) (depende de T038)
-- [ ] T040 [US2] Escribir `backend/worker/scraper/run_scraper.ps1`, que ejecuta el scraper en el host, envía la pasada mediante el cliente de T039 y deja el fallo en el log si algo falla (FR-014) (depende de T039)
+- [X] T030 [US2] Implementar la verificación del secreto compartido (cabecera `Authorization: Bearer`) en `backend/app/api/routes_ingest.py` (depende de T015)
+- [X] T031 [US2] Implementar la deduplicación por `url` en `backend/app/services/ingest_service.py` (depende de T008)
+- [X] T032 [US2] Implementar la regla de historial de precio / precio candidato en `backend/app/services/ingest_service.py` (depende de T009, T031)
+- [X] T033 [US2] Migrar a `backend/app/services/ingest_service.py` la lista de municipios bloqueados de Toledo Norte actualmente en `frontend/dashboard/guardar.py` (`_TOLEDO_NORTE_BLOQUEADOS`)
+- [X] T034 [US2] Implementar la detección de listings retirados (umbral 7 días) en `backend/app/services/ingest_service.py` (depende de T031)
+- [X] T035 [US2] Implementar la actualización de `PasadaDiaria` tras cada ingesta en `backend/app/services/ingest_service.py` (depende de T010)
+- [X] T036 [US2] Implementar `POST /ingest` completo en `backend/app/api/routes_ingest.py`, orquestando T031-T035 (depende de T030)
+- [X] T037 [US2] Registrar en el log (T014) cualquier fallo de la ingesta, sin notificación activa (FR-014)
+- [X] T038 [US2] Incorporar a `backend/worker/scraper/` `property_scorer_common.py`, los tres lotes (`property_scorer_madrid.py`, `property_scorer_toledo.py`, `property_scorer_idealista.py`) y el orquestador `property_scorer_all.py` desde `~/AppData/Local/hermes/scripts/`, adaptando las copias: `verificar_api()` al empezar, historial desde la API (`cargar_historial_api`) en lugar de `frontend/datos`, y `publicar_pasada` en lugar del snapshot diario + `git push`. NO versionar `capture_idealista_session*.py` ni `idealista_session.json` (datos de sesión). Los originales de hermes no se modifican. _(no probado con scraping real: los imports funcionan con el Python de hermes; el cambio de cron queda a cargo del propietario)_
+- [X] T039 [US2] Implementar el cliente HTTP del scraper que llama a `POST /ingest` por `localhost` con el secreto compartido, en `backend/worker/scraper/client.py`, con reintentos seguros (la ingesta es idempotente por `url`) (depende de T038)
+- [X] T040 [US2] Escribir `backend/worker/scraper/run_scraper.ps1`, que ejecuta el scraper en el host, envía la pasada mediante el cliente de T039 y deja el fallo en el log si algo falla (FR-014) (depende de T039) _(script probado en éxito y fallo; el envío lo hace cada lote del scorer con `publicar_pasada`)_
 
 **Punto de control**: MVP completo — el front puede leer de la API (US1) y el scraper puede escribir en ella sin git (US2).
 
@@ -127,13 +127,13 @@ Según `plan.md` > Estructura del Proyecto: todo el código nuevo vive bajo `bac
 
 ### Tests de la Historia de Usuario 3
 
-- [ ] T041 [P] [US3] Test de integración: tras `docker compose up`, la API responde en `backend/tests/integration/test_entorno_local.py` (valida el Escenario 1 de `quickstart.md`)
+- [X] T041 [P] [US3] Test de integración: tras `docker compose up`, la API responde en `backend/tests/integration/test_entorno_local.py` (valida el Escenario 1 de `quickstart.md`) _(escrito; se omite sin `HOUSESCORE_E2E_URL`, pendiente de ejecutar con Docker)_
 
 ### Implementación de la Historia de Usuario 3
 
-- [ ] T042 [US3] Configurar que las migraciones de Alembic corran automáticamente al arrancar el contenedor `api` (`backend/entrypoint.sh`) (depende de T012)
+- [X] T042 [US3] Configurar que las migraciones de Alembic corran automáticamente al arrancar el contenedor `api` (`backend/entrypoint.sh`) (depende de T012) _(`alembic upgrade head` verificado en SQLite; falta ejecutarlo en el contenedor)_
 - [ ] T043 [US3] Verificar y documentar en `backend/README.md` el arranque con un único comando en menos de 5 minutos (SC-003), contra el Escenario 1 de `quickstart.md` (depende de T005, T042)
-- [ ] T044 [US3] Configurar `docker compose run --rm api pytest` para ejecutar toda la suite contra el entorno local sin tocar datos de producción (depende de T002)
+- [X] T044 [US3] Configurar `docker compose --profile test run --rm test` para ejecutar toda la suite contra el entorno local sin tocar datos de producción (depende de T002) _(perfil `test` de compose configurado; falta ejecutarlo con Docker. En el host: `pytest` con SQLite en memoria)_
 
 **Punto de control**: Cualquiera puede clonar el repo y tener el backend funcionando en local sin pasos manuales.
 
@@ -141,13 +141,13 @@ Según `plan.md` > Estructura del Proyecto: todo el código nuevo vive bajo `bac
 
 ## Fase Final: Pulido y aspectos transversales
 
-- [ ] T045 [P] Documentar las variables de entorno (`INGEST_SECRET`, `DATABASE_URL`, etc.) en `backend/README.md`
-- [ ] T046 [P] Test de integración de rate limiting: verificar que se devuelve `429` al superar el límite, en `backend/tests/integration/test_rate_limiting.py` (Escenario 5 de `quickstart.md`, FR-012)
+- [X] T045 [P] Documentar las variables de entorno (`INGEST_SECRET`, `DATABASE_URL`, etc.) en `backend/README.md`
+- [X] T046 [P] Test de integración de rate limiting: verificar que se devuelve `429` al superar el límite, en `backend/tests/integration/test_rate_limiting.py` (Escenario 5 de `quickstart.md`, FR-012)
 - [ ] T047 Ejecutar los 6 escenarios de `quickstart.md` de principio a fin antes de dar el backend por operativo
-- [ ] T048 Configurar la tarea programada de Windows (Task Scheduler) que lanza `run_scraper.ps1` a diario, con la opción de ejecutar lo antes posible si se perdió el inicio programado, y documentarla en `backend/README.md` (FR-015)
-- [ ] T049 Configurar el arranque automático: Docker Desktop iniciándose con Windows y comprobar que `api` y `db` vuelven solos tras un reinicio (`restart: unless-stopped`) (FR-015, SC-006)
-- [ ] T050 Instalar `cloudflared` como servicio de Windows con `backend/ops/cloudflared.yml`, cuyo `ingress` publica solo `GET /listings` y `GET /historico` y termina con `http_status:404`; verificar que `POST /ingest` devuelve 404 desde la URL pública (FR-011, Escenario 3 de `quickstart.md`)
-- [ ] T051 Escribir `backend/ops/backup.ps1` (`pg_dump` con rotación a una ubicación fuera del disco del volumen), programarlo, y probar la restauración en una base de datos limpia (FR-016, SC-007)
+- [ ] T048 Configurar la tarea programada de Windows (Task Scheduler) que lanza `run_scraper.ps1` a diario, con la opción de ejecutar lo antes posible si se perdió el inicio programado, y documentarla en `backend/README.md` (FR-015) _(`ops/registrar_tareas.ps1` listo y con sintaxis validada; falta registrarlo en el equipo)_
+- [ ] T049 Configurar el arranque automático: Docker Desktop iniciándose con Windows y comprobar que `api` y `db` vuelven solos tras un reinicio (`restart: unless-stopped`) (FR-015, SC-006) _(`restart: unless-stopped` ya en compose; falta activar Docker Desktop al iniciar y probar un reinicio)_
+- [ ] T050 Instalar `cloudflared` como servicio de Windows con `backend/ops/cloudflared.yml`, cuyo `ingress` publica solo `GET /listings` y `GET /historico` y termina con `http_status:404`; verificar que `POST /ingest` devuelve 404 desde la URL pública (FR-011, Escenario 3 de `quickstart.md`) _(`ops/cloudflared.yml` listo con marcadores; falta cuenta, dominio y servicio)_
+- [ ] T051 Escribir `backend/ops/backup.ps1` (`pg_dump` con rotación a una ubicación fuera del disco del volumen), programarlo, y probar la restauración en una base de datos limpia (FR-016, SC-007) _(`ops/backup.ps1` listo y con sintaxis validada; falta probarlo con Docker y la restauracion)_
 - [ ] T052 Retirar por completo `frontend/dashboard/guardar.py` y su flujo de `git push` una vez el backend esté en marcha y el scraper enviando pasadas — sin periodo de doble escritura (Principio VI, corte duro)
 
 ---
@@ -164,7 +164,7 @@ Según `plan.md` > Estructura del Proyecto: todo el código nuevo vive bajo `bac
 
 ### Prerrequisito no bloqueante
 
-- **T038** ya no está bloqueada: los cuatro ficheros del scorer están en `~/AppData/Local/hermes/scripts/` y basta con copiarlos al repo (sin datos de sesión). T039 y T040 dependen de ella. El resto del backend (Fases 1-3, y la mayor parte de las Fases 4 y 5) no depende de estos ficheros.
+- **T038** ya no está bloqueada y está hecha en las copias del repo; solo falta que el propietario cambie el cron de hermes para usarlas (ver `backend/README.md`).
 
 ### Dentro de cada historia de usuario
 
@@ -213,6 +213,14 @@ Task: "Crear el modelo PrecioReferencia en backend/app/models/precio_referencia.
 5. Fase Final: rate limiting, tarea programada, arranque automático, túnel y backups, y solo entonces T052 (retirar `guardar.py`)
 
 ---
+
+## Notas de implementacion (2026-09-29)
+
+- Fases 1-3 y la mayor parte de la 4 implementadas con TDD: 73 tests pasan y 2 se omiten (E2E) sobre SQLite en memoria; no se han ejecutado contra PostgreSQL porque Docker Desktop estaba apagado.
+- **T038 hecha en las copias del repo.** Cada lote escribía `frontend/datos` y hacía `git push`; ahora usa la API. El scorer también leía esos JSON para `first_seen` y `price_drop` (que afectan a la puntuación), por eso el historial pasa a salir de la API. Falta probarlo con scraping real y cambiar el cron de hermes (`property_scorer_all.py`, `0 9 * * *`).
+- `listings.json` va por detras de las pasadas actuales; la migracion repite las pasadas diarias posteriores. Los datos usan campos en ingles y `municipio` como id con guiones bajos.
+- Reglas migradas con dos ajustes deliberados: el municipio bloqueado se compara sin guiones bajos ni acentos, y un reintento de la misma pasada el mismo dia no borra la marca de bajada ni confirma una bajada candidata.
+- La API sirve tambien `detalle`, `precio_anterior` y `bajada_precio` para que el front pueda migrar sin perder campos (ver `contracts/api.md`).
 
 ## Notas
 

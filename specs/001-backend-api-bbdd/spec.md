@@ -241,9 +241,7 @@ comando, sin pasos de configuración manual adicionales.
 
 ## Assumptions
 
-- El motor de scoring (`property_scorer.py`, `property_scorer_common.py`,
-  `property_scorer_idealista.py` y `property_scorer_all.py`, hoy en
-  `~/AppData/Local/hermes/scripts/`, más `listings_store`) se reutiliza
+- El motor de scoring (`property_scorer_common.py`, los tres lotes (`property_scorer_madrid.py`, `property_scorer_toledo.py`, `property_scorer_idealista.py`) y el orquestador `property_scorer_all.py`, hoy en `~/AppData/Local/hermes/scripts/`, más `listings_store`) se reutiliza
   tal cual desde el backend; este spec no reimplementa ni cambia su lógica
   de puntuación (Principio I).
 - El front consumidor de esta API sigue siendo, inicialmente, el dashboard

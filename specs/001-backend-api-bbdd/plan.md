@@ -71,7 +71,7 @@ de 2026, un único cliente (el dashboard actual) en esta fase.
 
 | Principio | Evaluación |
 |---|---|
-| I. Motor de scoring como única fuente de verdad | **PASS, con nota.** El motor de scoring (`property_scorer.py`) no se reimplementa: se migra tal cual junto al scraper. **Hallazgo importante**: hoy el scorer vive fuera de este repositorio, en `~/AppData/Local/hermes/scripts/`, y no está en git; además no es un solo fichero sino cuatro (`property_scorer.py`, `property_scorer_common.py`, `property_scorer_idealista.py`, `property_scorer_all.py`), los dos últimos modificados por última vez el 2026-09-27. Traerlos al repo (bajo `backend/worker/scraper/`) es un prerrequisito de esta implementación — se refleja como tarea explícita en `/speckit-tasks`, no como una violación del principio. `capture_idealista_session.py` y la sesión de cookies (`idealista_session.json`) son locales y con datos de sesión: no se versionan. |
+| I. Motor de scoring como única fuente de verdad | **PASS, con nota.** El motor de scoring (`property_scorer.py`) no se reimplementa: se migra tal cual junto al scraper. **Hallazgo importante**: hoy el scorer vive fuera de este repositorio, en `~/AppData/Local/hermes/scripts/`, y no está en git. Son cinco ficheros: `property_scorer_common.py`, los tres lotes (`property_scorer_madrid.py`, `property_scorer_toledo.py`, `property_scorer_idealista.py`) y el orquestador `property_scorer_all.py` (el monolito antiguo `property_scorer.py` y `run_property_pipeline.py`, que usa `guardar.py`, están obsoletos y no se migran). Cada lote calcula sus propios `first_seen` y bajadas de precio leyendo `frontend/datos/*.json`, y las puntuaciones dependen de ello (`price_drop` y días en el mercado); al migrarlo, ese historial pasa a salir de la API. Traerlos al repo (bajo `backend/worker/scraper/`) es un prerrequisito de esta implementación — se refleja como tarea explícita en `/speckit-tasks`, no como una violación del principio. `capture_idealista_session.py` y la sesión de cookies (`idealista_session.json`) son locales y con datos de sesión: no se versionan. |
 | II. Desacoplo front-datos (fases) | **PASS.** Este plan implementa la Fase 2 (API+BBDD); el front (Fase 2→3) no se toca aquí, tal como fija el spec. |
 | III. Desarrollo gateado por el harness | **PASS.** Este plan es en sí mismo un artefacto de la cadena `/speckit-*`. |
 | IV. Desarrollo guiado por tests | **PASS, exigido explícitamente.** `/speckit-tasks` debe generar cada tarea de comportamiento con sus tests primero (contrato, integración, unitarios) — ver Contexto Técnico > Testing. |
@@ -108,7 +108,7 @@ backend/
 │   ├── db/                     # engine, sesión, Alembic
 │   └── core/                   # config, rate limiting, logging
 ├── worker/
-│   └── scraper/                 # scorer migrado (4 ficheros) + cliente que llama a POST /ingest + run_scraper.ps1 (Task Scheduler)
+│   └── scraper/                 # scorer migrado (5 ficheros) + cliente + publicar.py que llama a POST /ingest + run_scraper.ps1 (Task Scheduler)
 ├── tests/
 │   ├── contract/                # un test por endpoint público/de ingesta
 │   ├── integration/              # flujo scraper → API → BBDD de extremo a extremo
@@ -138,7 +138,7 @@ escala.
 Tras diseñar `data-model.md`, `contracts/api.md` y `quickstart.md`, se
 revisan de nuevo los 6 principios: ningún diseño de la Fase 1 introduce una
 violación nueva. Las notas a llevar a `/speckit-tasks` explícitamente
-son: Principio I (migrar los cuatro ficheros del scorer al repo como prerrequisito),
+son: Principio I (migrar los ficheros del scorer al repo como prerrequisito),
 Principio VI (retirar `guardar.py` por completo al desplegar, sin periodo
 de doble escritura), y una nota de alcance: el secreto compartido de
 `POST /ingest` (ver `research.md` §4) es una solución mínima válida solo

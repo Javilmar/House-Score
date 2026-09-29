@@ -96,7 +96,7 @@ ventana configurada, empiezan a aparecer respuestas `429`.
 ## Tests automatizados
 
 ```bash
-docker compose run --rm api pytest
+docker compose --profile test run --rm test
 ```
 
 **Resultado esperado**: toda la suite (contract + integration + unit) pasa

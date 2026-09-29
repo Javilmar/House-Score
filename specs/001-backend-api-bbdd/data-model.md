@@ -18,12 +18,14 @@ Un piso/vivienda scrapeado, en su estado más reciente conocido.
 | `habitaciones` | entero, nullable | |
 | `banos` | entero, nullable | |
 | `municipio` | string, no nulo | Debe pertenecer al alcance de Principio V (Madrid Sur / Toledo Norte activo) |
-| `fuente` | enum(`pisos.com`, `idealista`) | |
+| `fuente` | string | `pisos.com`, `idealista`; los datos historicos incluyen tambien `fotocasa.es` |
 | `score` | float, nullable | Calculado por el motor de scoring; `null` si `datos_insuficientes` |
 | `datos_insuficientes` | boolean, no nulo, default `false` | FR-005 |
-| `estado` | enum(`activo`, `retirado`) | FR-007 |
+| `estado` | `activo` / `retirado` | FR-007 |
 | `primera_aparicion` | fecha, no nula | Para calcular antigüedad del listing |
 | `ultima_aparicion` | fecha, no nula | Usada para el umbral de 7 días de retirado (FR-007) |
+| `precio_anterior`, `bajada_precio`, `precio_candidato` | entero, nullable | Estado de la regla de bajada de precio (equivale a `previous_price`, `price_drop`, `_candidate_price`) |
+| `detalle` | JSON | Resto de campos que usa el dashboard (`score_details`, `eur_m2`, `description`, ...) |
 | `creado_en` / `actualizado_en` | timestamp | Auditoría estándar |
 
 **Reglas de validación**:
@@ -70,7 +72,8 @@ endpoint de histórico (FR-013) y los gráficos de evolución del dashboard.
 | `fecha` | fecha, única | |
 | `total_listings` | entero | |
 | `score_medio` | float, nullable | Excluye listings `datos_insuficientes` |
-| `precio_medio` | float, nullable | |
+| `precio_medio` | entero, nullable | |
+| `precio_min`, `precio_max` | entero, nullable | |
 | *(resto de agregados que ya calcula `historico_diario.json`)* | — | Se migran tal cual, sin inventar métricas nuevas fuera de alcance (Principio V) |
 
 ## PrecioReferencia
@@ -94,6 +97,12 @@ PasadaDiaria                         (tabla independiente, agregados por fecha)
 ```
 
 ## Migración de datos existentes (SC-004)
+
+**Datos reales (2026-09-29)**: `listings.json` va por detrás de las pasadas más recientes
+(último `last_seen`: 2026-09-08; las pasadas actuales se guardan en `datos/YYYY-MM-DD.json`).
+Por eso la migración carga `listings.json` como estado base y **repite a través de la ingesta**
+las pasadas diarias posteriores. Los datos usan campos en inglés y `municipio` como id
+(`cubas_de_la_sagra`), y "sin m²" viene como `0`.
 
 Los ficheros actuales (incluidas las pasadas diarias recientes
 `frontend/datos/YYYY-MM-DD.json`, que siguen creciendo hasta el corte) se

@@ -28,10 +28,18 @@ Lista los listings vigentes con su score ya calculado.
     "datos_insuficientes": false,
     "estado": "activo",
     "primera_aparicion": "2026-07-14",
-    "ultima_aparicion": "2026-09-08"
+    "ultima_aparicion": "2026-09-08",
+    "precio_anterior": 260000,
+    "bajada_precio": 10000,
+    "detalle": { "score_details": ["..."], "eur_m2": 3125, "description": "..." }
   }
 ]
 ```
+
+`fuente` es texto libre (`pisos.com`, `idealista`, y `fotocasa.es` en los datos historicos).
+`precio_anterior` y `bajada_precio` son la marca de bajada de la ultima pasada (null si no hay).
+`detalle` lleva el resto de campos que hoy usa el dashboard (`score_details`, `eur_m2`,
+`description`, ...), para que el front pueda migrar sin perder informacion.
 
 **429 Too Many Requests**: si se supera el límite de rate limiting (FR-012).
 
@@ -49,7 +57,9 @@ evolución.
     "fecha": "2026-09-08",
     "total_listings": 506,
     "score_medio": 14.2,
-    "precio_medio": 245000
+    "precio_medio": 245000,
+    "precio_min": 16900,
+    "precio_max": 511500
   }
 ]
 ```
@@ -76,11 +86,16 @@ además requiere cabecera `Authorization: Bearer <secreto>`.
       "banos": 2,
       "municipio": "Alcorcón",
       "fuente": "pisos.com",
-      "score": 78.5
+      "score": 78.5,
+      "datos_insuficientes": false,
+      "detalle": {}
     }
   ]
 }
 ```
+
+`datos_insuficientes` y `detalle` son opcionales. El cliente del scraper traduce el formato del
+scorer (`title`, `price`, `rooms`, ...) a este contrato (`app/services/formato_scraper.py`).
 
 **Comportamiento**:
 - Deduplica por `url` (FR-009): actualiza el listing existente o crea uno

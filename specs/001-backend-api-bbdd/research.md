@@ -102,11 +102,9 @@ aplica) que sustituya este mecanismo por completo, no que lo parchee.
 
 **Hallazgo 1**: el scorer no vive en este repositorio: está en el ordenador
 del propietario, en `~/AppData/Local/hermes/scripts/`, fuera de control de
-versiones (`frontend/dashboard/app.py` solo lo referencia). Son cuatro
-ficheros: `property_scorer.py`, `property_scorer_common.py`,
-`property_scorer_idealista.py` y `property_scorer_all.py`; los dos últimos
-se modificaron por última vez el 2026-09-27, tras redactarse la primera
-versión de esta spec.
+versiones (`frontend/dashboard/app.py` solo lo referencia). Son cinco ficheros: `property_scorer_common.py`, los tres lotes (`property_scorer_madrid.py`, `property_scorer_toledo.py`, `property_scorer_idealista.py`) y el orquestador `property_scorer_all.py`; los lotes y el común se modificaron por última vez el 2026-09-27, tras redactarse la primera versión de esta spec. El cron de hermes (`0 9 * * *`) ejecuta `property_scorer_all.py`.
+
+**Hallazgo 1b**: cada lote termina escribiendo `frontend/datos/YYYY-MM-DD.json` (con merge de los otros lotes del día) y haciendo `git commit` + `pull --rebase` + `push`. Además **lee** esos JSON (`load_history`) para calcular `first_seen`, `price_drop` y `previous_price`, y `score_property` los usa. Por tanto no basta con cambiar el envío: el historial también debe venir de la API.
 
 **Hallazgo 2**: el scraper usa Playwright con Chromium (`playwright_stealth`)
 y, para idealista, carga cookies de una sesión capturada a mano con
@@ -115,14 +113,7 @@ CAPTCHA). Desde una IP de datacenter idealista probablemente bloquearía o
 pediría CAPTCHA, y las cookies caducan. Por eso la propuesta anterior de un
 Background Worker en la nube se descarta.
 
-**Decisión**: los cuatro ficheros del scorer se traen a
-`backend/worker/scraper/` (prerrequisito de `/speckit-tasks`) y se les añade
-un cliente que llama a `POST /ingest` en lugar de escribir JSON local +
-`git push` vía `guardar.py`. El scraper sigue ejecutándose **en el host de
-Windows**, no en Docker, lanzado por una tarea programada (Task Scheduler)
-configurada para ejecutarse también si se perdió la hora programada. El
-script de captura de sesión y el fichero de cookies siguen siendo locales y
-**no se versionan** (contienen datos de sesión).
+**Decisión**: los cinco ficheros del scorer se copian a `backend/worker/scraper/` (los originales de hermes no se tocan hasta el cambio de cron). En las copias, cada lote (a) comprueba la API al empezar (`verificar_api`), para no scrapear con la API caída; (b) obtiene el historial de `GET /listings?incluir_retirados=true` (`cargar_historial_api`) en vez de `frontend/datos`; y (c) envía su pasada con `publicar_pasada` en lugar de escribir el snapshot y hacer `git push`. Si el envío falla, el lote se guarda en `pendientes/` (dentro de `HERMES_DATA_DIR`) y se puede reenviar con `python -m worker.scraper.client`. El scraper sigue ejecutándose **en el host de Windows**, no en Docker, lanzado por el cron de hermes o por una tarea programada de Windows. El script de captura de sesión y el fichero de cookies siguen siendo locales y **no se versionan** (contienen datos de sesión).
 
 **Alternativas consideradas**:
 - *Worker en un hosting en la nube*: descartado por lo anterior.
