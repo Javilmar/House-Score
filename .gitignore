@@ -13,7 +13,8 @@ env/
 .DS_Store
 Thumbs.db
 
-# NOTA: la carpeta frontend/datos/ SÍ se sube — es lo que lee el dashboard en la nube.
+# frontend/datos/ (JSON diarios) se retiró: los datos viven en la base de datos del backend.
+# Etiqueta git `pre-retirada-fase1` = último commit con esos ficheros.
 
 # Backend
 backend/.venv/

@@ -24,6 +24,11 @@ docker compose exec api python -m scripts.migrar_datos_existentes
 
 El contenedor `api` monta `../frontend` en solo lectura para esa migración.
 
+`frontend/datos/` se retiró del repositorio (spec 001, T052) tras migrar y verificar los datos.
+Si alguna vez hay que volver a migrar sobre una base vacía, recupera los JSON de la etiqueta
+`pre-retirada-fase1`: `git checkout pre-retirada-fase1 -- frontend/datos`, ejecuta la migración y
+borra la carpeta de nuevo (`git rm -r --cached frontend/datos` si no quieres commitearla).
+
 ## Variables de entorno
 
 | Variable | Uso | Por defecto |

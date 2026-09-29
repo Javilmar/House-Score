@@ -35,15 +35,13 @@ house-dashboard/
 ├── dashboard/
 │   ├── app.py                  ← UI principal (Streamlit, ~1850 líneas)
 │   ├── api_datos.py            ← cliente de la API (lo usa app.py para cargar datos)
-│   ├── guardar.py              ← (heredado) merge de pasadas + git push; se retira con T052 de la spec 001
 │   ├── assets/
 │   │   ├── municipios_zona.geojson     ← polígonos municipales (47 mun.)
 │   │   ├── criminalidad.csv            ← tasa criminalidad oficial (12 mun.)
 │   │   └── secciones_renta.geojson     ← 953 secciones censales + renta ADRH 2023
 │   └── scripts/
 │       └── build_mapa_assets.py        ← genera los 3 assets del mapa
-├── datos/
-│   └── YYYY-MM-DD.json         ← una pasada de scraper por día
+│   (los datos ya no están en el repo: viven en la base de datos del backend, `backend/`)
 └── config/
     └── precios_referencia.json ← mediana €/m² por municipio (actualizada cada pasada)
 ```
@@ -70,13 +68,13 @@ Torrejón de la Calzada · Valdemoro
 Esquivias · Illescas · Seseña · Ugena · Yeles
 
 > El resto de municipios toledanos (Yuncos, Yunclillos, etc.) se filtran
-> en `guardar.py` (`_TOLEDO_NORTE_BLOQUEADOS`) antes de persistir.
+> en la API (`backend/app/services/reglas.py`, `MUNICIPIOS_BLOQUEADOS`) antes de persistir.
 
 ---
 
 ## 4. Sistema de scoring
 
-Cada listing recibe una puntuación **0–100**. Motor en `property_scorer.py`.
+Cada listing recibe una puntuación **0–100**. Motor en `backend/worker/scraper/property_scorer_common.py`.
 
 | Bloque | Campo clave | Puntos |
 |---|---|---|
@@ -174,7 +172,7 @@ Días en mercado · Botones de acción (↗ ir a Top scoring / € hipoteca)
 ### Tab 4 — Bajadas de precio
 
 **Qué hace:** cards de todos los listings que han bajado de precio respecto a
-pasadas anteriores (detectado en `guardar.py`).
+pasadas anteriores (detectado en la API, `ingest_service.py`).
 
 **Contenido de cada card:**
 - Score badge · Título enlazado
@@ -183,8 +181,8 @@ pasadas anteriores (detectado en `guardar.py`).
 - Días en mercado
 - Botón `€ Hipoteca`
 
-**Detección:** `guardar.py:merge()` compara `price` actual vs histórico y escribe
-`price_drop` y `previous_price` en el JSON.
+**Detección:** la API (`ingest_service.py`) compara `price` actual vs histórico y escribe
+`price_drop` (`bajada_precio`) y `previous_price` (`precio_anterior`) en la base de datos.
 
 ---
 

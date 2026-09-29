@@ -1,66 +1,59 @@
 # Dashboard de Búsqueda de Vivienda
 
 Dashboard en Streamlit que visualiza listings de vivienda (Madrid Sur + Toledo
-Norte) con scoring a medida. Los datos los genera periódicamente un script en el
-ordenador local y se publican a este repo para que el dashboard en la nube
-siempre muestre lo último.
+Norte) con scoring a medida. Un scorer (3 lotes con Playwright) corre cada día
+en el ordenador local, guarda cada pasada en una API con base de datos
+(`backend/`) y el dashboard lee de esa API.
 
 ## Estructura
 
 ```
 HouseScore/
 ├── frontend/
-│   ├── dashboard/app.py        # la app Streamlit
-│   ├── dashboard/guardar.py    # guarda una pasada y empuja los datos a GitHub
-│   ├── datos/                  # JSON diarios (los lee el dashboard)
-│   ├── config/                 # precios de referencia por municipio
+│   ├── dashboard/app.py        # la app Streamlit (cliente de la API)
+│   ├── dashboard/api_datos.py  # traduce la API a las columnas de la app
+│   ├── config/                 # precios de referencia por municipio (los usa el scorer)
 │   └── requirements.txt
-└── backend/                    # reservado — API + BBDD, aún sin implementar
+├── backend/                    # API FastAPI + PostgreSQL (Docker), scorer y utilidades
+│   ├── app/                    # API: GET /listings, GET /historico, POST /ingest
+│   ├── worker/scraper/         # el scorer (3 lotes) y el cliente que publica en la API
+│   └── ops/                    # lanzador del cron de hermes, backups, túnel, tareas
+└── specs/                      # specs de Spec Kit (001 backend, 002 dashboard)
 ```
 
-Front y backend son directorios hermanos en el mismo repo (monorepo): un
-commit puede tocar ambos a la vez cuando cambia un contrato entre ellos, y
-cada uno se despliega apuntando a su propio subdirectorio (Streamlit Cloud →
-`frontend/`, hosting de la API → `backend/`). El backend está reservado
-pero vacío: la migración de `frontend/datos/*.json` a API + base de datos
-necesita su propio spec antes de implementarse — ver
-[GUIA-SPEC-KIT.md](GUIA-SPEC-KIT.md) y
-[.specify/memory/constitution.md](.specify/memory/constitution.md)
-(principios II y V).
+Front y backend son directorios hermanos en el mismo repo (monorepo). El
+dashboard **no lee ficheros**: pide los datos a la API (`HOUSESCORE_API_URL`,
+por defecto `http://127.0.0.1:8000`). Ver [`backend/README.md`](backend/README.md)
+para arrancar todo, y [GUIA-SPEC-KIT.md](GUIA-SPEC-KIT.md) y
+[.specify/memory/constitution.md](.specify/memory/constitution.md) para el
+flujo de desarrollo.
 
 ## Ver en local
 
 ```bash
+cd backend && docker compose up -d          # API + base de datos
 pip install -r frontend/requirements.txt
 streamlit run frontend/dashboard/app.py
 ```
 
-## Desplegar en Streamlit Community Cloud (gratis)
-
-1. Sube este repo a GitHub.
-2. Entra en https://share.streamlit.io con tu cuenta de GitHub.
-3. **New app** → elige el repo, rama `main`, y **Main file path** =
-   `frontend/dashboard/app.py`.
-4. Deploy. Obtienes una URL pública (`tu-app.streamlit.app`).
-
-> Si la app ya estaba desplegada antes de este cambio de estructura, entra en
-> **Settings → General** de la app en Streamlit Cloud y actualiza el
-> **Main file path** al de arriba — si no, el deploy fallará al no encontrar
-> `dashboard/app.py` en la raíz.
-
-Cada vez que el script local empuja datos nuevos (ver abajo), Streamlit
-redespliega solo y muestra lo último — funcione o no tu ordenador.
+Si la API no responde, el dashboard muestra un aviso con la dirección consultada
+y ninguna cifra. Con otra API: `HOUSESCORE_API_URL=http://otra:8000 streamlit run ...`.
 
 ## Actualización automática de datos
 
-El script periódico que ya corre en local termina llamando a `guardar.py`, que
-escribe el JSON del día y hace `git commit` + `git push` automáticamente. No hay
-nada manual que hacer tras el primer despliegue.
+El job `Buscador Pisos` de hermes (`0 9 * * *`) ejecuta el lanzador
+`backend/ops/hermes_launcher.py`, que lanza el scorer del repo
+(`backend/worker/scraper/property_scorer_all.py`); cada lote envía su pasada a la
+API (`POST /ingest`). No hay `git commit`/`push` de datos: los datos viven en
+PostgreSQL, con copia diaria en OneDrive (`ops/backup.ps1`). Detalle en
+[`backend/README.md`](backend/README.md).
 
-## Acceso privado (opcional)
+## Despliegue en la nube (pendiente)
 
-Si no quieres que los datos sean públicos, pon el repo en privado y añade una
-contraseña en Streamlit Cloud vía `Settings → Secrets`.
+El dashboard en Streamlit Community Cloud necesita que la API sea accesible desde
+fuera: falta el túnel `cloudflared` (cuenta y dominio de Cloudflare; ver
+`backend/ops/cloudflared.yml`, que publica solo las rutas de lectura). Hasta
+entonces se usa en local.
 
 ## Harness de desarrollo con IA
 
@@ -90,12 +83,12 @@ abrir el repo.
 - **Zona de cobertura:** Madrid Sur (18 municipios) + Toledo Norte (5
   municipios de interés activo). **Toledo capital queda excluida** (>55 min,
   mercado distinto).
-- **Motor de scoring único** en `property_scorer.py` (0–100 puntos); si un
+- **Motor de scoring único** en `backend/worker/scraper/property_scorer_common.py` (0–100 puntos); si un
   listing no tiene m² fiable se marca `datos_insuficientes` y queda
   "sin valorar" en vez de forzar un cálculo erróneo.
-- **Flujo de datos:** scraper → `guardar.py` (merge + detección de bajadas de
-  precio + `git commit/push` automático) → `frontend/datos/YYYY-MM-DD.json` →
-  `app.py` (Streamlit).
+- **Flujo de datos:** scorer (3 lotes) → API `POST /ingest` (deduplicación por
+  url, detección de bajadas de precio y de pisos retirados) → PostgreSQL →
+  API `GET /listings` y `/historico` → `app.py` (Streamlit).
 - **Diseño:** modo oscuro siempre, un único color de acento (`#6366f1`), sin
   emojis en la UI (se usan iconos SVG Lucide vía `icon()`).
 - **Sin dependencias nuevas** salvo justificación explícita — stack actual:

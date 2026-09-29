@@ -1,8 +1,22 @@
 <!--
 Sync Impact Report
-- Version change: 1.1.0 → 1.1.1 (patch: traducción al español, sin cambios
-  de fondo en ningún principio)
-- Modified principles: ninguno en sustancia — todo el documento se tradujo
+- Version change: 1.1.1 → 1.1.2 (patch: se actualiza el estado de las fases del
+  Principio II tras completarse la Fase 2, sin cambiar ningún principio)
+- Modified principles: Principio II (estado: Fase 1 retirada y Fase 2 completada
+  el 2026-09-29; Fase 3 pasa a ser la siguiente); Principio III (ya no existen
+  los commits automáticos diarios de datos, así que se elimina esa excepción);
+  "Frescura de los datos" (el único escritor de datos es ahora el scorer vía la
+  API, no `guardar.py`).
+- Added sections: ninguna
+- Removed sections: ninguna
+- Follow-up TODOs: la Fase 3 (front web) sigue sin spec; el despliegue en la nube
+  del dashboard depende del túnel cloudflared (spec 001, T050). El último commit
+  con `guardar.py`, `listings_store.py` y `frontend/datos/` es la etiqueta git
+  `pre-retirada-fase1`.
+
+Informes previos:
+- 1.1.1 (patch): traducción al español, sin cambios de fondo en ningún principio.
+  Detalle 1.1.1: ninguno en sustancia — todo el documento se tradujo
   del inglés al español a petición del propietario del proyecto ("todo el
   harness en español, para tener mayor control"), 2026-09-08. El contenido,
   alcance y obligaciones de cada principio se mantienen idénticos a la
@@ -12,8 +26,6 @@ Sync Impact Report
 - Follow-up TODOs: el stack de backend sigue intencionadamente sin decidir
   (ver Principio II y "Restricciones de Datos y Despliegue") — se resuelve
   en el futuro spec del backend vía /speckit-plan, no en esta constitución.
-
-Informes previos:
 - 1.1.0 (minor): nuevo Principio IV "Test-First Development" (TDD
   obligatorio) tras entrevista con el propietario; Principio II
   reescrito para describir las 3 fases arquitectónicas completas
@@ -50,14 +62,15 @@ trivial DEBE evaluarse según a qué fase pertenece — no se añade
 trabajo que profundice en una fase que el proyecto está dejando atrás
 activamente.
 
-1. **Fase 1 (actual, en proceso de retirada)**: scraper → `guardar.py`
-   → JSON commiteado en `frontend/datos/` → Streamlit lee el repo
-   directamente. Esto fue un hack de arranque, no un destino.
-2. **Fase 2 (siguiente, objetivo activo de la migración)**: una API
-   respaldada por una base de datos real sustituye el flujo de datos
-   JSON-en-repo. El front de Streamlit se mantiene, pero pasa de leer
-   ficheros commiteados en este repositorio a ser cliente de la API.
-3. **Fase 3 (estado final declarado)**: Streamlit se sustituye por un
+1. **Fase 1 (retirada el 2026-09-29)**: scraper → `guardar.py` → JSON
+   commiteado en `frontend/datos/` → Streamlit lee el repo directamente.
+   Esto fue un hack de arranque, no un destino; sus ficheros se eliminaron
+   (último commit que los contiene: etiqueta git `pre-retirada-fase1`).
+2. **Fase 2 (completada el 2026-09-29)**: una API respaldada por una base
+   de datos real (`backend/`, specs 001 y 002) sustituye el flujo de datos
+   JSON-en-repo. El front de Streamlit se mantiene, pero es cliente de la
+   API en lugar de leer ficheros commiteados en este repositorio.
+3. **Fase 3 (siguiente, estado final declarado)**: Streamlit se sustituye por un
    front web (p. ej. React/Next.js) desplegado en una plataforma como
    Vercel, consumiendo la misma API de la Fase 2. Streamlit es un paso
    intermedio, no la tecnología definitiva de front.
@@ -78,9 +91,9 @@ datos o (cuando exista) al backend se publica sin pasar por la cadena
 de Spec Kit (ver [GUIA-SPEC-KIT.md](../../GUIA-SPEC-KIT.md)):
 `/speckit-specify → /speckit-plan → /speckit-tasks →
 /speckit-implement → /speckit-converge`. Los cambios ad hoc que se
-suben directamente a `main` sin spec quedan reservados únicamente para
-los commits automáticos diarios de datos (`guardar.py`) — nunca para
-cambios de código.
+suben directamente a `main` sin spec no están permitidos para cambios
+de código. Ya no existen commits automáticos de datos: los datos viven en
+la base de datos del backend, no en el repositorio.
 
 Motivo: este es un proyecto personal mantenido en solitario; sin un
 harness que se haga cumplir, "solo un arreglo rápido" es como el
@@ -151,10 +164,9 @@ fases arquitectónicas.
   no son datos personales sensibles de terceros, y el propietario no
   ha pedido restricciones de acceso. Revisar solo si un futuro spec
   introduce datos que cambien este cálculo.
-- **Frescura de los datos**: mientras el flujo basado en repo siga
-  activo, el commit automático diario de `guardar.py` sigue siendo el
-  único escritor de `frontend/datos/`. Nada de ediciones manuales de
-  `frontend/datos/*.json`.
+- **Frescura de los datos**: el único escritor de datos es el scorer,
+  a través de `POST /ingest` de la API (el job diario de hermes). Nada de
+  ediciones manuales de la base de datos; `frontend/datos/` ya no existe.
 - **Secretos**: cualquier clave de API o credencial de BBDD que
   introduzca la migración de la Fase 2 NO DEBE commitearse en este
   repositorio; usar el gestor de secretos de la plataforma de
@@ -185,4 +197,4 @@ Report al principio de este fichero. Un cambio que viole un principio
 de aquí no se mergea sin una justificación explícita registrada en un
 spec.
 
-**Versión**: 1.1.1 | **Ratificada**: 2026-09-08 | **Última enmienda**: 2026-09-08
+**Versión**: 1.1.2 | **Ratificada**: 2026-09-08 | **Última enmienda**: 2026-09-29
