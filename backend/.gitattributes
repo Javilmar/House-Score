@@ -1,0 +1,2 @@
+# El entrypoint corre en Linux: con CRLF fallaria ("/bin/sh^M")
+*.sh text eol=lf
