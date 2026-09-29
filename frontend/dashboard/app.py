@@ -1,6 +1,6 @@
 """
 Dashboard de Búsqueda de Vivienda — Madrid Sur + Toledo Norte
-Hecho a medida del property_scorer.py (pisos.com scraping + scoring)
+Hecho a medida del scorer (pisos.com + idealista); lee los datos de la API del backend
 
 Lanzar: streamlit run app.py
 """
@@ -18,6 +18,8 @@ import streamlit.components.v1 as components
 from pathlib import Path
 from datetime import date, datetime
 
+import api_datos
+
 st.set_page_config(
     page_title="House Score",
     page_icon=None,
@@ -25,7 +27,6 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-DATA_DIR = Path(__file__).resolve().parent.parent / "datos"
 ASSETS_DIR = Path(__file__).resolve().parent / "assets"
 
 # ── Paleta semántica ─────────────────────────────────────────────
@@ -550,64 +551,14 @@ function ord(idx, th) {
 
 @st.cache_data(ttl=30)
 def cargar_datos():
-    listings_path = DATA_DIR / "listings.json"
-    if not listings_path.exists():
-        return pd.DataFrame()
-
-    try:
-        todos = json.loads(listings_path.read_text(encoding="utf-8"))
-    except (json.JSONDecodeError, IOError):
-        return pd.DataFrame()
-
-    if not todos:
-        return pd.DataFrame()
-
-    df = pd.DataFrame(todos)
-    for col in [
-        "price",
-        "m2",
-        "rooms",
-        "bathrooms",
-        "score",
-        "year_built",
-        "price_drop",
-        "previous_price",
-    ]:
-        if col in df.columns:
-            df[col] = pd.to_numeric(df[col], errors="coerce")
-
-    if "first_seen" in df.columns:
-        df["first_seen"] = pd.to_datetime(df["first_seen"], errors="coerce")
-    if "last_seen" in df.columns:
-        df["last_seen"] = pd.to_datetime(df["last_seen"], errors="coerce")
-
-    if "price" in df.columns and "m2" in df.columns:
-        df["eur_m2"] = (df["price"] / df["m2"]).round(0)
-
-    return df.sort_values("score", ascending=False, na_position="last")
+    """Listings (activos y retirados) desde la API. Si falla lanza ApiNoDisponible."""
+    return api_datos.obtener_listings()
 
 
 @st.cache_data(ttl=30)
 def cargar_historico():
-    historico_path = DATA_DIR / "historico_diario.json"
-    if not historico_path.exists():
-        return pd.DataFrame()
-
-    try:
-        filas = json.loads(historico_path.read_text(encoding="utf-8"))
-    except (json.JSONDecodeError, IOError):
-        return pd.DataFrame()
-
-    if not filas:
-        return pd.DataFrame()
-
-    df = pd.DataFrame(filas)
-    df["fecha"] = pd.to_datetime(df["fecha"], errors="coerce")
-    for col in ["count", "avg_price", "avg_score", "min_price", "max_price"]:
-        if col in df.columns:
-            df[col] = pd.to_numeric(df[col], errors="coerce")
-
-    return df.sort_values("fecha")
+    """Histórico diario desde la API. Si falla lanza ApiNoDisponible."""
+    return api_datos.obtener_historico()
 
 
 @st.cache_data
@@ -1013,13 +964,21 @@ st.caption(
     "Madrid Sur · Toledo Norte — pisos.com · idealista · Scoring a medida · Hasta 300.000 €"
 )
 
-df = cargar_datos()
+try:
+    df = cargar_datos()
+except api_datos.ApiNoDisponible as e:
+    # Sin la API no hay datos: no se muestra ninguna cifra ni se cae a datos antiguos.
+    st.error(
+        f"**{e.mensaje}.** Dirección consultada: `{e.url}`\n\n"
+        "Arranca la API con `cd backend && docker compose up -d` y recarga esta página."
+    )
+    st.stop()
 
 if df.empty:
-    st.warning("No hay datos todavía. Ejecuta primero el scraper:")
-    st.code("python ~/AppData/Local/hermes/scripts/property_scorer.py")
+    st.warning("La API no tiene listings todavía.")
     st.info(
-        "Luego guarda los resultados con: python dashboard/guardar.py ~/AppData/Local/hermes/last_property_data.json"
+        "Ejecuta el scorer del repositorio (`backend/worker/scraper/property_scorer_all.py`): "
+        "cada lote envía su pasada a la API."
     )
     st.stop()
 
@@ -1634,7 +1593,11 @@ with tab3:
 
     with col_c1:
         st.subheader("Evolución diaria")
-        diario = cargar_historico()
+        try:
+            diario = cargar_historico()
+        except api_datos.ApiNoDisponible as e:
+            st.warning(f"No se pudo cargar el histórico: {e.mensaje} ({e.url}).")
+            diario = pd.DataFrame()
         if not diario.empty and len(diario) > 1:
             fig1 = go.Figure()
             fig1.add_trace(
@@ -2756,6 +2719,6 @@ st.write("")
 st.divider()
 st.caption(
     f"Última actualización: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} · "
-    f"Datos en `{DATA_DIR}` · [Forzar recarga](?rerun) · "
-    f"Scraper: property_scorer.py (pisos.com + idealista · Madrid Sur + Toledo Norte · ≤ 300.000 €)"
+    f"Datos de la API en `{api_datos.url_api()}` · [Forzar recarga](?rerun) · "
+    f"Scorer: property_scorer_all.py (pisos.com + idealista · Madrid Sur + Toledo Norte · ≤ 300.000 €)"
 )
