@@ -14,3 +14,13 @@ env/
 Thumbs.db
 
 # NOTA: la carpeta frontend/datos/ SÍ se sube — es lo que lee el dashboard en la nube.
+
+# Backend
+backend/.venv/
+backend/*.db
+backend/.env
+backend/.pytest_cache/
+.ruff_cache/
+# Datos de sesión del scraper (cookies): nunca al repo
+idealista_session.json
+backend/logs/

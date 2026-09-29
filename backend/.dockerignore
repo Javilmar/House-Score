@@ -1,0 +1,5 @@
+idealista_session.json
+.venv/
+*.db
+.env
+__pycache__/

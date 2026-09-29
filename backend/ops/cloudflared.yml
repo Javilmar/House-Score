@@ -1,0 +1,16 @@
+# Cloudflare Tunnel: publica SOLO las rutas de lectura de la API (FR-011, T050).
+#
+# POST /ingest, /docs y /openapi.json no coinciden con ninguna regla y caen en la ultima
+# (404): el endpoint de escritura no tiene ruta publica. El scraper local lo llama por
+# http://localhost:8000/ingest.
+#
+# Sustituye los marcadores <...> y copia este fichero a la configuracion de cloudflared
+# (por ejemplo %USERPROFILE%\.cloudflared\config.yml). No versiones las credenciales.
+tunnel: <ID_DEL_TUNEL>
+credentials-file: <RUTA_A_LAS_CREDENCIALES>/<ID_DEL_TUNEL>.json
+
+ingress:
+  - hostname: <api.tu-dominio.com>
+    path: ^/(listings|historico)/?$
+    service: http://localhost:8000
+  - service: http_status:404

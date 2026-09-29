@@ -1,0 +1,64 @@
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: housescore
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-housescore}
+      POSTGRES_DB: housescore
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U housescore"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+psycopg://housescore:${POSTGRES_PASSWORD:-housescore}@db:5432/housescore
+      INGEST_SECRET: ${INGEST_SECRET:?define INGEST_SECRET en backend/.env}
+      RATE_LIMIT: ${RATE_LIMIT:-60/minute}
+    volumes:
+      # Solo lectura: para la migracion unica de frontend/datos (scripts.migrar_datos_existentes)
+      - ../frontend:/frontend:ro
+    ports:
+      # Solo localhost: el scraper local escribe aquí; el túnel publica únicamente rutas de lectura
+      - "127.0.0.1:8000:8000"
+
+  # Base de datos efímera (sin volumen) para la suite de tests: no toca los datos reales
+  db-test:
+    profiles: ["test"]
+    image: postgres:16
+    environment:
+      POSTGRES_USER: housescore
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: housescore_test
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U housescore"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+  test:
+    profiles: ["test"]
+    build: .
+    depends_on:
+      db-test:
+        condition: service_healthy
+    environment:
+      TEST_DATABASE_URL: postgresql+psycopg://housescore:test@db-test:5432/housescore_test
+      INGEST_SECRET: test-secret
+      DATABASE_URL: "sqlite://"
+    entrypoint: []
+    command: ["pytest"]
+
+volumes:
+  pgdata:
