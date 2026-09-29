@@ -32,8 +32,8 @@ Según `plan.md` > Estructura del Proyecto: todo el código nuevo vive bajo `bac
 - [X] T001 Crear la estructura de directorios de `backend/` (`app/api/`, `app/models/`, `app/db/`, `app/core/`, `worker/scraper/`, `tests/contract/`, `tests/integration/`, `tests/unit/`, `alembic/`) según `plan.md` > Estructura del Proyecto
 - [X] T002 Inicializar el proyecto Python 3.11 en `backend/pyproject.toml` con las dependencias decididas en `research.md`: fastapi, uvicorn, sqlalchemy, alembic, pydantic, slowapi, psycopg, pytest, httpx
 - [X] T003 [P] Configurar linting/formato (ruff) en `backend/pyproject.toml`
-- [X] T004 [P] Escribir `backend/Dockerfile` (imagen de `api`, per `research.md` §6; el scraper corre en el host, no en Docker) _(Dockerfile escrito; imagen sin construir: Docker Desktop apagado al implementar)_
-- [X] T005 Escribir `backend/docker-compose.yml` con los servicios `api` y `db` (`postgres:16`, volumen persistente), ambos con `restart: unless-stopped`, más un perfil `test` con una base de datos efímera para la suite, per `research.md` §6 _(`docker compose config` valida; no se ha arrancado)_
+- [X] T004 [P] Escribir `backend/Dockerfile` (imagen de `api`, per `research.md` §6; el scraper corre en el host, no en Docker) _(imagen construida y en ejecución)_
+- [X] T005 Escribir `backend/docker-compose.yml` con los servicios `api` y `db` (`postgres:16`, volumen persistente), ambos con `restart: unless-stopped`, más un perfil `test` con una base de datos efímera para la suite, per `research.md` §6 _(verificado 2026-09-29: `docker compose up --build -d` deja `api` y `db` operativos en 41 s)_
 
 ---
 
@@ -127,13 +127,13 @@ Según `plan.md` > Estructura del Proyecto: todo el código nuevo vive bajo `bac
 
 ### Tests de la Historia de Usuario 3
 
-- [X] T041 [P] [US3] Test de integración: tras `docker compose up`, la API responde en `backend/tests/integration/test_entorno_local.py` (valida el Escenario 1 de `quickstart.md`) _(escrito; se omite sin `HOUSESCORE_E2E_URL`, pendiente de ejecutar con Docker)_
+- [X] T041 [P] [US3] Test de integración: tras `docker compose up`, la API responde en `backend/tests/integration/test_entorno_local.py` (valida el Escenario 1 de `quickstart.md`) _(ejecutado con `HOUSESCORE_E2E_URL=http://127.0.0.1:8000`; se omite sin la variable)_
 
 ### Implementación de la Historia de Usuario 3
 
-- [X] T042 [US3] Configurar que las migraciones de Alembic corran automáticamente al arrancar el contenedor `api` (`backend/entrypoint.sh`) (depende de T012) _(`alembic upgrade head` verificado en SQLite; falta ejecutarlo en el contenedor)_
-- [ ] T043 [US3] Verificar y documentar en `backend/README.md` el arranque con un único comando en menos de 5 minutos (SC-003), contra el Escenario 1 de `quickstart.md` (depende de T005, T042)
-- [X] T044 [US3] Configurar `docker compose --profile test run --rm test` para ejecutar toda la suite contra el entorno local sin tocar datos de producción (depende de T002) _(perfil `test` de compose configurado; falta ejecutarlo con Docker. En el host: `pytest` con SQLite en memoria)_
+- [X] T042 [US3] Configurar que las migraciones de Alembic corran automáticamente al arrancar el contenedor `api` (`backend/entrypoint.sh`) (depende de T012) _(verificado en el contenedor contra PostgreSQL 16)_
+- [X] T043 [US3] Verificar y documentar en `backend/README.md` el arranque con un único comando en menos de 5 minutos (SC-003), contra el Escenario 1 de `quickstart.md` (depende de T005, T042)
+- [X] T044 [US3] Configurar `docker compose --profile test run --rm test` para ejecutar toda la suite contra el entorno local sin tocar datos de producción (depende de T002) _(verificado: `docker compose --profile test run --rm test` da 79 passed, 2 skipped sobre PostgreSQL efímero, sin tocar `pgdata`)_
 
 **Punto de control**: Cualquiera puede clonar el repo y tener el backend funcionando en local sin pasos manuales.
 
@@ -143,7 +143,7 @@ Según `plan.md` > Estructura del Proyecto: todo el código nuevo vive bajo `bac
 
 - [X] T045 [P] Documentar las variables de entorno (`INGEST_SECRET`, `DATABASE_URL`, etc.) en `backend/README.md`
 - [X] T046 [P] Test de integración de rate limiting: verificar que se devuelve `429` al superar el límite, en `backend/tests/integration/test_rate_limiting.py` (Escenario 5 de `quickstart.md`, FR-012)
-- [ ] T047 Ejecutar los 6 escenarios de `quickstart.md` de principio a fin antes de dar el backend por operativo
+- [ ] T047 Ejecutar los 6 escenarios de `quickstart.md` de principio a fin antes de dar el backend por operativo _(Escenarios 1-5 verificados; falta el 6)_
 - [ ] T048 Configurar la tarea programada de Windows (Task Scheduler) que lanza `run_scraper.ps1` a diario, con la opción de ejecutar lo antes posible si se perdió el inicio programado, y documentarla en `backend/README.md` (FR-015) _(`ops/registrar_tareas.ps1` listo y con sintaxis validada; falta registrarlo en el equipo)_
 - [ ] T049 Configurar el arranque automático: Docker Desktop iniciándose con Windows y comprobar que `api` y `db` vuelven solos tras un reinicio (`restart: unless-stopped`) (FR-015, SC-006) _(`restart: unless-stopped` ya en compose; falta activar Docker Desktop al iniciar y probar un reinicio)_
 - [ ] T050 Instalar `cloudflared` como servicio de Windows con `backend/ops/cloudflared.yml`, cuyo `ingress` publica solo `GET /listings` y `GET /historico` y termina con `http_status:404`; verificar que `POST /ingest` devuelve 404 desde la URL pública (FR-011, Escenario 3 de `quickstart.md`) _(`ops/cloudflared.yml` listo con marcadores; falta cuenta, dominio y servicio)_
@@ -216,7 +216,8 @@ Task: "Crear el modelo PrecioReferencia en backend/app/models/precio_referencia.
 
 ## Notas de implementacion (2026-09-29)
 
-- Fases 1-3 y la mayor parte de la 4 implementadas con TDD: 73 tests pasan y 2 se omiten (E2E) sobre SQLite en memoria; no se han ejecutado contra PostgreSQL porque Docker Desktop estaba apagado.
+- Fases 1-3 y la mayor parte de la 4 implementadas con TDD: 79 tests pasan y 2 se omiten (E2E) tanto sobre SQLite en memoria como sobre PostgreSQL 16 en Docker (verificado 2026-09-29).
+- **Quickstart validado el 2026-09-29** contra PostgreSQL en Docker con los datos reales migrados (2017 listings, 433 activos): Escenarios 1-5 pasan (lectura con score, ingesta sin duplicados, 401 sin secreto, histórico y 429). Queda el Escenario 6 (reinicio del PC, tarea programada, backup), que depende de T048-T051.
 - **T038 hecha en las copias del repo.** Cada lote escribía `frontend/datos` y hacía `git push`; ahora usa la API. El scorer también leía esos JSON para `first_seen` y `price_drop` (que afectan a la puntuación), por eso el historial pasa a salir de la API. Falta probarlo con scraping real y cambiar el cron de hermes (`property_scorer_all.py`, `0 9 * * *`).
 - `listings.json` va por detras de las pasadas actuales; la migracion repite las pasadas diarias posteriores. Los datos usan campos en ingles y `municipio` como id con guiones bajos.
 - Reglas migradas con dos ajustes deliberados: el municipio bloqueado se compara sin guiones bajos ni acentos, y un reintento de la misma pasada el mismo dia no borra la marca de bajada ni confirma una bajada candidata.
