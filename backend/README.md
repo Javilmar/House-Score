@@ -36,6 +36,7 @@ borra la carpeta de nuevo (`git rm -r --cached frontend/datos` si no quieres com
 | `DATABASE_URL` | Conexión de SQLAlchemy | `sqlite:///./housescore.db` (en compose: el contenedor `db`) |
 | `INGEST_SECRET` | Secreto Bearer de `POST /ingest`. Sin él, la ingesta rechaza todo | — (obligatorio en compose) |
 | `RATE_LIMIT` | Límite por IP de los endpoints de lectura | `60/minute` |
+| `CORS_ORIGINS` | Orígenes (separados por comas) del front que pueden leer la API desde el navegador; solo `GET` | vacío (ninguno) |
 | `POSTGRES_PASSWORD` | Contraseña de la base de datos en compose | `housescore` |
 | `HOUSESCORE_API_URL` | URL de la API para el cliente del scraper y el dashboard | `http://127.0.0.1:8000` |
 | `TEST_DATABASE_URL` | Base de datos de los tests | `sqlite://` (memoria) |
@@ -122,6 +123,22 @@ streamlit run frontend/dashboard/app.py
 
 Consulta `http://127.0.0.1:8000`; para otra dirección, `HOUSESCORE_API_URL=... streamlit run ...`.
 Si la API no responde, muestra un aviso con la dirección consultada y ninguna cifra.
+
+## Copia de seguridad (Neon)
+
+`ops/backup.ps1` vuelca la base de Neon con `pg_dump -Fc` ejecutado en un contenedor
+`postgres:18-alpine` (hace falta Docker, no un cliente de PostgreSQL) y rota los volcados:
+
+```powershell
+.\ops\backup.ps1 -Destino "$env:OneDrive\backups\housescore" -Conservar 14
+```
+
+Lee `DATABASE_URL_UNPOOLED` (conexión directa; el pooler no sirve para `pg_dump`) o, si no existe,
+`DATABASE_URL`, del entorno o de `.env.local` en la raíz del repo. Restaurar en una base vacía:
+
+```bash
+docker run --rm -v "<carpeta>:/b" postgres:18-alpine pg_restore -d "<url-destino>" --no-owner /b/<volcado>.dump
+```
 
 ## Estructura
 

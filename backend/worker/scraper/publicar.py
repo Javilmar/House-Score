@@ -1,6 +1,7 @@
 """Conexion del scorer con la API (T038/T040): sustituye al git push y a frontend/datos.
 
-- `verificar_api`: comprobacion previa, para no scrapear varios minutos con la API caida.
+- `verificar_api`: comprobacion previa (espera a que despierte la API si esta dormida), para no
+  scrapear varios minutos con la API caida.
 - `cargar_historial_api`: historial (first_seen y ultimo precio) que el scorer necesita para
   puntuar dias en el mercado y bajadas de precio; antes salia de frontend/datos/*.json.
 - `publicar_pasada`: envia el lote a POST /ingest. Si falla, guarda una copia para reenviarla
@@ -9,12 +10,15 @@
 
 import json
 import os
+import time
 from datetime import date
 from pathlib import Path
 
 import httpx
 
 from worker.scraper.client import API_URL_DEFECTO, IngestError, enviar_pasada
+
+PRESUPUESTO_ESPERA_API = 180.0  # segundos; cubre el arranque en frio de Render
 
 
 def _api_url(api_url: str | None) -> str:
@@ -43,11 +47,32 @@ def _get_listings(params: dict, api_url: str | None, http: httpx.Client | None) 
             cliente.close()
 
 
-def verificar_api(*, api_url: str | None = None, http: httpx.Client | None = None) -> None:
-    try:
-        _get_listings({"municipio": "__comprobacion__"}, api_url, http)
-    except (httpx.HTTPError, ValueError) as e:
-        raise IngestError(f"la API no responde en {_api_url(api_url)}: {e}") from e
+def verificar_api(
+    *,
+    api_url: str | None = None,
+    http: httpx.Client | None = None,
+    presupuesto: float = PRESUPUESTO_ESPERA_API,
+    espera: float = 2.0,
+    espera_maxima: float = 30.0,
+    dormir=time.sleep,
+    ahora=time.monotonic,
+) -> None:
+    """Espera a que la API responda: en Render (plan gratuito) duerme tras 15 min sin trafico y
+    tarda hasta ~1 min en despertar. Reintenta con esperas crecientes hasta agotar `presupuesto`."""
+    inicio = ahora()
+    while True:
+        try:
+            _get_listings({"municipio": "__comprobacion__"}, api_url, http)
+            return
+        except (httpx.HTTPError, ValueError) as e:
+            transcurrido = ahora() - inicio
+            if transcurrido >= presupuesto:
+                raise IngestError(
+                    f"la API no responde en {_api_url(api_url)} tras esperar "
+                    f"{transcurrido:.0f} s: {e}"
+                ) from e
+        dormir(min(espera, presupuesto - transcurrido))
+        espera = min(espera * 2, espera_maxima)
 
 
 def cargar_historial_api(

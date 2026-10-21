@@ -13,6 +13,8 @@ class Settings:
     migration_url: str
     ingest_secret: str
     rate_limit: str
+    # Orígenes del front estático (Cloudflare Pages) que pueden leer la API desde el navegador.
+    cors_origins: tuple[str, ...]
 
 
 def _sqlalchemy_url(url: str) -> str:
@@ -33,4 +35,7 @@ def get_settings() -> Settings:
         migration_url=_sqlalchemy_url(unpooled) if unpooled else database_url,
         ingest_secret=os.environ.get("INGEST_SECRET", ""),
         rate_limit=os.environ.get("RATE_LIMIT", "60/minute"),
+        cors_origins=tuple(
+            o.strip() for o in os.environ.get("CORS_ORIGINS", "").split(",") if o.strip()
+        ),
     )

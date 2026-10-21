@@ -58,8 +58,13 @@ def test_verificar_api_ok_y_caida():
     def caida(req):
         raise httpx.ConnectError("caida")
 
+    t = [0.0]
+
+    def dormir(s):
+        t[0] += s
+
     with pytest.raises(IngestError, match="no responde"):
-        verificar_api(http=cliente(caida))
+        verificar_api(http=cliente(caida), dormir=dormir, ahora=lambda: t[0])
 
 
 def test_publicar_pasada_envia_y_no_deja_pendientes(tmp_path):
@@ -105,3 +110,67 @@ def test_publicar_sin_secreto_falla_sin_llamar_a_la_api(tmp_path, monkeypatch):
         publicar_pasada([ITEM], "madrid", http=cliente(handler), pendientes=tmp_path)
     assert llamadas == []
     assert len(list(tmp_path.iterdir())) == 1  # la pasada no se pierde
+
+
+class Reloj:
+    """Reloj y sleep falsos: dormir avanza el reloj, así los tests no esperan de verdad."""
+
+    def __init__(self):
+        self.t = 0.0
+        self.esperas = []
+
+    def ahora(self):
+        return self.t
+
+    def dormir(self, s):
+        self.esperas.append(s)
+        self.t += s
+
+
+def test_verificar_api_espera_a_que_despierte_la_api():
+    reloj = Reloj()
+    llamadas = []
+
+    def handler(req):
+        llamadas.append(1)
+        if len(llamadas) < 4:
+            return httpx.Response(503)
+        return httpx.Response(200, json=[])
+
+    verificar_api(http=cliente(handler), dormir=reloj.dormir, ahora=reloj.ahora)
+    assert len(llamadas) == 4
+    assert len(reloj.esperas) == 3
+    assert reloj.esperas == sorted(reloj.esperas)  # esperas crecientes
+    assert reloj.esperas[-1] > reloj.esperas[0]
+
+
+def test_verificar_api_agota_el_presupuesto_y_nombra_url_y_tiempo():
+    reloj = Reloj()
+
+    def caida(req):
+        raise httpx.ConnectError("caida")
+
+    with pytest.raises(IngestError) as e:
+        verificar_api(
+            api_url="http://api.test",
+            http=cliente(caida),
+            dormir=reloj.dormir,
+            ahora=reloj.ahora,
+            presupuesto=60.0,
+        )
+    msg = str(e.value)
+    assert "http://api.test" in msg and "no responde" in msg and "s" in msg
+    assert 60.0 <= reloj.t < 60.0 + max(reloj.esperas)
+    assert f"{reloj.t:.0f} s" in msg
+
+
+def test_verificar_api_no_duerme_mas_alla_del_presupuesto():
+    reloj = Reloj()
+    with pytest.raises(IngestError):
+        verificar_api(
+            http=cliente(lambda r: httpx.Response(503)),
+            dormir=reloj.dormir,
+            ahora=reloj.ahora,
+            presupuesto=20.0,
+        )
+    assert reloj.t <= 20.0

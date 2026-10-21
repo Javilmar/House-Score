@@ -23,10 +23,22 @@ Esperado: tests en verde; el front en :5173 muestra las 8 vistas con la API loca
 ## 2. Migración del histórico (Historia 4, SC-005)
 
 ```bash
-backend/ops/migrar_a_neon.ps1 -Dump C:\Users\LWD12\Downloads\housescore-2026-10-21_1354.dump
+powershell -ExecutionPolicy Bypass -File backend/ops/migrar_a_neon.ps1 -Dump C:\Users\LWD12\Downloads\housescore-2026-10-21_1354.dump
 ```
 
 Esperado: imprime recuentos por tabla del volcado y de Neon, y son iguales.
+
+Ejecutado el 2026-10-21 con `housescore-2026-10-21_1354.dump`:
+
+```text
+tabla                   volcado       neon
+listing                    2359       2359
+historial_precio            259        259
+pasada_diaria                50         50
+precio_referencia             0          0
+alembic_version               1          1
+OK: recuentos identicos
+```
 
 ## 3. API en Render (Historia 3, FR-006, FR-007)
 

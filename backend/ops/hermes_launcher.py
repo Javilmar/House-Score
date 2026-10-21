@@ -10,20 +10,24 @@ Instalación: copiar este fichero a `~/AppData/Local/hermes/scripts/housescore_s
 apuntar el job con `hermes cron edit <id> --script housescore_scraper.py`.
 
 Variables opcionales (para pruebas): HOUSESCORE_REPO, HOUSESCORE_SCORER, HOUSESCORE_PYTHON,
-HOUSESCORE_ENV_FILE, HOUSESCORE_API_URL, HOUSESCORE_TIMEOUT (segundos, 3600 por defecto).
+HOUSESCORE_ENV_FILE, HOUSESCORE_API_URL, HOUSESCORE_TIMEOUT (segundos, 3600 por defecto),
+HOUSESCORE_ESPERA_API (segundos que espera a que despierte la API, 180 por defecto).
 
-Códigos de salida: el del scorer; 2 = falta algo (API caída o scorer inexistente); 124 = tiempo.
+Códigos de salida: el del scorer; 2 = falta algo (API sin responder o scorer
+inexistente); 124 = tiempo.
 """
 
 import os
 import re
 import subprocess
 import sys
+import time
 import urllib.request
 from pathlib import Path
 
 API_URL_DEFECTO = "http://127.0.0.1:8000"  # no "localhost": en Windows añade ~2 s por petición
 TIMEOUT_DEFECTO = 3600
+ESPERA_API = 180  # segundos; cubre el arranque en frío de Render (plan gratuito)
 # hermes ejecuta el lanzador con estas variables apuntando a su propio entorno (con un Playwright
 # roto para su Python 3.14). Si el scorer las hereda, pisan los paquetes de su venv, que sí
 # funciona.
@@ -71,6 +75,25 @@ def _api_responde(api_url):
         return False, str(e)
 
 
+def esperar_api(
+    api_url, *, comprobar=None, dormir=time.sleep, ahora=time.monotonic, presupuesto=ESPERA_API
+):
+    """Espera a que la API responda (puede estar dormida) con esperas crecientes hasta agotar el
+    presupuesto. Devuelve (ok, último motivo de fallo)."""
+    comprobar = comprobar or _api_responde
+    inicio = ahora()
+    espera = 2.0
+    while True:
+        ok, motivo = comprobar(api_url)
+        if ok:
+            return True, ""
+        restante = presupuesto - (ahora() - inicio)
+        if restante <= 0:
+            return False, motivo
+        dormir(min(espera, restante))
+        espera = min(espera * 2, 30.0)
+
+
 def _matar_arbol(proc):
     if os.name == "nt":
         subprocess.run(["taskkill", "/PID", str(proc.pid), "/T", "/F"], capture_output=True)
@@ -93,15 +116,16 @@ def main(env=None):
     env_file = Path(env.get("HOUSESCORE_ENV_FILE") or repo / "backend" / ".env")
     api_url = (env.get("HOUSESCORE_API_URL") or API_URL_DEFECTO).rstrip("/")
     timeout = int(env.get("HOUSESCORE_TIMEOUT") or TIMEOUT_DEFECTO)
+    espera_api = int(env.get("HOUSESCORE_ESPERA_API") or ESPERA_API)
 
     if not scorer.exists():
         print(f"El scorer no existe: {scorer}")
         return 2
-    ok, motivo = _api_responde(api_url)
+    ok, motivo = esperar_api(api_url, presupuesto=espera_api)
     if not ok:
         print(
-            f"La API no responde en {api_url} ({motivo}). No se ejecuta el scorer para no scrapear "
-            "sin poder guardar. Arranca la API: cd backend && docker compose up -d"
+            f"La API no responde en {api_url} ({motivo}) tras esperar {espera_api} s. No se "
+            "ejecuta el scorer para no scrapear sin poder guardar."
         )
         return 2
 

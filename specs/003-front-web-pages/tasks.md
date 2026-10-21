@@ -24,7 +24,7 @@ Rutas: front en `frontend/web/`, API en `backend/`.
 - [ ] T001 Crear `frontend/web/` con Vite + React + TypeScript estricto (`package.json`, `tsconfig.json`, `vite.config.ts`, `index.html`, `src/main.tsx`) y scripts `dev`, `build`, `preview`, `typecheck`, `test`, `test:e2e`, `test:smoke`; `.nvmrc` = 22
 - [ ] T002 [P] Configurar Vitest + Testing Library + jsdom (`vitest.config.ts`, `tests/setup.ts`) y Playwright (`playwright.config.ts`, servidor `vite preview`, API simulada por interceptación de rutas)
 - [ ] T003 [P] Copiar los assets del mapa a `frontend/web/public/assets/` y mover `frontend/dashboard/scripts/build_mapa_assets.py` a `frontend/scripts/` escribiendo en esa carpeta
-- [ ] T004 [P] Crear `frontend/web/tests/fixtures/listings.json` e `historico.json` a partir de una respuesta real de la API (anonimizada no es necesario: datos públicos), con al menos un listing retirado, uno sin datos suficientes, uno con bajada y uno nuevo
+- [X] T004 [P] Crear `frontend/web/tests/fixtures/listings.json` e `historico.json` a partir de una respuesta real de la API (anonimizada no es necesario: datos públicos), con al menos un listing retirado, uno sin datos suficientes, uno con bajada y uno nuevo
 
 ---
 
@@ -78,22 +78,22 @@ Rutas: front en `frontend/web/`, API en `backend/`.
 
 **Test independiente**: la API acepta lecturas solo desde los orígenes permitidos, rechaza escrituras sin secreto y el scorer espera a que la API despierte.
 
-- [ ] T028 [P] [US3] Test: `backend/tests/contract/test_cors.py` — origen permitido recibe `Access-Control-Allow-Origin` en `GET /listings` y `/historico`; origen no permitido no; preflight de `POST` no permitido
-- [ ] T029 [US3] Implementar `cors_origins` en `backend/app/core/config.py` y `CORSMiddleware` en `backend/app/main.py` (pasa T028)
-- [ ] T030 [P] [US3] Test: `backend/tests/unit/test_publicar.py` — `verificar_api` reintenta con espera creciente hasta el límite (~3 min) y aborta con mensaje claro al agotarlo
-- [ ] T031 [US3] Implementar los reintentos en `backend/worker/scraper/publicar.py` (pasa T030)
-- [ ] T032 [P] [US3] Test: `backend/tests/unit/test_hermes_launcher.py` — con la API dormida al empezar, el lanzador espera en vez de abortar; el mensaje de error ya no remite a `docker compose up -d`
-- [ ] T033 [US3] Implementar la espera en `backend/ops/hermes_launcher.py` (pasa T032)
-- [ ] T034 [US3] `backend/Dockerfile`: uvicorn con `--proxy-headers --forwarded-allow-ips='*'` (research §7). Verificación por ejecución (precedente: T051 de la spec 001): en T036, una petición desde dos IPs distintas consume cupos distintos
-- [ ] T035 [US3] Adaptar `backend/ops/backup.ps1` para volcar Neon con `pg_dump -Fc` desde `postgres:18-alpine` (research §11) y documentarlo en `backend/README.md`. Verificación por ejecución: restaurar el backup en una base vacía y comparar recuentos por tabla con Neon
+- [X] T028 [P] [US3] Test: `backend/tests/contract/test_cors.py` — origen permitido recibe `Access-Control-Allow-Origin` en `GET /listings` y `/historico`; origen no permitido no; preflight de `POST` no permitido
+- [X] T029 [US3] Implementar `cors_origins` en `backend/app/core/config.py` y `CORSMiddleware` en `backend/app/main.py` (pasa T028)
+- [X] T030 [P] [US3] Test: `backend/tests/unit/test_publicar.py` — `verificar_api` reintenta con espera creciente hasta el límite (~3 min) y aborta con mensaje claro al agotarlo
+- [X] T031 [US3] Implementar los reintentos en `backend/worker/scraper/publicar.py` (pasa T030)
+- [X] T032 [P] [US3] Test: `backend/tests/unit/test_hermes_launcher.py` — con la API dormida al empezar, el lanzador espera en vez de abortar; el mensaje de error ya no remite a `docker compose up -d`
+- [X] T033 [US3] Implementar la espera en `backend/ops/hermes_launcher.py` (pasa T032)
+- [X] T034 [US3] `backend/Dockerfile`: uvicorn con `--proxy-headers --forwarded-allow-ips='*'` (research §7). Verificación por ejecución (precedente: T051 de la spec 001): en T036, una petición desde dos IPs distintas consume cupos distintos
+- [X] T035 [US3] Adaptar `backend/ops/backup.ps1` para volcar Neon con `pg_dump -Fc` desde `postgres:18-alpine` (research §11) y documentarlo en `backend/README.md`. Verificación por ejecución: restaurar el backup en una base vacía y comparar recuentos por tabla con Neon _(2026-10-21: backup de Neon de 483 KB restaurado en una base vacía: listing 2359, historial_precio 259, pasada_diaria 50, alembic_version 1)_
 - [ ] T036 [US3] Desplegar la API en Render (raíz `backend`, Docker, variables `DATABASE_URL`, `DATABASE_URL_UNPOOLED`, `INGEST_SECRET`, `CORS_ORIGINS`, `PORT=8000`) y ejecutar quickstart §3, incluida la verificación de que el rate limit ve la IP real del cliente
 
 ---
 
 ## Fase 6: Historia 4 — El histórico existente no se pierde (P1)
 
-- [ ] T037 [US4] Crear `backend/ops/migrar_a_neon.ps1`: restaura el volcado en un PostgreSQL efímero local, cuenta filas por tabla, restaura en Neon por la conexión directa (`pg_restore --no-owner --no-privileges --clean --if-exists`) y compara recuentos; falla si difieren. Verificación por ejecución: la propia comparación de recuentos (T038)
-- [ ] T038 [US4] Ejecutar la migración con `housescore-2026-10-21_1354.dump` y anotar los recuentos en quickstart §2 (SC-005)
+- [X] T037 [US4] Crear `backend/ops/migrar_a_neon.ps1`: restaura el volcado en un PostgreSQL efímero local, cuenta filas por tabla, restaura en Neon por la conexión directa (`pg_restore --no-owner --no-privileges --clean --if-exists`) y compara recuentos; falla si difieren. Verificación por ejecución: la propia comparación de recuentos (T038)
+- [X] T038 [US4] Ejecutar la migración con `housescore-2026-10-21_1354.dump` y anotar los recuentos en quickstart §2 (SC-005) _(2026-10-21: listing 2359, historial_precio 259, pasada_diaria 50, precio_referencia 0, alembic_version 1; idénticos en volcado y Neon `production`. Última pasada del volcado: 2026-10-14)_
 
 ---
 

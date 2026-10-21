@@ -103,7 +103,9 @@ def test_propaga_el_codigo_de_error_del_scorer_y_lo_resume(tmp_path, api_falsa, 
 def test_con_la_api_caida_no_ejecuta_el_scorer(tmp_path, capsys):
     marca = tmp_path / "ejecutado.txt"
     scorer = escribir_scorer(tmp_path, f"open({str(marca)!r}, 'w').write('x')\n")
-    codigo = cargar().main(entorno(tmp_path, scorer, "http://127.0.0.1:9"))
+    codigo = cargar().main(
+        entorno(tmp_path, scorer, "http://127.0.0.1:9", HOUSESCORE_ESPERA_API="1")
+    )
     salida = capsys.readouterr().out
     assert codigo == 2
     assert "API" in salida and "no responde" in salida
@@ -154,3 +156,48 @@ def test_el_scorer_no_hereda_las_variables_que_redirigen_a_otro_python(
     salida = capsys.readouterr().out
     assert "PYTHONPATH= None" in salida
     assert "PYTHONHOME= None" in salida
+
+
+def test_espera_a_que_despierte_la_api(tmp_path, capsys):
+    m = cargar()
+    t = {"v": 0.0}
+    intentos = []
+
+    def comprobar(url):
+        intentos.append(url)
+        return (len(intentos) >= 3), "503"
+
+    def dormir(s):
+        t["v"] += s
+
+    ok, motivo = m.esperar_api(
+        "http://x", comprobar=comprobar, dormir=dormir, ahora=lambda: t["v"], presupuesto=180
+    )
+    assert ok and len(intentos) == 3 and t["v"] > 0
+
+
+def test_esperar_api_se_rinde_al_agotar_el_presupuesto():
+    m = cargar()
+    t = {"v": 0.0}
+
+    def dormir(s):
+        t["v"] += s
+
+    ok, motivo = m.esperar_api(
+        "http://x",
+        comprobar=lambda u: (False, "timeout"),
+        dormir=dormir,
+        ahora=lambda: t["v"],
+        presupuesto=60,
+    )
+    assert not ok and "timeout" in motivo and t["v"] <= 60
+
+
+def test_mensaje_de_api_caida_nombra_la_url_sin_instrucciones_de_docker(tmp_path, capsys):
+    m = cargar()
+    scorer = escribir_scorer(tmp_path, "pass\n")
+    codigo = m.main(entorno(tmp_path, scorer, "http://127.0.0.1:9", HOUSESCORE_ESPERA_API="1"))
+    salida = capsys.readouterr().out
+    assert codigo == 2
+    assert "http://127.0.0.1:9" in salida
+    assert "docker" not in salida.lower()
