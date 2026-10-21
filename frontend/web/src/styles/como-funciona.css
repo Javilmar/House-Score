@@ -1,0 +1,17 @@
+.cf-intro { color: #d4d4d8; line-height: 1.6; }
+.cf-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: start; }
+.cf-col { display: flex; flex-direction: column; gap: 1rem; }
+.cf-bloque { margin-bottom: 0; }
+.cf-fila {
+  display: flex; justify-content: space-between; gap: 1rem;
+  padding: 0.4rem 0; border-bottom: 1px solid #1f1f23;
+}
+.cf-concepto { color: #d4d4d8; }
+.cf-pts { font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.cf-titulo { font-weight: 600; color: #fafafa; margin-bottom: 0.1rem; }
+.cf-sub { font-size: 0.8rem; color: #71717a; margin-bottom: 0.6rem; }
+.cf-seccion { font-size: 1.1rem; margin: 1.5rem 0 0.75rem; }
+.cf-municipios { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 640px) {
+  .cf-cols, .cf-municipios { grid-template-columns: 1fr; }
+}

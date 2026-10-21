@@ -1,0 +1,46 @@
+.hip-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1rem; }
+.hip-col { display: flex; flex-direction: column; gap: 1rem; min-width: 0; }
+.hip-cols-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+@media (max-width: 900px) { .hip-cols, .hip-cols-2 { grid-template-columns: 1fr; } }
+
+.hip-campo { display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.875rem; color: #d4d4d8; }
+.hip-campo input[type='number'] {
+  background: #131316; border: 1px solid #27272a; border-radius: 8px;
+  color: #fafafa; padding: 0.5rem 0.65rem; font-size: 0.95rem; width: 100%;
+}
+.hip-campo input[type='range'] { width: 100%; accent-color: #6366f1; }
+.hip-slider-cab { display: flex; justify-content: space-between; }
+.hip-slider-val { font-family: var(--font-mono); color: #a1a1aa; }
+
+.hip-radios { border: 0; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.35rem; }
+.hip-radios legend { padding: 0; font-size: 0.875rem; color: #d4d4d8; margin-bottom: 0.35rem; }
+.hip-radios-fila { display: flex; flex-wrap: wrap; gap: 1rem; }
+.hip-radios label { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; cursor: pointer; }
+.hip-radios input { accent-color: #6366f1; }
+
+.hip-precio {
+  font-family: 'Fraunces', serif; font-size: 2.4rem; font-weight: 400; letter-spacing: -0.03em;
+  color: #fafafa; line-height: 1; margin: -0.25rem 0 1rem 0;
+}
+.hip-precio-eur { font-size: 1.1rem; color: #a1a1aa; margin-left: 0.3rem; }
+
+.hip-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.85rem; margin: 1rem 0 0.5rem; }
+@media (max-width: 900px) { .hip-kpis { grid-template-columns: repeat(2, 1fr); } }
+
+.hip-desglose { max-width: 520px; }
+.hip-desglose .sb-table {
+  background: #131316; border: 1px solid #27272a; border-radius: 10px;
+  overflow: hidden; margin-top: 0.5rem;
+}
+.hip-desglose thead tr { background: #18181b; }
+.hip-desglose th {
+  padding: 0.5rem 0.6rem; font-size: 0.72rem; font-weight: 600; color: #a1a1aa;
+  text-transform: uppercase; letter-spacing: 0.04em; text-align: left;
+}
+.hip-desglose td.hip-importe { font-family: 'JetBrains Mono', monospace; color: #a1a1aa; }
+.hip-desglose .sb-total td:last-child { text-align: right; }
+
+.hip-gastos { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.75rem; }
+.hip-gastos .kpi-card { flex: 1; min-width: 180px; }
+.hip-gastos .kpi-value { font-size: 1.4rem; }
+.hip-gastos-nota { font-size: 0.78rem; color: #71717a; margin-top: 0.3rem; }

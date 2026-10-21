@@ -1,0 +1,17 @@
+.mapas h2 { font-size: 1.1rem; margin: 0.5rem 0 0.75rem; }
+.mapas h3 { margin: 1.5rem 0 0.5rem; }
+
+.radio-capa { display: flex; flex-wrap: wrap; gap: 1.25rem; margin: 0.5rem 0 0.75rem; }
+.radio-opcion { display: inline-flex; align-items: center; gap: 0.45rem; cursor: pointer; color: #e4e4e7; }
+.radio-opcion input { accent-color: #6366f1; }
+
+.mapas .expander { border: 1px solid #27272a; border-radius: 10px; padding: 0.55rem 0.9rem; margin: 0.5rem 0; }
+.mapas .expander > summary { cursor: pointer; color: #e4e4e7; }
+.mapas .expander > p { color: #a1a1aa; margin: 0.6rem 0 0; }
+
+.mapas .aviso { border: 1px solid #854d0e; background: rgba(234, 179, 8, 0.08); border-radius: 10px; padding: 0.75rem 1rem; color: #fde68a; }
+.mapas .aviso p { margin: 0 0 0.5rem; }
+.mapas .aviso pre { margin: 0; padding: 0.6rem 0.8rem; background: #18181b; border-radius: 8px; color: #e4e4e7; overflow: auto; }
+
+.mapas-tabla { max-height: 400px; }
+.mapas-tabla thead th { position: sticky; top: 0; z-index: 1; }

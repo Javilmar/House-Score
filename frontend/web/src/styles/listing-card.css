@@ -1,0 +1,37 @@
+/* ListingCard (Top, Novedades, Bajadas) y controles de esas vistas */
+.prop-card-resaltada { box-shadow: 0 0 0 2px #818cf8; }
+
+.lc-precio { font-size: 1.15rem; font-weight: 600; color: #fafafa; }
+.lc-eur-m2 { font-size: 0.8rem; color: #71717a; }
+.lc-fila-atributos {
+  font-size: 0.8rem; color: #a1a1aa; display: flex; gap: 0.7rem;
+  justify-content: flex-end; margin-top: 0.3rem;
+}
+.lc-descripcion { margin-top: 0.65rem; white-space: normal; }
+.lc-descripcion p {
+  margin: 0.5rem 0 0; font-size: 0.83rem; color: #a1a1aa; line-height: 1.55; white-space: pre-line;
+}
+
+.lc-fila-compacta { display: flex; gap: 1.25rem; align-items: center; }
+.lc-cuerpo { flex: 1; min-width: 0; }
+.lc-precio-compacto { text-align: right; white-space: nowrap; }
+.lc-precio-previo { font-size: 0.8rem; color: #a1a1aa; text-decoration: line-through; }
+.lc-badge-bajada { background: #15803d; min-width: auto; padding: 0 0.85rem; font-size: 0.95rem; }
+@media (max-width: 640px) {
+  .lc-fila-compacta { flex-wrap: wrap; gap: 0.75rem; }
+}
+
+.lc-contador {
+  font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 400; letter-spacing: -0.03em;
+  color: #fafafa; margin: 0.5rem 0 1rem;
+}
+.lc-contador span { font-size: 1rem; color: #a1a1aa; margin-left: 0.5rem; }
+
+.f-select select {
+  padding: 0.45rem 0.7rem; border: 1px solid #27272a; border-radius: 10px;
+  background: #18181b; color: #e4e4e7; font-size: 0.875rem; font-family: inherit;
+}
+.f-select select:focus { border-color: #6366f1; outline: none; }
+.f-controles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-bottom: 0.75rem; }
+.f-top { max-width: 40rem; margin-bottom: 0.75rem; }
+@media (max-width: 640px) { .f-controles { grid-template-columns: minmax(0, 1fr); } }

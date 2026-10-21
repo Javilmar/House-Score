@@ -1,0 +1,21 @@
+/* st.expander: <details class="expander"> */
+.expander {
+  border: 1px solid #27272a;
+  border-radius: 10px;
+  background: rgba(18, 18, 20, 0.55);
+  margin-bottom: 0.6rem;
+}
+.expander > summary {
+  cursor: pointer;
+  padding: 0.65rem 0.9rem;
+  font-size: 0.92rem;
+  color: #e4e4e7;
+  list-style: none;
+}
+.expander > summary::-webkit-details-marker { display: none; }
+.expander > summary::after { content: '▾'; float: right; color: #71717a; }
+.expander[open] > summary::after { content: '▴'; }
+.expander > summary:hover { color: #fafafa; }
+.expander-body { padding: 0.2rem 0.9rem 0.9rem; font-size: 0.9rem; color: #d4d4d8; line-height: 1.55; }
+.expander-body p { margin: 0 0 0.75rem; }
+.expander-body p:last-child { margin-bottom: 0; }
