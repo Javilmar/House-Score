@@ -25,3 +25,6 @@ backend/.pytest_cache/
 # Datos de sesión del scraper (cookies): nunca al repo
 idealista_session.json
 backend/logs/
+.neon
+node_modules/
+.env.local
