@@ -21,24 +21,24 @@ Rutas: front en `frontend/web/`, API en `backend/`.
 
 ## Fase 1: Configuración
 
-- [ ] T001 Crear `frontend/web/` con Vite + React + TypeScript estricto (`package.json`, `tsconfig.json`, `vite.config.ts`, `index.html`, `src/main.tsx`) y scripts `dev`, `build`, `preview`, `typecheck`, `test`, `test:e2e`, `test:smoke`; `.nvmrc` = 22
-- [ ] T002 [P] Configurar Vitest + Testing Library + jsdom (`vitest.config.ts`, `tests/setup.ts`) y Playwright (`playwright.config.ts`, servidor `vite preview`, API simulada por interceptación de rutas)
-- [ ] T003 [P] Copiar los assets del mapa a `frontend/web/public/assets/` y mover `frontend/dashboard/scripts/build_mapa_assets.py` a `frontend/scripts/` escribiendo en esa carpeta
+- [X] T001 Crear `frontend/web/` con Vite + React + TypeScript estricto (`package.json`, `tsconfig.json`, `vite.config.ts`, `index.html`, `src/main.tsx`) y scripts `dev`, `build`, `preview`, `typecheck`, `test`, `test:e2e`, `test:smoke`; `.nvmrc` = 22
+- [X] T002 [P] Configurar Vitest + Testing Library + jsdom (`vitest.config.ts`, `tests/setup.ts`) y Playwright (`playwright.config.ts`, servidor `vite preview`, API simulada por interceptación de rutas)
+- [X] T003 [P] Copiar los assets del mapa a `frontend/web/public/assets/` y mover `frontend/dashboard/scripts/build_mapa_assets.py` a `frontend/scripts/` escribiendo en esa carpeta
 - [X] T004 [P] Crear `frontend/web/tests/fixtures/listings.json` e `historico.json` a partir de una respuesta real de la API (anonimizada no es necesario: datos públicos), con al menos un listing retirado, uno sin datos suficientes, uno con bajada y uno nuevo
 
 ---
 
 ## Fase 2: Fundacional (bloquea todas las historias)
 
-- [ ] T005 [P] Test: `tests/unit/mapeo.test.ts` — cada campo de `ListingApi` se traduce a la columna de `app.py` según la tabla de `api_datos.py` (inventario §datos), incluidos los opcionales ausentes
-- [ ] T006 Implementar `src/api/mapeo.ts` (pasa T005)
-- [ ] T007 [P] Test: `tests/unit/cliente.test.ts` — clasificación de errores (red, 90 s, 429, ≥400, JSON ilegible, `[]`) y aviso "despertando" a los 3 s (temporizadores falsos), sin reintentos automáticos (contracts/api-lectura.md)
-- [ ] T008 Implementar `src/api/cliente.ts` y `src/state/carga.ts` (máquina de estados de data-model.md; pasa T007)
-- [ ] T009 [P] Test: `tests/unit/router.test.ts` — parseo y serialización de las 8 rutas y sus parámetros; ruta desconocida → `#/listados` (contracts/vistas.md)
-- [ ] T010 Implementar `src/state/router.ts` (pasa T009)
-- [ ] T011 [P] Estilos base en `src/styles/`: paleta, `SCORE_SCALE`, tipografías Fraunces/Inter/JetBrains Mono, fondo de puntos, clases de cards, KPI, chips, badges, desglose `sb-*` y tabla (valores literales de inventario §base 4)
-- [ ] T012 [P] Test + implementación de `src/components/Icon.tsx` con los 12 iconos Lucide de `app.py:68-82` (nombre desconocido → svg vacío)
-- [ ] T013 Implementar el armazón `src/App.tsx`: cabecera, barra de pestañas en el orden de `app.py:1121` ligada al router, contenedor de estados de carga
+- [X] T005 [P] Test: `tests/unit/mapeo.test.ts` — cada campo de `ListingApi` se traduce a la columna de `app.py` según la tabla de `api_datos.py` (inventario §datos), incluidos los opcionales ausentes
+- [X] T006 Implementar `src/api/mapeo.ts` (pasa T005)
+- [X] T007 [P] Test: `tests/unit/cliente.test.ts` — clasificación de errores (red, 90 s, 429, ≥400, JSON ilegible, `[]`) y aviso "despertando" a los 3 s (temporizadores falsos), sin reintentos automáticos (contracts/api-lectura.md)
+- [X] T008 Implementar `src/api/cliente.ts` y `src/state/carga.ts` (máquina de estados de data-model.md; pasa T007)
+- [X] T009 [P] Test: `tests/unit/router.test.ts` — parseo y serialización de las 8 rutas y sus parámetros; ruta desconocida → `#/listados` (contracts/vistas.md)
+- [X] T010 Implementar `src/state/router.ts` (pasa T009)
+- [X] T011 [P] Estilos base en `src/styles/`: paleta, `SCORE_SCALE`, tipografías Fraunces/Inter/JetBrains Mono, fondo de puntos, clases de cards, KPI, chips, badges, desglose `sb-*` y tabla (valores literales de inventario §base 4)
+- [X] T012 [P] Test + implementación de `src/components/Icon.tsx` con los 12 iconos Lucide de `app.py:68-82` (nombre desconocido → svg vacío)
+- [X] T013 Implementar el armazón `src/App.tsx`: cabecera, barra de pestañas en el orden de `app.py:1121` ligada al router, contenedor de estados de carga
 
 **Punto de control**: datos cargados y mapeados, rutas funcionando, estilo base aplicado.
 
@@ -48,17 +48,17 @@ Rutas: front en `frontend/web/`, API en `backend/`.
 
 **Test independiente**: con la API simulada, `#/listados` muestra KPIs, filtros combinativos, tabla ordenable, desglose, "sin valorar", retirados y CSV.
 
-- [ ] T014 [P] [US1] Test: `tests/unit/derivaciones.test.ts` — `clean`, `zona`, `tipo_vivienda`, €/m², días en mercado, retirado, `score_color` con los casos límite del inventario
-- [ ] T015 [US1] Implementar `src/domain/derivaciones.ts` (pasa T014)
-- [ ] T016 [P] [US1] Test: `tests/unit/desglose.test.ts` — `parse_score_details` / `breakdown_score_details` con las reglas y categorías literales del inventario §datos
-- [ ] T017 [US1] Implementar `src/domain/desglose.ts` y `src/components/Breakdown.tsx` (pasa T016)
-- [ ] T018 [P] [US1] Test: `tests/unit/kpis.test.ts` — las 6 fórmulas de KPI de cabecera
-- [ ] T019 [US1] Implementar `src/domain/kpis.ts` y `src/components/KpiBar.tsx` (pasa T018)
-- [ ] T020 [P] [US1] Test: `tests/unit/filtros.test.ts` — orden combinativo de filtros (zona restringe municipios, etc.), rangos por defecto, "mostrar retirados", y rendimiento: filtrar y ordenar 2.000 listings < 200 ms (SC-006)
-- [ ] T021 [US1] Implementar `src/domain/filtros.ts` (pasa T020)
-- [ ] T022 [P] [US1] Test: `tests/components/Listados.test.tsx` — columnas, ordenación por cabecera, badges (retirado, s/valorar), enlace al anuncio en pestaña nueva, botones ↗ y €, estado vacío y CSV (columnas y nombre `listings_<fecha>.csv`)
-- [ ] T023 [US1] Implementar `src/views/Listados.tsx` y `src/domain/csv.ts` (pasa T022)
-- [ ] T024 [US1] Test e2e `tests/e2e/listados.spec.ts`: cargar, filtrar, ordenar, desplegar desglose, descargar CSV, vista estrecha (390 px)
+- [X] T014 [P] [US1] Test: `tests/unit/derivaciones.test.ts` — `clean`, `zona`, `tipo_vivienda`, €/m², días en mercado, retirado, `score_color` con los casos límite del inventario
+- [X] T015 [US1] Implementar `src/domain/derivaciones.ts` (pasa T014)
+- [X] T016 [P] [US1] Test: `tests/unit/desglose.test.ts` — `parse_score_details` / `breakdown_score_details` con las reglas y categorías literales del inventario §datos
+- [X] T017 [US1] Implementar `src/domain/desglose.ts` y `src/components/Breakdown.tsx` (pasa T016)
+- [X] T018 [P] [US1] Test: `tests/unit/kpis.test.ts` — las 6 fórmulas de KPI de cabecera
+- [X] T019 [US1] Implementar `src/domain/kpis.ts` y `src/components/KpiBar.tsx` (pasa T018)
+- [X] T020 [P] [US1] Test: `tests/unit/filtros.test.ts` — orden combinativo de filtros (zona restringe municipios, etc.), rangos por defecto, "mostrar retirados", y rendimiento: filtrar y ordenar 2.000 listings < 200 ms (SC-006)
+- [X] T021 [US1] Implementar `src/domain/filtros.ts` (pasa T020)
+- [X] T022 [P] [US1] Test: `tests/components/Listados.test.tsx` — columnas, ordenación por cabecera, badges (retirado, s/valorar), enlace al anuncio en pestaña nueva, botones ↗ y €, estado vacío y CSV (columnas y nombre `listings_<fecha>.csv`)
+- [X] T023 [US1] Implementar `src/views/Listados.tsx` y `src/domain/csv.ts` (pasa T022)
+- [X] T024 [US1] Test e2e `tests/e2e/listados.spec.ts`: cargar, filtrar, ordenar, desplegar desglose, descargar CSV, vista estrecha (390 px)
 
 **Punto de control**: la Historia 1 funciona sola contra la API simulada.
 
@@ -68,9 +68,9 @@ Rutas: front en `frontend/web/`, API en `backend/`.
 
 **Test independiente**: con la API simulada retrasada o fallando, el front muestra cada estado y se recupera con "Reintentar".
 
-- [ ] T025 [P] [US2] Test: `tests/components/EstadoCarga.test.tsx` — "Despertando el servidor…", avisos por tipo con la URL consultada, "Sin datos todavía", ninguna cifra en estado de error, botón Reintentar
-- [ ] T026 [US2] Implementar `src/components/EstadoCarga.tsx` (pasa T025)
-- [ ] T027 [US2] Test e2e `tests/e2e/estados.spec.ts`: respuesta retrasada 10 s, 503, 429, JSON roto, `[]`, recuperación tras Reintentar
+- [X] T025 [P] [US2] Test: `tests/components/EstadoCarga.test.tsx` — "Despertando el servidor…", avisos por tipo con la URL consultada, "Sin datos todavía", ninguna cifra en estado de error, botón Reintentar
+- [X] T026 [US2] Implementar `src/components/EstadoCarga.tsx` (pasa T025)
+- [X] T027 [US2] Test e2e `tests/e2e/estados.spec.ts`: respuesta retrasada 10 s, 503, 429, JSON roto, `[]`, recuperación tras Reintentar
 
 ---
 
@@ -101,17 +101,17 @@ Rutas: front en `frontend/web/`, API en `backend/`.
 
 Cada vista: test de componente primero (contenido, controles, valores por defecto y estados vacíos del inventario), luego la vista.
 
-- [ ] T039 [P] [US5] Test + implementación `src/views/Top.tsx` y `src/components/ListingCard.tsx` (slider 5–30, por defecto 15; card completa; desplazamiento a `id`)
-- [ ] T040 [P] [US5] Test + implementación `src/views/Novedades.tsx` (criterio de "nuevo" del inventario §tabs2)
-- [ ] T041 [P] [US5] Test: `tests/unit/graficos.test.ts` — las especificaciones de figura de Evolución (eje dual, precios, histograma 20 bins, top-10 ubicaciones) y mínimo de 2 días con su mensaje
-- [ ] T042 [US5] Implementar `src/domain/graficos.ts` y `src/views/Evolucion.tsx` con Plotly cargado bajo demanda (pasa T041)
-- [ ] T043 [P] [US5] Test + implementación `src/views/Bajadas.tsx` (orden, % de bajada, precio tachado)
-- [ ] T044 [P] [US5] Test: `tests/unit/hipoteca.test.ts` — `calc_impuestos` y `calc_hipoteca` con los valores de `app.py` (ITP 6 %/9 %, IVA 10 %, AJD 0,75 %/1,5 %, otros 1,5 % + 400 €) y casos límite; gastos mensuales y umbrales de ratio 30 %/40 %
-- [ ] T045 [US5] Implementar `src/domain/hipoteca.ts` y `src/views/Hipoteca.tsx` con precarga desde la ruta una sola vez (pasa T044)
-- [ ] T046 [P] [US5] Test + implementación `src/views/ComoFunciona.tsx` (bloques de scoring y 6 desplegables con su texto)
-- [ ] T047 [P] [US5] Test: `tests/unit/mapas.test.ts` — figuras de criminalidad y renta (escala, rango, `zoom`, `center`, estilo), join con `cod_ine` normalizado a texto, municipios sin dato en gris, rankings
-- [ ] T048 [US5] Implementar `src/domain/mapas.ts` y `src/views/Mapas.tsx` con carga diferida de assets y Plotly (pasa T047)
-- [ ] T049 [US5] Test e2e `tests/e2e/navegacion.spec.ts`: las 8 pestañas, ↗ a Top, € a Hipoteca precargada desde Listados, Top, Novedades y Bajadas; recargar conserva la vista. Se ejecuta a 1280 px y a 390 px de ancho (edge case móvil)
+- [X] T039 [P] [US5] Test + implementación `src/views/Top.tsx` y `src/components/ListingCard.tsx` (slider 5–30, por defecto 15; card completa; desplazamiento a `id`)
+- [X] T040 [P] [US5] Test + implementación `src/views/Novedades.tsx` (criterio de "nuevo" del inventario §tabs2)
+- [X] T041 [P] [US5] Test: `tests/unit/graficos.test.ts` — las especificaciones de figura de Evolución (eje dual, precios, histograma 20 bins, top-10 ubicaciones) y mínimo de 2 días con su mensaje
+- [X] T042 [US5] Implementar `src/domain/graficos.ts` y `src/views/Evolucion.tsx` con Plotly cargado bajo demanda (pasa T041)
+- [X] T043 [P] [US5] Test + implementación `src/views/Bajadas.tsx` (orden, % de bajada, precio tachado)
+- [X] T044 [P] [US5] Test: `tests/unit/hipoteca.test.ts` — `calc_impuestos` y `calc_hipoteca` con los valores de `app.py` (ITP 6 %/9 %, IVA 10 %, AJD 0,75 %/1,5 %, otros 1,5 % + 400 €) y casos límite; gastos mensuales y umbrales de ratio 30 %/40 %
+- [X] T045 [US5] Implementar `src/domain/hipoteca.ts` y `src/views/Hipoteca.tsx` con precarga desde la ruta una sola vez (pasa T044)
+- [X] T046 [P] [US5] Test + implementación `src/views/ComoFunciona.tsx` (bloques de scoring y 6 desplegables con su texto)
+- [X] T047 [P] [US5] Test: `tests/unit/mapas.test.ts` — figuras de criminalidad y renta (escala, rango, `zoom`, `center`, estilo), join con `cod_ine` normalizado a texto, municipios sin dato en gris, rankings
+- [X] T048 [US5] Implementar `src/domain/mapas.ts` y `src/views/Mapas.tsx` con carga diferida de assets y Plotly (pasa T047)
+- [X] T049 [US5] Test e2e `tests/e2e/navegacion.spec.ts`: las 8 pestañas, ↗ a Top, € a Hipoteca precargada desde Listados, Top, Novedades y Bajadas; recargar conserva la vista. Se ejecuta a 1280 px y a 390 px de ancho (edge case móvil)
 
 ---
 
