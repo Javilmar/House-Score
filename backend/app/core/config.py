@@ -28,7 +28,13 @@ def _sqlalchemy_url(url: str) -> str:
 
 @lru_cache
 def get_settings() -> Settings:
-    database_url = _sqlalchemy_url(os.environ.get("DATABASE_URL", "sqlite:///./housescore.db"))
+    bruta = os.environ.get("DATABASE_URL", "").strip()
+    if not bruta:
+        # Sin esto la API arrancaría sobre un SQLite vacío y serviría 0 listings sin avisar.
+        raise RuntimeError(
+            "Falta DATABASE_URL: define la conexión a la base de datos (en Render, la de Neon)"
+        )
+    database_url = _sqlalchemy_url(bruta)
     unpooled = os.environ.get("DATABASE_URL_UNPOOLED")
     return Settings(
         database_url=database_url,

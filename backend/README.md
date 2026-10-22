@@ -34,7 +34,7 @@ borra la carpeta de nuevo (`git rm -r --cached frontend/datos` si no quieres com
 
 | Variable | Uso | Por defecto |
 |---|---|---|
-| `DATABASE_URL` | Conexión de SQLAlchemy | `sqlite:///./housescore.db` (en compose: el contenedor `db`) |
+| `DATABASE_URL` | Conexión de SQLAlchemy. **Obligatoria**: sin ella la API no arranca | — (en compose: el contenedor `db`; en Render: Neon con pooler) |
 | `INGEST_SECRET` | Secreto Bearer de `POST /ingest`. Sin él, la ingesta rechaza todo | — (obligatorio en compose) |
 | `RATE_LIMIT` | Límite por IP de los endpoints de lectura | `60/minute` |
 | `CORS_ORIGINS` | Orígenes (separados por comas) del front que pueden leer la API desde el navegador; solo `GET` | vacío (ninguno) |

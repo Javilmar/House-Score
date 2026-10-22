@@ -25,3 +25,5 @@ backend/logs/
 .neon
 node_modules/
 .env.local
+# Lo regenera el scorer en cada pasada: no se versiona
+frontend/config/precios_referencia.json
