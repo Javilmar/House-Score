@@ -10,7 +10,7 @@
     "typecheck": "tsc -b --noEmit",
     "test": "vitest run",
     "test:e2e": "playwright test --project=e2e",
-    "test:smoke": "playwright test --project=smoke --pass-with-no-tests"
+    "test:smoke": "playwright test --project=smoke"
   },
   "dependencies": {
     "plotly.js-dist-min": "^4.1.2",
