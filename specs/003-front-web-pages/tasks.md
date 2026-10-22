@@ -122,7 +122,7 @@ Cada vista: test de componente primero (contenido, controles, valores por defect
 - [ ] T052 Medir SC-002 (primera pantalla < 3 s con la API despierta) en la URL publicada y anotarlo
 - [ ] T053 Apuntar el scorer del PC a Render (`HOUSESCORE_API_URL`, `INGEST_SECRET` en `backend/.env`) y ejecutar quickstart §5. Paso previo (Historia 4, escenario 2): si la base local tiene pasadas posteriores al volcado usado en T038, sacar un volcado nuevo y repetir T038 justo antes del cambio
 - [ ] T054 Corte (Principio VI): eliminar `frontend/dashboard/` (incluidos `.streamlit/` y sus tests), `frontend/requirements.txt` y `backend/ops/cloudflared.yml`; reescribir `README.md`, `backend/README.md` y la referencia de funcionalidades como `frontend/web/FUNCIONALIDADES.md`; quickstart §6
-- [ ] T055 Marcar en `specs/001-backend-api-bbdd/tasks.md` T047 (escenario 6) y T050 como sustituidos por esta spec
+- [X] T055 Marcar en `specs/001-backend-api-bbdd/tasks.md` T047 (escenario 6) y T050 como sustituidos por esta spec
 - [ ] T056 Enmendar la constitución con `/speckit-constitution`: objetivo de despliegue (Pages + Render + Neon), Fase 3 iniciada, stack del backend decidido
 - [ ] T057 Ejecutar quickstart.md completo y comprobar que Neon, Render y Cloudflare Pages siguen en planes gratuitos sin cargos (SC-008)
 

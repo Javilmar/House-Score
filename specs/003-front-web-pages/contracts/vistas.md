@@ -13,7 +13,7 @@ Ruta desconocida o vacía → `#/listados`.
 | 5 | Bajadas de precio | `#/bajadas` | `orden` (opciones del selector actual) | inventario §tabs2 `tab4` |
 | 6 | Hipoteca | `#/hipoteca` | `precio`, `tipo` (`segunda-mano`\|`obra-nueva`), `ccaa` (`madrid`\|`clm`) | inventario §tabs2 `tab6` |
 | 7 | Cómo funciona | `#/como-funciona` | — | inventario §tabs2 `tab7` |
-| 8 | Mapas | `#/mapas` | `capa` (`criminalidad`\|`renta`, por defecto la actual) | inventario §mapas `tab8` |
+| 8 | Mapas | `#/mapas` | `capa` (`criminalidad`\|`renta`\|`precio`; por defecto la primera con datos, como hoy) | inventario §mapas `tab8` |
 
 ## Navegación entre vistas
 

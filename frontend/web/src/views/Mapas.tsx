@@ -69,7 +69,7 @@ async function cargarAssets(): Promise<Assets> {
   }
 }
 
-const AVISO_BUILD = 'cd house-dashboard/dashboard\npython scripts/build_mapa_assets.py'
+const AVISO_BUILD = 'python frontend/scripts/build_mapa_assets.py'
 
 function Aviso({ texto }: { texto: string }) {
   return (

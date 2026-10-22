@@ -148,8 +148,9 @@ existe y funciona con los datos de la API.
 1. **Dado** el front publicado, **Cuando** lo recorro, **Entonces** encuentro
    las 8 vistas actuales: Listados completos, Top scoring, Novedades,
    Evolución y análisis, Bajadas de precio, Hipoteca (con gastos mensuales
-   estimados), Cómo funciona y Mapas (criminalidad por municipio y renta por
-   sección censal), cada una con el mismo contenido que hoy.
+   estimados), Cómo funciona y Mapas (criminalidad por municipio, renta por
+   sección censal y precio de vivienda por municipio), cada una con el mismo
+   contenido que hoy.
 2. **Dado** un listing en Listados, Top scoring o Bajadas, **Cuando** pulso su
    botón de hipoteca, **Entonces** la calculadora se abre precargada con su
    precio, tipo de vivienda y comunidad autónoma.
