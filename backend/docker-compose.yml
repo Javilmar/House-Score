@@ -28,7 +28,7 @@ services:
       # Solo lectura: para la migracion unica de frontend/datos (scripts.migrar_datos_existentes)
       - ../frontend:/frontend:ro
     ports:
-      # Solo localhost: el scraper local escribe aquí; el túnel publica únicamente rutas de lectura
+      # Solo localhost: API local para desarrollo; en producción la API corre en Render
       - "127.0.0.1:8000:8000"
 
   # Base de datos efímera (sin volumen) para la suite de tests: no toca los datos reales

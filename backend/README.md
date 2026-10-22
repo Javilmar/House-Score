@@ -3,8 +3,9 @@
 API (FastAPI) + base de datos (PostgreSQL) que sustituyen el flujo de JSON commiteados en
 `frontend/datos/`. Diseño en [`specs/001-backend-api-bbdd/`](../specs/001-backend-api-bbdd/).
 
-Todo corre en el PC del propietario: API y PostgreSQL en Docker Compose; el scraper, fuera de
-Docker, como tarea programada de Windows; un Cloudflare Tunnel publica solo las rutas de lectura.
+En producción la API corre en Render (Docker, raíz `backend`) sobre Neon (PostgreSQL) y la lee el
+front estático de `frontend/web`. En local, API y PostgreSQL van en Docker Compose; el scraper, fuera
+de Docker, lo lanza el cron `Buscador Pisos` de hermes en el PC del propietario.
 
 ## Arranque local (un solo comando)
 
@@ -38,7 +39,7 @@ borra la carpeta de nuevo (`git rm -r --cached frontend/datos` si no quieres com
 | `RATE_LIMIT` | Límite por IP de los endpoints de lectura | `60/minute` |
 | `CORS_ORIGINS` | Orígenes (separados por comas) del front que pueden leer la API desde el navegador; solo `GET` | vacío (ninguno) |
 | `POSTGRES_PASSWORD` | Contraseña de la base de datos en compose | `housescore` |
-| `HOUSESCORE_API_URL` | URL de la API para el cliente del scraper y el dashboard | `http://127.0.0.1:8000` |
+| `HOUSESCORE_API_URL` | URL de la API para el cliente del scraper (en producción, la API de Render) | `http://127.0.0.1:8000` |
 | `TEST_DATABASE_URL` | Base de datos de los tests | `sqlite://` (memoria) |
 
 `backend/.env` no se versiona.
@@ -49,7 +50,7 @@ borra la carpeta de nuevo (`git rm -r --cached frontend/datos` si no quieres com
 |---|---|
 | `GET /listings` (`municipio`, `incluir_retirados`) | público, con rate limiting por IP |
 | `GET /historico` (`desde`, `hasta`) | público, con rate limiting por IP |
-| `POST /ingest` | solo `localhost` + `Authorization: Bearer <INGEST_SECRET>`; el túnel no lo publica |
+| `POST /ingest` | `Authorization: Bearer <INGEST_SECRET>` (sin el secreto, rechaza todo) |
 
 ## Tests
 
@@ -78,8 +79,12 @@ export DATABASE_URL=sqlite:///./housescore.db INGEST_SECRET=dev
 ## Enviar una pasada del scraper
 
 ```bash
-INGEST_SECRET=... python -m worker.scraper.client ruta/al/last_property_data.json
+INGEST_SECRET=... python -m worker.scraper.client ruta/al/last_property_data.json \
+    --api-url https://house-score.onrender.com
 ```
+
+Sin `--api-url` usa `HOUSESCORE_API_URL` (o `http://127.0.0.1:8000`). `INGEST_SECRET` debe ser el mismo
+que tiene la API de Render.
 
 Desde el scorer: `from worker.scraper.client import enviar_pasada`. La ingesta es idempotente
 por `url`, así que reintentar es seguro. `worker/scraper/run_scraper.ps1` envuelve la ejecución
@@ -96,7 +101,19 @@ y el orquestador `property_scorer_all.py`. Cambios respecto a los originales, y 
    `frontend/datos/*.json`. Las puntuaciones dependen de él (bajadas de precio y días en el mercado).
 3. Al terminar, `publicar_pasada()` envía el lote a `POST /ingest` en vez de escribir el snapshot
    diario y hacer `git commit` + `push`. Si falla, el lote se guarda en `HERMES_DATA_DIR/pendientes/`
-   y se reenvía con `python -m worker.scraper.client <fichero>`.
+   y se reenvía con `python -m worker.scraper.client <fichero> --api-url https://house-score.onrender.com`
+   (con `INGEST_SECRET` definido).
+
+**Contra la API de producción:** `HOUSESCORE_API_URL` debe apuntar a la API de Render
+(`https://house-score.onrender.com`) y `INGEST_SECRET` coincidir con el de Render. El lanzador de hermes
+lee `HOUSESCORE_API_URL` y `HOUSESCORE_PYTHON` de las variables de entorno (de usuario en Windows; hermes
+debe reiniciarse tras cambiarlas) e `INGEST_SECRET` de `backend/.env`. Con el valor por defecto
+(`http://127.0.0.1:8000`) las pasadas irían a la API local, no a la que lee el front. Como Render duerme
+la API sin uso, el lanzador espera hasta 180 s a que responda.
+
+Montaje actual (2026-10-22): `HOUSESCORE_PYTHON` = `%LOCALAPPDATA%\housescore\venv\Scripts\python.exe`
+(venv con `playwright`, `playwright-stealth`, `httpx` y Chromium de Playwright) y un enlace
+`%USERPROFILE%\house-dashboard` → este repo, que es la ruta que esperan el lanzador y el scorer.
 
 Los originales de `~/AppData/Local/hermes/scripts/` **no se han tocado**. El job de hermes
 (`Buscador Pisos`, `0 9 * * *`) ya no los usa: su `script` es `housescore_scraper.py`, una copia de
@@ -112,17 +129,13 @@ La sesión de idealista (`idealista_session.json`) sigue fuera del repo, en `HER
 Idealista bloquea hoy todos los municipios (es esperado y no rompe el job). El scorer sigue leyendo y
 escribiendo `frontend/config/precios_referencia.json`, que ya no se commitea.
 
-## Dashboard (Streamlit)
+## Front web
 
-El dashboard lee de esta API (no de `frontend/datos/`). Con el backend en marcha:
-
-```bash
-pip install -r frontend/requirements.txt
-streamlit run frontend/dashboard/app.py
-```
-
-Consulta `http://127.0.0.1:8000`; para otra dirección, `HOUSESCORE_API_URL=... streamlit run ...`.
-Si la API no responde, muestra un aviso con la dirección consultada y ninguna cifra.
+El front es estático y vive en [`../frontend/web`](../frontend/web) (React + Vite). Lee `GET /listings` y
+`GET /historico` de esta API; con el backend en marcha: `cd ../frontend/web && npm ci && npm run dev`
+(`VITE_API_URL` para otra API). Ver [`../README.md`](../README.md) y
+[`../frontend/web/FUNCIONALIDADES.md`](../frontend/web/FUNCIONALIDADES.md). La API debe incluir el origen
+del front en `CORS_ORIGINS`.
 
 ## Copia de seguridad (Neon)
 
@@ -147,6 +160,6 @@ app/        API (main, api/, models/, services/, db/, core/, schemas.py)
 worker/     cliente del scraper (client.py) y run_scraper.ps1
 alembic/    migraciones
 scripts/    migrar_datos_existentes.py
-ops/        túnel, backups y tareas programadas
+ops/        lanzador de hermes, backups, migración a Neon y tareas programadas
 tests/      unit/, contract/, integration/
 ```

@@ -1,6 +1,6 @@
 """POST /ingest: escritura de una pasada del scraper (T030, T036).
 
-No es publico: el tunel no enruta esta ruta (FR-011) y ademas exige el secreto compartido.
+Exige el secreto compartido (Bearer); sin INGEST_SECRET configurado rechaza todo.
 """
 
 import hmac

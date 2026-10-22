@@ -1,6 +1,6 @@
 """Reglas de negocio puras migradas de frontend/dashboard/listings_store.py y guardar.py.
 
-Sin acceso a base de datos: se testean de forma aislada (Principio IV).
+Sin acceso a base de datos: se testean de forma aislada.
 """
 
 import unicodedata
@@ -68,8 +68,7 @@ def normalizar_listing(d: dict[str, Any]) -> dict[str, Any]:
     """Aplica FR-005: sin m2 fiables => datos_insuficientes y sin score.
 
     Los JSON actuales representan "sin m2" como 0, y el scorer puede marcar
-    `datos_insuficientes` aunque haya m2; en ambos casos no se sirve un score forzado
-    (Principio I de la constitucion).
+    `datos_insuficientes` aunque haya m2; en ambos casos no se sirve un score forzado.
     """
     m2 = _entero(d.get("m2")) or None  # 0 => ausente
     insuficientes = bool(d.get("datos_insuficientes")) or m2 is None

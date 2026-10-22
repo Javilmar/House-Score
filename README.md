@@ -1,95 +1,151 @@
-# Dashboard de Búsqueda de Vivienda
+# HouseScore
 
-Dashboard en Streamlit que visualiza listings de vivienda (Madrid Sur + Toledo
-Norte) con scoring a medida. Un scorer (3 lotes con Playwright) corre cada día
-en el ordenador local, guarda cada pasada en una API con base de datos
-(`backend/`) y el dashboard lee de esa API.
+Buscador de vivienda (Madrid Sur + Toledo Norte) con scoring a medida. Un scorer
+(3 lotes con Playwright) corre cada día en el ordenador del propietario y publica
+cada pasada en una API con base de datos; el front web, estático, la lee de esa API.
+
+- **Front publicado:** <https://housescore.errinostrich.workers.dev>
+- **API publicada:** <https://house-score.onrender.com> (plan gratuito: tras un rato
+  sin uso se duerme y la primera petición tarda hasta ~1 min; el front lo avisa con
+  «Despertando el servidor…»)
 
 ## Estructura
 
 ```
 HouseScore/
 ├── frontend/
-│   ├── dashboard/app.py        # la app Streamlit (cliente de la API)
-│   ├── dashboard/api_datos.py  # traduce la API a las columnas de la app
-│   ├── config/                 # precios de referencia por municipio (los usa el scorer)
-│   └── requirements.txt
-├── backend/                    # API FastAPI + PostgreSQL (Docker), scorer y utilidades
+│   ├── web/                    # front estático (React + Vite + TypeScript), Cloudflare Worker
+│   │   ├── src/                # domain/ (lógica pura), views/, components/, state/, styles/
+│   │   ├── public/assets/      # geometrías y datos de los mapas
+│   │   ├── tests/              # unit/, components/, e2e/ (Playwright), fixtures
+│   │   └── FUNCIONALIDADES.md  # referencia funcional del front
+│   ├── scripts/                # build_mapa_assets.py: regenera public/assets/
+│   └── config/                 # precios de referencia por municipio (los usa el scorer)
+├── backend/                    # API FastAPI + PostgreSQL, scorer y utilidades
 │   ├── app/                    # API: GET /listings, GET /historico, POST /ingest
 │   ├── worker/scraper/         # el scorer (3 lotes) y el cliente que publica en la API
-│   └── ops/                    # lanzador del cron de hermes, backups, túnel, tareas
-└── specs/                      # specs de Spec Kit (001 backend, 002 dashboard)
+│   └── ops/                    # lanzador del cron de hermes, backups, migración a Neon, tareas
+├── neon.ts                     # configuración del proyecto Neon (raíz)
+└── specs/                      # histórico de diseño (001 backend, 002 y 003 front); no se mantiene
 ```
 
-Front y backend son directorios hermanos en el mismo repo (monorepo). El
-dashboard **no lee ficheros**: pide los datos a la API (`HOUSESCORE_API_URL`,
-por defecto `http://127.0.0.1:8000`). Ver [`backend/README.md`](backend/README.md)
-para arrancar todo, y [GUIA-SPEC-KIT.md](GUIA-SPEC-KIT.md) y
-[.specify/memory/constitution.md](.specify/memory/constitution.md) para el
-flujo de desarrollo.
+Front y backend son directorios hermanos en el mismo repo (monorepo). El front
+**no lee ficheros de datos**: pide `GET /listings` y `GET /historico` a la API
+(`VITE_API_URL`, por defecto `http://127.0.0.1:8000`). Ver
+[`backend/README.md`](backend/README.md) y [`frontend/web/FUNCIONALIDADES.md`](frontend/web/FUNCIONALIDADES.md).
 
-## Ver en local
+## Flujo de datos
 
-```bash
-cd backend && docker compose up -d          # API + base de datos
-pip install -r frontend/requirements.txt
-streamlit run frontend/dashboard/app.py
 ```
-
-Si la API no responde, el dashboard muestra un aviso con la dirección consultada
-y ninguna cifra. Con otra API: `HOUSESCORE_API_URL=http://otra:8000 streamlit run ...`.
-
-## Actualización automática de datos
+scorer (PC del propietario, hermes 09:00)
+   └─ POST /ingest ─▶ API en Render ─▶ Neon (PostgreSQL)
+                          └─ GET /listings, GET /historico ─▶ front en Cloudflare (navegador)
+```
 
 El job `Buscador Pisos` de hermes (`0 9 * * *`) ejecuta el lanzador
 `backend/ops/hermes_launcher.py`, que lanza el scorer del repo
 (`backend/worker/scraper/property_scorer_all.py`); cada lote envía su pasada a la
-API (`POST /ingest`). No hay `git commit`/`push` de datos: los datos viven en
-PostgreSQL, con copia diaria en OneDrive (`ops/backup.ps1`). Detalle en
-[`backend/README.md`](backend/README.md).
+API de Render (`POST /ingest`, con `INGEST_SECRET`). No hay `git commit`/`push`
+de datos: viven en Neon, con copia en OneDrive (`backend/ops/backup.ps1`).
+Detalle en [`backend/README.md`](backend/README.md).
 
-## Despliegue en la nube (pendiente)
+## Ver en local
 
-El dashboard en Streamlit Community Cloud necesita que la API sea accesible desde
-fuera: falta el túnel `cloudflared` (cuenta y dominio de Cloudflare; ver
-`backend/ops/cloudflared.yml`, que publica solo las rutas de lectura). Hasta
-entonces se usa en local.
+```bash
+# API local con su base de datos
+cd backend && docker compose up -d
 
-## Harness de desarrollo con IA
+# Front
+cd frontend/web
+npm ci
+npm run dev
+```
 
-Este repo usa **Claude Code** con **[Spec Kit](https://github.com/github/spec-kit)**
-como harness de desarrollo dirigido por especificación. Ver
-[GUIA-SPEC-KIT.md](GUIA-SPEC-KIT.md) para el flujo completo. Los ficheros
-relevantes:
+Por defecto el front consulta `http://127.0.0.1:8000`. Para apuntar a otra API
+(por ejemplo la de Render): `VITE_API_URL=https://house-score.onrender.com npm run dev`.
+Si la API no responde, el front muestra el error y la dirección consultada, sin cifras.
 
-- `.specify/memory/constitution.md` — principios no negociables del proyecto.
-- `.specify/templates/`, `.specify/scripts/` — plantillas y scripts internos
-  de Spec Kit.
-- `.claude/skills/speckit-*/` — comandos `/speckit-*` (constitution, specify,
-  plan, tasks, implement, converge, clarify, analyze, checklist,
-  taskstoissues).
+Tests del front (en `frontend/web`):
 
-No hace falta instalar nada aparte: son ficheros de configuración/instrucciones
-que Claude Code (u otro IDE compatible con Spec Kit) lee automáticamente al
-abrir el repo.
+```bash
+npm run typecheck
+npm test                                     # unitarios y de componentes (Vitest)
+npm run test:e2e                             # Playwright con API simulada
+BASE_URL=https://housescore.errinostrich.workers.dev npm run test:smoke   # contra el despliegue
+```
+
+Tests del backend: ver [`backend/README.md`](backend/README.md).
+
+## Despliegue
+
+### API en Render
+
+Servicio web con **Root Directory** `backend` y entorno **Docker**. Variables:
+
+| Variable | Uso |
+|---|---|
+| `DATABASE_URL` | Conexión a Neon (con pooler) |
+| `DATABASE_URL_UNPOOLED` | Conexión directa a Neon (migraciones y `pg_dump`) |
+| `INGEST_SECRET` | Secreto Bearer que exige `POST /ingest` |
+| `CORS_ORIGINS` | Orígenes del front que pueden leer la API (p. ej. `https://housescore.errinostrich.workers.dev`) |
+| `PORT` | Puerto que asigna Render |
+
+### Front en Cloudflare
+
+Worker de ficheros estáticos (`frontend/web/wrangler.jsonc`) conectado al repo con
+Workers Builds: **Root directory** `frontend/web`, **build** `npm run build`,
+**deploy** `npx wrangler deploy`. Variables de *build* (se incrustan al compilar):
+`VITE_API_URL=https://house-score.onrender.com` y `NODE_VERSION=22`.
+
+### Base de datos en Neon
+
+Proyecto de Neon con la base de HouseScore, configurado en `neon.ts` (raíz del repo,
+política de ramas). Las cadenas de conexión viven en `.env.local` (raíz, no versionado) y
+las usan `backend/ops/backup.ps1` y `backend/ops/migrar_a_neon.ps1`. Detalle de copias y
+restauración en [`backend/README.md`](backend/README.md).
+
+## Reglas de trabajo
+
+- **Un solo motor de scoring** (`property_scorer_common.py`): el front muestra el score y su
+  desglose tal como llegan de la API; nunca lo recalcula. Sin m² fiable → "sin valorar".
+- **Tests para la lógica**: todo cambio de comportamiento en el scoring, la API o el dominio
+  del front (`frontend/web/src/domain/`) lleva su test. Retoques visuales no necesitan test.
+- **Alcance fijo**: Madrid Sur + Toledo Norte, ≤ 300.000 €. Ampliar zonas, techo o portales
+  es una decisión explícita, no un efecto colateral.
+- **Secretos fuera del repo**: `.env.local`, `backend/.env` e `idealista_session.json` están
+  en `.gitignore`; en producción las variables viven en Render.
+- **Migraciones sin restos**: cuando se sustituye una pieza, la anterior se borra (queda una
+  etiqueta git como referencia), sin modos de compatibilidad.
+- **Coste 0 €**: Neon, Render y Cloudflare en plan gratuito.
+
+Las carpetas `specs/` documentan cómo se diseñaron el backend y el front; son histórico y
+no hace falta actualizarlas.
+
+## Historia
+
+El front original era un dashboard Streamlit. Se retiró en bloque (corte limpio,
+sin ruta de compatibilidad). La etiqueta git `pre-retirada-streamlit`
+es el último commit que lo contiene; `pre-retirada-fase1` es el último con los JSON
+diarios de datos.
 
 ## Decisiones de producto más importantes
 
-(detalle completo en [`frontend/dashboard/FUNCIONALIDADES.md`](frontend/dashboard/FUNCIONALIDADES.md))
+(detalle completo en [`frontend/web/FUNCIONALIDADES.md`](frontend/web/FUNCIONALIDADES.md))
 
 - **Precio máximo scrapeado:** ≤ 300.000 €.
-- **Fuentes:** pisos.com (fiable) + idealista (best-effort, puede bloquear
-  DataDome).
+- **Fuentes:** pisos.com (fiable) y fotocasa.es (en el lote de Madrid Sur,
+  `backend/worker/scraper/property_scorer_madrid.py`; se omite esa pasada si
+  bloquea), más idealista en modo best-effort (puede bloquear DataDome).
 - **Zona de cobertura:** Madrid Sur (18 municipios) + Toledo Norte (5
   municipios de interés activo). **Toledo capital queda excluida** (>55 min,
   mercado distinto).
 - **Motor de scoring único** en `backend/worker/scraper/property_scorer_common.py` (0–100 puntos); si un
   listing no tiene m² fiable se marca `datos_insuficientes` y queda
   "sin valorar" en vez de forzar un cálculo erróneo.
-- **Flujo de datos:** scorer (3 lotes) → API `POST /ingest` (deduplicación por
-  url, detección de bajadas de precio y de pisos retirados) → PostgreSQL →
-  API `GET /listings` y `/historico` → `app.py` (Streamlit).
+- **Flujo de datos:** scorer (3 lotes, PC del propietario) → `POST /ingest` en la API de
+  Render (deduplicación por url, detección de bajadas de precio y de pisos
+  retirados) → Neon → `GET /listings` y `/historico` → front estático en Cloudflare.
 - **Diseño:** modo oscuro siempre, un único color de acento (`#6366f1`), sin
-  emojis en la UI (se usan iconos SVG Lucide vía `icon()`).
-- **Sin dependencias nuevas** salvo justificación explícita — stack actual:
-  `streamlit`, `pandas`, `plotly`, `requests`, stdlib Python.
+  emojis en la UI (iconos SVG propios en `Icon`).
+- **Sin dependencias nuevas** salvo justificación explícita — stack del front:
+  React, Vite, TypeScript y `plotly.js-dist-min`; tests con Vitest y Playwright.
