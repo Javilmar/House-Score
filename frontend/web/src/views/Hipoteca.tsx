@@ -1,6 +1,7 @@
 /** Pestaña «Hipoteca» (app.py `with tab6:`, 1937-2144). */
 import { useId, useState } from 'react'
 import Icon from '../components/Icon'
+import Slider from '../components/Slider'
 import { calcHipoteca, eur, esfuerzo } from '../domain/hipoteca'
 import { useDatos } from '../state/datos'
 import { useRuta } from '../state/router'
@@ -32,36 +33,6 @@ function precioMedio(precios: number[]): number {
 
 const primero = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v)
 
-function Slider(props: {
-  etiqueta: string
-  min: number
-  max: number
-  step: number
-  value: number
-  onChange: (v: number) => void
-  formato?: (v: number) => string
-}) {
-  const id = useId()
-  const { etiqueta, min, max, step, value, onChange, formato } = props
-  return (
-    <div className="hip-campo">
-      <div className="hip-slider-cab">
-        <label htmlFor={id}>{etiqueta}</label>
-        <span className="hip-slider-val">{formato ? formato(value) : value}</span>
-      </div>
-      <input
-        id={id}
-        type="range"
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-      />
-    </div>
-  )
-}
-
 function Numero(props: {
   etiqueta: string
   min: number
@@ -75,19 +46,41 @@ function Numero(props: {
   return (
     <div className="hip-campo">
       <label htmlFor={id}>{etiqueta}</label>
-      <input
-        id={id}
-        type="number"
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        onChange={(e) => {
-          const n = e.target.valueAsNumber
-          if (Number.isFinite(n)) onChange(n)
-        }}
-        onBlur={() => onChange(clamp(value, min, max))}
-      />
+      <div className="st-num">
+        <input
+          id={id}
+          type="number"
+          min={min}
+          max={max}
+          step={step}
+          value={value}
+          onChange={(e) => {
+            const n = e.target.valueAsNumber
+            if (Number.isFinite(n)) onChange(n)
+          }}
+          onBlur={() => onChange(clamp(value, min, max))}
+        />
+        <button
+          type="button"
+          aria-label="Disminuir"
+          disabled={value <= min}
+          onClick={() => onChange(clamp(value - step, min, max))}
+        >
+          <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor" aria-hidden="true">
+            <path d="M0 3h8v2H0z" />
+          </svg>
+        </button>
+        <button
+          type="button"
+          aria-label="Aumentar"
+          disabled={value >= max}
+          onClick={() => onChange(clamp(value + step, min, max))}
+        >
+          <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor" aria-hidden="true">
+            <path d="M3 0h2v3h3v2H5v3H3V5H0V3h3z" />
+          </svg>
+        </button>
+      </div>
     </div>
   )
 }

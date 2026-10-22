@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { conTemaStreamlit, conTemaStreamlitDatos } from '../styles/plotlyStreamlit'
 
 interface Props {
   data: unknown[]
@@ -27,7 +28,7 @@ export default function Grafico({ data, layout, config, className }: Props) {
   useEffect(() => {
     const el = raiz.current
     if (!plotly || !el) return
-    void plotly.react(el, data, { autosize: true, ...layout }, { responsive: true, displayModeBar: false, ...config })
+    void plotly.react(el, conTemaStreamlitDatos(data), { autosize: true, ...conTemaStreamlit(layout) }, { responsive: true, displayModeBar: false, ...config })
   }, [plotly, data, layout, config])
 
   useEffect(() => {
@@ -38,7 +39,7 @@ export default function Grafico({ data, layout, config, className }: Props) {
   }, [plotly])
 
   return (
-    <div className={className} style={{ width: '100%' }}>
+    <div className={className ? `grafico ${className}` : 'grafico'} style={{ width: '100%' }}>
       {plotly ? null : <p className="caption">Cargando gráfico…</p>}
       <div ref={raiz} style={{ width: '100%' }} />
     </div>

@@ -59,6 +59,39 @@ describe('Hipoteca: controles', () => {
   })
 })
 
+describe('Hipoteca: botones − / + del campo numérico', () => {
+  const botones = () => {
+    const campo = precio().closest('.st-num') as HTMLElement
+    return {
+      menos: within(campo).getByRole('button', { name: 'Disminuir' }),
+      mas: within(campo).getByRole('button', { name: 'Aumentar' }),
+    }
+  }
+
+  it('suman y restan un paso y recalculan el resto', () => {
+    montar()
+    const { menos, mas } = botones()
+    fireEvent.click(mas)
+    expect(precio().value).toBe('205000')
+    fireEvent.click(menos)
+    fireEvent.click(menos)
+    expect(precio().value).toBe('195000')
+    expect(screen.getByText('195.000')).toBeInTheDocument()
+  })
+
+  it('se desactivan en los extremos y no los superan', () => {
+    montar()
+    cambiar(precio(), 5000000)
+    expect(botones().mas).toBeDisabled()
+    expect(botones().menos).toBeEnabled()
+    cambiar(precio(), 10000)
+    expect(botones().menos).toBeDisabled()
+    cambiar(precio(), 12000)
+    fireEvent.click(botones().menos)
+    expect(precio().value).toBe('10000')
+  })
+})
+
 describe('Hipoteca: resultados', () => {
   it('KPIs y desglose con los valores de calc_hipoteca', () => {
     montar()

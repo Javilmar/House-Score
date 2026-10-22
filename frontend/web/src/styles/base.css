@@ -1,16 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
 :root {
   --font-display: 'Fraunces', 'Times New Roman', serif;
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-body: 'Source Sans 3', 'Source Sans', sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --acento: #6366f1;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
 
+/* Texto base de Streamlit: Source Sans 16 px / 1,6 (st.markdown baja a 14 px donde corresponde) */
 html, body {
   margin: 0;
-  font-family: var(--font-sans);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
   color: #e4e4e7;
 }
 
@@ -26,17 +29,41 @@ body {
   background-size: 28px 28px;
   animation: dots-drift 4s linear infinite;
 }
-.block-container { padding: 3rem 1rem 4rem; max-width: 1320px; margin: 0 auto; }
+/* Contenedor de Streamlit: 1320 px máx., 80 px laterales (16 px en móvil); 5rem arriba = 3rem + los dos huecos de 1rem de los bloques ocultos */
+.block-container { padding: 5rem 5rem 4rem; max-width: 1320px; margin: 0 auto; }
+@media (max-width: 576px) { .block-container { padding-left: 1rem; padding-right: 1rem; } }
 
-/* Títulos en Fraunces (display serif) — estilo Skilio */
-h1, h2, h3, h4 {
+/* Títulos en Fraunces (display serif) con la escala de Streamlit (st.title / header / subheader) */
+h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   font-weight: 400;
   letter-spacing: -0.02em;
   line-height: 1.15;
   color: #fafafa;
+  margin: 0;
 }
+h1 { font-size: 2.75rem; padding: 1.25rem 0 1rem; }
+h2 { font-size: 2.25rem; padding: 1rem 0; }
+h3 { font-size: 1.75rem; padding: 0.75rem 0 1rem; }
+h4 { font-size: 1.5rem; padding: 0.5rem 0 1rem; }
+h5 { font-size: 1.25rem; padding: 0.5rem 0 1rem; }
+h6 { font-size: 1rem; padding: 0.5rem 0 1rem; }
 h2, h3 { color: #e4e4e7; }
+
+button, input, select, textarea { font-family: inherit; line-height: inherit; }
+
+strong, b { font-weight: 600; }
+
+/* Enlaces de contenido: azul y subrayado de Streamlit */
+a { color: #3d9df3; text-decoration: underline; }
+
+/* Barras de scroll finas y oscuras (app.py:467-468) */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
+::-webkit-scrollbar-corner { background: transparent; }
+@supports not selector(::-webkit-scrollbar) {
+  * { scrollbar-width: thin; scrollbar-color: #3f3f46 transparent; }
+}
 
 /* Tarjetas de métrica (st.metric) */
 .metric {
@@ -59,16 +86,23 @@ h2, h3 { color: #e4e4e7; }
 }
 .metric-value { font-size: 1.6rem; font-weight: 600; color: #fafafa; }
 
-/* Pestañas */
-.tabs { display: flex; flex-wrap: wrap; gap: 0.25rem; border-bottom: 1px solid #27272a; }
+/* Pestañas (st.tabs): una sola fila a 14 px; si no caben se desplazan en horizontal */
+.tabs {
+  display: flex; gap: 0.25rem; border-bottom: 2px solid rgba(228,228,231,0.1);
+  overflow-x: auto; scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
 .tab {
-  display: inline-flex; align-items: center; gap: 6px;
-  font: inherit; font-weight: 500; color: #a1a1aa; padding: 0.6rem 1rem;
+  display: inline-flex; align-items: center; gap: 6px; flex: none; white-space: nowrap;
+  font: inherit; font-size: 14px; line-height: 22.4px; font-weight: 400; color: #a1a1aa;
+  height: 42px; margin-bottom: -1px; padding: 0.6rem 1rem;
   background: none; border: none; border-bottom: 2px solid transparent;
   border-radius: 8px 8px 0 0; cursor: pointer;
 }
+.tab:hover { color: #818cf8; }
 .tab svg { opacity: 0.85; }
-.tab[aria-selected="true"] { color: #818cf8; font-weight: 600; border-bottom-color: #6366f1; }
+.tab[aria-selected="true"] { color: #818cf8; border-bottom-color: #6366f1; }
+[role="tabpanel"] { padding-top: 2rem; }
 
 /* Tarjeta de listado */
 .prop-card {
@@ -76,7 +110,7 @@ h2, h3 { color: #e4e4e7; }
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255,255,255,0.07); border-radius: 16px;
-  padding: 1.25rem 1.5rem; margin-bottom: 0.9rem;
+  padding: 1.25rem 1.5rem; margin-bottom: 1rem;
   box-shadow: 0 1px 2px rgba(0,0,0,0.3);
   transition: all 200ms ease-in-out;
 }
@@ -96,8 +130,7 @@ h2, h3 { color: #e4e4e7; }
 }
 
 .prop-rank { color: #71717a; font-weight: 600; font-size: 0.9rem; }
-.prop-title { font-weight: 600; font-size: 1.02rem; color: #fafafa; text-decoration: none; }
-.prop-title:hover { color: #818cf8; }
+.prop-title { font-weight: 600; font-size: 1.02rem; color: #3d9df3; text-decoration: underline; }
 .prop-meta {
   color: #a1a1aa; font-size: 0.84rem; margin-top: 0.4rem;
   display: flex; flex-wrap: wrap; gap: 0.35rem 1rem;
@@ -108,7 +141,7 @@ h2, h3 { color: #e4e4e7; }
 /* KPIs personalizados con icono */
 .kpi-grid {
   display: grid; grid-template-columns: repeat(6, 1fr);
-  gap: 0.85rem; margin-bottom: 0.5rem;
+  gap: 0.85rem; margin-bottom: 3.5rem;
 }
 @media (max-width: 1100px) { .kpi-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 640px)  { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
@@ -190,7 +223,7 @@ hr { border: 0; border-top: 1px solid #27272a; }
 /* Tabla de listados (título clicable) */
 .list-table-wrap {
   border: 1px solid #27272a; border-radius: 14px; overflow: hidden;
-  background: #131316;
+  margin-bottom: 1rem; background: #131316; font-family: var(--font-sans); line-height: normal; /* la tabla vive en un iframe con body Inter (app.py:435) */
 }
 .list-table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
 .list-table thead th {
@@ -258,10 +291,28 @@ hr { border: 0; border-top: 1px solid #27272a; }
 .list-table .sb-pts-pos, .list-table .sb-pts-neg, .list-table .sb-pts-zero, .list-table .sb-pts-neu { font-family: var(--font-mono); }
 
 /* Cabecera (st.caption) y avisos */
-.caption { color: #a1a1aa; font-size: 0.875rem; }
+.caption { margin: 0 0 1rem; color: #e4e4e7; opacity: 0.6; font-size: 0.875rem; line-height: 1.6; }
+.block-container > .caption { margin-bottom: 2rem; }
 
 /* Encabezado de cada vista solo para lectores de pantalla: app.py no muestra título en las pestañas */
 .sr-only-vista {
   position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden;
   clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+/* Tablas de st.markdown dentro de tarjetas: bordes y márgenes por defecto de Streamlit */
+.prop-card .sb-table { margin: 0.55rem 0 1rem; }
+.prop-card .sb-table td { border: 1px solid rgba(228,228,231,0.1); }
+.prop-card .sb-total td { padding: 0.4rem 0.75rem 6px; }
+
+/* st.plotly_chart: 1rem de separación hasta el siguiente elemento */
+.grafico { margin-bottom: 1rem; }
+
+/* Pie de página (st.divider + st.caption): el divisor queda a 112 px del final de las pestañas */
+footer { margin-top: 5rem; }
+footer hr { margin: 2rem 0; border-top: 1px solid rgba(228, 228, 231, 0.2); }
+.pie { margin: 0; }
+.pie code {
+  padding: 2.1px 4.2px; border-radius: 4px; background: rgb(26, 28, 36);
+  font-family: 'Source Code Pro', ui-monospace, monospace; font-size: 10.5px; color: rgb(92, 228, 136);
 }

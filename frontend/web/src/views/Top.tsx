@@ -1,6 +1,7 @@
 /** Pestaña «Top scoring» (app.py `with tab2:`, 1473-1586). */
-import { useEffect, useId, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import ListingCard from '../components/ListingCard'
+import Slider from '../components/Slider'
 import { TOP_DEFECTO, TOP_MAX, TOP_MIN, topNDeParam } from '../domain/tarjetas'
 import { useDatos } from '../state/datos'
 import { useRuta } from '../state/router'
@@ -11,7 +12,6 @@ const RESALTADO_MS = 1800
 export default function Top() {
   const { listings } = useDatos()
   const { params, setParams } = useRuta()
-  const idSlider = useId()
   const n = topNDeParam(params.n)
   const idListing = Array.isArray(params.id) ? params.id[0] : params.id
   const mostrados = useMemo(() => listings.slice(0, n), [listings, n])
@@ -30,21 +30,15 @@ export default function Top() {
   return (
     <>
       <h2 className="sr-only-vista">Top scoring</h2>
-      <div className="f-campo f-top">
-        <label className="f-etiqueta" htmlFor={idSlider}>
-          Mostrar top
-        </label>
-        <span className="f-valores">{n}</span>
-        <input
-          id={idSlider}
-          type="range"
-          min={TOP_MIN}
-          max={TOP_MAX}
-          step={1}
-          value={n}
-          onChange={(e) => setParams({ n: Number(e.target.value) === TOP_DEFECTO ? undefined : e.target.value })}
-        />
-      </div>
+      <Slider
+        className="f-top"
+        etiqueta="Mostrar top"
+        min={TOP_MIN}
+        max={TOP_MAX}
+        step={1}
+        value={n}
+        onChange={(v) => setParams({ n: v === TOP_DEFECTO ? undefined : String(v) })}
+      />
       {mostrados.map((l, i) => (
         <ListingCard key={l.url || i} variante="completa" listing={l} indice={i} resaltada={resaltada === i} />
       ))}

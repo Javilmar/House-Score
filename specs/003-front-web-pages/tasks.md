@@ -86,7 +86,7 @@ Rutas: front en `frontend/web/`, API en `backend/`.
 - [X] T033 [US3] Implementar la espera en `backend/ops/hermes_launcher.py` (pasa T032)
 - [X] T034 [US3] `backend/Dockerfile`: uvicorn con `--proxy-headers --forwarded-allow-ips='*'` (research §7). Verificación por ejecución (precedente: T051 de la spec 001): en T036, una petición desde dos IPs distintas consume cupos distintos
 - [X] T035 [US3] Adaptar `backend/ops/backup.ps1` para volcar Neon con `pg_dump -Fc` desde `postgres:18-alpine` (research §11) y documentarlo en `backend/README.md`. Verificación por ejecución: restaurar el backup en una base vacía y comparar recuentos por tabla con Neon _(2026-10-21: backup de Neon de 483 KB restaurado en una base vacía: listing 2359, historial_precio 259, pasada_diaria 50, alembic_version 1)_
-- [ ] T036 [US3] Desplegar la API en Render (raíz `backend`, Docker, variables `DATABASE_URL`, `DATABASE_URL_UNPOOLED`, `INGEST_SECRET`, `CORS_ORIGINS`, `PORT=8000`) y ejecutar quickstart §3, incluida la verificación de que el rate limit ve la IP real del cliente
+- [X] T036 [US3] Desplegar la API en Render (raíz `backend`, Docker, variables `DATABASE_URL`, `DATABASE_URL_UNPOOLED`, `INGEST_SECRET`, `CORS_ORIGINS`, `PORT=8000`) y ejecutar quickstart §3, incluida la verificación de que el rate limit ve la IP real del cliente _(2026-10-22, https://house-score.onrender.com: GET /listings 200 con datos de Neon (2464 listings); `content-encoding: gzip`; CORS solo para el origen del front (origen ajeno sin cabecera; preflight POST 400, `allow-methods: GET`); POST /ingest sin secreto 401 y con secreto + cuerpo inválido 422; rate limit 60/min por IP real: ráfaga de 75 → 15-16 respuestas 429 con o sin `X-Forwarded-For` falsificada (clave `CF-Connecting-IP`))_
 
 ---
 
@@ -117,14 +117,23 @@ Cada vista: test de componente primero (contenido, controles, valores por defect
 
 ## Fase 8: Despliegue, corte y cierre
 
-- [ ] T050 Desplegar el front en Cloudflare Pages (raíz `frontend/web`, `npm run build`, salida `dist`, `VITE_API_URL`, `NODE_VERSION=22`) y añadir su origen a `CORS_ORIGINS` en Render
+- [X] T050 Desplegar el front en Cloudflare Pages (raíz `frontend/web`, `npm run build`, salida `dist`, `VITE_API_URL`, `NODE_VERSION=22`) y añadir su origen a `CORS_ORIGINS` en Render _(2026-10-22: publicado como Cloudflare Worker de solo estáticos (`frontend/web/wrangler.jsonc`) en https://housescore.errinostrich.workers.dev; Cloudflare creó el proyecto como Workers en vez de Pages, mismo plan gratuito; origen añadido a `CORS_ORIGINS`)_
 - [ ] T051 Test de humo `tests/e2e/smoke.spec.ts` contra la URL publicada (solo lectura): carga, 8 pestañas, sin errores de consola
 - [ ] T052 Medir SC-002 (primera pantalla < 3 s con la API despierta) en la URL publicada y anotarlo
-- [ ] T053 Apuntar el scorer del PC a Render (`HOUSESCORE_API_URL`, `INGEST_SECRET` en `backend/.env`) y ejecutar quickstart §5. Paso previo (Historia 4, escenario 2): si la base local tiene pasadas posteriores al volcado usado en T038, sacar un volcado nuevo y repetir T038 justo antes del cambio
+- [X] T053 Apuntar el scorer del PC a Render (`HOUSESCORE_API_URL`, `INGEST_SECRET` en `backend/.env`) y ejecutar quickstart §5. Paso previo (Historia 4, escenario 2): si la base local tiene pasadas posteriores al volcado usado en T038, sacar un volcado nuevo y repetir T038 justo antes del cambio _(2026-10-22: job "Buscador Pisos" de hermes con `housescore_scraper.py`; Python del scorer en `%LOCALAPPDATA%\housescore\venv`; enlace `~/house-dashboard` → repo. Primera pasada con 401 por secreto distinto en Render; corregido y lotes reenviados: madrid 501 (89 nuevos), toledo 122 (16 nuevos); Neon pasa a 51 pasadas, última 2026-10-22. La base local no tenía pasadas posteriores al volcado: era de otro equipo y su última pasada es del 2026-10-14)_
 - [ ] T054 Corte (Principio VI): eliminar `frontend/dashboard/` (incluidos `.streamlit/` y sus tests), `frontend/requirements.txt` y `backend/ops/cloudflared.yml`; reescribir `README.md`, `backend/README.md` y la referencia de funcionalidades como `frontend/web/FUNCIONALIDADES.md`; quickstart §6
 - [X] T055 Marcar en `specs/001-backend-api-bbdd/tasks.md` T047 (escenario 6) y T050 como sustituidos por esta spec
 - [ ] T056 Enmendar la constitución con `/speckit-constitution`: objetivo de despliegue (Pages + Render + Neon), Fase 3 iniciada, stack del backend decidido
 - [ ] T057 Ejecutar quickstart.md completo y comprobar que Neon, Render y Cloudflare Pages siguen en planes gratuitos sin cargos (SC-008)
+
+## Fase 9: Paridad visual con el dashboard publicado (FR-011)
+
+Hallazgos de la comparación lado a lado (2026-10-22, 1440×900) entre el front publicado y `app.py` servido por Streamlit contra la misma API: el CSS propio de `app.py` está portado, pero no el aspecto que ponía Streamlit por debajo.
+
+- [X] T058 [P] Base tipográfica y maquetación de Streamlit: texto en Source Sans 3 (Inter solo donde `app.py` lo fija), contenedor centrado de 1320 px máx. con el padding de Streamlit (contenido de 1160 px a 1440 px), escala de títulos (`h1` 44 px con `20px 0 16px`, `h3` de Streamlit), pestañas a 14 px en una fila, enlaces de contenido con el color y subrayado de Streamlit, KPIs de Hipoteca en la rejilla de 6 columnas
+- [X] T059 [P] Controles con el aspecto de Streamlit: slider simple y de rango (pista fina, tramo relleno con el acento, tirador redondo, valor encima del tirador y extremos en los de rango), radio y checkbox con el acento, campo numérico con botones − / +, multiselect como selector con flecha; test de componente del slider de rango (dos tiradores, sin cruzarse, teclado)
+- [X] T060 [P] Scroll y pestaña del navegador: barras de scroll finas y oscuras en toda la app (`app.py:467-468`), botón flotante "volver arriba" (`app.py:931-960`, visible tras 300 px de scroll) y favicon propio con el icono de la app en el color de acento
+- [X] T061 Verificación visual: capturas lado a lado de las 8 vistas a 1440 px y 390 px contra Streamlit; `npm run typecheck`, `npm test`, `npm run build`, `npm run test:e2e` en verde
 
 ---
 

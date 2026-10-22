@@ -189,12 +189,15 @@ describe('Listados: filtros', () => {
 
   it('valores por defecto: rangos completos de la base (sin retirados)', () => {
     montar()
-    expect(screen.getByLabelText('Rango de score (máximo)')).toHaveValue('100')
-    expect(screen.getByLabelText('Rango de precio (€) (mínimo)')).toHaveValue('120000')
-    expect(screen.getByLabelText('Rango de precio (€) (máximo)')).toHaveValue('300000')
-    expect(screen.getByLabelText('Habitaciones (mínimo)')).toHaveValue('1')
-    expect(screen.getByLabelText('Habitaciones (máximo)')).toHaveValue('4')
-    expect(screen.getByText('120,000 € – 300,000 €')).toBeInTheDocument()
+    const ahora = (nombre: string) => screen.getByRole('slider', { name: nombre }).getAttribute('aria-valuenow')
+    expect(ahora('Rango de score (máximo)')).toBe('100')
+    expect(ahora('Rango de precio (€) (mínimo)')).toBe('120000')
+    expect(ahora('Rango de precio (€) (máximo)')).toBe('300000')
+    expect(ahora('Habitaciones (mínimo)')).toBe('1')
+    expect(ahora('Habitaciones (máximo)')).toBe('4')
+    // valor actual sobre cada tirador del precio
+    const precio = screen.getByRole('slider', { name: 'Rango de precio (€) (mínimo)' }).closest('.st-slider')!
+    expect([...precio.querySelectorAll('.st-slider-valor')].map((e) => e.textContent)).toEqual(['120,000 €', '300,000 €'])
   })
 
   it('la zona acota las opciones de municipio y filtra la tabla', async () => {
@@ -214,12 +217,9 @@ describe('Listados: filtros', () => {
     await user.click(screen.getByRole('checkbox', { name: 'Getafe' }))
     expect(titulos()).toEqual(['Piso Alfa', 'Piso Épsilon'])
     expect(window.location.hash).toBe('#/listados?muni=Getafe')
-    const min = screen.getByLabelText('Habitaciones (mínimo)')
-    act(() => {
-      // simula el arrastre del control
-      Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!.call(min, '4')
-      min.dispatchEvent(new Event('input', { bubbles: true }))
-    })
+    const min = screen.getByRole('slider', { name: 'Habitaciones (mínimo)' })
+    min.focus()
+    await user.keyboard('{End}') // lleva el tirador mínimo hasta el máximo
     expect(titulos()).toEqual(['Piso Épsilon'])
     expect(window.location.hash).toBe('#/listados?muni=Getafe&hab=4-4')
   })
@@ -230,7 +230,7 @@ describe('Listados: filtros', () => {
     expect(titulos()).toEqual(['Piso Alfa'])
     expect(screen.getByRole('checkbox', { name: 'Mostrar retirados' })).toBeChecked()
     expect(screen.getByRole('checkbox', { name: 'Madrid Sur' })).toBeChecked()
-    expect(screen.getByLabelText('Rango de score (mínimo)')).toHaveValue('85')
+    expect(screen.getByRole('slider', { name: 'Rango de score (mínimo)' })).toHaveAttribute('aria-valuenow', '85')
   })
 
   it('sin resultados: "No hay listados con esos filtros." y 0 listings', () => {

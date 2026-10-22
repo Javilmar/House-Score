@@ -16,7 +16,7 @@ export default function Multiselect({ etiqueta, opciones, valor, onChange }: Pro
         {etiqueta}
       </span>
       <details className="f-multi">
-        <summary aria-labelledby={id}>{valor.length > 0 ? valor.join(', ') : 'Elegir opciones'}</summary>
+        <summary aria-labelledby={id} className={valor.length === 0 ? 'f-multi-vacio-sel' : undefined}>{valor.length > 0 ? valor.join(', ') : 'Elegir opciones'}</summary>
         <div className="f-multi-lista" role="group" aria-labelledby={id}>
           {opciones.length === 0 && <span className="f-multi-vacio">Sin opciones</span>}
           {opciones.map((o) => (

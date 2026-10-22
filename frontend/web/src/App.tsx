@@ -1,6 +1,9 @@
+import BackToTop from './components/BackToTop'
 import EstadoCarga from './components/EstadoCarga'
 import Icon from './components/Icon'
 import KpiBar from './components/KpiBar'
+import PiePagina from './components/PiePagina'
+import { API_URL } from './api/cliente'
 import { DatosProvider } from './state/datos'
 import { useCarga, type OpcionesCarga } from './state/carga'
 import { useRuta, type Vista } from './state/router'
@@ -12,7 +15,7 @@ import Listados from './views/Listados'
 import Mapas from './views/Mapas'
 import Novedades from './views/Novedades'
 import Top from './views/Top'
-import type { ComponentType } from 'react'
+import { useEffect, useMemo, useRef, type ComponentType } from 'react'
 
 /** Orden de app.py:1121; iconos de app.py:1150-1159. */
 const PESTANAS: { vista: Vista; etiqueta: string; icono: string; Componente: ComponentType }[] = [
@@ -28,9 +31,20 @@ const PESTANAS: { vista: Vista; etiqueta: string; icono: string; Componente: Com
 
 function Pestanas({ vista, navegar }: Pick<ReturnType<typeof useRuta>, 'vista' | 'navegar'>) {
   const activa = PESTANAS.find((p) => p.vista === vista) ?? PESTANAS[0]!
+  const lista = useRef<HTMLDivElement>(null)
+  // Con la fila desplazada (móvil), deja a la vista la pestaña activa como hace st.tabs
+  useEffect(() => {
+    const el = lista.current
+    const tab = el?.querySelector<HTMLElement>('[aria-selected="true"]')
+    if (!el || !tab) return
+    const r = el.getBoundingClientRect()
+    const t = tab.getBoundingClientRect()
+    if (t.left < r.left) el.scrollLeft -= r.left - t.left
+    else if (t.right > r.right) el.scrollLeft += t.right - r.right
+  }, [activa.vista])
   return (
     <>
-      <div className="tabs" role="tablist">
+      <div className="tabs" role="tablist" ref={lista}>
         {PESTANAS.map((p) => (
           <button
             key={p.vista}
@@ -63,6 +77,8 @@ export default function App({ opciones, hoy }: Props) {
   const { estado, reintentar } = useCarga(opciones)
   // El router vive en App para normalizar el hash desde el primer render, también durante la carga
   const { vista, navegar } = useRuta()
+  // Momento en que llegaron los datos (cada carga completada crea un estado nuevo)
+  const cargadoEn = useMemo(() => new Date(), [estado.fase === 'listo' ? estado : null])
   return (
     <div className="block-container">
       <h1>House Score</h1>
@@ -73,10 +89,12 @@ export default function App({ opciones, hoy }: Props) {
         <DatosProvider listings={estado.listings} historico={estado.historico} hoy={hoy}>
           <KpiBar />
           <Pestanas vista={vista} navegar={navegar} />
+          <PiePagina cargadoEn={cargadoEn} url={opciones?.apiUrl ?? API_URL} onRecargar={reintentar} />
         </DatosProvider>
       ) : (
         <EstadoCarga estado={estado} reintentar={reintentar} />
       )}
+      <BackToTop />
     </div>
   )
 }

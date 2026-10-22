@@ -1,0 +1,128 @@
+/* Controles con el aspecto de los widgets de Streamlit (tema oscuro, acento #6366f1) */
+
+/* Etiqueta de widget: 14 px, 24 px de alto y 4 px hasta el control */
+.f-etiqueta, .hip-campo > label, .hip-radios legend {
+  display: flex; align-items: center; min-height: 24px; margin-bottom: 0.25rem;
+  font-size: 14px; line-height: 22.4px; color: #e4e4e7;
+}
+.f-campo { gap: 0; }
+
+/* st.slider / st.select_slider ─ pista fina, tirador redondo y valor sobre el tirador */
+.st-slider { position: relative; height: 40px; --pista: rgba(163,163,178,0.25); }
+.st-slider input[type="range"] {
+  position: absolute; left: 0; top: 14px; width: 100%; height: 12px; margin: 0; padding: 0;
+  background: transparent; cursor: pointer; -webkit-appearance: none; appearance: none; outline: none;
+}
+.st-slider input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px; border-radius: 8px;
+  background: linear-gradient(to right, var(--acento) calc(6px + var(--p) * (100% - 12px)), var(--pista) calc(6px + var(--p) * (100% - 12px)));
+}
+.st-slider input[type="range"]::-moz-range-track { height: 4px; border-radius: 8px; background: var(--pista); }
+.st-slider input[type="range"]::-moz-range-progress { height: 4px; border-radius: 8px; background: var(--acento); }
+.st-slider input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none; width: 12px; height: 12px; margin-top: -4px;
+  border: 0; border-radius: 50%; background: var(--acento);
+}
+.st-slider input[type="range"]::-moz-range-thumb { width: 12px; height: 12px; border: 0; border-radius: 50%; background: var(--acento); }
+.st-slider input[type="range"]:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 0.2rem rgba(99,102,241,0.5); }
+.st-slider input[type="range"]:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 0.2rem rgba(99,102,241,0.5); }
+.st-slider input[type="range"]:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Valor actual: encima del tirador, pegado a los extremos de la pista */
+.st-slider-valor {
+  position: absolute; top: -8.4px; z-index: 1; pointer-events: none;
+  left: calc(var(--p) * 100%); transform: translateX(calc(var(--p) * -100%));
+  font-size: 14px; line-height: 22.4px; color: var(--acento); white-space: nowrap;
+}
+
+/* Extremos del recorrido: aparecen al pasar el ratón o enfocar (como la barra de marcas de Streamlit) */
+.st-slider-extremos {
+  position: absolute; left: 0; right: 0; top: 28px; display: flex; justify-content: space-between;
+  font-family: var(--font-sans); font-size: 14px; line-height: 22.4px; color: rgba(228,228,231,0.6);
+  opacity: 0; transition: opacity 0.3s 0.2s; pointer-events: none;
+}
+.st-slider-campo:hover .st-slider-extremos, .st-slider-campo:focus-within .st-slider-extremos { opacity: 1; }
+
+/* Slider de rango: dos tiradores sobre una sola pista */
+.st-slider-pista { position: absolute; inset: 0; touch-action: none; cursor: pointer; }
+.st-slider-pista::before {
+  content: ''; position: absolute; left: 0; right: 0; top: 18px; height: 4px; border-radius: 8px;
+  background: linear-gradient(to right,
+    var(--pista) calc(6px + var(--a) * (100% - 12px)),
+    var(--acento) calc(6px + var(--a) * (100% - 12px)),
+    var(--acento) calc(6px + var(--b) * (100% - 12px)),
+    var(--pista) calc(6px + var(--b) * (100% - 12px)));
+}
+.st-slider-tirador {
+  position: absolute; top: 14px; left: calc(var(--p) * (100% - 12px)); width: 12px; height: 12px;
+  border-radius: 50%; background: var(--acento); outline: none;
+}
+.st-slider-tirador:focus-visible { box-shadow: 0 0 0 0.2rem rgba(99,102,241,0.5); }
+.st-slider-rango[data-desactivado] { opacity: 0.4; }
+.st-slider-rango[data-desactivado] .st-slider-pista { cursor: not-allowed; }
+
+/* st.checkbox / st.radio ─ controles propios con el acento */
+input[type="checkbox"], input[type="radio"] {
+  -webkit-appearance: none; appearance: none; flex: none; margin: 0; width: 16px; height: 16px;
+  border: 1px solid rgba(228,228,231,0.2); background: #0e0e11; cursor: pointer;
+}
+input[type="checkbox"] { border-radius: 4px; }
+input[type="radio"] { border-radius: 50%; }
+input[type="checkbox"]:checked {
+  border-color: var(--acento); background-color: var(--acento);
+  background-image: url("data:image/svg+xml,%3Csvg width='17' height='13' viewBox='0 0 17 13' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6.5 12.6L.4 6.6l2.2-2.2 3.9 4 7.4-7.5 2.2 2.2z' fill='%23f0f2f6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: center; background-size: 10px 8px;
+}
+input[type="radio"]:checked {
+  border-color: var(--acento);
+  background: radial-gradient(circle, #f0f2f6 0 3px, var(--acento) 3.5px);
+}
+input[type="checkbox"]:focus-visible, input[type="radio"]:focus-visible { box-shadow: 0 0 0 0.2rem rgba(99,102,241,0.5); outline: none; }
+.f-check, .hip-radios label, .radio-opcion, .f-multi-lista label { font-size: 14px; line-height: 22.4px; }
+.f-check { line-height: 21px; }
+
+/* st.number_input ─ campo con botones − / + */
+.st-num {
+  display: flex; height: 40px; border: 1px solid #18181b; border-radius: 8px; background: #18181b; overflow: hidden;
+}
+.st-num:focus-within { border-color: var(--acento); }
+.st-num input[type="number"] {
+  flex: 1; min-width: 0; padding: 8px 8px 8px 12px; border: 0; border-radius: 0; background: transparent;
+  color: #e4e4e7; font-family: var(--font-body); font-size: 14px; outline: none; -moz-appearance: textfield; appearance: textfield;
+}
+.st-num input[type="number"]::-webkit-inner-spin-button, .st-num input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.st-num button {
+  display: flex; align-items: center; justify-content: center; flex: none; width: 32px; padding: 1px 6px;
+  border: 0; background: #18181b; color: #e4e4e7; cursor: pointer;
+}
+.st-num button:hover:not(:disabled) { background: #27272a; color: var(--acento); }
+.st-num button:disabled { color: rgba(228,228,231,0.4); cursor: not-allowed; }
+
+/* st.multiselect / st.selectbox ─ caja de 40 px con flecha */
+.f-multi > summary, .f-select select {
+  display: flex; align-items: center; height: 40px; padding: 0 36px 0 12px; border: 1px solid #18181b; border-radius: 8px;
+  background: #18181b; color: #e4e4e7; font-family: var(--font-body); font-size: 14px; line-height: 22.4px;
+  list-style: none; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  background-repeat: no-repeat; background-position: right 8px center; background-size: 20px 20px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23e4e4e7' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+}
+.f-multi > summary::-webkit-details-marker { display: none; }
+.f-multi > summary.f-multi-vacio-sel { color: rgba(228,228,231,0.6); }
+.f-multi[open] > summary, .f-select select:focus { border-color: var(--acento); }
+.f-select select { -webkit-appearance: none; appearance: none; width: 100%; cursor: pointer; }
+.f-multi-lista { border: 0; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.16); }
+
+/* st.button ─ botones secundarios */
+.btn { font-family: var(--font-body); font-size: 14px; font-weight: 400; line-height: 22.4px; height: 40px; padding: 0 12px; border-radius: 10px; }
+
+/* Botón flotante «volver arriba» (app.py:931-960) */
+.back-top {
+  position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; padding: 0; border-radius: 50%;
+  background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.35);
+  color: #818cf8; font: inherit; font-size: 1.1rem; cursor: pointer;
+  transition: opacity 200ms ease, background 140ms ease;
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+.back-top:hover { background: rgba(99,102,241,0.3); }

@@ -1,17 +1,32 @@
-.mapas h2 { font-size: 1.1rem; margin: 0.5rem 0 0.75rem; }
-.mapas h3 { margin: 1.5rem 0 0.5rem; }
+.mapas h2.sr-only-vista { margin: 0; }
 
-.radio-capa { display: flex; flex-wrap: wrap; gap: 1.25rem; margin: 0.5rem 0 0.75rem; }
-.radio-opcion { display: inline-flex; align-items: center; gap: 0.45rem; cursor: pointer; color: #e4e4e7; }
-.radio-opcion input { accent-color: #6366f1; }
-
-.mapas .expander { border: 1px solid #27272a; border-radius: 10px; padding: 0.55rem 0.9rem; margin: 0.5rem 0; }
-.mapas .expander > summary { cursor: pointer; color: #e4e4e7; }
-.mapas .expander > p { color: #a1a1aa; margin: 0.6rem 0 0; }
+/* st.radio horizontal: 40 px de alto, 16 px entre opciones */
+.radio-capa { display: flex; flex-wrap: wrap; align-items: center; min-height: 40px; margin: 0 0 1rem; }
+.radio-opcion { display: inline-flex; align-items: center; gap: 0.5rem; margin-right: 1rem; padding-right: 2px; cursor: pointer; color: #e4e4e7; }
 
 .mapas .aviso { border: 1px solid #854d0e; background: rgba(234, 179, 8, 0.08); border-radius: 10px; padding: 0.75rem 1rem; color: #fde68a; }
 .mapas .aviso p { margin: 0 0 0.5rem; }
 .mapas .aviso pre { margin: 0; padding: 0.6rem 0.8rem; background: #18181b; border-radius: 8px; color: #e4e4e7; overflow: auto; }
 
-.mapas-tabla { max-height: 400px; }
-.mapas-tabla thead th { position: sticky; top: 0; z-index: 1; }
+/* st.dataframe (rejilla de 35 px): índice a la izquierda, cabecera en gris, líneas #1f1f22 */
+.list-table-wrap.scroll.mapas-tabla {
+  max-height: 400px; margin-bottom: 1rem; background: #09090b; border: 1px solid rgba(228, 228, 231, 0.2); border-radius: 8px;
+  font-family: var(--font-body); font-size: 14px; line-height: 1.6;
+}
+.mapas-tabla .list-table { font-size: 14px; table-layout: fixed; }
+.mapas-tabla .list-table thead th {
+  position: sticky; top: 0; z-index: 1; height: 35px; padding: 0 8px; background: #18181b;
+  border-bottom: 1px solid #1f1f22; border-right: 1px solid #1f1f22;
+  font-size: 14px; font-weight: 400; letter-spacing: normal; text-transform: none; color: rgba(228, 228, 231, 0.6);
+}
+.mapas-tabla .list-table thead th.noord { width: 50px; }
+.mapas-tabla .list-table tbody td {
+  height: 35px; padding: 0 8px; vertical-align: middle; color: #e4e4e7;
+  border-bottom: 1px solid #1f1f22; border-right: 1px solid #1f1f22;
+}
+.mapas-tabla .list-table tbody tr:last-child td { border-bottom: 1px solid #1f1f22; }
+.mapas-tabla .list-table tbody tr:hover { background: transparent; }
+.mapas-tabla .list-table tbody td.lt-pos { text-align: right; font-family: var(--font-body); font-size: 14px; font-weight: 400; color: rgba(228, 228, 231, 0.6); }
+
+/* Los títulos de sección van 1rem más abajo que el elemento anterior (hueco extra de Streamlit) */
+.mapas h3 { margin-top: 1rem; }

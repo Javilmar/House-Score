@@ -125,7 +125,9 @@ function VistaCriminalidad({ filas, geojson }: { filas: FilaCriminalidad[]; geoj
       <Nota texto={notaCriminalidad(periodo)} />
       <details className="expander">
         <summary>{`Municipios sin datos oficiales (${sinDato.length} en gris)`}</summary>
-        <p>{sinDato.length > 0 ? sinDato.join(', ') : 'Todos tienen datos.'}</p>
+        <div className="expander-body">
+          <p>{sinDato.length > 0 ? sinDato.join(', ') : 'Todos tienen datos.'}</p>
+        </div>
       </details>
       <h3>Ranking de peligrosidad</h3>
       <Tabla filas={ranking} />
@@ -151,23 +153,25 @@ function VistaRenta({ filas, geojson }: { filas: FilaSeccion[]; geojson: GeoJson
       {sinRenta.length > 0 && (
         <details className="expander">
           <summary>{`Secciones sin dato de renta (${sinRenta.length} en gris)`}</summary>
-          <div className="list-table-wrap scroll mapas-tabla">
-            <table className="list-table">
-              <thead>
-                <tr>
-                  <th>municipio</th>
-                  <th>cusec</th>
-                </tr>
-              </thead>
-              <tbody>
-                {sinRenta.map((f) => (
-                  <tr key={f.cusec}>
-                    <td>{f.Municipio}</td>
-                    <td>{f.cusec}</td>
+          <div className="expander-body">
+            <div className="list-table-wrap scroll mapas-tabla">
+              <table className="list-table">
+                <thead>
+                  <tr>
+                    <th>municipio</th>
+                    <th>cusec</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {sinRenta.map((f) => (
+                    <tr key={f.cusec}>
+                      <td>{f.Municipio}</td>
+                      <td>{f.cusec}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </details>
       )}
