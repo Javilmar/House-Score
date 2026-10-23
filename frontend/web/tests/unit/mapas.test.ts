@@ -47,7 +47,7 @@ describe('carga de assets', () => {
   })
 
   it('secciones: una fila por feature, renta numérica', () => {
-    expect(renta).toHaveLength(953)
+    expect(renta).toHaveLength(1539)
     expect(renta[0]!.cusec).toMatch(/^\d{10}$/)
     expect(typeof renta[0]!.renta_persona).toBe('number')
   })
@@ -122,7 +122,7 @@ describe('figura de criminalidad', () => {
   })
 
   it('layout: mapa oscuro, centro, zoom 9 y márgenes de _MAP_LAYOUT', () => {
-    expect(CENTRO).toEqual({ lat: 40.18, lon: -3.78 })
+    expect(CENTRO).toEqual({ lat: 40.36, lon: -3.66 })
     expect(layout.map).toEqual({ style: 'carto-darkmatter', center: CENTRO, zoom: 9 })
     expect(layout.height).toBe(540)
     expect(layout.margin).toEqual({ l: 0, r: 0, t: 0, b: 48 })
@@ -140,7 +140,7 @@ describe('figura de criminalidad', () => {
 describe('municipios sin dato (grises)', () => {
   it('son los del geojson cuyo cod_ine no está en el CSV, ordenados por nombre', () => {
     const sin = sinDatoCriminalidad(crim, geoMun)
-    expect(sin).toHaveLength(47 - 12)
+    expect(sin).toHaveLength(64 - 12)
     expect(sin).toEqual([...sin].sort())
     expect(sin).not.toContain('Alcorcón')
   })
@@ -174,7 +174,7 @@ describe('figura de renta', () => {
       '<b>%{hovertext}</b><br>Sección censal=%{location}<br>Renta neta media (€/pers)=%{z:,.0f}<br>Año=%{customdata[0]}<extra></extra>',
     )
     expect(t.colorbar.title.text).toBe('Renta neta media (€/pers)')
-    expect(layout.map).toEqual({ style: 'carto-darkmatter', center: CENTRO, zoom: 10 })
+    expect(layout.map).toEqual({ style: 'carto-darkmatter', center: CENTRO, zoom: 9 })
   })
 
   it('las secciones sin renta no se pintan', () => {
@@ -254,7 +254,7 @@ describe('rankings', () => {
 
   it('renta: descendente, todas las secciones, miles con coma', () => {
     const r = rankingRenta(renta)
-    expect(r).toHaveLength(953)
+    expect(r).toHaveLength(1539)
     const max = Math.max(...renta.map((x) => x.renta_persona as number))
     expect(r[0]!['Renta neta media (€/pers)']).toBe(Math.round(max).toLocaleString('en-US'))
     expect(Object.keys(r[0]!)).toEqual(['Municipio', 'Sección censal', 'Renta neta media (€/pers)'])

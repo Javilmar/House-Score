@@ -6,12 +6,14 @@
   puntuar dias en el mercado y bajadas de precio; antes salia de frontend/datos/*.json.
 - `publicar_pasada`: envia el lote a POST /ingest. Si falla, guarda una copia para reenviarla
   con `python -m worker.scraper.client <fichero>` en vez de perder el lote.
+- `cargar_descartados` / `guardar_descartados`: urls de anuncios problemáticos (sin posesión,
+  okupados…) que no se guardan en la API; así su ficha no se vuelve a leer en cada pasada.
 """
 
 import json
 import os
 import time
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 import httpx
@@ -25,9 +27,35 @@ def _api_url(api_url: str | None) -> str:
     return api_url or os.environ.get("HOUSESCORE_API_URL", API_URL_DEFECTO)
 
 
+def _directorio_datos() -> Path:
+    return Path(os.environ.get("HERMES_DATA_DIR", Path.home() / "AppData/Local/hermes"))
+
+
 def directorio_pendientes() -> Path:
-    base = Path(os.environ.get("HERMES_DATA_DIR", Path.home() / "AppData/Local/hermes"))
-    return base / "pendientes"
+    return _directorio_datos() / "pendientes"
+
+
+def _ruta_descartados() -> Path:
+    return _directorio_datos() / "descartados.json"
+
+
+def cargar_descartados() -> dict[str, str]:
+    """{url: fecha en que se descartó}. Vacío si no existe o está corrupto."""
+    try:
+        datos = json.loads(_ruta_descartados().read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    return datos if isinstance(datos, dict) else {}
+
+
+def guardar_descartados(descartados: dict[str, str], *, hoy: date | None = None,
+                        dias: int = 180) -> None:
+    """Guarda la lista quitando lo descartado hace más de `dias` (url ya retirada del portal)."""
+    limite = ((hoy or date.today()) - timedelta(days=dias)).isoformat()
+    vigentes = {u: f for u, f in descartados.items() if f >= limite}
+    ruta = _ruta_descartados()
+    ruta.parent.mkdir(parents=True, exist_ok=True)
+    ruta.write_text(json.dumps(vigentes, ensure_ascii=False, indent=0), encoding="utf-8")
 
 
 def _cliente(api_url: str | None, http: httpx.Client | None) -> tuple[httpx.Client, bool]:

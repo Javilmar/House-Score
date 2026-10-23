@@ -34,7 +34,7 @@ test('el mapa se dibuja y el selector cambia de capa', async ({ page }) => {
   await expect(mapa).toBeVisible()
   await expect(mapa.locator('canvas.maplibregl-canvas')).toBeVisible()
   await expect(page.getByRole('heading', { level: 3, name: 'Ranking de peligrosidad' })).toBeVisible()
-  await expect(page.getByText('Municipios sin datos oficiales (35 en gris)')).toBeVisible()
+  await expect(page.getByText('Municipios sin datos oficiales (52 en gris)')).toBeVisible()
   await expect(page.getByText('Portal Estadístico de Criminalidad')).toBeVisible()
 
   await page.getByRole('radio', { name: '🟢  Renta · por barrio (sección censal)' }).check()

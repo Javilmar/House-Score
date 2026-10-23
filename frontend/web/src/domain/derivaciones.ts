@@ -5,7 +5,7 @@
 import { SCORE_SCALE } from '../styles/tema'
 import type { Listing } from '../types'
 
-export type Zona = 'Madrid Sur' | 'Toledo Norte' | '—'
+export type Zona = 'Madrid Sur' | 'Madrid Este' | 'Madrid Sureste' | 'Madrid Norte' | 'Toledo Norte' | '—'
 export type Ccaa = 'Comunidad de Madrid' | 'Castilla-La Mancha'
 export type TipoVivienda = 'Obra nueva' | 'Segunda mano'
 type Texto = string | null | undefined
@@ -28,6 +28,18 @@ const MADRID_SUR = [
   'ciempozuelos', 'humanes', 'grinon', 'navalcarnero', 'torrejon de la calzada',
   'cubas de la sagra', 'batres', 'serranillos del valle', 'moraleja de enmedio', 'arroyomolinos',
 ]
+const MADRID_ESTE = [
+  'torrejon de ardoz', 'alcala de henares', 'coslada', 'san fernando de henares',
+  'mejorada del campo', 'velilla de san antonio',
+]
+const MADRID_SURESTE = [
+  'rivas vaciamadrid', 'rivas-vaciamadrid', 'arganda del rey', 'san martin de la vega', 'campo real',
+  'morata de tajuna',
+]
+const MADRID_NORTE = [
+  'tres cantos', 'colmenar viejo', 'alcobendas', 'san sebastian de los reyes', 'algete',
+  'san agustin del guadalix',
+]
 const TOLEDO_NORTE = ['illescas', 'senorio', 'sesena', 'quinon', 'yeles', 'ugena', 'esquivias']
 const OBRA_NUEVA_KW = [
   'obra nueva', 'a estrenar', 'nueva construccion', 'primera ocupacion', 'de obra nueva',
@@ -36,10 +48,17 @@ const OBRA_NUEVA_KW = [
 
 const blob = (textos: Texto[]) => sinAcentos(textos.filter(Boolean).join(' '))
 
-/** `zona` (app.py:388): Madrid Sur se evalúa antes que Toledo Norte; búsqueda por subcadena. */
+/**
+ * `zona` (app.py:388): búsqueda por subcadena; se evalúa en el orden Madrid Sur, Este, Sureste, Norte y
+ * Toledo Norte. Ningún nombre de una lista es subcadena de otro de otra ('torrejon de ardoz' ≠
+ * 'torrejon de la calzada').
+ */
 export function zona(...textos: Texto[]): Zona {
   const b = blob(textos)
   if (MADRID_SUR.some((m) => b.includes(m))) return 'Madrid Sur'
+  if (MADRID_ESTE.some((m) => b.includes(m))) return 'Madrid Este'
+  if (MADRID_SURESTE.some((m) => b.includes(m))) return 'Madrid Sureste'
+  if (MADRID_NORTE.some((m) => b.includes(m))) return 'Madrid Norte'
   if (TOLEDO_NORTE.some((t) => b.includes(t))) return 'Toledo Norte'
   return '—'
 }

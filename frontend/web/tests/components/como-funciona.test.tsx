@@ -64,11 +64,12 @@ describe('Cómo funciona', () => {
     expect(within(extras).getByText('🏗️ Obra nueva / a estrenar')).toBeInTheDocument()
 
     const pen = bloque('⚠️ Penalizaciones (restan)')
-    expect(within(pen).getByText('−30')).toBeInTheDocument()
     expect(within(pen).getByText('−3 a −20')).toBeInTheDocument()
+    expect(within(pen).queryByText(/Ocupada/)).toBeNull()
+    expect(within(pen).queryByText('−30')).toBeNull()
   })
 
-  it('los 6 desplegables con su texto', () => {
+  it('los 7 desplegables con su texto', () => {
     const { container } = render(<ComoFunciona />)
     expect(screen.getByRole('heading', { name: 'De dónde salen los datos' })).toBeInTheDocument()
     const resumenes = [...container.querySelectorAll('details > summary')].map((s) => s.textContent)
@@ -78,19 +79,30 @@ describe('Cómo funciona', () => {
       '¿Cómo se asegura que el precio es real?',
       '¿Qué significa "barato para su zona"?',
       '¿Por qué algunos salen como "sin valorar"?',
+      '¿Qué anuncios se descartan?',
       '¿De dónde vienen los datos del mapa de seguridad?',
     ])
     const textoDe = (i: number) => container.querySelectorAll('details')[i]?.textContent ?? ''
     expect(textoDe(0)).toContain('pisos.com')
     expect(textoDe(0)).toContain('fotocasa')
-    expect(textoDe(1)).toContain('Madrid Sur (18)')
+    expect(textoDe(0)).toContain('las 4 zonas de Madrid, no Toledo Norte')
+    expect(textoDe(1)).toContain('Madrid Sur (18) · hasta 300.000 €')
     expect(textoDe(1)).toContain('Torrejón de la Calzada · Valdemoro')
-    expect(textoDe(1)).toContain('Toledo Norte (5)')
+    expect(textoDe(1)).toContain('Madrid Este (6) · hasta 350.000 €')
+    expect(textoDe(1)).toContain('Torrejón de Ardoz')
+    expect(textoDe(1)).toContain('Madrid Sureste (5) · hasta 300.000 €')
+    expect(textoDe(1)).toContain('Rivas-Vaciamadrid')
+    expect(textoDe(1)).toContain('Madrid Norte (6) · hasta 400.000 €')
+    expect(textoDe(1)).toContain('Tres Cantos')
+    expect(textoDe(1)).toContain('Toledo Norte (5) · hasta 300.000 €')
     expect(textoDe(1)).toContain('Esquivias · Illescas · Seseña · Ugena · Yeles')
-    expect(textoDe(2)).toContain('300.000 €')
+    expect(textoDe(2)).toContain('tope de su zona')
     expect(textoDe(3)).toContain('segmento asequible')
     expect(textoDe(4)).toContain('"s/valorar"')
-    expect(textoDe(5)).toContain('ine.es/experimental/atlas')
-    expect(textoDe(5)).toContain('estadisticasdecriminalidad.ses.mir.es')
+    expect(textoDe(5)).toContain('sin posesión')
+    expect(textoDe(5)).toContain('nuda propiedad')
+    expect(textoDe(5)).toContain('subastas')
+    expect(textoDe(6)).toContain('ine.es/experimental/atlas')
+    expect(textoDe(6)).toContain('estadisticasdecriminalidad.ses.mir.es')
   })
 })

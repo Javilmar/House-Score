@@ -80,20 +80,33 @@ con log en `backend/logs/`.
 ## El scorer (`worker/scraper/`)
 
 Copia adaptada de los scripts de `~/AppData/Local/hermes/scripts/`: `property_scorer_common.py`,
-los lotes `property_scorer_madrid.py` y `property_scorer_toledo.py`,
-y el orquestador `property_scorer_all.py`. Cambios respecto a los originales:
+un lote por zona `property_scorer_lote.py <zona>` y el orquestador `property_scorer_all.py`, que
+ejecuta un lote por cada zona de `ZONAS` (`property_scorer_common.py`):
+
+| Zona | Tope | fotocasa | Fichas por pasada |
+|---|---|---|---|
+| `madrid_sur` (18 municipios) | 300.000 € | sí | 30 |
+| `madrid_este` (6) | 350.000 € | sí | 15 |
+| `madrid_sureste` (5) | 300.000 € | sí | 15 |
+| `madrid_norte` (6) | 400.000 € | sí | 15 |
+| `toledo_norte` (5) | 300.000 € | no | 15 |
+
+Cambios respecto a los originales:
 
 1. Al empezar, cada lote llama a `verificar_api()` (falla pronto si la API está caída).
 2. El historial (`first_seen`, último precio) sale de `GET /listings?incluir_retirados=true` en vez de
    `frontend/datos/*.json`. Las puntuaciones dependen de él (bajadas de precio y días en el mercado).
    También trae el `detalle` guardado: si un anuncio ya tiene ficha leída (`ficha_detalle`), se
-   reutiliza (`reutilizar_ficha`) y la lectura de fichas de la pasada (30 en Madrid, 15 en Toledo)
-   se dedica a los mejores anuncios que aún no la tienen.
+   reutiliza (`reutilizar_ficha`) y la lectura de fichas de la pasada (tabla de arriba) se dedica a
+   los mejores anuncios que aún no la tienen.
 3. Cada pasada envía **todo** lo scrapeado (ya no hay filtro de «vistos»): así `ultima_aparicion`
    avanza, no se retiran anuncios vivos y se detectan las bajadas de precio.
 4. Sin exterior detectado se resta 25 solo si la ficha está leída; sin ficha, «❔ Exterior sin
    verificar (0)».
-5. Al terminar, `publicar_pasada()` envía el lote a `POST /ingest` en vez de escribir el snapshot
+5. Los anuncios «sin posesión», okupados, de nuda propiedad o subastas (`es_problematico`) no se
+   envían a la API. Sus urls se apuntan en `HERMES_DATA_DIR/descartados.json` (caducan a los 180
+   días) para no volver a leer su ficha en cada pasada.
+6. Al terminar, `publicar_pasada()` envía el lote a `POST /ingest` en vez de escribir el snapshot
    diario y hacer `git commit` + `push`. Si falla, el lote se guarda en `HERMES_DATA_DIR/pendientes/`
    y se reenvía con `python -m worker.scraper.client <fichero> --api-url https://house-score.onrender.com`
    (con `INGEST_SECRET` definido).

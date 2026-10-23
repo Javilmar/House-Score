@@ -23,11 +23,18 @@ scorer (PC, hermes)  →  POST /ingest  →  API (Render)  →  Neon
                                            └─ GET /listings?incluir_retirados=true, GET /historico  →  front
 ```
 
-- Precio máximo scrapeado: **≤ 300.000 €**.
-- Fuentes: **pisos.com** (Madrid Sur + Toledo Norte) y **fotocasa.es** (Madrid Sur)
-- Zona: Madrid Sur (18 municipios) + Toledo Norte (Esquivias, Illescas, Seseña, Ugena, Yeles).
+- Precio máximo scrapeado según zona: **300.000 €** (Madrid Sur, Madrid Sureste, Toledo Norte),
+  **350.000 €** (Madrid Este) y **400.000 €** (Madrid Norte).
+- Fuentes: **pisos.com** (las 5 zonas) y **fotocasa.es** (las 4 zonas de Madrid; no Toledo Norte).
+- Zonas: Madrid Sur (18 municipios), Madrid Este (6: Torrejón de Ardoz, Alcalá de Henares, Coslada,
+  San Fernando de Henares, Mejorada del Campo, Velilla de San Antonio), Madrid Sureste (5: Rivas-Vaciamadrid,
+  Arganda del Rey, San Martín de la Vega, Campo Real, Morata de Tajuña), Madrid Norte (6: Tres Cantos,
+  Colmenar Viejo, Alcobendas, San Sebastián de los Reyes, Algete, San Agustín del Guadalix) y Toledo Norte
+  (Esquivias, Illescas, Seseña, Ugena, Yeles). La zona se deriva en `src/domain/derivaciones.ts`.
   **Toledo capital excluida**; los demás municipios toledanos se filtran en la API
   (`backend/app/services/reglas.py`).
+- Antes de guardar, el scraper descarta los anuncios «sin posesión», okupados/ocupados, de nuda propiedad y
+  las subastas: no aparecen en ninguna vista (ya no hay penalización por «ocupada» en el scoring).
 - Scoring 0–100 en `backend/worker/scraper/property_scorer_common.py` (explicado en la vista
   «Cómo funciona»). Un listing sin m² fiable (`datos_insuficientes`) queda «sin valorar»: no entra en
   el score medio de los KPI.
@@ -52,7 +59,7 @@ muestra la hora de carga, la URL de la API y «Forzar recarga».
 
 ## 2. Navegación (rutas por hash)
 
-Las 8 vistas, en este orden, con ruta `#/<vista>?<parámetros>`. Recargar restaura vista y parámetros;
+Las 9 vistas, en este orden, con ruta `#/<vista>?<parámetros>`. Recargar restaura vista y parámetros;
 ruta desconocida o vacía → `#/listados`.
 
 | # | Vista | Ruta | Parámetros |
@@ -65,6 +72,7 @@ ruta desconocida o vacía → `#/listados`.
 | 6 | Hipoteca | `#/hipoteca` | `precio`, `tipo` (`segunda-mano`\|`obra-nueva`), `ccaa` (`madrid`\|`clm`) |
 | 7 | Cómo funciona | `#/como-funciona` | — |
 | 8 | Mapas | `#/mapas` | `capa` (`criminalidad`\|`renta`\|`precio`) |
+| 9 | Favoritos | `#/favoritos` | — |
 
 Navegación entre vistas:
 
@@ -106,7 +114,7 @@ Tabla ordenable con todos los listings (más los retirados si se activa «Mostra
   Score (barra + desglose), €/m², m², Tipo (Obra nueva / Segunda mano), Fuente, Ubicación, Días en
   mercado.
 - **Acciones por fila:** título → anuncio en pestaña nueva; **↗** → Top scoring; **€** → Hipoteca;
-  insignia «s/valorar» si no hay m² fiable.
+  insignia «s/valorar» si no hay m² fiable; **★/☆** → guarda o quita el anuncio de favoritos.
 - **Descargar CSV** con los listings filtrados (`domain/csv.ts`).
 
 ### 4.2 Top scoring (`views/Top.tsx`)
@@ -183,6 +191,19 @@ Los assets están en `public/assets/` y se regeneran con `python frontend/script
 (OpenDataSoft / georef-spain-municipio, Portal Estadístico de Criminalidad, Atlas de Renta de los
 Hogares del INE).
 
+### 4.9 Favoritos (`views/Favoritos.tsx`, `state/favoritos.ts`, `components/BotonFavorito.tsx`)
+
+Anuncios marcados con la estrella ☆/★ (botón con `aria-pressed`) en Listados, Top scoring, Novedades y
+Bajadas. **Solo viven en el navegador**: `localStorage`, clave `housescore:favoritos`, array JSON de
+urls. Sin backend, sin cuenta, sin datos personales; no se comparten entre dispositivos. Almacenamiento
+ausente, corrupto o bloqueado → lista vacía (si está bloqueado, los cambios duran hasta recargar).
+Se sincroniza entre pestañas abiertas con el evento `storage`.
+
+- La vista lista los favoritos con su tarjeta, **incluidos los retirados** (etiqueta «retirado»).
+- Un favorito cuya url ya no está en los datos se muestra como fila mínima con la url y un botón
+  «Quitar de favoritos».
+- Sin favoritos, un aviso explica que se guardan solo en este navegador.
+
 ---
 
 ## 5. Diseño
@@ -212,9 +233,9 @@ frontend/web/
 │   ├── api/         cliente.ts (GET + clasificación de errores), mapeo.ts (API → tipos del front)
 │   ├── domain/      lógica pura y testeable: filtros, kpis, hipoteca, tarjetas, graficos, mapas,
 │   │                desglose, derivaciones, csv
-│   ├── state/       carga.ts (máquina de estados), datos.tsx (contexto), router.ts (hash)
+│   ├── state/       carga.ts (máquina de estados), datos.tsx (contexto), router.ts (hash), favoritos.ts (localStorage)
 │   ├── views/       una por vista (Listados, Top, Novedades, Evolucion, Bajadas, Hipoteca,
-│   │                ComoFunciona, Mapas)
+│   │                ComoFunciona, Mapas, Favoritos)
 │   ├── components/  KpiBar, ListingCard, Breakdown, Grafico, EstadoCarga, controles, Icon, PiePagina…
 │   └── styles/      CSS por vista/componente + tema.ts + plotlyStreamlit.ts
 ├── public/assets/   geojson y csv de los mapas

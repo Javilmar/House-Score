@@ -6,7 +6,7 @@ import PiePagina from '../../src/components/PiePagina'
 import { historicoApi, listingsApi } from '../fixtures'
 
 const CODIGO_PIE =
-  'Scorer: property_scorer_all.py (pisos.com + fotocasa · Madrid Sur + Toledo Norte · ≤ 300.000 €)'
+  'Scorer: property_scorer_all.py (pisos.com + fotocasa · Madrid Sur, Este, Sureste y Norte + Toledo Norte · ≤ 300.000–400.000 € según zona)'
 
 describe('PiePagina (app.py:2716-2724)', () => {
   it('muestra fecha y hora locales, la URL de la API, "Forzar recarga" y el scorer', () => {

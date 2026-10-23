@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import { formatearHash, parsearHash, useRuta, VISTAS } from '../../src/state/router'
 
 describe('parsearHash / formatearHash', () => {
-  it('las 8 vistas, en el orden de pestañas, se parsean y serializan', () => {
+  it('las 9 vistas, en el orden de pestañas, se parsean y serializan', () => {
     expect(VISTAS).toEqual([
       'listados',
       'top',
@@ -13,6 +13,7 @@ describe('parsearHash / formatearHash', () => {
       'hipoteca',
       'como-funciona',
       'mapas',
+      'favoritos',
     ])
     for (const v of VISTAS) {
       expect(parsearHash(`#/${v}`)).toEqual({ vista: v, params: {} })

@@ -43,6 +43,19 @@ describe('sinAcentos / zona (app.py:383-395)', () => {
     expect(zona('Toledo centro')).toBe('—')
     expect(zona()).toBe('—')
   })
+  it('un municipio de cada zona nueva', () => {
+    expect(zona('Piso en Alcalá de Henares')).toBe('Madrid Este')
+    expect(zona('Coslada')).toBe('Madrid Este')
+    expect(zona('Rivas-Vaciamadrid')).toBe('Madrid Sureste')
+    expect(zona('Arganda del Rey')).toBe('Madrid Sureste')
+    expect(zona('Tres Cantos')).toBe('Madrid Norte')
+    expect(zona('San Sebastián de los Reyes')).toBe('Madrid Norte')
+  })
+  it('Torrejón de Ardoz y Torrejón de la Calzada son zonas distintas', () => {
+    expect(zona('Torrejón de Ardoz')).toBe('Madrid Este')
+    expect(zona('Torrejón de la Calzada')).toBe('Madrid Sur')
+    expect(zona('Torrejón de Ardoz')).not.toBe(zona('Torrejón de la Calzada'))
+  })
   it('Madrid Sur tiene prioridad sobre Toledo Norte', () => {
     expect(zona('entre Illescas y Getafe')).toBe('Madrid Sur')
   })
@@ -55,6 +68,9 @@ describe('sinAcentos / zona (app.py:383-395)', () => {
   it('zonaACcaa', () => {
     expect(zonaACcaa('Madrid Sur')).toBe('Comunidad de Madrid')
     expect(zonaACcaa('Toledo Norte')).toBe('Castilla-La Mancha')
+    for (const z of ['Madrid Este', 'Madrid Sureste', 'Madrid Norte'] as const) {
+      expect(zonaACcaa(z)).toBe('Comunidad de Madrid')
+    }
     expect(zonaACcaa('—')).toBe('Comunidad de Madrid')
   })
 })

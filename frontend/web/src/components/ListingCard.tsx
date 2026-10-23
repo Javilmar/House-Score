@@ -5,6 +5,7 @@ import { parseScoreDetails } from '../domain/desglose'
 import { navegar } from '../state/router'
 import type { Listing } from '../types'
 import Breakdown from './Breakdown'
+import BotonFavorito from './BotonFavorito'
 import Icon from './Icon'
 import ScoreBadge, { ScoreBar } from './ScoreBadge'
 import '../styles/listing-card.css'
@@ -66,7 +67,7 @@ export default function ListingCard(props: PropsCompleta | PropsCompacta) {
           <ScoreBadge score={scoreDe(l)} />
           <div className="lc-cuerpo">
             <div>
-              <Titulo l={l} />
+              <BotonFavorito listing={l} /> <Titulo l={l} />
             </div>
             {props.lineas.map((t, i) => (
               <div className="prop-meta" key={i} style={i > 0 ? { marginTop: '0.15rem' } : undefined}>
@@ -92,7 +93,7 @@ export default function ListingCard(props: PropsCompleta | PropsCompacta) {
         <ScoreBadge score={score} />
         <div className="prop-card-body">
           <div>
-            <span className="prop-rank">{indice + 1}.</span> <Titulo l={l} />
+            <BotonFavorito listing={l} /> <span className="prop-rank">{indice + 1}.</span> <Titulo l={l} />
           </div>
           <div className="prop-meta">
             {metaTop(l).map(([ic, texto]) => (

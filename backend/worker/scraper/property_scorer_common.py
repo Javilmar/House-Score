@@ -11,33 +11,64 @@ import re
 import statistics
 import sys
 from collections import defaultdict
+from dataclasses import dataclass
 from datetime import datetime, date
 
 
 # ─── CONFIGURACIÓN ────────────────────────────────────────────
 
-MAX_PRICE = 300_000
+@dataclass(frozen=True)
+class Zona:
+    clave: str
+    etiqueta: str
+    municipios: tuple[str, ...]  # slug de pisos.com; en fotocasa, con guiones
+    tope: int  # precio máximo de la zona (listado y ficha)
+    fotocasa: bool
+    limite_fichas: int  # fichas de detalle que se leen por pasada
 
-# Municipios Madrid Sur
-MADRID_SUR = [
-    "getafe", "leganes", "mostoles", "alcorcon",
-    "fuenlabrada", "parla", "pinto", "valdemoro",
-    "ciempozuelos", "humanes_de_madrid", "grinon",
-    "navalcarnero", "torrejon_de_la_calzada",
-    "cubas_de_la_sagra", "batres", "serranillos_del_valle",
-    "moraleja_de_enmedio", "arroyomolinos",
-]
 
-# Toledo Norte
-TOLEDO_NORTE = [
-    "illescas",
-    "sesena",
-    "yeles",
-    "ugena",
-    "esquivias",
-]
+ZONAS = {z.clave: z for z in (
+    Zona("madrid_sur", "Madrid Sur", (
+        "getafe", "leganes", "mostoles", "alcorcon",
+        "fuenlabrada", "parla", "pinto", "valdemoro",
+        "ciempozuelos", "humanes_de_madrid", "grinon",
+        "navalcarnero", "torrejon_de_la_calzada",
+        "cubas_de_la_sagra", "batres", "serranillos_del_valle",
+        "moraleja_de_enmedio", "arroyomolinos",
+    ), 300_000, True, 30),
+    Zona("madrid_este", "Madrid Este", (
+        "torrejon_de_ardoz", "alcala_de_henares", "coslada",
+        "san_fernando_de_henares", "mejorada_del_campo", "velilla_de_san_antonio",
+    ), 350_000, True, 15),
+    Zona("madrid_sureste", "Madrid Sureste", (
+        "rivas_vaciamadrid", "arganda_del_rey", "san_martin_de_la_vega",
+        "campo_real", "morata_de_tajuna",
+    ), 300_000, True, 15),
+    Zona("madrid_norte", "Madrid Norte", (
+        "tres_cantos", "colmenar_viejo", "alcobendas",
+        "san_sebastian_de_los_reyes", "algete", "san_agustin_del_guadalix",
+    ), 400_000, True, 15),
+    Zona("toledo_norte", "Toledo Norte", (
+        "illescas", "sesena", "yeles", "ugena", "esquivias",
+    ), 300_000, False, 15),
+)}
+
+ZONA = {m: z.clave for z in ZONAS.values() for m in z.municipios}
+
+
+def tope_de(municipio: str) -> int:
+    """Precio máximo de la zona del municipio (el más bajo si no se conoce)."""
+    z = ZONAS.get(ZONA.get(municipio, ""))
+    return z.tope if z else min(z.tope for z in ZONAS.values())
+
 
 PROPERTY_TYPES = ["piso", "casa"]
+
+# Anuncios que no son una compra normal: no se guardan (ver es_problematico)
+_PROBLEMATICO_RE = re.compile(
+    r"sin posesi[oó]n|\b(?:ocupad[oa]s?|okupad[oa]s?|okupas?)\b|nuda propiedad|\bsubastas?\b"
+    r"|sin justo t[ií]tulo|no admite visitas"
+)
 
 BAD_ZONES = {
     "las margaritas": -15, "juan de la cierva": -8,
@@ -68,9 +99,6 @@ HAB_MIN = 2
 SIZE_MIN = 70
 EXTERIOR_PENALTY = -25
 VALOR_CAP = 25
-
-ZONA = {**{m: "madrid_sur" for m in MADRID_SUR},
-        **{m: "toledo_norte" for m in TOLEDO_NORTE}}
 
 EXTERIOR_KEYWORDS = ["terraza", "patio", "jardin", "jardín", "balcon", "balcón", "balcones"]
 
@@ -157,6 +185,22 @@ def _days_since(date_str, today):
         return 0
 
 
+def _texto(prop: dict) -> str:
+    return " ".join([
+        prop.get("title", ""),
+        prop.get("location", ""),
+        prop.get("description", ""),
+        " ".join(prop.get("features", [])),
+        prop.get("conservation", ""),
+    ]).lower()
+
+
+def es_problematico(prop: dict) -> bool:
+    """Sin posesión, okupado, nuda propiedad, subasta…: no es una compra normal y no se guarda."""
+    return bool(_PROBLEMATICO_RE.search(_texto(prop)))
+
+
+
 def score_property(prop: dict, reference: dict = None, today: date = None) -> dict:
     if today is None:
         today = date.today()
@@ -170,13 +214,7 @@ def score_property(prop: dict, reference: dict = None, today: date = None) -> di
         prop.get("source_url", "") or prop.get("url", ""))
     prop["municipio"] = municipio
 
-    all_text = " ".join([
-        prop.get("title", ""),
-        prop.get("location", ""),
-        prop.get("description", ""),
-        " ".join(prop.get("features", [])),
-        prop.get("conservation", ""),
-    ]).lower()
+    all_text = _texto(prop)
 
     eur_m2 = eur_m2_of(price, size)
     prop["eur_m2"] = eur_m2 or 0
@@ -276,12 +314,6 @@ def score_property(prop: dict, reference: dict = None, today: date = None) -> di
     if energy in ("A", "B", "C"):
         score += 2; details.append(f"⚡ Eficiencia {energy} (+2)")
 
-    if any(kw in all_text for kw in ["ocupado", "sin posesión", "sin posesion",
-                                       "sin justo título", "sin justo titulo",
-                                       "no admite visitas", "inmueble sin posesión"]):
-        score -= 30
-        details.append("⚠️ Propiedad ocupada / sin posesión (-30 pts)")
-
     drop = prop.get("price_drop", 0) or 0
     if drop > 0:
         prev = prop.get("previous_price") or (price + drop)
@@ -340,7 +372,7 @@ def candidatos_ficha(listings: list[dict], limite: int) -> list[dict]:
     sin_ficha = [p for p in listings if not p.get("ficha_detalle")]
     sin_ficha.sort(key=lambda x: (not x.get("cumple_requisitos", True),
                                   x.get("datos_insuficientes", False),
-                                  -x.get("score", 0), x.get("price", MAX_PRICE + 1)))
+                                  -x.get("score", 0), x.get("price", float("inf"))))
     return sin_ficha[:limite]
 
 
@@ -360,7 +392,7 @@ def deduplicar_por_id(listings: list[dict]) -> list[dict]:
 
 def ordenar_final(listings: list[dict]) -> None:
     listings.sort(key=lambda x: (x.get("datos_insuficientes", False),
-                                 -x.get("score", 0), x.get("price", MAX_PRICE + 1)))
+                                 -x.get("score", 0), x.get("price", float("inf"))))
 
 
 def payload_pasada(listings: list[dict]) -> list[dict]:
@@ -446,7 +478,8 @@ def imprimir_resumen(listings: list[dict], etiqueta: str) -> None:
 
 # ─── PISOS.COM SCRAPERS ───────────────────────────────────────
 
-async def scrape_search_page(page, url: str, reintentos: int = 1, timeout_ms: int = 20000) -> list:
+async def scrape_search_page(page, url: str, tope: int, reintentos: int = 1,
+                             timeout_ms: int = 20000) -> list:
     error = None
     for intento in range(reintentos):
         try:
@@ -500,7 +533,7 @@ async def scrape_search_page(page, url: str, reintentos: int = 1, timeout_ms: in
                 price = int(m.group(1).replace(".", ""))
                 break
 
-        if not price or price > MAX_PRICE:
+        if not price or price > tope:
             continue
 
         prop["price"] = price
@@ -626,7 +659,7 @@ async def scrape_detail_page(page, prop: dict) -> dict:
     price_match = re.search(r'(?:precio|desde)?\s*([\d.]+)\s*€', detail_text)
     if price_match:
         real_price = int(price_match.group(1).replace(".", ""))
-        if 10_000 < real_price <= MAX_PRICE:
+        if 10_000 < real_price <= tope_de(prop.get("municipio", "")):
             prop["price"] = real_price
 
     m2_match = re.search(r'superficie construida[:\s]*([\d.]+)\s*m', detail_lower)
@@ -730,7 +763,7 @@ async def scrape_detail_page(page, prop: dict) -> dict:
 
 # ─── FOTOCASA SCRAPERS ────────────────────────────────────────
 
-async def scrape_fotocasa_search(page, url: str) -> list:
+async def scrape_fotocasa_search(page, url: str, tope: int) -> list:
 
     try:
         await page.goto(url, timeout=30000, wait_until="domcontentloaded")
@@ -815,7 +848,7 @@ async def scrape_fotocasa_search(page, url: str) -> list:
             price = int(price_m.group(1).replace(".", ""))
         except ValueError:
             continue
-        if price > MAX_PRICE or price < 10_000:
+        if price > tope or price < 10_000:
             continue
 
         drop_m = re.search(r'Ha bajado\s*([\d.]+)\s*€', text)
@@ -920,7 +953,7 @@ async def scrape_fotocasa_detail(page, prop: dict) -> dict:
     price_m = re.search(r'([\d.]+)\s*€', detail_text)
     if price_m:
         real_price = int(price_m.group(1).replace(".", ""))
-        if 10_000 < real_price <= MAX_PRICE:
+        if 10_000 < real_price <= tope_de(prop.get("municipio", "")):
             prop["price"] = real_price
 
     m2_m = re.search(r'superficie\s+construida[:\s]*([\d.]+)', detail_lower)

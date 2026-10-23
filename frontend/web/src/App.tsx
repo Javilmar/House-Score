@@ -10,6 +10,7 @@ import { useRuta, type Vista } from './state/router'
 import Bajadas from './views/Bajadas'
 import ComoFunciona from './views/ComoFunciona'
 import Evolucion from './views/Evolucion'
+import Favoritos from './views/Favoritos'
 import Hipoteca from './views/Hipoteca'
 import Listados from './views/Listados'
 import Mapas from './views/Mapas'
@@ -27,6 +28,7 @@ const PESTANAS: { vista: Vista; etiqueta: string; icono: string; Componente: Com
   { vista: 'hipoteca', etiqueta: 'Hipoteca', icono: 'wallet', Componente: Hipoteca },
   { vista: 'como-funciona', etiqueta: 'Cómo funciona', icono: 'info', Componente: ComoFunciona },
   { vista: 'mapas', etiqueta: 'Mapas', icono: 'map-pin', Componente: Mapas },
+  { vista: 'favoritos', etiqueta: 'Favoritos', icono: 'star', Componente: Favoritos },
 ]
 
 function Pestanas({ vista, navegar }: Pick<ReturnType<typeof useRuta>, 'vista' | 'navegar'>) {
@@ -83,7 +85,7 @@ export default function App({ opciones, hoy }: Props) {
     <div className="block-container">
       <h1>House Score</h1>
       <p className="caption">
-        Madrid Sur · Toledo Norte — pisos.com · fotocasa · Scoring a medida · Hasta 300.000 €
+        Madrid Sur, Este, Sureste y Norte · Toledo Norte — pisos.com · fotocasa · Scoring a medida · Hasta 300.000–400.000 € según zona
       </p>
       {estado.fase === 'listo' ? (
         <DatosProvider listings={estado.listings} historico={estado.historico} hoy={hoy}>

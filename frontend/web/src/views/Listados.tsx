@@ -1,5 +1,6 @@
 import { memo, useMemo, useState } from 'react'
 import Breakdown from '../components/Breakdown'
+import BotonFavorito from '../components/BotonFavorito'
 import Multiselect from '../components/Multiselect'
 import SliderRango from '../components/SliderRango'
 import { colorDias, diasEnMercado, esRetirado, fmtEur, agruparMiles, redondear, scoreColor } from '../domain/derivaciones'
@@ -111,6 +112,7 @@ const FilaListado = memo(function FilaListado({ fila, pos, hoy }: PropsFila) {
       </td>
       <td className="lt-acciones">
         <div className="lt-acciones-col">
+          <BotonFavorito listing={l} />
           {fila.rank >= 0 && fila.rank < RANK_MAX_TOP && (
             <button
               type="button"

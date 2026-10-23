@@ -49,7 +49,7 @@ export interface Opciones {
 }
 
 export const SCORE_RANGO: Rango = [0, 100]
-const ZONAS_ORDEN: Zona[] = ['Madrid Sur', 'Toledo Norte']
+const ZONAS_ORDEN: Zona[] = ['Madrid Sur', 'Madrid Este', 'Madrid Sureste', 'Madrid Norte', 'Toledo Norte']
 
 export function enriquecer(listings: Listing[]): Fila[] {
   return listings.map((l, rank) => ({ l, zona: zonaDe(l), municipio: municipioDe(l), tipo: tipoDe(l), rank }))

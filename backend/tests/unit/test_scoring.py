@@ -1,4 +1,4 @@
-"""Scoring del exterior y reutilización de la ficha de detalle entre pasadas."""
+"""Scoring del exterior, reutilización de la ficha, topes por zona y anuncios problemáticos."""
 
 from datetime import date
 
@@ -74,3 +74,25 @@ def test_candidatos_ficha_salta_los_que_ya_tienen_ficha_y_respeta_el_limite():
         piso(url="d", score=60),
     ]
     assert [p["url"] for p in c.candidatos_ficha(listings, 2)] == ["b", "c"]
+
+
+def test_tope_por_zona():
+    assert c.tope_de("getafe") == 300_000
+    assert c.tope_de("alcala_de_henares") == 350_000
+    assert c.tope_de("rivas_vaciamadrid") == 300_000
+    assert c.tope_de("tres_cantos") == 400_000
+    assert c.tope_de("illescas") == 300_000
+    assert c.tope_de("desconocido") == 300_000  # el más bajo: nunca se cuela un piso caro
+
+
+def test_cada_municipio_pertenece_a_una_sola_zona():
+    todos = [m for z in c.ZONAS.values() for m in z.municipios]
+    assert len(todos) == len(set(todos))
+
+
+def test_problematicos():
+    for texto in ("Vivienda sin posesión", "Piso ocupado", "Inmueble okupado",
+                  "Venta de nuda propiedad", "Procedente de subasta", "No admite visitas"):
+        assert c.es_problematico(piso(description=texto)), texto
+    for texto in ("Piso desocupado y listo para entrar", "Entrega inmediata", ""):
+        assert not c.es_problematico(piso(description=texto)), texto

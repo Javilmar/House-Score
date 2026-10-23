@@ -29,7 +29,7 @@ export default function PiePagina({ cargadoEn, url, onRecargar }: Props) {
         >
           Forzar recarga
         </a>{' '}
-        · Scorer: property_scorer_all.py (pisos.com + fotocasa · Madrid Sur + Toledo Norte · ≤ 300.000 €)
+        · Scorer: property_scorer_all.py (pisos.com + fotocasa · Madrid Sur, Este, Sureste y Norte + Toledo Norte · ≤ 300.000–400.000 € según zona)
       </p>
     </footer>
   )

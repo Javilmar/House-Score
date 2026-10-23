@@ -12,9 +12,10 @@ const VISTAS = [
   'Hipoteca',
   'Cómo funciona',
   'Mapas',
+  'Favoritos',
 ]
 
-test('carga datos reales y recorre las 8 pestañas sin errores', async ({ page }) => {
+test('carga datos reales y recorre las 9 pestañas sin errores', async ({ page }) => {
   test.setTimeout(240_000)
   const errores: string[] = []
   page.on('pageerror', (e) => errores.push(`pageerror: ${e.message}`))

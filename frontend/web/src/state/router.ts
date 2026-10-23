@@ -14,6 +14,7 @@ export const VISTAS = [
   'hipoteca',
   'como-funciona',
   'mapas',
+  'favoritos',
 ] as const
 
 export type Vista = (typeof VISTAS)[number]

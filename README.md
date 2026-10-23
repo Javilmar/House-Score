@@ -1,7 +1,7 @@
 # HouseScore
 
-Buscador de vivienda (Madrid Sur + Toledo Norte) con scoring a medida. Un scorer
-(3 lotes con Playwright) corre cada día en el ordenador del propietario y publica
+Buscador de vivienda (Madrid Sur, Este, Sureste y Norte + Toledo Norte) con scoring a medida. Un scorer
+(un lote por zona, con Playwright) corre cada día en el ordenador del propietario y publica
 cada pasada en una API con base de datos; el front web, estático, la lee de esa API.
 
 - **Front publicado:** <https://housescore.errinostrich.workers.dev>
@@ -109,8 +109,8 @@ restauración en [`backend/README.md`](backend/README.md).
   desglose tal como llegan de la API; nunca lo recalcula. Sin m² fiable → "sin valorar".
 - **Tests para la lógica**: todo cambio de comportamiento en el scoring, la API o el dominio
   del front (`frontend/web/src/domain/`) lleva su test. Retoques visuales no necesitan test.
-- **Alcance fijo**: Madrid Sur + Toledo Norte, ≤ 300.000 €. Ampliar zonas, techo o portales
-  es una decisión explícita, no un efecto colateral.
+- **Alcance fijo**: Madrid Sur, Este, Sureste y Norte + Toledo Norte, ≤ 300.000–400.000 € según zona. Ampliar
+  zonas, techo o portales es una decisión explícita, no un efecto colateral.
 - **Secretos fuera del repo**: `.env.local` y `backend/.env` están
   en `.gitignore`; en producción las variables viven en Render.
 - **Migraciones sin restos**: cuando se sustituye una pieza, la anterior se borra (queda una
@@ -131,13 +131,15 @@ diarios de datos.
 
 (detalle completo en [`frontend/web/FUNCIONALIDADES.md`](frontend/web/FUNCIONALIDADES.md))
 
-- **Precio máximo scrapeado:** ≤ 300.000 €.
-- **Fuentes:** pisos.com (Madrid Sur + Toledo Norte) y fotocasa.es (en el lote de Madrid Sur,
-  `backend/worker/scraper/property_scorer_madrid.py`; se omite esa pasada si
-  bloquea).
-- **Zona de cobertura:** Madrid Sur (18 municipios) + Toledo Norte (5
-  municipios de interés activo). **Toledo capital queda excluida** (>55 min,
+- **Precio máximo scrapeado:** 300.000 € (Madrid Sur, Madrid Sureste, Toledo Norte), 350.000 € (Madrid Este)
+  y 400.000 € (Madrid Norte).
+- **Fuentes:** pisos.com (las 5 zonas) y fotocasa.es (las 4 zonas de Madrid, no Toledo Norte; se omite
+  esa búsqueda si bloquea). Un lote por zona: `backend/worker/scraper/property_scorer_lote.py <zona>`
+  (`madrid_sur`, `madrid_este`, `madrid_sureste`, `madrid_norte`, `toledo_norte`).
+- **Zonas de cobertura:** Madrid Sur (18 municipios), Madrid Este (6), Madrid Sureste (5), Madrid Norte (6)
+  y Toledo Norte (5 municipios de interés activo). **Toledo capital queda excluida** (>55 min,
   mercado distinto).
+- **Anuncios descartados:** «sin posesión», okupados/ocupados, nuda propiedad y subastas no se guardan.
 - **Motor de scoring único** en `backend/worker/scraper/property_scorer_common.py` (0–100 puntos); si un
   listing no tiene m² fiable se marca `datos_insuficientes` y queda
   "sin valorar" en vez de forzar un cálculo erróneo.

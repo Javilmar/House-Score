@@ -1,36 +1,35 @@
 #!/usr/bin/env python3
 """
-property_scorer_all.py — Orchestrator: ejecuta los 2 lotes en secuencia.
-Madrid Sur → Toledo Norte. Cada uno con su propio browser.
+property_scorer_all.py — Orchestrator: ejecuta un lote por zona (ZONAS), en secuencia.
+Cada lote es un proceso con su propio browser.
 """
 
 import subprocess
 import sys
 from pathlib import Path
 
-SCRIPTS_DIR = Path(__file__).parent
-SCRIPTS = [
-    "property_scorer_madrid.py",
-    "property_scorer_toledo.py",
-]
+sys.path.insert(0, str(Path(__file__).parent))
+from property_scorer_common import ZONAS
+
+LOTE = Path(__file__).parent / "property_scorer_lote.py"
+TIMEOUT_LOTE = 600
 
 
-def run_script(name: str) -> int:
-    script_path = SCRIPTS_DIR / name
+def run_lote(zona: str) -> int:
     print(f"\n{'#'*60}")
-    print(f"# Ejecutando: {name}")
+    print(f"# Ejecutando: {LOTE.name} {zona}")
     print(f"{'#'*60}")
     result = subprocess.run(
-        [sys.executable, str(script_path)],
+        [sys.executable, str(LOTE), zona],
         capture_output=True,
         text=True,
-        timeout=600,
+        timeout=TIMEOUT_LOTE,
     )
     print(result.stdout)
     if result.stderr:
         print("STDERR:", result.stderr[:500])
     print(f"\n{'#'*60}")
-    print(f"# {name} terminado: exit={result.returncode}")
+    print(f"# {zona} terminado: exit={result.returncode}")
     print(f"{'#'*60}\n")
     return result.returncode
 
@@ -38,26 +37,26 @@ def run_script(name: str) -> int:
 def main():
     print("▶ property_scorer_all.py — Ejecución completa de propiedades")
     print(f"  📅 {__import__('datetime').datetime.now().strftime('%d/%m/%Y %H:%M')}")
-    print(f"  📍 2 lotes: Madrid Sur → Toledo Norte")
+    print(f"  📍 {len(ZONAS)} lotes: {' → '.join(z.etiqueta for z in ZONAS.values())}")
     print()
 
     exit_codes = {}
-    for script in SCRIPTS:
+    for zona in ZONAS:
         try:
-            exit_codes[script] = run_script(script)
+            exit_codes[zona] = run_lote(zona)
         except subprocess.TimeoutExpired:
-            print(f"❌ {script}: TIMEOUT (10 min)")
-            exit_codes[script] = 124
+            print(f"❌ {zona}: TIMEOUT ({TIMEOUT_LOTE // 60} min)")
+            exit_codes[zona] = 124
         except Exception as e:
-            print(f"❌ {script}: {e}")
-            exit_codes[script] = 1
+            print(f"❌ {zona}: {e}")
+            exit_codes[zona] = 1
 
     print("\n" + "=" * 60)
     print("RESUMEN EJECUCIÓN")
     print("=" * 60)
-    for script, code in exit_codes.items():
+    for zona, code in exit_codes.items():
         status = "✅ OK" if code == 0 else f"❌ exit={code}"
-        print(f"  {script}: {status}")
+        print(f"  {zona}: {status}")
 
     # Código de salida: 0 si todos ok, 1 si alguno falló
     all_ok = all(code == 0 for code in exit_codes.values())

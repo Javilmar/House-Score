@@ -7,7 +7,13 @@ import httpx
 import pytest
 
 from worker.scraper.client import IngestError
-from worker.scraper.publicar import cargar_historial_api, publicar_pasada, verificar_api
+from worker.scraper.publicar import (
+    cargar_descartados,
+    cargar_historial_api,
+    guardar_descartados,
+    publicar_pasada,
+    verificar_api,
+)
 
 ITEM = {"title": "Piso", "price": 1, "url": "https://e/1", "m2": 70, "municipio": "getafe"}
 RESUMEN = {
@@ -183,3 +189,13 @@ def test_verificar_api_no_duerme_mas_alla_del_presupuesto():
             presupuesto=20.0,
         )
     assert reloj.t <= 20.0
+
+
+def test_descartados_persisten_y_caducan(tmp_path, monkeypatch):
+    monkeypatch.setenv("HERMES_DATA_DIR", str(tmp_path))
+    assert cargar_descartados() == {}
+    guardar_descartados({"https://e/viejo": "2026-01-01", "https://e/nuevo": "2026-10-20"},
+                        hoy=date(2026, 10, 23))
+    assert cargar_descartados() == {"https://e/nuevo": "2026-10-20"}
+    (tmp_path / "descartados.json").write_text("{roto", encoding="utf-8")
+    assert cargar_descartados() == {}

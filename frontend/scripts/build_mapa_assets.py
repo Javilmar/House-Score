@@ -5,7 +5,7 @@ Descarga y prepara los activos que necesita la pestaña "Mapa de seguridad":
 
   web/public/assets/municipios_zona.geojson
       Límites municipales (polígonos) de los municipios considerados en
-      Madrid Sur y Toledo Norte, obtenidos de la API pública de OpenDataSoft
+      Madrid Sur, Este, Sureste y Norte y Toledo Norte, obtenidos de la API pública de OpenDataSoft
       (dataset georef-spain-municipio, CC-BY-4.0).
 
   web/public/assets/criminalidad.csv
@@ -77,6 +77,26 @@ MUNICIPIOS_INE = {
     "28113": "Pinto",
     "28149": "Torrejón de la Calzada",
     "28161": "Valdemoro",
+    # Madrid Este
+    "28148": "Torrejón de Ardoz",
+    "28005": "Alcalá de Henares",
+    "28049": "Coslada",
+    "28130": "San Fernando de Henares",
+    "28084": "Mejorada del Campo",
+    "28167": "Velilla de San Antonio",
+    # Madrid Sureste
+    "28123": "Rivas-Vaciamadrid",
+    "28014": "Arganda del Rey",
+    "28132": "San Martín de la Vega",
+    "28033": "Campo Real",
+    "28091": "Morata de Tajuña",
+    # Madrid Norte
+    "28903": "Tres Cantos",
+    "28045": "Colmenar Viejo",
+    "28006": "Alcobendas",
+    "28134": "San Sebastián de los Reyes",
+    "28009": "Algete",
+    "28129": "San Agustín del Guadalix",
     # Toledo Norte
     "45002": "Alameda de la Sagra",
     "45014": "Añover de Tajo",
@@ -310,8 +330,9 @@ def descargar_secciones_renta() -> None:
                 "geometry": feat.get("geometry"),
             })
 
-        # El servicio señala si hay más páginas
-        if not data.get("exceededTransferLimit", False):
+        # En f=geojson el flag puede venir en `properties`; se pagina hasta recibir una página incompleta
+        exceeded = data.get("exceededTransferLimit") or (data.get("properties") or {}).get("exceededTransferLimit")
+        if not exceeded and len(batch) < limit:
             break
         offset += limit
         time.sleep(0.3)   # cortesía al servidor público

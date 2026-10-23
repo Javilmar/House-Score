@@ -10,11 +10,12 @@ const TABS: [string, string][] = [
   ['Hipoteca', '#/hipoteca'],
   ['Cómo funciona', '#/como-funciona'],
   ['Mapas', '#/mapas'],
+  ['Favoritos', '#/favoritos'],
 ]
 
 test.beforeEach(async ({ page }) => simularApi(page))
 
-test('arranca, muestra las 8 pestañas y cada una cambia el hash', async ({ page }) => {
+test('arranca, muestra las 9 pestañas y cada una cambia el hash', async ({ page }) => {
   const errores: string[] = []
   page.on('pageerror', (e) => errores.push(e.message))
 
@@ -22,7 +23,7 @@ test('arranca, muestra las 8 pestañas y cada una cambia el hash', async ({ page
   await expect(page.getByRole('heading', { level: 1, name: 'House Score' })).toBeVisible()
 
   const tabs = page.getByRole('tab')
-  await expect(tabs).toHaveCount(8)
+  await expect(tabs).toHaveCount(9)
   await expect(tabs).toHaveText(TABS.map(([t]) => t))
   await expect(page).toHaveURL(/#\/listados$/)
 

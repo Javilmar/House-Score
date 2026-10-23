@@ -13,6 +13,7 @@ const ETIQUETAS = [
   'Hipoteca',
   'Cómo funciona',
   'Mapas',
+  'Favoritos',
 ]
 
 const json = (c: unknown, status = 200) => Promise.resolve(new Response(JSON.stringify(c), { status }))
@@ -26,11 +27,11 @@ beforeEach(() => {
 })
 
 describe('App: armazón', () => {
-  it('muestra cabecera y las 8 pestañas en el orden de app.py:1121, cada una con icono', async () => {
+  it('muestra cabecera y las 9 pestañas en el orden de app.py:1121, cada una con icono', async () => {
     render(<App opciones={{ apiUrl: 'http://api.test', fetchFn: fetchOk }} hoy="2026-07-21" />)
     expect(await screen.findByRole('heading', { level: 1, name: 'House Score' })).toBeInTheDocument()
     expect(
-      screen.getByText('Madrid Sur · Toledo Norte — pisos.com · fotocasa · Scoring a medida · Hasta 300.000 €'),
+      screen.getByText('Madrid Sur, Este, Sureste y Norte · Toledo Norte — pisos.com · fotocasa · Scoring a medida · Hasta 300.000–400.000 € según zona'),
     ).toBeInTheDocument()
     const tabs = await screen.findAllByRole('tab')
     expect(tabs.map((t) => t.textContent)).toEqual(ETIQUETAS)
@@ -49,7 +50,7 @@ describe('App: armazón', () => {
   it('pulsar cada pestaña cambia el hash y renderiza su vista', async () => {
     const user = userEvent.setup()
     render(<App opciones={{ apiUrl: 'http://api.test', fetchFn: fetchOk }} hoy="2026-07-21" />)
-    const rutas = ['listados', 'top', 'novedades', 'evolucion', 'bajadas', 'hipoteca', 'como-funciona', 'mapas']
+    const rutas = ['listados', 'top', 'novedades', 'evolucion', 'bajadas', 'hipoteca', 'como-funciona', 'mapas', 'favoritos']
     const tabs = await screen.findAllByRole('tab')
     for (const [i, t] of tabs.entries()) {
       await user.click(t)
@@ -80,7 +81,7 @@ describe('App: estados de carga', () => {
     expect(screen.queryAllByRole('tab')).toHaveLength(0)
     fallar = false
     await user.click(within(alerta).getByRole('button', { name: 'Reintentar' }))
-    expect(await screen.findAllByRole('tab')).toHaveLength(8)
+    expect(await screen.findAllByRole('tab')).toHaveLength(9)
   })
 
   it('sin_datos: "Sin datos todavía"', async () => {

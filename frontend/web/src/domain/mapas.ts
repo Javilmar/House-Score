@@ -66,7 +66,8 @@ export const COLOR_RENTA: Escala = [
 ]
 export const COLOR_PRECIO: Escala = COLOR_CRIMINALIDAD.map(([n, c]) => [n, c])
 
-export const CENTRO = { lat: 40.18, lon: -3.78 }
+// Centro de las 5 zonas: de Toledo Norte (≈40,05) a Madrid Norte (≈40,68), de Navalcarnero a Alcalá
+export const CENTRO = { lat: 40.36, lon: -3.66 }
 const ESTILO = 'carto-darkmatter'
 const OPACIDAD = 0.75
 const TRANSPARENTE = 'rgba(0,0,0,0)'
@@ -245,7 +246,7 @@ export function figuraRenta(filas: FilaSeccion[], geojson: GeoJson): Figura {
       '<b>%{hovertext}</b><br>Sección censal=%{location}<br>Renta neta media (€/pers)=%{z:,.0f}<br>Año=%{customdata[0]}<extra></extra>',
     customdata: conRenta.map((f) => [f.anio]),
     titulo: 'Renta neta media (€/pers)',
-    zoom: 10,
+    zoom: 9,
   })
 }
 

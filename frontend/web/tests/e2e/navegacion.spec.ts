@@ -10,6 +10,7 @@ const PESTANAS = [
   ['Hipoteca', 'hipoteca'],
   ['Cómo funciona', 'como-funciona'],
   ['Mapas', 'mapas'],
+  ['Favoritos', 'favoritos'],
 ] as const
 
 const TIPOS: Record<string, string> = { 'segunda-mano': 'Segunda mano', 'obra-nueva': 'Obra nueva' }
@@ -37,7 +38,7 @@ for (const ancho of [1280, 390]) {
       await page.route(/basemaps\.cartocdn\.com/, (r) => r.abort())
     })
 
-    test('las 8 pestañas cambian de vista y recargar la conserva', async ({ page }) => {
+    test('las 9 pestañas cambian de vista y recargar la conserva', async ({ page }) => {
       await page.goto('/')
       for (const [etiqueta, vista] of PESTANAS) {
         await page.getByRole('tab', { name: etiqueta }).click()
