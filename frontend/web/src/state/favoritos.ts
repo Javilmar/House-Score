@@ -51,15 +51,17 @@ function escribir(lista: readonly string[]): void {
   avisar()
 }
 
+/** Un único listener de `storage` para todas las estrellas (Listados monta cientos). */
+function alCambiarStorage(e: StorageEvent) {
+  if (e.key === null || e.key === CLAVE_FAVORITOS) avisar()
+}
+
 function suscribir(oyente: () => void): () => void {
+  if (oyentes.size === 0) window.addEventListener('storage', alCambiarStorage)
   oyentes.add(oyente)
-  const alCambiar = (e: StorageEvent) => {
-    if (e.key === null || e.key === CLAVE_FAVORITOS) oyente()
-  }
-  window.addEventListener('storage', alCambiar)
   return () => {
     oyentes.delete(oyente)
-    window.removeEventListener('storage', alCambiar)
+    if (oyentes.size === 0) window.removeEventListener('storage', alCambiarStorage)
   }
 }
 
