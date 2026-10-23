@@ -104,8 +104,10 @@ Cambios respecto a los originales:
 4. Sin exterior detectado se resta 25 solo si la ficha está leída; sin ficha, «❔ Exterior sin
    verificar (0)».
 5. Los anuncios «sin posesión», okupados, de nuda propiedad o subastas (`es_problematico`) no se
-   envían a la API. Sus urls se apuntan en `HERMES_DATA_DIR/descartados.json` (caducan a los 180
-   días) para no volver a leer su ficha en cada pasada.
+   envían a la API, ni los que la ficha revela por encima del tope de su zona (`supera_tope`: el
+   precio del listado a veces es menor que el real). Sus urls se apuntan en
+   `HERMES_DATA_DIR/descartados.json` (caducan a los 180 días) para no volver a leer su ficha en
+   cada pasada.
 6. Al terminar, `publicar_pasada()` envía el lote a `POST /ingest` en vez de escribir el snapshot
    diario y hacer `git commit` + `push`. Si falla, el lote se guarda en `HERMES_DATA_DIR/pendientes/`
    y se reenvía con `python -m worker.scraper.client <fichero> --api-url https://house-score.onrender.com`

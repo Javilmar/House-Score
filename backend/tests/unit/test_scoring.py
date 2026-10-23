@@ -96,3 +96,9 @@ def test_problematicos():
         assert c.es_problematico(piso(description=texto)), texto
     for texto in ("Piso desocupado y listo para entrar", "Entrega inmediata", ""):
         assert not c.es_problematico(piso(description=texto)), texto
+
+
+def test_supera_tope_segun_la_zona_del_municipio():
+    assert not c.supera_tope(piso(municipio="tres_cantos", price=400_000))
+    assert c.supera_tope(piso(municipio="tres_cantos", price=400_001))
+    assert c.supera_tope(piso(municipio="getafe", price=350_000))

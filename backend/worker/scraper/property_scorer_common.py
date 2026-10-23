@@ -62,6 +62,11 @@ def tope_de(municipio: str) -> int:
     return z.tope if z else min(z.tope for z in ZONAS.values())
 
 
+def supera_tope(prop: dict) -> bool:
+    """El precio (p. ej. el real de la ficha) pasa del tope de su zona: fuera de presupuesto."""
+    return (prop.get("price") or 0) > tope_de(prop.get("municipio", ""))
+
+
 PROPERTY_TYPES = ["piso", "casa"]
 
 # Anuncios que no son una compra normal: no se guardan (ver es_problematico)
@@ -494,37 +499,28 @@ async def scrape_search_page(page, url: str, tope: int, reintentos: int = 1,
         print(f"  ⚠️ Error cargando {url}: {error}", file=sys.stderr)
         return []
 
+    # Una tarjeta por anuncio, con su url y su texto juntos. Antes se partía el texto de <main> por
+    # el contador de fotos («1/16») y se emparejaba por posición con los enlaces: si una tarjeta no
+    # se partía bien, todas las siguientes quedaban con la url (y la ficha) de otro anuncio.
     try:
-        link_data = await page.evaluate('''() => {
-            const main = document.querySelector("main");
-            if (!main) return [];
-            const anchors = main.querySelectorAll('a[href*="comprar"]');
-            return Array.from(anchors).map(a => ({
-                href: a.href,
-                text: a.innerText.substring(0, 150)
-            }));
-        }''')
+        tarjetas = await page.evaluate('''() => Array.from(
+            document.querySelectorAll("main .ad-preview[data-lnk-href]")
+        ).map(c => ({
+            href: new URL(c.getAttribute("data-lnk-href"), location.href).href,
+            text: c.innerText || ""
+        }))''')
     except Exception:
-        link_data = []
-
-    try:
-        main_text = await page.evaluate('() => document.querySelector("main")?.innerText || ""')
-    except Exception:
-        main_text = ""
-
-    listing_splits = re.split(r'\n(?=\d+/\d+\s)', main_text)
-    text_blocks = [s.strip() for s in listing_splits if re.match(r'\d+/\d+', s.strip())]
+        tarjetas = []
 
     listings = []
 
-    for i, block in enumerate(text_blocks):
+    for tarjeta in tarjetas:
         prop = {
             "source_url": url,
             "scraped_at": datetime.now().isoformat(),
         }
 
-        lines = block.split("\n")
-        clean = [l.strip() for l in lines if l.strip()]
+        clean = [l.strip() for l in tarjeta["text"].split("\n") if l.strip()]
 
         price = None
         for line in clean:
@@ -612,16 +608,9 @@ async def scrape_search_page(page, url: str, tope: int, reintentos: int = 1,
         prop["features"] = []
         prop["detail_features"] = {}
 
-        if i < len(link_data):
-            prop["url"] = link_data[i]["href"]
-            m = re.search(r'-(\d+_\d+)/?$', link_data[i]["href"])
-            if m:
-                prop["pisos_id"] = m.group(1)
-            else:
-                prop["pisos_id"] = link_data[i]["href"]
-        else:
-            prop["url"] = ""
-            prop["pisos_id"] = ""
+        prop["url"] = tarjeta["href"]
+        m = re.search(r'-(\d+_\d+)/?$', tarjeta["href"])
+        prop["pisos_id"] = m.group(1) if m else tarjeta["href"]
 
         listings.append(prop)
 
@@ -656,10 +645,17 @@ async def scrape_detail_page(page, prop: dict) -> dict:
 
     detail_lower = detail_text.lower()
 
-    price_match = re.search(r'(?:precio|desde)?\s*([\d.]+)\s*€', detail_text)
+    # El precio del anuncio (no la primera cifra con €, que puede ser la cuota o un anuncio
+    # relacionado). Si supera el tope de la zona, el lote lo quita (supera_tope).
+    try:
+        precio_txt = await page.evaluate(
+            '() => document.querySelector(".price__value")?.innerText || document.title || ""')
+    except Exception:
+        precio_txt = ""
+    price_match = re.search(r'([\d.]+)\s*€', precio_txt)
     if price_match:
         real_price = int(price_match.group(1).replace(".", ""))
-        if 10_000 < real_price <= tope_de(prop.get("municipio", "")):
+        if real_price > 10_000:
             prop["price"] = real_price
 
     m2_match = re.search(r'superficie construida[:\s]*([\d.]+)\s*m', detail_lower)

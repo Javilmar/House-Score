@@ -21,7 +21,7 @@ from worker.scraper.publicar import (
 )
 from property_scorer_common import (
     ZONAS, PROPERTY_TYPES, Zona,
-    score_property, build_reference, eur_m2_of, es_problematico,
+    score_property, build_reference, eur_m2_of, es_problematico, supera_tope,
     preparar_pasada, candidatos_ficha, ordenar_final, payload_pasada, imprimir_resumen,
     deduplicar_por_id,
     scrape_search_page, scrape_detail_page, scrape_fotocasa_search, scrape_fotocasa_detail,
@@ -34,14 +34,15 @@ _FC_UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
           "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36")
 
 
-def _sin_problematicos(listings: list[dict], descartados: dict[str, str], hoy: str) -> list[dict]:
-    """Quita lo ya descartado y lo que es problemático ahora (y lo apunta en `descartados`)."""
+def _sin_descartables(listings: list[dict], descartados: dict[str, str], hoy: str) -> list[dict]:
+    """Quita lo ya descartado, lo problemático y lo que pasa del tope de su zona (el precio real
+    de la ficha puede ser mayor que el del listado), y lo apunta en `descartados`."""
     quedan = []
     for l in listings:
         url = l.get("url", "")
         if url and url in descartados:
             continue
-        if es_problematico(l):
+        if es_problematico(l) or supera_tope(l):
             if url:
                 descartados[url] = hoy
             continue
@@ -154,7 +155,7 @@ async def main(zona: Zona):
         all_listings = _sin_similares(deduplicar_por_id(all_listings))
         descartados = cargar_descartados()
         antes = len(all_listings)
-        all_listings = _sin_problematicos(all_listings, descartados, today_str)
+        all_listings = _sin_descartables(all_listings, descartados, today_str)
         print(f"\n📊 Total listings ({zona.etiqueta}, deduped): {len(all_listings)} "
               f"({antes - len(all_listings)} descartados: sin posesión, okupados, subastas…)",
               flush=True)
@@ -206,8 +207,8 @@ async def main(zona: Zona):
         except Exception:
             pass
 
-        # La ficha puede revelar lo que el listado no decía (p. ej. «sin posesión»)
-        all_listings = _sin_problematicos(all_listings, descartados, today_str)
+        # La ficha puede revelar lo que el listado no decía («sin posesión», precio real mayor)
+        all_listings = _sin_descartables(all_listings, descartados, today_str)
         guardar_descartados(descartados)
 
         ordenar_final(all_listings)
