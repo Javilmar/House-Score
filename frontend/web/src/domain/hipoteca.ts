@@ -1,8 +1,8 @@
 /** Cálculo hipotecario: port literal de `calc_impuestos` (app.py:791) y `calc_hipoteca` (app.py:824). */
 
-// Fiscalidad orientativa 2024-2026 (app.py:54-63)
+// Fiscalidad orientativa 2026 (app.py:54-63); ITP de Madrid rebajado al 4 %
 export const IVA_OBRA_NUEVA = 0.1
-export const ITP: Record<string, number> = { 'Comunidad de Madrid': 0.06, 'Castilla-La Mancha': 0.09 }
+export const ITP: Record<string, number> = { 'Comunidad de Madrid': 0.04, 'Castilla-La Mancha': 0.09 }
 export const AJD: Record<string, number> = { 'Comunidad de Madrid': 0.0075, 'Castilla-La Mancha': 0.015 }
 export const OTROS_GASTOS_PCT = 0.015
 export const TASACION_EUR = 400

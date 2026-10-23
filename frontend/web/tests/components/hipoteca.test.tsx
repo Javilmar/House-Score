@@ -97,16 +97,16 @@ describe('Hipoteca: resultados', () => {
     montar()
     cambiar(precio(), 250000)
     expect(within(kpi('Cuota mensual')).getByText('843 €')).toBeInTheDocument()
-    expect(within(kpi('Ahorro necesario')).getByText('69.150 €')).toBeInTheDocument()
+    expect(within(kpi('Ahorro necesario')).getByText('64.150 €')).toBeInTheDocument()
     expect(within(kpi('Total intereses')).getByText('103.555 €')).toBeInTheDocument()
-    expect(within(kpi('Total desembolso')).getByText('372.705 €')).toBeInTheDocument()
+    expect(within(kpi('Total desembolso')).getByText('367.705 €')).toBeInTheDocument()
     expect(screen.getByText('Concepto (Segunda mano (ITP))')).toBeInTheDocument()
     expect(screen.getByText('Entrada (20%)')).toBeInTheDocument()
-    expect(screen.getByText('ITP (6% — Comunidad de Madrid)')).toBeInTheDocument()
+    expect(screen.getByText('ITP (4% — Comunidad de Madrid)')).toBeInTheDocument()
     expect(screen.getByText('Otros gastos (gestoría, notaría, tasación…)')).toBeInTheDocument()
     expect(screen.getByText('Ahorro necesario total')).toBeInTheDocument()
     expect(screen.getByText('50.000 €')).toBeInTheDocument()
-    expect(screen.getByText('15.000 €')).toBeInTheDocument()
+    expect(screen.getByText('10.000 €')).toBeInTheDocument()
     expect(screen.getByText('4.150 €')).toBeInTheDocument()
   })
 
@@ -125,7 +125,7 @@ describe('Hipoteca: resultados', () => {
     montar()
     expect(
       screen.getByText(
-        'Tipos impositivos orientativos 2024-2026. ITP: C. Madrid 6% / CLM 9%. AJD (obra nueva): C. Madrid 0,75% / CLM 1,5%. IVA obra nueva: 10%. Otros gastos (~1,5% + tasación 400€) son estimaciones. Pueden existir bonificaciones por edad, familia numerosa, VPO, etc.',
+        'Tipos impositivos orientativos 2026. ITP: C. Madrid 4% / CLM 9%. AJD (obra nueva): C. Madrid 0,75% / CLM 1,5%. IVA obra nueva: 10%. Otros gastos (~1,5% + tasación 400€) son estimaciones. Pueden existir bonificaciones por edad, familia numerosa, VPO, etc.',
       ),
     ).toBeInTheDocument()
   })

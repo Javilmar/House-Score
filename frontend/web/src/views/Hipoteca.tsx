@@ -258,7 +258,7 @@ export default function Hipoteca() {
       </div>
 
       <p className="caption">
-        Tipos impositivos orientativos 2024-2026. ITP: C. Madrid 6% / CLM 9%. AJD (obra nueva): C. Madrid 0,75% /
+        Tipos impositivos orientativos 2026. ITP: C. Madrid 4% / CLM 9%. AJD (obra nueva): C. Madrid 0,75% /
         CLM 1,5%. IVA obra nueva: 10%. Otros gastos (~1,5% + tasación 400€) son estimaciones. Pueden existir
         bonificaciones por edad, familia numerosa, VPO, etc.
       </p>

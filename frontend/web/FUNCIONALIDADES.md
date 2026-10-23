@@ -164,7 +164,7 @@ Calculadora, pre-cargable desde cualquier listing.
 
 | Concepto | Madrid | Castilla-La Mancha |
 |---|---|---|
-| ITP (segunda mano) | 6 % | 9 % |
+| ITP (segunda mano) | 4 % | 9 % |
 | AJD (obra nueva) | 0,75 % | 1,5 % |
 | IVA obra nueva | 10 % | 10 % |
 | Otros gastos | 1,5 % del precio + 400 € de tasación | igual |

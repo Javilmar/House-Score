@@ -23,10 +23,10 @@ describe('pyRound (round() de Python: mitades al par)', () => {
 })
 
 describe('calcImpuestos', () => {
-  it('segunda mano Madrid: ITP 6 %', () => {
+  it('segunda mano Madrid: ITP 4 %', () => {
     expect(calcImpuestos(250000, false, MAD)).toEqual({
-      items: [['ITP (6% — Comunidad de Madrid)', 15000]],
-      total: 15000,
+      items: [['ITP (4% — Comunidad de Madrid)', 10000]],
+      total: 10000,
     })
   })
   it('segunda mano CLM: ITP 9 %', () => {
@@ -49,10 +49,10 @@ describe('calcImpuestos', () => {
       ],
       total: 269,
     })
-    expect(calcImpuestos(1250, false, MAD).total).toBe(75)
+    expect(calcImpuestos(1250, false, MAD).total).toBe(50)
   })
   it('CCAA desconocida usa el tipo de Madrid con la etiqueta dada', () => {
-    expect(calcImpuestos(100000, false, 'Narnia').items).toEqual([['ITP (6% — Narnia)', 6000]])
+    expect(calcImpuestos(100000, false, 'Narnia').items).toEqual([['ITP (4% — Narnia)', 4000]])
   })
   it('precio no válido → vacío', () => {
     const vacio = { items: [], total: 0 }
@@ -69,11 +69,11 @@ describe('calcHipoteca', () => {
       principal: 200000,
       entrada: 50000,
       cuota_mensual: 843,
-      impuestos: { items: [['ITP (6% — Comunidad de Madrid)', 15000]], total: 15000 },
+      impuestos: { items: [['ITP (4% — Comunidad de Madrid)', 10000]], total: 10000 },
       otros_gastos: 4150,
-      ahorro_necesario: 69150,
+      ahorro_necesario: 64150,
       total_intereses: 103555,
-      total_pagado: 372705,
+      total_pagado: 367705,
     })
   })
   it('obra nueva CLM', () => {
@@ -111,16 +111,16 @@ describe('calcHipoteca', () => {
       principal: 0,
       cuota_mensual: 0,
       total_intereses: 0,
-      ahorro_necesario: 107900,
-      total_pagado: 107900,
+      ahorro_necesario: 105900,
+      total_pagado: 105900,
     })
   })
   it('interés 0 %: cuota = principal / n (sistema sin interés)', () => {
     expect(calcHipoteca(100000, 0.2, 30, 0, false, MAD)).toMatchObject({
       cuota_mensual: 222,
       total_intereses: 0,
-      ahorro_necesario: 27900,
-      total_pagado: 107900,
+      ahorro_necesario: 25900,
+      total_pagado: 105900,
     })
   })
   it('precio 0 o inválido → todo a cero', () => {
@@ -143,15 +143,15 @@ describe('calcHipoteca', () => {
       entrada: 62,
       cuota_mensual: 0,
       otros_gastos: 402,
-      ahorro_necesario: 472,
+      ahorro_necesario: 469,
       total_intereses: 33,
-      total_pagado: 568,
+      total_pagado: 565,
     })
     expect(calcHipoteca(10050, 0.2, 30, 0.03, false, MAD)).toMatchObject({
       entrada: 2010,
       cuota_mensual: 34,
-      ahorro_necesario: 3164,
-      total_pagado: 15367,
+      ahorro_necesario: 2963,
+      total_pagado: 15166,
     })
   })
   it('CCAA por defecto', () => {
