@@ -19,12 +19,11 @@ HouseScore/
 │   │   ├── public/assets/      # geometrías y datos de los mapas
 │   │   ├── tests/              # unit/, components/, e2e/ (Playwright), fixtures
 │   │   └── FUNCIONALIDADES.md  # referencia funcional del front
-│   ├── scripts/                # build_mapa_assets.py: regenera public/assets/
-│   └── config/                 # precios de referencia por municipio (los usa el scorer)
+│   └── scripts/                # build_mapa_assets.py: regenera public/assets/
 ├── backend/                    # API FastAPI + PostgreSQL, scorer y utilidades
 │   ├── app/                    # API: GET /listings, GET /historico, POST /ingest
-│   ├── worker/scraper/         # el scorer (3 lotes) y el cliente que publica en la API
-│   └── ops/                    # lanzador del cron de hermes, backups, migración a Neon, tareas
+│   ├── worker/scraper/         # el scorer (2 lotes) y el cliente que publica en la API
+│   └── ops/                    # lanzador del cron de hermes, backups y tareas programadas
 ├── neon.ts                     # configuración del proyecto Neon (raíz)
 └── specs/                      # histórico de diseño (001 backend, 002 y 003 front); no se mantiene
 ```
@@ -101,7 +100,7 @@ Workers Builds: **Root directory** `frontend/web`, **build** `npm run build`,
 
 Proyecto de Neon con la base de HouseScore, configurado en `neon.ts` (raíz del repo,
 política de ramas). Las cadenas de conexión viven en `.env.local` (raíz, no versionado) y
-las usan `backend/ops/backup.ps1` y `backend/ops/migrar_a_neon.ps1`. Detalle de copias y
+las usa `backend/ops/backup.ps1`. Detalle de copias y
 restauración en [`backend/README.md`](backend/README.md).
 
 ## Reglas de trabajo
@@ -112,7 +111,7 @@ restauración en [`backend/README.md`](backend/README.md).
   del front (`frontend/web/src/domain/`) lleva su test. Retoques visuales no necesitan test.
 - **Alcance fijo**: Madrid Sur + Toledo Norte, ≤ 300.000 €. Ampliar zonas, techo o portales
   es una decisión explícita, no un efecto colateral.
-- **Secretos fuera del repo**: `.env.local`, `backend/.env` e `idealista_session.json` están
+- **Secretos fuera del repo**: `.env.local` y `backend/.env` están
   en `.gitignore`; en producción las variables viven en Render.
 - **Migraciones sin restos**: cuando se sustituye una pieza, la anterior se borra (queda una
   etiqueta git como referencia), sin modos de compatibilidad.
@@ -133,16 +132,16 @@ diarios de datos.
 (detalle completo en [`frontend/web/FUNCIONALIDADES.md`](frontend/web/FUNCIONALIDADES.md))
 
 - **Precio máximo scrapeado:** ≤ 300.000 €.
-- **Fuentes:** pisos.com (fiable) y fotocasa.es (en el lote de Madrid Sur,
+- **Fuentes:** pisos.com (Madrid Sur + Toledo Norte) y fotocasa.es (en el lote de Madrid Sur,
   `backend/worker/scraper/property_scorer_madrid.py`; se omite esa pasada si
-  bloquea), más idealista en modo best-effort (puede bloquear DataDome).
+  bloquea).
 - **Zona de cobertura:** Madrid Sur (18 municipios) + Toledo Norte (5
   municipios de interés activo). **Toledo capital queda excluida** (>55 min,
   mercado distinto).
 - **Motor de scoring único** en `backend/worker/scraper/property_scorer_common.py` (0–100 puntos); si un
   listing no tiene m² fiable se marca `datos_insuficientes` y queda
   "sin valorar" en vez de forzar un cálculo erróneo.
-- **Flujo de datos:** scorer (3 lotes, PC del propietario) → `POST /ingest` en la API de
+- **Flujo de datos:** scorer (2 lotes, PC del propietario) → `POST /ingest` en la API de
   Render (deduplicación por url, detección de bajadas de precio y de pisos
   retirados) → Neon → `GET /listings` y `/historico` → front estático en Cloudflare.
 - **Diseño:** modo oscuro siempre, un único color de acento (`#6366f1`), sin

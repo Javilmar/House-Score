@@ -182,8 +182,8 @@ function VistaRenta({ filas, geojson }: { filas: FilaSeccion[]; geojson: GeoJson
 }
 
 function VistaPrecio({ geojson }: { geojson: GeoJson | null }) {
-  const { listings } = useDatos()
-  const filas = useMemo(() => (geojson ? agregarPrecios(listings, geojson) : []), [listings, geojson])
+  const { activos } = useDatos()
+  const filas = useMemo(() => (geojson ? agregarPrecios(activos, geojson) : []), [activos, geojson])
   const figura = useMemo(() => (geojson ? figuraPrecio(filas, geojson) : null), [filas, geojson])
   const ranking = useMemo(() => rankingPrecio(filas), [filas])
   if (geojson === null || figura === null) {

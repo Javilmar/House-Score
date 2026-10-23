@@ -24,7 +24,7 @@ scorer (PC, hermes)  →  POST /ingest  →  API (Render)  →  Neon
 ```
 
 - Precio máximo scrapeado: **≤ 300.000 €**.
-- Fuentes: **pisos.com** y **fotocasa.es** (lote Madrid Sur) + **idealista** (best-effort, DataDome).
+- Fuentes: **pisos.com** (Madrid Sur + Toledo Norte) y **fotocasa.es** (Madrid Sur)
 - Zona: Madrid Sur (18 municipios) + Toledo Norte (Esquivias, Illescas, Seseña, Ugena, Yeles).
   **Toledo capital excluida**; los demás municipios toledanos se filtran en la API
   (`backend/app/services/reglas.py`).
@@ -81,14 +81,16 @@ Navegación entre vistas:
 
 `src/domain/kpis.ts`, componente `KpiBar`.
 
+Todos los KPI se calculan sobre los listings activos (los retirados no cuentan).
+
 | KPI | Descripción |
 |---|---|
-| Total listings | Listings con `status = active` |
-| Nuevos hoy | `first_seen == hoy` |
-| Score medio | Media de los listings con m² fiable (si no hay ninguno, de todos); `—` sin datos |
-| Precio medio | Media de todos los listings recibidos |
-| Bajadas | `price_drop > 0` |
-| Sin valorar | `datos_insuficientes = true` |
+| Total listings | Listings activos |
+| Nuevos hoy | Activos con `first_seen == hoy` |
+| Score medio | Media de los activos con m² fiable (si no hay ninguno, de todos los activos); `—` sin datos |
+| Precio medio | Media de los listings activos |
+| Bajadas | Activos con `price_drop > 0` |
+| Sin valorar | Activos con `datos_insuficientes = true` |
 
 ---
 

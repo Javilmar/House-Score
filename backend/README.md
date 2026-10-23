@@ -16,19 +16,7 @@ docker compose up --build
 ```
 
 La API queda en `http://127.0.0.1:8000` (solo accesible desde el propio equipo; usa `127.0.0.1` y no `localhost`, que en Windows añade ~2 s por petición al probar IPv6 primero). Las migraciones
-de Alembic corren solas al arrancar el contenedor `api`. Tras el primer arranque, carga los datos
-actuales una sola vez:
-
-```bash
-docker compose exec api python -m scripts.migrar_datos_existentes
-```
-
-El contenedor `api` monta `../frontend` en solo lectura para esa migración.
-
-`frontend/datos/` se retiró del repositorio (spec 001, T052) tras migrar y verificar los datos.
-Si alguna vez hay que volver a migrar sobre una base vacía, recupera los JSON de la etiqueta
-`pre-retirada-fase1`: `git checkout pre-retirada-fase1 -- frontend/datos`, ejecuta la migración y
-borra la carpeta de nuevo (`git rm -r --cached frontend/datos` si no quieres commitearla).
+de Alembic corren solas al arrancar el contenedor `api`.
 
 ## Variables de entorno
 
@@ -72,14 +60,13 @@ cd backend
 python -m venv .venv && .venv/Scripts/pip install -e ".[dev]"
 export DATABASE_URL=sqlite:///./housescore.db INGEST_SECRET=dev
 .venv/Scripts/python -m alembic upgrade head
-.venv/Scripts/python -m scripts.migrar_datos_existentes   # una sola vez, sobre base vacía
 .venv/Scripts/python -m uvicorn app.main:app --reload
 ```
 
 ## Enviar una pasada del scraper
 
 ```bash
-INGEST_SECRET=... python -m worker.scraper.client ruta/al/last_property_data.json \
+INGEST_SECRET=... python -m worker.scraper.client <pendiente>.json \
     --api-url https://house-score.onrender.com
 ```
 
@@ -93,13 +80,20 @@ con log en `backend/logs/`.
 ## El scorer (`worker/scraper/`)
 
 Copia adaptada de los scripts de `~/AppData/Local/hermes/scripts/`: `property_scorer_common.py`,
-los lotes `property_scorer_madrid.py`, `property_scorer_toledo.py` y `property_scorer_idealista.py`,
-y el orquestador `property_scorer_all.py`. Cambios respecto a los originales, y nada más:
+los lotes `property_scorer_madrid.py` y `property_scorer_toledo.py`,
+y el orquestador `property_scorer_all.py`. Cambios respecto a los originales:
 
 1. Al empezar, cada lote llama a `verificar_api()` (falla pronto si la API está caída).
 2. El historial (`first_seen`, último precio) sale de `GET /listings?incluir_retirados=true` en vez de
    `frontend/datos/*.json`. Las puntuaciones dependen de él (bajadas de precio y días en el mercado).
-3. Al terminar, `publicar_pasada()` envía el lote a `POST /ingest` en vez de escribir el snapshot
+   También trae el `detalle` guardado: si un anuncio ya tiene ficha leída (`ficha_detalle`), se
+   reutiliza (`reutilizar_ficha`) y la lectura de fichas de la pasada (30 en Madrid, 15 en Toledo)
+   se dedica a los mejores anuncios que aún no la tienen.
+3. Cada pasada envía **todo** lo scrapeado (ya no hay filtro de «vistos»): así `ultima_aparicion`
+   avanza, no se retiran anuncios vivos y se detectan las bajadas de precio.
+4. Sin exterior detectado se resta 25 solo si la ficha está leída; sin ficha, «❔ Exterior sin
+   verificar (0)».
+5. Al terminar, `publicar_pasada()` envía el lote a `POST /ingest` en vez de escribir el snapshot
    diario y hacer `git commit` + `push`. Si falla, el lote se guarda en `HERMES_DATA_DIR/pendientes/`
    y se reenvía con `python -m worker.scraper.client <fichero> --api-url https://house-score.onrender.com`
    (con `INGEST_SECRET` definido).
@@ -125,9 +119,14 @@ Python del entorno de hermes (que tiene `playwright`, `playwright_stealth` y `ht
 
 Si cambias `ops/hermes_launcher.py`, vuelve a copiarlo:
 `cp backend/ops/hermes_launcher.py ~/AppData/Local/hermes/scripts/housescore_scraper.py`.
-La sesión de idealista (`idealista_session.json`) sigue fuera del repo, en `HERMES_DATA_DIR`.
-Idealista bloquea hoy todos los municipios (es esperado y no rompe el job). El scorer sigue leyendo y
-escribiendo `frontend/config/precios_referencia.json`, que ya no se commitea.
+
+**Pasada de recuperación.** hermes solo dispara el job si el PC está encendido a las 09:00. Por eso
+`ops/registrar_tareas.ps1` registra también la tarea `HouseScore-Scraper` (10:00, `StartWhenAvailable`,
+requiere `HOUSESCORE_PYTHON`), que lanza el mismo `hermes_launcher.py`. Al terminar con código 0 el
+lanzador escribe la fecha de hoy en `HERMES_DATA_DIR/ultima_pasada_ok.txt` (por defecto
+`~/AppData/Local/hermes/ultima_pasada_ok.txt`); si ya contiene la fecha de hoy, el siguiente disparo
+dice «Ya hay una pasada completa de hoy» y no repite. Una pasada fallida no escribe la marca, así que
+se reintenta sola (la ingesta es idempotente por `url`).
 
 ## Front web
 
@@ -159,7 +158,6 @@ docker run --rm -v "<carpeta>:/b" postgres:18-alpine pg_restore -d "<url-destino
 app/        API (main, api/, models/, services/, db/, core/, schemas.py)
 worker/     cliente del scraper (client.py) y run_scraper.ps1
 alembic/    migraciones
-scripts/    migrar_datos_existentes.py
-ops/        lanzador de hermes, backups, migración a Neon y tareas programadas
+ops/        lanzador de hermes, backups y tareas programadas
 tests/      unit/, contract/, integration/
 ```

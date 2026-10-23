@@ -62,10 +62,15 @@ export default function ComoFunciona() {
             titulo="📐 Superficie"
             subtitulo="Cuanto más grande, mejor"
             items={[
+              ['< 70 m² → no cumple requisitos', '—', NEG],
               ['≥ 140 m²', '+15', NEU],
               ['≥ 120 m²', '+12', NEU],
               ['≥ 100 m²', '+8', NEU],
               ['≥ 80 m²', '+5', NEU],
+              ['≥ 70 m²', '+3', NEU],
+              ['🛏️ 3 o más habitaciones', '+5', POS],
+              ['🛏️ 2 habitaciones', '+2', POS],
+              ['🛏️ 1 habitación → no cumple requisitos', '—', NEG],
             ]}
           />
           <Bloque
@@ -81,14 +86,22 @@ export default function ComoFunciona() {
         <div className="cf-col">
           <Bloque
             titulo="✨ Características"
-            subtitulo="Detectadas en anuncio y ficha · el total se limita a +15"
+            subtitulo="Detectadas en anuncio y ficha · el total se limita a +18"
             items={[
-              ['🏊 Piscina', '+15', POS],
-              ['🚗 Garaje', '+12', POS],
-              ['📦 Trastero', '+10', POS],
-              ['🌿 Terraza / 🏡 Patio', '+10', POS],
-              ['🛗 Ascensor / 🌳 Jardín', '+5', POS],
-              ['Tope del bloque (no se acumula sin fin)', 'máx +15', NEU],
+              ['🏊 Piscina', '+8', POS],
+              ['🚗 Garaje', '+10', POS],
+              ['📦 Trastero', '+6', POS],
+              ['🛗 Ascensor', '+5', POS],
+              ['Tope del bloque (no se acumula sin fin)', 'máx +18', NEU],
+            ]}
+          />
+          <Bloque
+            titulo="🌿 Exterior"
+            subtitulo="Terraza, patio, jardín o balcón"
+            items={[
+              ['Detectado en anuncio o ficha', '+12', POS],
+              ['Ficha leída y sin exterior', '−25', NEG],
+              ['Ficha aún no leída', '0', NEU],
             ]}
           />
           <Bloque
@@ -97,7 +110,7 @@ export default function ComoFunciona() {
             items={[
               ['🏗️ Obra nueva / a estrenar', '+10', POS],
               ['🚇 Cerca de transporte público', '+8', POS],
-              ['🔧 Reformado', '+5', POS],
+              ['🔧 Reformado (si no es obra nueva)', '+5', POS],
               ['📅 Construido desde 2000', '+1 a +5', POS],
               ['🏢 Ático / última planta', '+3', POS],
               ['⚡ Eficiencia energética A/B/C', '+2', POS],
@@ -118,10 +131,10 @@ export default function ComoFunciona() {
 
       <Desplegable titulo="¿De qué portales vienen los anuncios?">
         <p>
-          Los datos proceden de <strong>pisos.com</strong> (scraping fiable) e <strong>idealista</strong>{' '}
-          (best-effort: si su sistema anti-robot DataDome bloquea la pasada, esa búsqueda se omite sin
-          interrumpir pisos.com). Cada anuncio lleva el campo <strong>Source</strong> indicando su origen.{' '}
-          <strong>Fotocasa</strong> queda fuera por ahora (bloqueo consistente).
+          Los datos proceden de <strong>pisos.com</strong> (Madrid Sur y Toledo Norte) y{' '}
+          <strong>fotocasa</strong> (Madrid Sur; si su anti-robot bloquea la pasada, esa búsqueda se omite
+          sin interrumpir pisos.com). Cada anuncio lleva el campo <strong>Source</strong> indicando su
+          origen.
         </p>
       </Desplegable>
       <Desplegable titulo="¿Qué municipios se rastrean?">

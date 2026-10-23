@@ -19,11 +19,7 @@ backend/*.db
 backend/.env
 backend/.pytest_cache/
 .ruff_cache/
-# Datos de sesión del scraper (cookies): nunca al repo
-idealista_session.json
 backend/logs/
 .neon
 node_modules/
 .env.local
-# Lo regenera el scorer en cada pasada: no se versiona
-frontend/config/precios_referencia.json

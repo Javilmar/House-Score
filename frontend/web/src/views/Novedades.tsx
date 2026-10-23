@@ -13,12 +13,12 @@ import {
 import { useDatos } from '../state/datos'
 
 export default function Novedades() {
-  const { listings } = useDatos()
-  const fechas = useMemo(() => fechasNovedades(listings), [listings])
+  const { activos } = useDatos()
+  const fechas = useMemo(() => fechasNovedades(activos), [activos])
   const [pasada, setPasada] = useState<string | null>(null)
   const [orden, setOrden] = useState<OrdenNovedades>(ORDEN_NOVEDADES_DEFECTO)
   const fecha = pasada !== null && fechas.includes(pasada) ? pasada : fechas[0]
-  const nuevos = useMemo(() => (fecha === undefined ? [] : nuevosDe(listings, fecha, orden)), [listings, fecha, orden])
+  const nuevos = useMemo(() => (fecha === undefined ? [] : nuevosDe(activos, fecha, orden)), [activos, fecha, orden])
 
   return (
     <>

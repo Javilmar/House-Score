@@ -70,8 +70,6 @@ export interface Listing {
   year_built: number
   // derivado: precio / m² (redondeado), null si m² no es > 0
   eur_m2: number | null
-  // claves extra del detalle que la API puede enviar
-  crashed_municipio?: unknown
 }
 
 /** Fila de `GET /historico` con las columnas de `app.py` (api_datos._HISTORICO). */

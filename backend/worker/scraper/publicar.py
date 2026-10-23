@@ -78,13 +78,19 @@ def verificar_api(
 def cargar_historial_api(
     *, api_url: str | None = None, http: httpx.Client | None = None
 ) -> dict[str, dict]:
-    """Devuelve {url: {"first_seen", "price"}}, el formato que espera assign_market_fields."""
+    """Devuelve {url: {"first_seen", "price", "detalle"}}: el formato que espera assign_market_fields,
+    más el `detalle` guardado para reutilizar la ficha ya leída (reutilizar_ficha)."""
     try:
         listings = _get_listings({"incluir_retirados": "true"}, api_url, http)
     except (httpx.HTTPError, ValueError) as e:
         raise IngestError(f"no se pudo cargar el historial desde la API: {e}") from e
     return {
-        li["url"]: {"first_seen": li["primera_aparicion"], "price": li["precio"]} for li in listings
+        li["url"]: {
+            "first_seen": li["primera_aparicion"],
+            "price": li["precio"],
+            "detalle": li.get("detalle") or {},
+        }
+        for li in listings
     }
 
 

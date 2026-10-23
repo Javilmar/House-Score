@@ -14,13 +14,14 @@ describe('Cómo funciona', () => {
     ).toBeInTheDocument()
   })
 
-  it('los 6 bloques de scoring con sus filas y colores', () => {
+  it('los 7 bloques de scoring con sus filas y colores', () => {
     render(<ComoFunciona />)
     const titulos = [
       '💎 Valor vs zona',
       '📐 Superficie',
       '📈 Señales de mercado',
       '✨ Características',
+      '🌿 Exterior',
       '➕ Extras (suman)',
       '⚠️ Penalizaciones (restan)',
     ]
@@ -37,7 +38,7 @@ describe('Cómo funciona', () => {
     const sup = bloque('📐 Superficie')
     for (const [c, p] of [['≥ 140 m²', '+15'], ['≥ 120 m²', '+12'], ['≥ 100 m²', '+8'], ['≥ 80 m²', '+5']] as const) {
       expect(within(sup).getByText(c)).toBeInTheDocument()
-      expect(within(sup).getByText(p)).toBeInTheDocument()
+      expect(within(sup).getAllByText(p).length).toBeGreaterThan(0)
     }
 
     const mercado = bloque('📈 Señales de mercado')
@@ -48,10 +49,15 @@ describe('Cómo funciona', () => {
     expect(within(mercado).getByText('−5')).toBeInTheDocument()
 
     const car = bloque('✨ Características')
-    expect(within(car).getByText('Detectadas en anuncio y ficha · el total se limita a +15')).toBeInTheDocument()
+    expect(within(car).getByText('Detectadas en anuncio y ficha · el total se limita a +18')).toBeInTheDocument()
     expect(within(car).getByText('🏊 Piscina')).toBeInTheDocument()
-    expect(within(car).getByText('máx +15')).toHaveStyle({ color: '#818cf8' })
-    expect(within(car).getByText('🌿 Terraza / 🏡 Patio')).toBeInTheDocument()
+    expect(within(car).getByText('máx +18')).toHaveStyle({ color: '#818cf8' })
+    expect(within(car).queryByText('🌿 Terraza / 🏡 Patio')).toBeNull()
+
+    const ext = bloque('🌿 Exterior')
+    expect(within(ext).getByText('Terraza, patio, jardín o balcón')).toBeInTheDocument()
+    expect(within(ext).getByText('Ficha leída y sin exterior')).toBeInTheDocument()
+    expect(within(ext).getByText('−25')).toHaveStyle({ color: '#f87171' })
 
     const extras = bloque('➕ Extras (suman)')
     expect(within(extras).getByText('⚡ Eficiencia energética A/B/C')).toBeInTheDocument()
@@ -76,7 +82,7 @@ describe('Cómo funciona', () => {
     ])
     const textoDe = (i: number) => container.querySelectorAll('details')[i]?.textContent ?? ''
     expect(textoDe(0)).toContain('pisos.com')
-    expect(textoDe(0)).toContain('Fotocasa')
+    expect(textoDe(0)).toContain('fotocasa')
     expect(textoDe(1)).toContain('Madrid Sur (18)')
     expect(textoDe(1)).toContain('Torrejón de la Calzada · Valdemoro')
     expect(textoDe(1)).toContain('Toledo Norte (5)')

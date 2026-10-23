@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-property_scorer_all.py — Orchestrator: ejecuta los 3 lotes en secuencia.
-Madrid Sur → Toledo Norte → Idealista. Cada uno con su propio browser.
+property_scorer_all.py — Orchestrator: ejecuta los 2 lotes en secuencia.
+Madrid Sur → Toledo Norte. Cada uno con su propio browser.
 """
 
 import subprocess
@@ -12,7 +12,6 @@ SCRIPTS_DIR = Path(__file__).parent
 SCRIPTS = [
     "property_scorer_madrid.py",
     "property_scorer_toledo.py",
-    "property_scorer_idealista.py",
 ]
 
 
@@ -39,7 +38,7 @@ def run_script(name: str) -> int:
 def main():
     print("▶ property_scorer_all.py — Ejecución completa de propiedades")
     print(f"  📅 {__import__('datetime').datetime.now().strftime('%d/%m/%Y %H:%M')}")
-    print(f"  📍 3 lotes: Madrid Sur → Toledo Norte → Idealista")
+    print(f"  📍 2 lotes: Madrid Sur → Toledo Norte")
     print()
 
     exit_codes = {}
@@ -47,7 +46,7 @@ def main():
         try:
             exit_codes[script] = run_script(script)
         except subprocess.TimeoutExpired:
-            print(f"❌ {script}: TIMEOUT (5 min)")
+            print(f"❌ {script}: TIMEOUT (10 min)")
             exit_codes[script] = 124
         except Exception as e:
             print(f"❌ {script}: {e}")

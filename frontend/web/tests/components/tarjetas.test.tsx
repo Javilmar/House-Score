@@ -51,6 +51,13 @@ describe('Top scoring', () => {
     expect(tarjetas()[2]!.querySelector('.prop-rank')!.textContent).toBe('3.')
   })
 
+  it('un listing retirado con el score más alto no aparece en el Top', () => {
+    const retirado = listing({ url: 'https://x/retirado', title: 'Piso retirado', score: 100, status: 'delisted' })
+    montar(<Top />, [retirado, ...muchos])
+    expect(titulos()).not.toContain('Piso retirado')
+    expect(tarjetas()).toHaveLength(15)
+  })
+
   it('mover el slider cambia el número de tarjetas y lo refleja en el hash', () => {
     montar(<Top />, muchos)
     fireEvent.change(screen.getByRole('slider', { name: 'Mostrar top' }), { target: { value: '30' } })

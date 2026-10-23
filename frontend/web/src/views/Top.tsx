@@ -10,11 +10,11 @@ import { useRuta } from '../state/router'
 const RESALTADO_MS = 1800
 
 export default function Top() {
-  const { listings } = useDatos()
+  const { activos } = useDatos()
   const { params, setParams } = useRuta()
   const n = topNDeParam(params.n)
   const idListing = Array.isArray(params.id) ? params.id[0] : params.id
-  const mostrados = useMemo(() => listings.slice(0, n), [listings, n])
+  const mostrados = useMemo(() => activos.slice(0, n), [activos, n])
   const indiceDestino = idListing === undefined ? -1 : mostrados.findIndex((l) => l.url === idListing)
   const [resaltada, setResaltada] = useState<number | null>(null)
 

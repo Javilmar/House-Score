@@ -1,20 +1,19 @@
 <#
 .SYNOPSIS
-  Ejecuta el scraper en el host y, si se indica, envia una pasada a la API (T040).
+  Ejecuta el scraper en el host y guarda su salida en el log diario (T040).
 
 .DESCRIPTION
-  1. Ejecuta -Comando (el scorer) y guarda su salida en logs\scraper-YYYY-MM-DD.log.
-  2. Si se pasa -Archivo, envia ese JSON a POST /ingest con el cliente (worker.scraper.client).
-  Cualquier fallo queda en el log (FR-014) y el script termina con codigo distinto de 0.
+  Ejecuta -Comando (el scorer, que publica en la API por su cuenta) y guarda su salida en
+  logs\scraper-YYYY-MM-DD.log. Cualquier fallo queda en el log (FR-014) y el script termina
+  con codigo distinto de 0.
 
   Variables de entorno (backend\.env se carga si existe): INGEST_SECRET, HOUSESCORE_API_URL.
 
 .EXAMPLE
-  .\worker\scraper\run_scraper.ps1 -Comando "python C:\ruta\scorer.py" -Archivo C:\ruta\pasada.json
+  .\worker\scraper\run_scraper.ps1 -Comando "python C:\ruta\scorer.py"
 #>
 param(
-    [Parameter(Mandatory = $true)][string]$Comando,
-    [string]$Archivo
+    [Parameter(Mandatory = $true)][string]$Comando
 )
 
 $ErrorActionPreference = "Stop"
@@ -49,13 +48,6 @@ try {
     Invoke-Expression $Comando 2>&1 | ForEach-Object { Escribir "$_" }
     if ($LASTEXITCODE -ne 0) { throw "el scraper termino con codigo $LASTEXITCODE" }
 
-    if ($Archivo) {
-        Log "Enviando $Archivo a la API"
-        $python = Join-Path $backend ".venv\Scripts\python.exe"
-        if (-not (Test-Path $python)) { $python = "python" }
-        & $python -m worker.scraper.client $Archivo 2>&1 | ForEach-Object { Escribir "$_" }
-        if ($LASTEXITCODE -ne 0) { throw "el envio a la API fallo (codigo $LASTEXITCODE)" }
-    }
     Log "Fin correcto"
 } catch {
     Log "ERROR: $($_.Exception.Message)"

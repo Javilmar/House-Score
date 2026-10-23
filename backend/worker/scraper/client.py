@@ -4,7 +4,7 @@ Sustituye a guardar.py + `git push`. La ingesta es idempotente por `url`, asi qu
 tras un corte de red es seguro.
 
 Uso como CLI (desde backend/):
-    INGEST_SECRET=... python -m worker.scraper.client last_property_data.json
+    INGEST_SECRET=... python -m worker.scraper.client <pendiente>.json
 Uso desde el scorer:
     from worker.scraper.client import enviar_pasada
     enviar_pasada(listings, secreto)

@@ -17,11 +17,11 @@ import { useDatos } from '../state/datos'
 import { useRuta } from '../state/router'
 
 export default function Bajadas() {
-  const { listings, hoy } = useDatos()
+  const { activos, hoy } = useDatos()
   const { params, setParams } = useRuta()
   const orden = ordenBajadasDeParam(params.orden)
-  const hay = useMemo(() => listings.some(hayBajada), [listings])
-  const filas = useMemo(() => ordenarBajadas(listings, orden), [listings, orden])
+  const hay = useMemo(() => activos.some(hayBajada), [activos])
+  const filas = useMemo(() => ordenarBajadas(activos, orden), [activos, orden])
 
   return (
     <>

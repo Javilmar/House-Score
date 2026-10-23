@@ -31,7 +31,12 @@ def test_historial_desde_la_api_incluye_retirados_y_usa_el_formato_del_scorer():
         return httpx.Response(
             200,
             json=[
-                {"url": "https://e/a", "primera_aparicion": "2026-07-14", "precio": 100000},
+                {
+                    "url": "https://e/a",
+                    "primera_aparicion": "2026-07-14",
+                    "precio": 100000,
+                    "detalle": {"ficha_detalle": True},
+                },
                 {"url": "https://e/b", "primera_aparicion": "2026-08-01", "precio": None},
             ],
         )
@@ -39,8 +44,12 @@ def test_historial_desde_la_api_incluye_retirados_y_usa_el_formato_del_scorer():
     h = cargar_historial_api(http=cliente(handler))
     assert vistos[0].url.params["incluir_retirados"] == "true"
     assert h == {
-        "https://e/a": {"first_seen": "2026-07-14", "price": 100000},
-        "https://e/b": {"first_seen": "2026-08-01", "price": None},
+        "https://e/a": {
+            "first_seen": "2026-07-14",
+            "price": 100000,
+            "detalle": {"ficha_detalle": True},
+        },
+        "https://e/b": {"first_seen": "2026-08-01", "price": None, "detalle": {}},
     }
 
 

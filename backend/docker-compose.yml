@@ -24,9 +24,6 @@ services:
       DATABASE_URL: postgresql+psycopg://housescore:${POSTGRES_PASSWORD:-housescore}@db:5432/housescore
       INGEST_SECRET: ${INGEST_SECRET:?define INGEST_SECRET en backend/.env}
       RATE_LIMIT: ${RATE_LIMIT:-60/minute}
-    volumes:
-      # Solo lectura: para la migracion unica de frontend/datos (scripts.migrar_datos_existentes)
-      - ../frontend:/frontend:ro
     ports:
       # Solo localhost: API local para desarrollo; en producción la API corre en Render
       - "127.0.0.1:8000:8000"

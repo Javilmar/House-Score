@@ -274,7 +274,7 @@ describe('notas (texto literal)', () => {
   })
   it('precio', () => {
     expect(notaPrecio(7)).toBe(
-      '**Fuente**: anuncios scrapeados (pisos.com + idealista) · **Métrica**: mediana de €/m² por municipio · **Verde** = más barato · **Rojo** = más caro · **Gris** = sin anuncios (7 municipios)',
+      '**Fuente**: anuncios scrapeados (pisos.com + fotocasa) · **Métrica**: mediana de €/m² por municipio · **Verde** = más barato · **Rojo** = más caro · **Gris** = sin anuncios (7 municipios)',
     )
   })
 })

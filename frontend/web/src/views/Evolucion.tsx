@@ -11,12 +11,12 @@ import { useDatos } from '../state/datos'
 import '../styles/evolucion.css'
 
 export default function Evolucion() {
-  const { listings, historico } = useDatos()
+  const { activos, historico } = useDatos()
   const conEvolucion = hayEvolucion(historico)
   const f1 = conEvolucion ? figuraEvolucionListings(historico) : null
   const f2 = conEvolucion ? figuraEvolucionPrecios(historico) : null
-  const f3 = figuraHistogramaScores(listings)
-  const f4 = figuraTopUbicaciones(listings)
+  const f3 = figuraHistogramaScores(activos)
+  const f4 = figuraTopUbicaciones(activos)
 
   return (
     <div className="evolucion-cols">

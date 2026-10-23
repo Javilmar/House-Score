@@ -12,7 +12,7 @@ const HOY = '2026-07-21'
 /** Orden de entrada = score descendente (como `cargar_datos`). */
 const DATOS = [
   listing({ url: 'https://x/a', title: '🏠 Piso Alfa', price: 300000, score: 90, eur_m2: 3750, m2: 80, rooms: 3, municipio: 'getafe', location: 'Getafe', first_seen: '2026-05-01', source: 'pisos.com', score_details: ['💰 Precio (+90)'] }),
-  listing({ url: 'https://x/b', title: 'Piso Beta', price: 120000, score: 80, eur_m2: 1500, m2: 80, rooms: 2, municipio: 'illescas', location: 'Illescas', first_seen: '2026-07-10', source: 'idealista', description: 'Promoción de obra nueva' }),
+  listing({ url: 'https://x/b', title: 'Piso Beta', price: 120000, score: 80, eur_m2: 1500, m2: 80, rooms: 2, municipio: 'illescas', location: 'Illescas', first_seen: '2026-07-10', source: 'fotocasa.es', description: 'Promoción de obra nueva' }),
   listing({ url: 'https://x/c', title: 'Piso Gamma', price: 200000, score: 70, eur_m2: null, m2: 0, rooms: 1, municipio: 'parla', location: 'Parla', first_seen: '2026-07-01', source: 'fotocasa', datos_insuficientes: true }),
   listing({ url: 'https://x/d', title: 'Piso Delta', price: 150000, score: 60, eur_m2: 1900, rooms: 2, municipio: '', location: 'Sitio', first_seen: null, source: 'otra', status: 'delisted' }),
   listing({ url: 'ftp://x/e', title: 'Piso Épsilon', price: 250000, score: 50, eur_m2: 3000, rooms: 4, municipio: 'getafe', location: 'Getafe', first_seen: '2026-06-20' }),
@@ -68,10 +68,10 @@ describe('Listados: tabla', () => {
     const celdas = (f: HTMLElement) =>
       [...f.querySelectorAll(':scope > td')].map((t) => t.querySelector('.lt-score-num')?.textContent ?? t.textContent)
     expect(celdas(a).slice(1, 10)).toEqual(['Piso Alfa', '300.000 €', '90', '3.750 €', '80', 'Segunda mano', 'pisos.com', 'Madrid Sur', '81d'])
-    expect(celdas(b).slice(1, 10)).toEqual(['Piso Beta', '120.000 €', '80', '1.500 €', '80', 'Obra nueva', 'idealista', 'Toledo Norte', '11d'])
+    expect(celdas(b).slice(1, 10)).toEqual(['Piso Beta', '120.000 €', '80', '1.500 €', '80', 'Obra nueva', 'fotocasa.es', 'Toledo Norte', '11d'])
     expect(b.querySelector('.lt-nuevo')).not.toBeNull()
     expect(a.querySelector('.lt-src-pisos')).not.toBeNull()
-    expect(b.querySelector('.lt-src-idealista')).not.toBeNull()
+    expect(b.querySelector('.lt-src-fotocasa')).not.toBeNull()
     expect(c.querySelector('.lt-src-fotocasa')).not.toBeNull()
     const fill = a.querySelector('.lt-score-fill') as HTMLElement
     expect(fill.style.width).toBe('90%')
@@ -263,7 +263,7 @@ describe('Listados: CSV', () => {
     const csv = await blobs[0]!.text()
     const [cab, ...resto] = csv.trimEnd().split('\n')
     expect(cab).toBe('title,price,score,eur_m2,location,m2,rooms,bathrooms,floor,year_built,energy_rating,source,first_seen,url')
-    expect(resto).toEqual(['Piso Beta,120000,80,1500,Illescas,80,2,1,,0,,idealista,2026-07-10,https://x/b'])
+    expect(resto).toEqual(['Piso Beta,120000,80,1500,Illescas,80,2,1,,0,,fotocasa.es,2026-07-10,https://x/b'])
     click.mockRestore()
   })
 })

@@ -1,7 +1,6 @@
 """Traduce el formato del scraper (campos en ingles) al contrato de la API (T023, T039).
 
-Compartido por la migracion de datos existentes y por el cliente del scraper, para que
-ambos envien exactamente lo mismo.
+Lo usa el cliente del scraper.
 """
 
 from typing import Any

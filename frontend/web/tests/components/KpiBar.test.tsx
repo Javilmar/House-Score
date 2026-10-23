@@ -17,7 +17,7 @@ describe('<KpiBar>', () => {
     expect(tarjetas.map((t) => t.querySelector('.kpi-label')!.textContent)).toEqual([
       'Total listings', 'Nuevos hoy', 'Score medio', 'Precio medio', 'Bajadas', 'Sin valorar',
     ])
-    expect(tarjetas.map((t) => t.querySelector('.kpi-value')!.textContent)).toEqual(['1', '1', '70.0', '150,000 €', '1', '0'])
+    expect(tarjetas.map((t) => t.querySelector('.kpi-value')!.textContent)).toEqual(['1', '1', '80.0', '100,000 €', '0', '0'])
     for (const t of tarjetas) expect(t.querySelector('.kpi-icon svg')).not.toBeNull()
   })
 })

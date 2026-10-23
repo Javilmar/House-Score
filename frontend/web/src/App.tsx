@@ -83,7 +83,7 @@ export default function App({ opciones, hoy }: Props) {
     <div className="block-container">
       <h1>House Score</h1>
       <p className="caption">
-        Madrid Sur · Toledo Norte — pisos.com · idealista · Scoring a medida · Hasta 300.000 €
+        Madrid Sur · Toledo Norte — pisos.com · fotocasa · Scoring a medida · Hasta 300.000 €
       </p>
       {estado.fase === 'listo' ? (
         <DatosProvider listings={estado.listings} historico={estado.historico} hoy={hoy}>

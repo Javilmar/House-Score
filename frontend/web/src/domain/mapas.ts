@@ -383,4 +383,4 @@ export const notaRenta = (anio: string, sinRenta: number) =>
   `**Fuente**: Atlas de Distribución de Renta de los Hogares (ADRH ${anio}) · INE · **Métrica**: renta neta media por persona (€/año) · **Verde** = renta alta · **Rojo** = renta baja · **Gris** = sin publicación oficial (${sinRenta} secciones) · ⚠️ Renta ≠ criminalidad — proxy socioeconómico del barrio`
 
 export const notaPrecio = (sinPrecio: number) =>
-  `**Fuente**: anuncios scrapeados (pisos.com + idealista) · **Métrica**: mediana de €/m² por municipio · **Verde** = más barato · **Rojo** = más caro · **Gris** = sin anuncios (${sinPrecio} municipios)`
+  `**Fuente**: anuncios scrapeados (pisos.com + fotocasa) · **Métrica**: mediana de €/m² por municipio · **Verde** = más barato · **Rojo** = más caro · **Gris** = sin anuncios (${sinPrecio} municipios)`

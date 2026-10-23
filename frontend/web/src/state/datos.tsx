@@ -1,8 +1,11 @@
 import { createContext, useContext, useMemo, type ReactNode } from 'react'
 import type { Listing, PasadaDiaria } from '../types'
+import { esRetirado } from '../domain/derivaciones'
 
 export interface Datos {
   listings: Listing[]
+  /** Solo los anuncios no retirados: lo que usan todas las vistas salvo Listados. */
+  activos: Listing[]
   historico: PasadaDiaria[]
   /** Fecha local ISO yyyy-mm-dd; inyectable para los tests. */
   hoy: string
@@ -26,7 +29,10 @@ interface Props {
 /** Solo se monta en el estado `listo`: los datos ya están cargados y mapeados. */
 export function DatosProvider({ listings, historico, hoy, children }: Props) {
   const fecha = hoy ?? hoyIso()
-  const valor = useMemo(() => ({ listings, historico, hoy: fecha }), [listings, historico, fecha])
+  const valor = useMemo(
+    () => ({ listings, activos: listings.filter((l) => !esRetirado(l)), historico, hoy: fecha }),
+    [listings, historico, fecha],
+  )
   return <DatosContext.Provider value={valor}>{children}</DatosContext.Provider>
 }
 

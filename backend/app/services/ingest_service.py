@@ -43,7 +43,7 @@ def ingest_pasada(session: Session, items: list[ListingIn], hoy: date) -> Resume
 
 
 def procesar_pasada(session: Session, items: list[ListingIn], hoy: date) -> ResumenPasada:
-    """Aplica una pasada sin hacer commit (lo usa tambien la migracion de datos)."""
+    """Aplica una pasada sin hacer commit."""
     normalizados: dict[str, dict] = {}
     bloqueados = 0
     for item in items:

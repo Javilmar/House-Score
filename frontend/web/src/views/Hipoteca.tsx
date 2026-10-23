@@ -112,7 +112,7 @@ function Opciones<T extends string>(props: {
 }
 
 export default function Hipoteca() {
-  const { listings } = useDatos()
+  const { activos } = useDatos()
   const { params } = useRuta()
 
   const pRuta = Number.parseInt(primero(params.precio) ?? '', 10)
@@ -122,7 +122,7 @@ export default function Hipoteca() {
   const claveRuta = `${params.precio ?? ''}|${params.tipo ?? ''}|${params.ccaa ?? ''}`
 
   const [precio, setPrecio] = useState(() =>
-    Number.isFinite(pRuta) ? clamp(pRuta, PRECIO_MIN, PRECIO_MAX) : precioMedio(listings.map((l) => l.price)),
+    Number.isFinite(pRuta) ? clamp(pRuta, PRECIO_MIN, PRECIO_MAX) : precioMedio(activos.map((l) => l.price)),
   )
   const [tipo, setTipo] = useState<(typeof TIPOS)[number]>(tRuta ?? 'Segunda mano')
   const [ccaa, setCcaa] = useState<(typeof CCAAS)[number]>(cRuta ?? 'Comunidad de Madrid')

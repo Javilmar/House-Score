@@ -15,6 +15,10 @@ HOUSESCORE_ESPERA_API (segundos que espera a que despierte la API, 180 por defec
 
 Códigos de salida: el del scorer; 2 = falta algo (API sin responder o scorer
 inexistente); 124 = tiempo.
+
+Marca diaria: al terminar con código 0 escribe la fecha en `ultima_pasada_ok.txt` (dentro de
+HERMES_DATA_DIR, por defecto `~/AppData/Local/hermes`); si ya contiene la fecha de hoy, no se
+repite la pasada. Así la tarea de Windows solo recupera pasadas que hermes no completó.
 """
 
 import os
@@ -23,6 +27,7 @@ import subprocess
 import sys
 import time
 import urllib.request
+from datetime import date
 from pathlib import Path
 
 API_URL_DEFECTO = "http://127.0.0.1:8000"  # no "localhost": en Windows añade ~2 s por petición
@@ -101,6 +106,12 @@ def _matar_arbol(proc):
         proc.kill()
 
 
+def _marca(env):
+    """Fichero con la fecha de la última pasada completa (código 0)."""
+    base = env.get("HERMES_DATA_DIR") or Path.home() / "AppData/Local/hermes"
+    return Path(base) / "ultima_pasada_ok.txt"
+
+
 def main(env=None):
     env = dict(os.environ if env is None else env)
     try:
@@ -121,6 +132,11 @@ def main(env=None):
     if not scorer.exists():
         print(f"El scorer no existe: {scorer}")
         return 2
+    marca = _marca(env)
+    hoy = date.today().isoformat()
+    if marca.exists() and marca.read_text(encoding="utf-8").strip() == hoy:
+        print(f"Ya hay una pasada completa de hoy ({hoy}); no se repite.")
+        return 0
     ok, motivo = esperar_api(api_url, presupuesto=espera_api)
     if not ok:
         print(
@@ -157,19 +173,18 @@ def main(env=None):
         salida += f"\nTiempo máximo agotado ({timeout} s): se detuvo el scorer."
 
     lineas = salida.splitlines()
-    # Idealista bloquea todos los municipios y cada uno imprime su línea: se cuentan aparte
-    bloqueados = sum(1 for linea in lineas if "bloqueado (" in linea)
-    clave = [linea for linea in lineas if _CLAVE.search(linea) and "bloqueado (" not in linea]
+    clave = [linea for linea in lineas if _CLAVE.search(linea)]
     print("==== RESUMEN ====")
     print(f"Scorer: {scorer}")
     print(f"Terminó con código {codigo}")
-    if bloqueados:
-        print(f"Idealista: {bloqueados} municipios bloqueados")
     if clave:
         print("Líneas clave:")
         print("\n".join(clave[-40:]))
     print("---- final de la salida ----")
     print("\n".join(lineas[-25:]))
+    if codigo == 0:
+        marca.parent.mkdir(parents=True, exist_ok=True)
+        marca.write_text(date.today().isoformat(), encoding="utf-8")
     return codigo
 
 

@@ -8,6 +8,7 @@ import importlib.util
 import json
 import sys
 import threading
+from datetime import date, timedelta
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 
@@ -56,6 +57,7 @@ def entorno(tmp_path, scorer, api, **extra):
         "HOUSESCORE_PYTHON": sys.executable,
         "HOUSESCORE_API_URL": api,
         "HOUSESCORE_ENV_FILE": str(tmp_path / "no-existe.env"),
+        "HERMES_DATA_DIR": str(tmp_path / "hermes"),
     }
     env.update(extra)
     return env
@@ -125,18 +127,41 @@ def test_falta_el_scorer(tmp_path, api_falsa, capsys):
     assert "no existe" in capsys.readouterr().out
 
 
-def test_las_lineas_de_municipios_bloqueados_se_resumen_en_un_contador(tmp_path, api_falsa, capsys):
-    scorer = escribir_scorer(
-        tmp_path,
-        "for i in range(23):\n"
-        "    print(f'[i {i}/23] getafe (idealista)... ⚠️ bloqueado (getafe) — saltando')\n"
-        "print('✅ Pasada guardada en la API: {}')\n",
-    )
-    cargar().main(entorno(tmp_path, scorer, api_falsa))
-    resumen = capsys.readouterr().out.split("---- final de la salida ----")[0]
-    assert "23 municipios bloqueados" in resumen
-    assert resumen.count("saltando") == 0  # no se repiten en las líneas clave
-    assert "Pasada guardada" in resumen
+def test_con_la_marca_de_hoy_no_ejecuta_el_scorer(tmp_path, api_falsa, capsys):
+    centinela = tmp_path / "ejecutado.txt"
+    scorer = escribir_scorer(tmp_path, f"open({str(centinela)!r}, 'w').write('x')\n")
+    m = cargar()
+    marca = tmp_path / "hermes" / "ultima_pasada_ok.txt"
+    marca.parent.mkdir()
+    marca.write_text(date.today().isoformat(), encoding="utf-8")
+    codigo = m.main(entorno(tmp_path, scorer, api_falsa))
+    assert codigo == 0
+    assert "Ya hay una pasada completa de hoy" in capsys.readouterr().out
+    assert not centinela.exists()
+
+
+def test_un_scorer_correcto_deja_la_marca_de_hoy(tmp_path, api_falsa):
+    scorer = escribir_scorer(tmp_path, "print('ok')\n")
+    assert cargar().main(entorno(tmp_path, scorer, api_falsa)) == 0
+    marca = tmp_path / "hermes" / "ultima_pasada_ok.txt"
+    assert marca.read_text(encoding="utf-8").strip() == date.today().isoformat()
+
+
+def test_un_scorer_fallido_no_crea_la_marca(tmp_path, api_falsa):
+    scorer = escribir_scorer(tmp_path, "import sys\nsys.exit(3)\n")
+    assert cargar().main(entorno(tmp_path, scorer, api_falsa)) == 3
+    assert not (tmp_path / "hermes" / "ultima_pasada_ok.txt").exists()
+
+
+def test_una_marca_de_ayer_no_impide_ejecutar(tmp_path, api_falsa):
+    centinela = tmp_path / "ejecutado.txt"
+    scorer = escribir_scorer(tmp_path, f"open({str(centinela)!r}, 'w').write('x')\n")
+    marca = tmp_path / "hermes" / "ultima_pasada_ok.txt"
+    marca.parent.mkdir()
+    marca.write_text((date.today() - timedelta(days=1)).isoformat(), encoding="utf-8")
+    assert cargar().main(entorno(tmp_path, scorer, api_falsa)) == 0
+    assert centinela.exists()
+    assert marca.read_text(encoding="utf-8").strip() == date.today().isoformat()
 
 
 def test_el_scorer_no_hereda_las_variables_que_redirigen_a_otro_python(

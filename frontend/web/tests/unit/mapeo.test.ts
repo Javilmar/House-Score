@@ -175,9 +175,7 @@ describe('mapearListing: detalle', () => {
     expect(l.year_built).toBe(d['year_built'])
   })
 
-  it('claves extra del detalle pasan como columnas (crashed_municipio de una fila real)', () => {
-    const api = listings.find((x) => 'crashed_municipio' in x.detalle)!
-    expect(mapearListing(api).crashed_municipio).toBe(api.detalle['crashed_municipio'])
+  it('claves extra del detalle pasan como columnas', () => {
     const l = mapearListing(base({ detalle: { campo_nuevo: 'v' } }))
     expect((l as unknown as Record<string, unknown>)['campo_nuevo']).toBe('v')
   })

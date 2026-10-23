@@ -30,7 +30,7 @@ describe('App: armazón', () => {
     render(<App opciones={{ apiUrl: 'http://api.test', fetchFn: fetchOk }} hoy="2026-07-21" />)
     expect(await screen.findByRole('heading', { level: 1, name: 'House Score' })).toBeInTheDocument()
     expect(
-      screen.getByText('Madrid Sur · Toledo Norte — pisos.com · idealista · Scoring a medida · Hasta 300.000 €'),
+      screen.getByText('Madrid Sur · Toledo Norte — pisos.com · fotocasa · Scoring a medida · Hasta 300.000 €'),
     ).toBeInTheDocument()
     const tabs = await screen.findAllByRole('tab')
     expect(tabs.map((t) => t.textContent)).toEqual(ETIQUETAS)

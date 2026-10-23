@@ -1,29 +1,20 @@
 #!/usr/bin/env python3
 """
-property_scorer_common.py — Funciones comunes para los 3 lotes del scraper de propiedades.
+property_scorer_common.py — Funciones comunes para los lotes del scraper de propiedades.
+
+No importa Playwright: las funciones de scraping reciben la `page` ya abierta por el lote, así
+que el scoring se puede importar en los tests sin navegador.
 """
 
 import asyncio
-import json
-import os
 import re
 import statistics
 import sys
-import time
 from collections import defaultdict
-from datetime import datetime, timedelta, date
-from pathlib import Path
-from typing import Optional
-
-from playwright.async_api import async_playwright, TimeoutError as PlaywrightTimeout
-from playwright_stealth import Stealth
+from datetime import datetime, date
 
 
 # ─── CONFIGURACIÓN ────────────────────────────────────────────
-
-DATA_DIR = Path(os.environ.get("HERMES_DATA_DIR", Path.home() / "AppData/Local/hermes"))
-JSON_OUTPUT = DATA_DIR / "last_property_data.json"
-IDEALISTA_SESSION = DATA_DIR / "idealista_session.json"
 
 MAX_PRICE = 300_000
 
@@ -46,7 +37,6 @@ TOLEDO_NORTE = [
     "esquivias",
 ]
 
-ALL_MUNICIPALITIES = MADRID_SUR + TOLEDO_NORTE
 PROPERTY_TYPES = ["piso", "casa"]
 
 BAD_ZONES = {
@@ -70,54 +60,17 @@ TRANSPORT_KEYWORDS = [
     "metro sur", "metrosur", "metroligero",
 ]
 
-FEATURE_KEYWORDS = {
-    "piscina": "🏊 Piscina",
-    "garaje": "🚗 Garaje",
-    "trastero": "📦 Trastero",
-    "terraza": "🌿 Terraza",
-    "patio": "🏡 Patio",
-    "ascensor": "🛗 Ascensor",
-    "jardín": "🌳 Jardín",
-    "jardin": "🌳 Jardín",
-}
-
-REFERENCE_FILE = Path.home() / "house-dashboard" / "frontend" / "config" / "precios_referencia.json"
 MIN_SAMPLE = 5
 SANE_EUR_M2 = (200, 20000)
 RANCIO_DIAS = (45, 90)
 
 HAB_MIN = 2
 SIZE_MIN = 70
-EXTERIOR_OBLIGATORIO = False
 EXTERIOR_PENALTY = -25
 VALOR_CAP = 25
 
 ZONA = {**{m: "madrid_sur" for m in MADRID_SUR},
         **{m: "toledo_norte" for m in TOLEDO_NORTE}}
-
-PROVINCIA = {**{m: "madrid" for m in MADRID_SUR},
-             **{m: "toledo" for m in TOLEDO_NORTE}}
-
-IDEALISTA_SLUG = {
-    "humanes_de_madrid": "humanes-de-madrid",
-    "grinon": "grinon",
-    "torrejon_de_la_calzada": "torrejon-de-la-calzada",
-    "sesena": "sesena",
-    "alcorcon": "alcorcon",
-    "leganes": "leganes",
-    "mostoles": "mostoles",
-}
-
-FOTOCASA_SLUG = {
-    "humanes_de_madrid": "humanes-de-madrid",
-    "torrejon_de_la_calzada": "torrejon-de-la-calzada",
-    "cubas_de_la_sagra": "cubas-de-la-sagra",
-    "serranillos_del_valle": "serranillos-del-valle",
-    "moraleja_de_enmedio": "moraleja-de-enmedio",
-    "navalcarnero": "navalcarnero",
-    "grinon": "grinon",
-    "sesena": "sesena",
-}
 
 EXTERIOR_KEYWORDS = ["terraza", "patio", "jardin", "jardín", "balcon", "balcón", "balcones"]
 
@@ -172,29 +125,6 @@ def reference_eur_m2(reference, municipio):
     if z:
         return z["eur_m2"]
     return muni["eur_m2"] if muni else None
-
-
-def load_history(data_dir: Path, today_str: str) -> dict:
-    hist = {}
-    if not data_dir.exists():
-        return hist
-    for f in sorted(data_dir.glob("*.json")):
-        if f.stem == today_str:
-            continue
-        try:
-            for p in json.loads(f.read_text(encoding="utf-8")):
-                url = p.get("url")
-                if not url:
-                    continue
-                fs = p.get("first_seen") or f.stem
-                prev = hist.get(url)
-                if not prev or fs < prev["first_seen"]:
-                    hist[url] = {"first_seen": fs, "price": p.get("price")}
-                else:
-                    prev["price"] = p.get("price")
-        except Exception:
-            continue
-    return hist
 
 
 def assign_market_fields(prop, history, today_str):
@@ -297,11 +227,11 @@ def score_property(prop: dict, reference: dict = None, today: date = None) -> di
     prop["exterior"] = exterior
     if exterior:
         score += 12; details.append("🌿 Espacio exterior (+12)")
-    else:
+    elif prop.get("ficha_detalle"):
         score += EXTERIOR_PENALTY
-        details.append(f"⚠️ Sin exterior detectado ({EXTERIOR_PENALTY} pts)")
-        if EXTERIOR_OBLIGATORIO:
-            cumple_requisitos = False
+        details.append(f"⚠️ Sin exterior en la ficha ({EXTERIOR_PENALTY} pts)")
+    else:
+        details.append("❔ Exterior sin verificar (0)")
 
     feats = 0
     for variants, pts, emoji in FEATURES:
@@ -372,75 +302,163 @@ def score_property(prop: dict, reference: dict = None, today: date = None) -> di
     return prop
 
 
-# ─── DEDUPLICACIÓN ────────────────────────────────────────────
+# ─── PASADA: FICHAS, PAYLOAD Y RESUMEN ────────────────────────
 
-def load_seen_ids(max_age_days: int = 7) -> set:
-    if STATE_FILE.exists():
-        try:
-            with open(STATE_FILE, "r") as f:
-                data = json.load(f)
-            now = datetime.now()
-            ids = set()
-            for entry in data.get("ids", []):
-                if isinstance(entry, dict):
-                    ts = entry.get("ts", "")
-                    pid = entry.get("id", "")
-                    if ts and pid:
-                        try:
-                            dt = datetime.fromisoformat(ts)
-                            if (now - dt).days < max_age_days:
-                                ids.add(pid)
-                        except ValueError:
-                            ids.add(pid)
-                else:
-                    ids.add(entry)
-            return ids
-        except Exception:
-            return set()
-    return set()
+# Campos que solo trae la ficha de detalle y que se reutilizan de la API en pasadas siguientes
+CAMPOS_FICHA = ("description", "features", "detail_features", "floor",
+                "year_built", "conservation", "energy_rating")
 
 
-def save_seen_ids(ids: set, new_ids: set = None):
-    STATE_FILE.parent.mkdir(parents=True, exist_ok=True)
-    existing = {}
-    if STATE_FILE.exists():
-        try:
-            with open(STATE_FILE, "r") as f:
-                data = json.load(f)
-            for entry in data.get("ids", []):
-                if isinstance(entry, dict) and entry.get("id"):
-                    existing[entry["id"]] = entry.get("ts", datetime.now().isoformat())
-                elif isinstance(entry, str):
-                    existing[entry] = datetime.now().isoformat()
-        except Exception:
-            pass
-
-    now = datetime.now().isoformat()
-    for pid in ids:
-        if pid not in existing:
-            existing[pid] = now
-
-    cutoff = (datetime.now() - timedelta(days=30)).isoformat()
-    cleaned = {k: v for k, v in existing.items() if v >= cutoff}
-
-    with open(STATE_FILE, "w") as f:
-        json.dump({
-            "ids": [{"id": k, "ts": v} for k, v in cleaned.items()],
-            "updated": now
-        }, f, indent=2)
+def reutilizar_ficha(prop: dict, history: dict) -> bool:
+    """Si la API ya tiene la ficha de este anuncio, la copia en prop. True si la reutiliza."""
+    h = history.get(prop.get("url", "")) or {}
+    detalle = h.get("detalle") or {}
+    if not detalle.get("ficha_detalle"):
+        return False
+    for k in CAMPOS_FICHA:
+        if k in detalle:
+            prop[k] = detalle[k]
+    prop["ficha_detalle"] = True
+    # el precio del listado no ha cambiado: se mantiene el precio real leído en la ficha
+    if detalle.get("precio_listado") == prop.get("precio_listado") and h.get("price"):
+        prop["price"] = h["price"]
+    return True
 
 
-STATE_FILE = DATA_DIR / "seen_properties.json"
+def preparar_pasada(listings: list[dict], history: dict, today_str: str) -> int:
+    """precio_listado + ficha reutilizada + first_seen/bajada. Devuelve cuántas fichas reutiliza."""
+    reutilizadas = 0
+    for prop in listings:
+        prop["precio_listado"] = prop.get("price")
+        reutilizadas += reutilizar_ficha(prop, history)
+        assign_market_fields(prop, history, today_str)
+    return reutilizadas
+
+
+def candidatos_ficha(listings: list[dict], limite: int) -> list[dict]:
+    """Los `limite` mejores (por pre-score) que aún no tienen ficha leída."""
+    sin_ficha = [p for p in listings if not p.get("ficha_detalle")]
+    sin_ficha.sort(key=lambda x: (not x.get("cumple_requisitos", True),
+                                  x.get("datos_insuficientes", False),
+                                  -x.get("score", 0), x.get("price", MAX_PRICE + 1)))
+    return sin_ficha[:limite]
+
+
+def deduplicar_por_id(listings: list[dict]) -> list[dict]:
+    """Una copia por pisos_id (la más barata); los anuncios sin id se mantienen todos."""
+    vistos: set = set()
+    unicos = []
+    for l in sorted(listings, key=lambda x: x.get("price", 0)):
+        pid = l.get("pisos_id", "")
+        if pid and pid in vistos:
+            continue
+        if pid:
+            vistos.add(pid)
+        unicos.append(l)
+    return unicos
+
+
+def ordenar_final(listings: list[dict]) -> None:
+    listings.sort(key=lambda x: (x.get("datos_insuficientes", False),
+                                 -x.get("score", 0), x.get("price", MAX_PRICE + 1)))
+
+
+def payload_pasada(listings: list[dict]) -> list[dict]:
+    """Lo que se envía a POST /ingest: un item por anuncio en el formato del scraper."""
+    payload = []
+    for prop in listings:
+        df = prop.get("detail_features", {})
+        payload.append({
+            "title": prop.get("title", "Sin título"),
+            "price": prop.get("price", 0),
+            "score": prop.get("score", 0),
+            "location": prop.get("location", ""),
+            "m2": prop.get("size_m2", 0),
+            "rooms": prop.get("bedrooms", 0),
+            "bathrooms": prop.get("bathrooms", 0),
+            "url": prop.get("url", ""),
+            "source": prop.get("source", "pisos.com"),
+            "floor": prop.get("floor", ""),
+            "year_built": prop.get("year_built", 0),
+            "conservation": prop.get("conservation", ""),
+            "energy_rating": prop.get("energy_rating", ""),
+            # 2000 = lo que guarda la ficha: el texto reutilizado es el que se puntuó
+            "description": prop.get("description", "")[:2000],
+            "features": prop.get("features", []),
+            "detail_features": {k: v for k, v in df.items() if v},
+            "pisos_id": prop.get("pisos_id", ""),
+            "score_details": prop.get("score_details", []),
+            "eur_m2": prop.get("eur_m2", 0),
+            "municipio": prop.get("municipio", ""),
+            "first_seen": prop.get("first_seen", ""),
+            "last_seen": prop.get("last_seen", ""),
+            "previous_price": prop.get("previous_price"),
+            "price_drop": prop.get("price_drop"),
+            "datos_insuficientes": prop.get("datos_insuficientes", False),
+            "exterior": prop.get("exterior", False),
+            "cumple_requisitos": prop.get("cumple_requisitos", True),
+            "ficha_detalle": bool(prop.get("ficha_detalle")),
+            "precio_listado": prop.get("precio_listado"),
+        })
+    return payload
+
+
+def imprimir_resumen(listings: list[dict], etiqueta: str) -> None:
+    """TOP 10 valorables + estadísticas de la pasada."""
+    fiables = [p for p in listings if not p.get("datos_insuficientes") and p.get("cumple_requisitos", True)]
+    top_n = min(10, len(fiables))
+
+    print(f"\n{'='*60}")
+    print(f"🏆 TOP {top_n} PROPERTIES — {etiqueta}")
+    print(f"{'='*60}")
+    if top_n == 0:
+        print("No qualifying properties found.")
+    else:
+        for i, prop in enumerate(fiables[:top_n]):
+            s = prop.get("score", 0)
+            bar = "⭐" * min(10, s // 10) + "☆" * (10 - min(10, s // 10))
+            print(f"\n{'─'*50}")
+            print(f"#{i+1}  {bar}  {s}/100")
+            print(f"  🏷️ {prop.get('title', 'Sin título')}")
+            print(f"  📍 {prop.get('location', 'Sin ubicación')}")
+            print(f"  💰 {prop.get('price', 0):,}€")
+            print(f"  📐 {prop.get('size_m2', 0)} m² | {prop.get('bedrooms', 0)} habs | {prop.get('bathrooms', 0)} baños")
+            if prop.get("floor"):
+                print(f"  🏢 {prop['floor']}")
+            if prop.get("year_built"):
+                print(f"  📅 {prop['year_built']} | {prop.get('conservation', '')}")
+            if prop.get("url"):
+                print(f"  🔗 {prop['url']}")
+            for detail in prop.get("score_details", []):
+                print(f"    {detail}")
+
+    prices = [p.get("price", 0) for p in listings]
+    sizes = [p.get("size_m2", 0) for p in listings]
+    scores = [p.get("score", 0) for p in listings]
+    print(f"\n{'='*60}")
+    print(f"📊 Statistics {etiqueta}:")
+    print(f"  • Analyzed: {len(listings)}")
+    if prices:
+        print(f"  • Prices: {min(prices):,}€ — {max(prices):,}€")
+        print(f"  • Sizes: {min(sizes)}m² — {max(sizes)}m²")
+        print(f"  • Avg score: {sum(scores)//max(1,len(scores))}/100")
 
 
 # ─── PISOS.COM SCRAPERS ───────────────────────────────────────
 
-async def scrape_search_page(page, url: str) -> list:
-    try:
-        await page.goto(url, timeout=20000, wait_until="domcontentloaded")
-        await asyncio.sleep(2)
-    except Exception as e:
-        print(f"  ⚠️ Error cargando {url}: {e}", file=sys.stderr)
+async def scrape_search_page(page, url: str, reintentos: int = 1, timeout_ms: int = 20000) -> list:
+    error = None
+    for intento in range(reintentos):
+        try:
+            await page.goto(url, timeout=timeout_ms, wait_until="domcontentloaded")
+            await asyncio.sleep(2)
+            break
+        except Exception as e:
+            error = e
+            print(f"    ⚠️ Intento {intento + 1}/{reintentos}: {type(e).__name__}", file=sys.stderr)
+            await asyncio.sleep(1)
+    else:
+        print(f"  ⚠️ Error cargando {url}: {error}", file=sys.stderr)
         return []
 
     try:
@@ -608,7 +626,7 @@ async def scrape_detail_page(page, prop: dict) -> dict:
     price_match = re.search(r'(?:precio|desde)?\s*([\d.]+)\s*€', detail_text)
     if price_match:
         real_price = int(price_match.group(1).replace(".", ""))
-        if real_price > 100:
+        if 10_000 < real_price <= MAX_PRICE:
             prop["price"] = real_price
 
     m2_match = re.search(r'superficie construida[:\s]*([\d.]+)\s*m', detail_lower)
@@ -706,222 +724,11 @@ async def scrape_detail_page(page, prop: dict) -> dict:
         desc = re.sub(r'(?:Español|Català|English|Deutsch|Français|Traducciones disponibles:).*?\n', '', desc)
         prop["description"] = desc[:2000]
 
-    return prop
-
-
-# ─── IDEALISTA SCRAPERS ───────────────────────────────────────
-
-def _idealista_url(municipality: str) -> str:
-    slug = IDEALISTA_SLUG.get(municipality, municipality.replace("_", "-"))
-    provincia = PROVINCIA.get(municipality, "madrid")
-    return f"https://www.idealista.com/venta-viviendas/{slug}-{provincia}/"
-
-
-async def scrape_idealista_search(page, url: str) -> list:
-
-    try:
-        await page.goto(url, timeout=25000, wait_until="domcontentloaded")
-        await asyncio.sleep(2.5)
-    except Exception as e:
-        print(f"  ⚠️ Error cargando {url}: {e}", file=sys.stderr)
-        return []
-
-    try:
-        title = (await page.title()).lower()
-        html_snippet = (await page.content())[:4000].lower()
-    except Exception:
-        title = ""
-        html_snippet = ""
-
-    block_signals = ["datadome", "captcha", "acceso restringido",
-                     "are you a human", "robot", "access denied",
-                     "403 forbidden", "please verify"]
-    if any(sig in html_snippet or sig in title for sig in block_signals):
-        raise BlockedError(f"idealista bloqueado en {url}")
-
-    try:
-        raw_listings = await page.evaluate(r'''() => {
-            const items = document.querySelectorAll("article.item");
-            return Array.from(items).map(art => {
-                const link = art.querySelector("a.item-link");
-                const href = link ? link.href : "";
-                const title = link ? link.textContent.trim() : "";
-
-                const priceEl = art.querySelector(".item-price");
-                const priceText = priceEl ? priceEl.textContent.trim() : "";
-
-                const details = Array.from(art.querySelectorAll(".item-detail"))
-                    .map(el => el.textContent.trim());
-
-                const descEl = art.querySelector(".item-description");
-                const desc = descEl ? descEl.textContent.trim() : "";
-
-                const locEl = art.querySelector(".item-detail-char:last-child, .item-location");
-                const location = locEl ? locEl.textContent.trim() : "";
-
-                const tagEl = art.querySelector(".item-flag");
-                const tag = tagEl ? tagEl.textContent.trim() : "";
-
-                return { href, title, priceText, details, desc, location, tag };
-            });
-        }''')
-    except Exception as e:
-        print(f"  ⚠️ Error evaluando JS idealista {url}: {e}", file=sys.stderr)
-        return []
-
-    listings = []
-    for raw in raw_listings:
-        href = raw.get("href", "")
-        if not href:
-            continue
-
-        id_match = re.search(r'/inmueble/(\d+)/', href)
-        uid = f"idealista:{id_match.group(1)}" if id_match else f"idealista:{href}"
-
-        price_text = raw.get("priceText", "")
-        price_m = re.search(r'([\d.]+)\s*€', price_text)
-        if not price_m:
-            continue
-        price = int(price_m.group(1).replace(".", ""))
-        if price > MAX_PRICE:
-            continue
-
-        size_m2 = 0
-        bedrooms = 0
-        bathrooms = 0
-        floor = ""
-        for det in raw.get("details", []):
-            det_low = det.lower()
-            m = re.search(r'([\d.]+)\s*m²', det_low)
-            if m and not size_m2:
-                size_m2 = int(m.group(1).replace(".", ""))
-                continue
-            m = re.search(r'(\d+)\s*hab', det_low)
-            if m and not bedrooms:
-                bedrooms = int(m.group(1))
-                continue
-            m = re.search(r'(\d+)\s*ba[ñn]', det_low)
-            if m and not bathrooms:
-                bathrooms = int(m.group(1))
-                continue
-            if re.search(r'(?:bajo|\d+ª?\s*planta|ático|planta baja)', det_low):
-                floor = det
-
-        listings.append({
-            "source_url": url,
-            "source": "idealista.com",
-            "scraped_at": datetime.now().isoformat(),
-            "uid": uid,
-            "pisos_id": uid,
-            "url": href,
-            "title": raw.get("title", ""),
-            "location": raw.get("location", "") or raw.get("desc", "")[:80],
-            "price": price,
-            "size_m2": size_m2,
-            "bedrooms": bedrooms,
-            "bathrooms": bathrooms,
-            "floor": floor,
-            "description": raw.get("desc", "")[:400],
-            "features": [],
-            "detail_features": {},
-        })
-
-    return listings
-
-
-async def scrape_idealista_detail(page, prop: dict) -> dict:
-    url = prop.get("url", "")
-    if not url:
-        return prop
-
-    try:
-        await page.goto(url, timeout=25000, wait_until="domcontentloaded")
-        await asyncio.sleep(1.0)
-    except Exception:
-        return prop
-
-    try:
-        html_snippet = (await page.content())[:2000].lower()
-        if any(s in html_snippet for s in ["datadome", "captcha", "access denied"]):
-            return prop
-        detail_text = await page.evaluate('() => document.querySelector("main")?.innerText || ""')
-    except Exception:
-        return prop
-
-    if not detail_text:
-        return prop
-
-    detail_lower = detail_text.lower()
-
-    price_m = re.search(r'([\d.]+)\s*€', detail_text)
-    if price_m:
-        real_price = int(price_m.group(1).replace(".", ""))
-        if real_price > 100:
-            prop["price"] = real_price
-
-    m2_m = re.search(r'superficie construida[:\s]*([\d.]+)\s*m', detail_lower)
-    if not m2_m:
-        m2_m = re.search(r'superficie[:\s]*([\d.]+)\s*m', detail_lower)
-    if m2_m:
-        prop["size_m2"] = int(m2_m.group(1).replace(".", ""))
-
-    h_m = re.search(r'(\d+)\s*hab', detail_lower)
-    if h_m:
-        prop["bedrooms"] = int(h_m.group(1))
-    b_m = re.search(r'(\d+)\s*ba[ñn]', detail_lower)
-    if b_m:
-        prop["bathrooms"] = int(b_m.group(1))
-
-    fl_m = re.search(r'(?:bajo|\d+ª\s*planta|ático)', detail_lower)
-    if fl_m and not prop.get("floor"):
-        prop["floor"] = fl_m.group(0)
-
-    seen_features = set()
-    for feat in ["piscina", "garaje", "trastero", "terraza", "patio",
-                 "ascensor", "jardín", "jardin", "balcón", "balcon",
-                 "aire acondicionado", "calefacción", "calefaccion", "armario empotrado"]:
-        if feat in detail_lower:
-            seen_features.add(feat)
-    prop["detail_features"] = {f: True for f in seen_features}
-    prop["features"] = list(seen_features)
-
-    year_m = re.search(r'(?:construido|año construcción|antigüedad)[:\s]*(\d{4})', detail_lower)
-    if year_m:
-        prop["year_built"] = int(year_m.group(1))
-    else:
-        ant_m = re.search(r'antigüedad[:\s]*(?:más de\s*)?(\d+)', detail_lower)
-        if ant_m:
-            prop["year_built"] = datetime.now().year - int(ant_m.group(1))
-        else:
-            prop["year_built"] = 0
-
-    cons_m = re.search(r'estado[:\s]*([^,\n]{3,50})', detail_lower)
-    if cons_m:
-        prop["conservation"] = cons_m.group(1).strip()
-
-    energy_m = re.search(r'certificaci[oó]n energ[eé]tica[:\s]*([a-g])\b', detail_lower)
-    if not energy_m:
-        energy_m = re.search(r'clasificaci[oó]n[:\s]*([a-g])\b', detail_lower)
-    if energy_m:
-        rating = energy_m.group(1).upper()
-        if rating in ("A", "B", "C", "D", "E", "F", "G"):
-            prop["energy_rating"] = rating
-
-    desc_m = re.search(r'descripci[oó]n\s*\n(.+?)(?:\ncaracter[ií]sticas|\nver más|\ncontactar)',
-                       detail_text, re.DOTALL | re.IGNORECASE)
-    if desc_m:
-        prop["description"] = desc_m.group(1).strip()[:2000]
-
+    prop["ficha_detalle"] = True
     return prop
 
 
 # ─── FOTOCASA SCRAPERS ────────────────────────────────────────
-
-def _fotocasa_url(municipality: str, page_num: int = 1) -> str:
-    slug = FOTOCASA_SLUG.get(municipality, municipality.replace("_", "-"))
-    base = f"https://www.fotocasa.es/es/comprar/viviendas/{slug}/todas-las-zonas/l"
-    return base if page_num == 1 else f"{base}?sortType=score&page={page_num}"
-
 
 async def scrape_fotocasa_search(page, url: str) -> list:
 
@@ -1171,6 +978,7 @@ async def scrape_fotocasa_detail(page, prop: dict) -> dict:
     if desc_m:
         prop["description"] = desc_m.group(1).strip()[:2000]
 
+    prop["ficha_detalle"] = True
     return prop
 
 

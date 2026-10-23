@@ -42,7 +42,6 @@ const CABECERAS: { col: Columna; texto: string; titulo?: string }[] = [
 function claseFuente(fuente: string): string {
   if (fuente.includes('pisos')) return 'lt-src lt-src-pisos'
   if (fuente.includes('fotocasa')) return 'lt-src lt-src-fotocasa'
-  if (fuente.includes('idealista')) return 'lt-src lt-src-idealista'
   return 'lt-src'
 }
 
