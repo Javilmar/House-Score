@@ -140,6 +140,21 @@ def test_con_la_marca_de_hoy_no_ejecuta_el_scorer(tmp_path, api_falsa, capsys):
     assert not centinela.exists()
 
 
+def test_con_otra_pasada_en_curso_no_lanza_otra(tmp_path, api_falsa, capsys):
+    centinela = tmp_path / "ejecutado.txt"
+    scorer = escribir_scorer(tmp_path, f"open({str(centinela)!r}, 'w').write('x')\n")
+    m = cargar()
+    otro = m._cerrojo(tmp_path / "hermes" / "pasada_en_curso.lock")  # el otro disparo
+    try:
+        assert m.main(entorno(tmp_path, scorer, api_falsa)) == 0
+        assert "Ya hay una pasada en curso" in capsys.readouterr().out
+        assert not centinela.exists()
+    finally:
+        otro.close()
+    assert m.main(entorno(tmp_path, scorer, api_falsa)) == 0
+    assert centinela.exists()  # liberado el cerrojo, la pasada sí corre
+
+
 def test_un_scorer_correcto_deja_la_marca_de_hoy(tmp_path, api_falsa):
     scorer = escribir_scorer(tmp_path, "print('ok')\n")
     assert cargar().main(entorno(tmp_path, scorer, api_falsa)) == 0

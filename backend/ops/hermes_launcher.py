@@ -19,6 +19,7 @@ inexistente); 124 = tiempo.
 Marca diaria: al terminar con código 0 escribe la fecha en `ultima_pasada_ok.txt` (dentro de
 HERMES_DATA_DIR, por defecto `~/AppData/Local/hermes`); si ya contiene la fecha de hoy, no se
 repite la pasada. Así la tarea de Windows solo recupera pasadas que hermes no completó.
+Un cerrojo (`pasada_en_curso.lock`, mismo directorio) impide dos pasadas a la vez.
 """
 
 import os
@@ -112,6 +113,30 @@ def _marca(env):
     return Path(base) / "ultima_pasada_ok.txt"
 
 
+def _cerrojo(ruta):
+    """Bloqueo exclusivo de `ruta` mientras dure la pasada; None si otro proceso lo tiene.
+
+    hermes (09:00) y la tarea de Windows pueden dispararse a la vez (p. ej. tras un cambio de
+    hora): sin esto, las dos pasadas corren en paralelo. El sistema libera el bloqueo si el
+    proceso muere, así que no quedan cerrojos huérfanos."""
+    ruta.parent.mkdir(parents=True, exist_ok=True)
+    f = open(ruta, "a+")
+    try:
+        f.seek(0)
+        if os.name == "nt":
+            import msvcrt
+
+            msvcrt.locking(f.fileno(), msvcrt.LK_NBLCK, 1)
+        else:
+            import fcntl
+
+            fcntl.flock(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except OSError:
+        f.close()
+        return None
+    return f
+
+
 def main(env=None):
     env = dict(os.environ if env is None else env)
     try:
@@ -133,6 +158,17 @@ def main(env=None):
         print(f"El scorer no existe: {scorer}")
         return 2
     marca = _marca(env)
+    cerrojo = _cerrojo(marca.parent / "pasada_en_curso.lock")
+    if cerrojo is None:
+        print("Ya hay una pasada en curso (otro disparo del job); no se lanza otra.")
+        return 0
+    try:
+        return _pasada(env, scorer, env_file, api_url, timeout, espera_api, marca)
+    finally:
+        cerrojo.close()
+
+
+def _pasada(env, scorer, env_file, api_url, timeout, espera_api, marca):
     hoy = date.today().isoformat()
     if marca.exists() and marca.read_text(encoding="utf-8").strip() == hoy:
         print(f"Ya hay una pasada completa de hoy ({hoy}); no se repite.")

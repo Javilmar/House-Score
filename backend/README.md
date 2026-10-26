@@ -141,7 +141,9 @@ requiere `HOUSESCORE_PYTHON`), que lanza el mismo `hermes_launcher.py`. Al termi
 lanzador escribe la fecha de hoy en `HERMES_DATA_DIR/ultima_pasada_ok.txt` (por defecto
 `~/AppData/Local/hermes/ultima_pasada_ok.txt`); si ya contiene la fecha de hoy, el siguiente disparo
 dice «Ya hay una pasada completa de hoy» y no repite. Una pasada fallida no escribe la marca, así que
-se reintenta sola (la ingesta es idempotente por `url`).
+se reintenta sola (la ingesta es idempotente por `url`). Si los dos disparos coinciden (pasó tras el
+cambio de hora: la tarea quedó a las 09:00), el cerrojo `pasada_en_curso.lock` hace que el segundo
+diga «Ya hay una pasada en curso» y salga sin scrapear.
 
 ## Front web
 
